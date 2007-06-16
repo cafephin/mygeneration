@@ -1,0 +1,1 @@
+using System;namespace Zeus.ErrorHandling{	/// <summary>	/// Summary description for Zeusception.	/// </summary>	public class ZeusException : Exception	{		public ZeusException(string message) : base(message)		{		}		public ZeusException(string message, Exception exception) : base(message, exception)		{		}	}}
