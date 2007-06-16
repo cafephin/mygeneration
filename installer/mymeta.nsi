@@ -1,15 +1,15 @@
 ;-----------------------------------------
-; MyGeneration v1.3.0.1 Installation Script
+; MyMeta Installation Script
 ;-----------------------------------------
 
 ; Set the compressions to lzma, which is always the best compression!
 SetCompressor lzma 
 
 ; The name of the installer
-Name "MyMeta Version 1.3.0.1"
+Name "MyMeta"
 
 ; The file to write
-OutFile "mymetaV1301.exe"
+OutFile "mymeta_installer.exe"
 
 ; Icon doesn't work for some reason
 Icon ".\modern-install.ico"
@@ -127,7 +127,7 @@ SectionEnd
 ; optional section
 Section "Start Menu Shortcuts"
   CreateDirectory "$SMPROGRAMS\MyGeneration"
-  CreateShortCut "$SMPROGRAMS\MyGeneration\MyGeneration Page.lnk" "http://www.mygenerationsoftware.com/" "" "$INSTDIR\MyGeneration.exe" 0
+  CreateShortCut "$SMPROGRAMS\MyGeneration\MyGeneration Website.lnk" "http://www.mygenerationsoftware.com/" "" "$INSTDIR\MyGeneration.exe" 0
   CreateShortCut "$SMPROGRAMS\MyGeneration\MyGeneration SourceForge Page.lnk" "http://sourceforge.net/projects/mygeneration/" "" "$INSTDIR\MyGeneration.exe" 0
   CreateShortCut "$SMPROGRAMS\MyGeneration\MyMeta Reference.lnk" "$INSTDIR\MyMeta.chm"
 SectionEnd

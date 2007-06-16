@@ -1,15 +1,15 @@
 ;-----------------------------------------
-; MyGeneration v1.3.0.1 Installation Script
+; MyGeneration Installation Script
 ;-----------------------------------------
 
 ; Set the compressions to lzma, which is always the best compression!
 SetCompressor lzma 
 
 ; The name of the installer
-Name "MyGeneration Version 1.3.0.1"
+Name "MyGeneration"
 
 ; The file to write
-OutFile "mygenV1301.exe"
+OutFile "mygeneration_installer.exe"
 
 ; Icon doesn't work for some reason
 Icon ".\modern-install.ico"
@@ -129,7 +129,7 @@ Section "Install Files and Reg Entries"
   File /oname=MyWinformUI.dll ..\mygeneration\MyGeneration\MyWinformUI.dll
   
   File /oname=MyMeta.chm ..\mymeta\MyMeta.chm
-  File /oname=dOOdads.chm ..\doodads\CSharp\MyGeneration.dOOdads\dOOdads.chm
+  File /oname=dOOdads.chm ..\doodads\dOOdads.chm
   File /oname=Zeus.chm ..\mygeneration\Zeus\Zeus.chm
   File /oname=MyGeneration.chm .\MyGeneration.chm
 
@@ -472,7 +472,7 @@ SectionEnd
 Section "Start Menu Shortcuts"
   CreateDirectory "$SMPROGRAMS\MyGeneration"
   CreateShortCut "$SMPROGRAMS\MyGeneration\MyGeneration.lnk" "$INSTDIR\MyGeneration.exe" "" "$INSTDIR\MyGeneration.exe" 0
-  CreateShortCut "$SMPROGRAMS\MyGeneration\MyGeneration Page.lnk" "http://www.mygenerationsoftware.com/" "" "$INSTDIR\MyGeneration.exe" 0
+  CreateShortCut "$SMPROGRAMS\MyGeneration\MyGeneration Website.lnk" "http://www.mygenerationsoftware.com/" "" "$INSTDIR\MyGeneration.exe" 0
   CreateShortCut "$SMPROGRAMS\MyGeneration\MyGeneration SourceForge Page.lnk" "http://sourceforge.net/projects/mygeneration/" "" "$INSTDIR\MyGeneration.exe" 0
   CreateShortCut "$SMPROGRAMS\MyGeneration\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
   CreateShortCut "$SMPROGRAMS\MyGeneration\MyGeneration Help.lnk" "$INSTDIR\MyGeneration.chm"
