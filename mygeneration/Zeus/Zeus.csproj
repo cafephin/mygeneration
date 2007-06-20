@@ -98,7 +98,7 @@
       <Project>{61B369D1-95DD-4158-9F30-2E051CEB9D50}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
-    <ProjectReference Include="..\TypeSerializer\TypeSerializer.csproj">
+    <ProjectReference Include="..\..\plugins\TypeSerializer\TypeSerializer.csproj">
       <Name>TypeSerializer</Name>
       <Project>{E184159A-9644-4315-98EC-0F5967E8A735}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
