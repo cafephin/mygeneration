@@ -20,11 +20,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyGeneration", "MyGeneratio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeSerializer", "..\plugins\TypeSerializer\TypeSerializer.csproj", "{E184159A-9644-4315-98EC-0F5967E8A735}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Intrinsic.Objects", "Intrinsic.Objects", "{65E39A24-95A0-47F5-8E36-9236C8B8F2FB}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnp.Utils", "..\plugins\Dnp.Utils\Dnp.Utils.csproj", "{DA60C3C4-E2D9-4AF4-8083-4661FD40C5AC}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Zeus.Plugins", "Zeus.Plugins", "{7BD4D6CC-D290-4143-85E9-012DBA38D2F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -79,12 +75,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{497C072A-648D-4EF9-B5EC-71895D182018} = {7BD4D6CC-D290-4143-85E9-012DBA38D2F2}
-		{B43C4B09-6813-4C8D-A422-85ECF41CB75B} = {7BD4D6CC-D290-4143-85E9-012DBA38D2F2}
-		{5CFE661C-1C7D-4191-A6F7-D7891C448690} = {7BD4D6CC-D290-4143-85E9-012DBA38D2F2}
-		{E184159A-9644-4315-98EC-0F5967E8A735} = {7BD4D6CC-D290-4143-85E9-012DBA38D2F2}
-		{DA60C3C4-E2D9-4AF4-8083-4661FD40C5AC} = {65E39A24-95A0-47F5-8E36-9236C8B8F2FB}
 	EndGlobalSection
 EndGlobal
