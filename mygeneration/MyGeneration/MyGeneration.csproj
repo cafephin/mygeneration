@@ -525,8 +525,12 @@
     <PostBuildEvent>copy $(SolutionDir)\ZeusCmd\bin\$(ConfigurationName)\ZeusCmd.* $(TargetDir)
 rem mkdir $(TargetDir)\Templates\
 rem xcopy $(SolutionDir)\..\templates\*.* $(TargetDir)\Templates\ /E
+
 copy $(SolutionDir)\..\plugins\MyMetaVistaDB3xPlugin\bin\$(ConfigurationName)\MyMeta.Plugins.*.* $(TargetDir)
+copy $(SolutionDir)\..\plugins\MyMetaSqlCePlugin\bin\$(ConfigurationName)\MyMeta.Plugins.*.* $(TargetDir)
 copy $(SolutionDir)\..\plugins\MyMetaTextFilePlugin\bin\$(ConfigurationName)\MyMeta.Plugins.*.* $(TargetDir)
-copy $(SolutionDir)\..\plugins\MyMetaSqlCePlugin\bin\$(ConfigurationName)\MyMeta.Plugins.*.* $(TargetDir)</PostBuildEvent>
+copy $(SolutionDir)\..\plugins\MyMetaXsd3bPlugin\bin\$(ConfigurationName)\*xsd3b*.* $(TargetDir)
+xcopy $(SolutionDir)\..\plugins\MyMetaXsd3bPlugin\bin\$(ConfigurationName)\templates\*.* $(TargetDir)\Templates\ /E
+</PostBuildEvent>
   </PropertyGroup>
 </Project>

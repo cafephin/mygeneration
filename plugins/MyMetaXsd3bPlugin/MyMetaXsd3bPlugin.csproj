@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{17CC8224-460F-4990-8031-F23BF808075E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MyMeta.Plugins.Xsd3b</RootNamespace>
+    <AssemblyName>MyMeta.Plugins.Xsd3b</AssemblyName>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ItemGroup>
+    <Reference Include="Dl3bak.Xsd3b, Version=2.1.0.5, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\Dl3bak.Xsd3b.dll</HintPath>
+    </Reference>
+    <Reference Include="Dl3bak.Xsd3b.Xsd, Version=2.1.0.5, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\Dl3bak.Xsd3b.Xsd.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="lib\Dl3bak.OleDB.Mapping.cs" />
+    <Compile Include="MyGen2Xsd3b.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Xsd3bConnection.cs" />
+    <Compile Include="Xsd3bProvider.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="lib\MyGenXsd3b.wiki" />
+    <None Include="lib\XSD3bHistory.wiki" />
+    <None Include="templates\xsd3b\ToXsd.csgen">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="templates\xsd3b\ToXsd3b.csgen">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\mymeta\MyMeta.csproj">
+      <Project>{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}</Project>
+      <Name>MyMeta</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

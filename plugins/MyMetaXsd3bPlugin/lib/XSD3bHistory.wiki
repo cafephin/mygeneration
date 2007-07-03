@@ -1,0 +1,182 @@
+﻿This is the History of XSD3bGui
+todo
+	* Prevent deleting or typechage of a maped field
+	* Prevent deleting DataTyp-Root-Node
+	* Delete Tables with nested
+	* Import-Plugin 
+		* merge schemata
+	* Export-Plugins
+		* adapter to load / save dataset to db
+20070407
+	* Version 2.1.0.5
+	* new TableDefinition DBTableType 
+		* used by Xsd3bImportFromOLEDB and MyGenXsd3b
+		* values TABLE,VIEW,SYSTEM TABLE,PROCEDURE,...
+	* new FieldDefinition DBFieldType
+		* used by MyGenXsd3b for DBTableType PROCEDURE
+		* values TAB_FIELD, PROC_INPUT, PROC_OUTPUT,PROC_INPUT, PROC_IN_OUT, PROC_RETURN
+	* OnLoad xsd3b constraint-exception now shows more details
+
+	* MyGenXsd3b Implemented support for Pk-Indexes, FK-Indexes and Views
+	
+20070405
+	* Improved Xsd3bImportFromOLEDB
+		* OleDB-Datatypes are now mapped to System-Datatypes
+
+200070401
+	* MyGenXsd3b Created. Support for Tables with Colums PKs, FKs	
+
+2007-03.29
+	* Version 2.1.0.0
+	* A lot of refactoring
+	* Moved Xsd3bImportFromXSD, Xsd3bImportFromXML and Xsd3bExportToXsd to a seperate Xsd3bPlugin Dl3bak.Xsd3b.Xsd.dll
+	* Moved Xsd3bExportToDataset to a seperate Xsd3bPlugin Dl3bak.Xsd3b.ExportCsVb.dll
+ 
+2007-03.25
+	* Version 2.0.5.3
+	* Heavily refactored: moved many static methods to coresponding classes 
+		* instead of static util.Do(class,params) ==> class.Do(params)
+2007-03.25
+	* Version 2.0.5.2
+	* TableDefinition is now sortable by dependency through interface icomparable
+	* Bugfixes in IXsd3bExportApi
+	* XSD3bGui aboutbox now shows the loaded plugins
+	* new Plugin Dl3bak.Xsd3b.ExportSqlScript.dll
+		* Generates sqlsript "CREATE TABLE ..." und "DROP TABLE ..." und "SELECT FROM ..." by using DataTypeDefinition sql.xxx.
+		* Filetype *.create_sql und *.drop_sql und *.select_sql
+		* Menuitem: "Sql Create/Drop/SelectFrom Tables"
+		
+2007-03.22
+	* Version 2.0.5.1
+	* Bugfix (dotnet1.1 only)  - Xsd3bExport with ExportDotNetCF set:
+		* removed "using System.Runtime.Serialization;" that is not implemented in CF
+	* Added additional mappings System. xs: for Byte[],Decimal,Single,Char,Guid,SByte,TimeSpan	
+	* after loading a XSDFile or creating a new one the  SchemaTree selects its first item and therefore showing the SchemaDefinition TabPage.
+	* new Plugin Dl3bak.Xsd3b.CreateAppDatatypes.dll
+		* Menuitem: "Add app-Datatypes"
+		* replaces the known System.xxx DataTypeDefinition with generated app.xxx. this allows the modification of DataTypeDefinition by inserting sql.xxx.
+
+2007-03.22
+	* Version 2.0.5
+	* Bugfix: Table- and Fieldnames containing " " lost their annotations
+	* save dotnet2.0 dataset now handels renamed fields and tables
+2007-03-19
+	* implemented load and save unmodified dotnet2.0 dataset.
+		* implemented creation of xs:annotation/xs:appinfo/msdata:Relationship
+		* implemented load and save of xs:annotation/xs:appinfo/DataSource
+		* change between element/atribute/hidden works fine
+		* can load modified xsd into vs-dataset-designer
+2007-03-18
+	* Started Preserveing microsofts properiterian dotnet2.0-dataset-xsd-attributes
+		* done msprop: for dataset, datatable, datafield(as element)
+		* open xs:schema/xs:annotation/xs:appinfo[source="urn:schemas-microsoft-com:xml-msdatasource"]
+2007-03-17
+	* Added Backport-Support for dotnet 1.1 using MSBee
+	* Bugfixes added missing Eventhandlers for Gui Fields 
+		* ExportDotNetCF
+		* ExportExcludeEvents
+		* FieldExpression 
+2007-03-08
+	* Version 2.0.4.0
+	* Updated Onlinehelp
+	* Implemented ExportDotNetCF for Compact Framework 2.0 in BOL and GUI
+	* Added Gui FieldDefinition FieldExpression
+2007-02-25
+	* Version 2.0.3.0
+2007-02-25
+	* SchemaDefinition 
+		* XSD3bVersion changed to 2.0003
+		* new ExportDotNetCF declared in xsd3b and documented but not implemented yet.
+			* waiting for code that should be removed under dotnetcf
+		* new ExportExcludeEvents declared in xsd3b, bol and documented but not in gui
+
+	* FieldDefinition additional XSDFile properties declared in xsd3b, bol and documented but not in gui yet
+		* XSDFile msdata:Expression => FieldExpression
+		* XSDFile msdata:Caption => FieldDefinition FieldAlias 
+
+2007-02-25
+	Version 2.0.1.0
+2007-02-25
+	Ported to Sharpdeveloper 2.1 / Visual C# Express2005/ Dot Net 2.0
+	Updated Unit-Tests to comply with Dot Net 2.0
+	The dotnet2.0 has depricated the mecanism the codegenerator requires :-(
+
+2005-10-30
+started ading unit-tests to api dll
+2005-10-29
+havy refactoring: moved many static functions to row-member functions
+
+2005-10-27
+!!New Dataset Architecture 
+cs/vb codegeneration enhanced xsd.exe is no longer needed
+	* allow modifications of xxxdatatable and xxxxdatarow through inheritance
+		* The dataset defines _xxxdatatable and _xxxxdatarow instead of xxxdatatable and xxxxdatarow 
+		* There are external userclasses xxxdatatable and xxxxdatarow wich inherit from dataset._xxxdatatable and dataset._xxxxdatarow. 
+		* The dataset generetas its internal objects from the external userclasses xxxdatatable and xxxxdatarow 
+		* The external userclasses xxxdatatable and xxxxdatarow can be modified by the softwaredevelopper 
+	* add class and property comments from RelationalDatastructure . This will allow ndoc to create api dokumentation.
+
+Version XSD3bGui 1,5.*; xsd3b-fileversion 1.005
+2005-10-24
+	* Added to api: SchemaDefinition: SchemaAlias, TableDefinition: TableAlias, FieldDefinition FieldAlias, RelationDefinition: RelationAlias to allow future renaming of Objects similar to ExportParentAlias, ...
+	* Added new Tables to api: IndexDefinition and FieldIndexDefinition to allow future full database design
+	* Created Dl3bak. MyGen2Xsd3b.dll as a MyGeneraton-Plugin. It allows MyGeneraton to read a Datamodell from XSD3b files.
+
+Version XSD3bGui 1,4.*; xsd3b-fileversion 1.004
+2005-10-08
+	* added RelationDefinition ExportGetChildrenAlias and ExportParentAlias
+	* added TableDefinition ExportDataRowAlias and ExportDataTableAlias
+
+Version XSD3bGui 1,3.*
+2005-10-02
+	* integrated online help
+	* aboutbox now shows version-info
+
+2005-09-27
+	* Rewrote this wiki so it can be read sequentially now. The sequence is defined in TableOfContents.wiki wich is the the toc of the onlinehelp.
+ 
+2005-09-25
+	* Started to create an online helpsystem from the current flexwiki-documentation
+
+xsd3b-fileversion 1.002
+2005-09-15
+	* Seperated Businesslogic from XSD3bGui.exe into Xsd3b.dl; Created seperated comandlineversion XSD3bCmd.exe
+	* Added Xsd3bPlugin support by implementing Xsd3bImportFromOLEDB and Xsd3bImportFromMdb
+	* Implemented the Dotnet 1.1 Workaround SchemaDefinition UseNestedSimpleTypes
+	* minor bugfixes
+
+2005-05-15
+	* Added Xsd3bToDo in Documentation
+
+2005-02-20
+	* Added Xsd3bExportToXsd  DataTypeDefinition
+
+xsd3b-fileversion 1.000
+2005-02-19
+	* Added SchemaDefinition XSD3bVersion
+	* Added RelationDefinition fields AcceptRejectRule, DeleteRule, UpdateRule
+	* bugfix: delete DataTypeDefinition resulted in deleting child DataTypeDefinition.s, FieldDefinition.s and therefore RelationDefinition.s (cascade delete)
+	* Added XSD3bGui issues a warning, if unsaved modificatons are dismissed. The filename in the titelbar gets an asterix "*" if the file is modified
+
+2005-02-18
+	* started with DataTypeDefinition GUI, Renamed MappedDataType to DataTypeDefinition.
+
+2005-02-16
+	* Added Menue File/Recentfiles
+	* Annotation / Comment - Save/Load and doc implemented for SchemaDefinition , TableDefinition, FieldDefinition, RelationDefinition
+
+2005-02-14
+	* added OriginalName to nearly all tables to allow restoring XSDFile-Infos from Annotation/SimpleType that are not supported by XSD3bGui
+		* It is filled on Xsd3bImportFromXSD
+	* Added Documentation and tooltips for
+		* SchemaDefinition , TableDefinition, FieldDefinition, RelationDefinition 
+
+2005-02-13
+	* Added: Comment to nearly all XSD-Elementes
+	* Added: bol DataTypeDefinition 
+	* Added new Fields to GUI
+
+2005-02-10 
+	* XSDFile-xml-parser now reads and writes
+		* SchemaDefinition : UseNamedSimpleTypes, UseNamedComplexTypes
+		* TableDefinition: AllowAnyAttribute
