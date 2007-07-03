@@ -809,36 +809,58 @@ namespace MyMeta
                     FileInfo info = new FileInfo(Assembly.GetCallingAssembly().Location);
                     if (info.Exists)
                     {
+                    	StringBuilder fileNames = new StringBuilder();
+                    	Exception err = null;
                         foreach (FileInfo dllFile in info.Directory.GetFiles("MyMeta.Plugins.*.dll"))
                         {
-                            // MyMeta.Plugins.
-                            Assembly assembly = Assembly.LoadFile(dllFile.FullName);
-                            foreach (Type type in assembly.GetTypes())
-                            {
-                                Type[] interfaces = type.GetInterfaces();
-                                foreach (Type iface in interfaces)
-                                {
-                                    if (iface == typeof(IMyMetaPlugin))
-                                    {
-                                        try
-                                        {
-                                            ConstructorInfo[] constructors = type.GetConstructors();
-                                            ConstructorInfo constructor = constructors[0];
-
-                                            IMyMetaPlugin plugin = constructor.Invoke(BindingFlags.CreateInstance, null, new object[] { }, null) as IMyMetaPlugin;
-                                            plugins[plugin.ProviderUniqueKey] = plugin;
-                                        }
-                                        catch {}
-                                    }
-                                }
-                            }
+                        	try
+                        	{
+                        		loadPlugin(dllFile.FullName, plugins);
+                        	} catch(Exception ex) {
+                        		// Fix K3b 2007-06-27 if the current plugin cannot be loaded ignore it.
+                        		//			i got the exception when loading a plugin that was linked against an old Interface
+                        		//			the chatch ensures that the rest of the application-initialisation continues ...
+                        		fileNames.AppendLine(dllFile.FullName);
+                        		err = ex;
+                        	}
                         }
+                        
+                        //TODO How to tell the caller that something is not ok. A Exception would result in a incomplete initialisation
+//                        if (err != null)
+//                        	throw new ApplicationException("Cannot load Plugin(s) " + fileNames.ToString(), err);
                     }
+                    
                 }
 
                 return plugins;
             }
         }
+        
+		private static void loadPlugin(string filename, Hashtable plugins)
+		{
+			// MyMeta.Plugins.
+			Assembly assembly = Assembly.LoadFile(filename);
+			foreach (Type type in assembly.GetTypes())
+			{
+			    Type[] interfaces = type.GetInterfaces();
+			    foreach (Type iface in interfaces)
+			    {
+			        if (iface == typeof(IMyMetaPlugin))
+			        {
+			            try
+			            {
+			                ConstructorInfo[] constructors = type.GetConstructors();
+			                ConstructorInfo constructor = constructors[0];
+			
+			                IMyMetaPlugin plugin = constructor.Invoke(BindingFlags.CreateInstance, null, new object[] { }, null) as IMyMetaPlugin;
+			                plugins[plugin.ProviderUniqueKey] = plugin;
+			            }
+			            catch {}
+			        }
+			    }
+			}
+		}
+        
         #endregion
         
         #region XML User Data

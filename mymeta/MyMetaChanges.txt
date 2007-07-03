@@ -1,0 +1,2 @@
+k3b 2007-06-27
+	Protected MyMeta.dll against unloadable Plugins
