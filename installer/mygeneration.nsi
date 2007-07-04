@@ -112,6 +112,7 @@ Section "Install Files and Reg Entries"
   File /oname=MyMeta.Plugins.DelimitedText.dll ..\plugins\MyMetaTextFilePlugin\bin\Release\MyMeta.Plugins.DelimitedText.dll
   File /oname=MyMeta.Plugins.VistaDB3x.dll ..\plugins\MyMetaVistaDB3xPlugin\bin\Release\MyMeta.Plugins.VistaDB3x.dll
   File /oname=MyMeta.Plugins.SqlCe.dll ..\plugins\MyMetaSqlCePlugin\bin\Release\MyMeta.Plugins.SqlCe.dll
+  File /oname=MyMeta.Plugins.Xsd3b.dll ..\plugins\MyMetaXsd3bPlugin\bin\Release\MyMeta.Plugins.Xsd3b.dll
 
   Delete $INSTDIR\WeifenLuo.WinFormsUI.dll
   Delete $INSTDIR\VistaDBHelper.dll
@@ -124,7 +125,7 @@ Section "Install Files and Reg Entries"
   File /oname=MyMeta.tlb ..\mymeta\bin\Release\MyMeta.tlb
   File /oname=ContextProcessor.dll ..\plugins\ContextProcessor\bin\Release\ContextProcessor.dll
   File /oname=MyGenUtility.dll ..\mygeneration\MyGenUtility\bin\Release\MyGenUtility.dll
-  File /oname=TypeSerializer.dll ..\mygeneration\TypeSerializer\bin\Release\TypeSerializer.dll
+  File /oname=TypeSerializer.dll ..\plugins\TypeSerializer\bin\Release\TypeSerializer.dll
 
   File /oname=MyWinformUI.dll ..\mygeneration\MyGeneration\MyWinformUI.dll
   

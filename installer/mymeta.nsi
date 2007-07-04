@@ -84,6 +84,7 @@ Section "Install Files and Reg Entries"
   File /oname=MyMeta.Plugins.DelimitedText.dll ..\plugins\MyMetaTextFilePlugin\bin\Release\MyMeta.Plugins.DelimitedText.dll
   File /oname=MyMeta.Plugins.VistaDB3x.dll ..\plugins\MyMetaVistaDB3xPlugin\bin\Release\MyMeta.Plugins.VistaDB3x.dll
   File /oname=MyMeta.Plugins.SqlCe.dll ..\plugins\MyMetaSqlCePlugin\bin\Release\MyMeta.Plugins.SqlCe.dll
+  File /oname=MyMeta.Plugins.Xsd3b.dll ..\plugins\MyMetaXsd3bPlugin\bin\Release\MyMeta.Plugins.Xsd3b.dll
   File /oname=MyMeta.dll ..\mymeta\bin\Release\MyMeta.dll
   File /oname=MyMeta.tlb ..\mymeta\bin\Release\MyMeta.tlb
   File /oname=MyMeta.chm ..\mymeta\MyMeta.chm
