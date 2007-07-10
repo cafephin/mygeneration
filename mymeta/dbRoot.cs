@@ -980,12 +980,13 @@ namespace MyMeta
 		/// <returns>An array with all of the possible languages.</returns>
 		public string[] GetLanguageMappings(string driverString)
 		{
-			driverString = driverString.ToUpper();
+			
 
 			string[] mappings = null;
 
-			if(null != _languageDoc)
+			if ((null != _languageDoc) && (driverString != null))
 			{
+                driverString = driverString.ToUpper();
 				string xPath = @"//Languages/Language[@From='" + driverString + "']";
 				XmlNodeList nodes = _languageDoc.SelectNodes(xPath, null);
 
@@ -1071,12 +1072,13 @@ namespace MyMeta
 		/// <returns>An array with all of the possible dbTargets.</returns>
 		public string[] GetDbTargetMappings(string driverString)
 		{
-			driverString = driverString.ToUpper();
+			
 
 			string[] mappings = null;
 
-			if(null != _dbTargetDoc)
+			if ((null != _dbTargetDoc) && (driverString != null))
 			{
+                driverString = driverString.ToUpper();
 				string xPath = @"//DbTargets/DbTarget[@From='" + driverString + "']";
 				XmlNodeList nodes = _dbTargetDoc.SelectNodes(xPath, null);
 

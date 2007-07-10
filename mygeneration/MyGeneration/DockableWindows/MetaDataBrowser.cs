@@ -696,7 +696,7 @@ namespace MyGeneration
 #if DEBUG
 			catch (Exception ex)
 			{
-				throw ex;
+				throw new Exception(ex.Message, ex);
 			}
 #else
 			catch {}

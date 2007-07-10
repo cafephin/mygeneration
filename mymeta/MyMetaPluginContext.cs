@@ -219,13 +219,16 @@ namespace MyMeta
 		public DataTable CreateResultColumnsDataTable()
 		{
 			DataTable metaData = new DataTable();
-			metaData.Columns.Add("Name", Type.GetType("System.String"));
-			metaData.Columns.Add("Alias", Type.GetType("System.String"));
-			metaData.Columns.Add("Ordinal", Type.GetType("System.Int64"));
-			metaData.Columns.Add("DataTypeName", Type.GetType("System.String"));
-			metaData.Columns.Add("DataTypeNameComplete", Type.GetType("System.String"));
-			metaData.Columns.Add("LanguageType", Type.GetType("System.String"));
-			metaData.Columns.Add("DbTargetType", Type.GetType("System.String"));
+            // Fix k3b 20070709: PluginResultColumns.BindToColumns and 
+            //      MyMetaPluginContext.CreateResultColumnsDataTable
+            //      ColumnNames were different
+            metaData.Columns.Add("COLUMN_NAME", Type.GetType("System.String"));
+			// metaData.Columns.Add("Alias", Type.GetType("System.String"));
+            metaData.Columns.Add("ORDINAL_POSITION", Type.GetType("System.Int64"));
+            metaData.Columns.Add("TYPE_NAME", Type.GetType("System.String"));
+            metaData.Columns.Add("TYPE_NAME_COMPLETE", Type.GetType("System.String"));
+			// metaData.Columns.Add("LanguageType", Type.GetType("System.String"));
+            // metaData.Columns.Add("DbTargetType", Type.GetType("System.String"));
 			return metaData;
 		}
 

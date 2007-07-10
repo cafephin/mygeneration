@@ -191,16 +191,23 @@ using System;using System.IO;using System.Collections;using System.Reflection
 								{
 									((ZeusContext)context).TemplateStack.Pop();
 								}							}						}					}							}			}		}		#endregion		#region Populate Context with Intrinsic Objects		protected static void PopulateContextObjects(IZeusContext icontext)		{			ZeusContext context = icontext as ZeusContext;			if (icontext != null) 
-			{				ZeusConfig config = ZeusConfig.Current;				Assembly assembly = Assembly.GetCallingAssembly();				FileInfo assemblyinfo = new FileInfo(assembly.Location);				context.SetIntrinsicObjects(ZeusFactory.IntrinsicObjectsArray);				foreach (ZeusIntrinsicObject obj in config.IntrinsicObjects) 				{					if (!context.Objects.Contains(obj.VariableName)) 					{						object[] objs = null;						string assemblyPath = FileTools.ResolvePath(obj.AssemblyPath);						if (assemblyPath != string.Empty) 						{							Assembly newassembly;							FileInfo newassemblyinfo = null;						
+			{				ZeusConfig config = ZeusConfig.Current;				Assembly assembly = Assembly.GetCallingAssembly();				FileInfo assemblyinfo = new FileInfo(assembly.Location);				context.SetIntrinsicObjects(ZeusFactory.IntrinsicObjectsArray);				foreach (ZeusIntrinsicObject obj in config.IntrinsicObjects) 				{					if (!context.Objects.Contains(obj.VariableName)) 					{						object[] objs = null;						string assemblyPath = FileTools.ResolvePath(obj.AssemblyPath);						if (assemblyPath != string.Empty) 						{							Assembly newassembly = null;							FileInfo newassemblyinfo = null;						
 							if (File.Exists(assemblyPath)) 
 							{								newassemblyinfo = new FileInfo(assemblyPath);							}
 							else
-							{								newassembly = DynamicAssemblyTools.LoadDynamicAssembly(assemblyPath);							}							if (assemblyinfo.FullName.ToUpper() == newassemblyinfo.FullName.ToUpper()) 
-							{
-								newassembly = assembly;
-							}
-							else
-							{								newassembly = DynamicAssemblyTools.LoadDynamicAssembly(newassemblyinfo.FullName);							}							if (newassembly == null) 
+							{								newassembly = DynamicAssemblyTools.LoadDynamicAssembly(assemblyPath);							}
+
+                            if (newassemblyinfo != null) // k3b Exception, if Plugin is missing
+                            {
+                                if (assemblyinfo.FullName.ToUpper() == newassemblyinfo.FullName.ToUpper())
+                                {
+                                    newassembly = assembly;
+                                }
+                                else
+                                {
+                                    newassembly = DynamicAssemblyTools.LoadDynamicAssembly(newassemblyinfo.FullName);
+                                }
+                            }							if (newassembly == null) 
 							{								throw new ZeusDynamicException(ZeusDynamicExceptionType.IntrinsicObjectPluginInvalid, "Invalid Assembly: " + assemblyPath);							}							else 
 							{
 								objs = DynamicAssemblyTools.InstantiateClassesByType(newassembly, newassembly.GetType(obj.ClassPath));								if (objs == null) 								{									throw new ZeusDynamicException(ZeusDynamicExceptionType.IntrinsicObjectPluginInvalid, "Invalid Type: " + obj.ClassPath);								}								else if (objs.Length == 0) 

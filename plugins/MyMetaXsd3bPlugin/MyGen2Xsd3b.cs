@@ -237,10 +237,9 @@ namespace MyMeta.Plugins.Xsd3b
             DataTypeDefinitionRow dataType = GetType(srcCol, destTab.Table.DataSet.DataTypeDefinition);
 
             FieldDefinitionRow destField = destTab.FindFieldByAliasOrName(srcCol.Name); // destTab.Table.DataSet.FieldDefinition destTabs.FindByTableName(srcTab.Name);
-
-            //Exception on accessing srcCol.Alias
-            //if (destField == null)
-            //    destField = destTab.FindFieldByAliasOrName(srcCol.Alias);
+            
+            if (destField == null)
+                destField = destTab.FindFieldByAliasOrName(srcCol.Alias);
             if (destField == null)
             {
                 destField = destTab.AddFieldDefinitionRow(srcCol.Name, dataType.DataTypeName);
@@ -254,7 +253,7 @@ namespace MyMeta.Plugins.Xsd3b
             // destField.ReadOnly = true;
 
             //Exception on accessing srcCol.Alias
-            //destField.FieldAlias = srcCol.Alias;
+            destField.FieldAlias = srcCol.Alias;
 
             System.Diagnostics.Debug.WriteLine(string.Format(
                 "FeldName={4}.{3}, DataTypeName={0}, DataTypeNameComplete={1}, DbTargetType={2}"

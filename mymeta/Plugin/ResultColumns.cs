@@ -37,11 +37,14 @@ namespace MyMeta.Plugin
         {
             if (false == _fieldsBound)
             {
+                // Fix k3b 20070709: PluginResultColumns.BindToColumns and 
+                //      MyMetaPluginContext.CreateResultColumnsDataTable
+                //      ColumnNames were different
                 if (metaData.Columns.Contains("COLUMN_NAME")) f_Name = metaData.Columns["COLUMN_NAME"];
                 if (metaData.Columns.Contains("ORDINAL_POSITION")) f_Ordinal = metaData.Columns["ORDINAL_POSITION"];
                 if (metaData.Columns.Contains("DATA_TYPE")) f_DataType = metaData.Columns["DATA_TYPE"];
-                if (metaData.Columns.Contains("DATA_TYPE_NAME")) f_DataType = metaData.Columns["DATA_TYPE_NAME"];
-                if (metaData.Columns.Contains("DATA_TYPE_NAME_COMPLETE")) f_DataType = metaData.Columns["DATA_TYPE_NAME_COMPLETE"];
+                if (metaData.Columns.Contains("TYPE_NAME")) f_DataTypeName = metaData.Columns["TYPE_NAME"];
+                if (metaData.Columns.Contains("TYPE_NAME_COMPLETE")) f_DataTypeNameComplete = metaData.Columns["TYPE_NAME_COMPLETE"];
             }
         }
 
@@ -60,6 +63,8 @@ namespace MyMeta.Plugin
 
                     column = this.dbRoot.ClassFactory.CreateResultColumn() as ResultColumn;
                     column.dbRoot = this.dbRoot;
+                    column.ResultColumns = this;
+
                     column.Row = rowView.Row;
                     this._array.Add(column);
                 }
