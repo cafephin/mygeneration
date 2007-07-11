@@ -7,6 +7,10 @@ todo
 		* merge schemata
 	* Export-Plugins
 		* adapter to load / save dataset to db
+20070703 
+	* Added the MyGenXsd3b Plugin to MyGeneration Subversion Repository 
+			* https://mygeneration.svn.sourceforge.net/svnroot/mygeneration/trunk/
+		
 20070407
 	* Version 2.1.0.5
 	* new TableDefinition DBTableType 

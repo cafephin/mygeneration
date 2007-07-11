@@ -43,7 +43,10 @@ Paths
 	* XSD3b => Xsd3bPlugin => MyGenXsd3b
 ----
 History of MyGenXsd3b
-
+	* 20070710 Fix in MyGeneration\plugins\PluginResultColumns 
+		* Implemented missing parts of MyMeta-s.PluginResultColumns. Now MyGeneration correctly display Stored-Procedures-Resutlculumns when using the MyGenXsd3b provider.
+	* 20070703 Added the MyGenXsd3b Plugin to MyGeneration Subversion Repository 
+			* https://mygeneration.svn.sourceforge.net/svnroot/mygeneration/trunk/
 	* Release 0.2 linked against MyMeta.dll-1.2.0.0 from MyGeneration.exe-1.2.0.7
 	* 20070627 Fix: Added dummy implementatin for IMyMetaPlugin.GetDatabaseSpecificMetaData that was new to MyMeta.dll-1.2.0.0 that ships with MyGeneration.exe-1.2.0.7	
 	* 20070415 Release 0.1 linked against MyMeta.dll-1.2.0.0 from MyGeneration.exe-1.2.0.2
