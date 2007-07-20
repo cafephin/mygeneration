@@ -20,8 +20,8 @@ namespace MyGeneration
 		private System.Windows.Forms.TextBox txtProductInfo;
 		private System.Windows.Forms.Button btnOk;
 		private System.Windows.Forms.LinkLabel lnkURL;
-		private System.Windows.Forms.LinkLabel linkLabel1;
-		private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.LinkLabel linkLabel1;
+        private AboutBoxLogo fun1;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -54,102 +54,100 @@ namespace MyGeneration
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(NewAbout));
-			this.lstBoxProducts = new System.Windows.Forms.ListBox();
-			this.txtProductInfo = new System.Windows.Forms.TextBox();
-			this.btnOk = new System.Windows.Forms.Button();
-			this.lnkURL = new System.Windows.Forms.LinkLabel();
-			this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-			this.panel1 = new System.Windows.Forms.Panel();
-			this.SuspendLayout();
-			// 
-			// lstBoxProducts
-			// 
-			this.lstBoxProducts.Font = new System.Drawing.Font("Courier New", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.lstBoxProducts.ItemHeight = 16;
-			this.lstBoxProducts.Location = new System.Drawing.Point(16, 80);
-			this.lstBoxProducts.Name = "lstBoxProducts";
-			this.lstBoxProducts.Size = new System.Drawing.Size(576, 132);
-			this.lstBoxProducts.TabIndex = 0;
-			this.lstBoxProducts.SelectedValueChanged += new System.EventHandler(this.lstBoxProducts_SelectedValueChanged);
-			this.lstBoxProducts.SelectedIndexChanged += new System.EventHandler(this.lstBoxProducts_SelectedIndexChanged);
-			// 
-			// txtProductInfo
-			// 
-			this.txtProductInfo.AcceptsReturn = true;
-			this.txtProductInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.txtProductInfo.Location = new System.Drawing.Point(16, 264);
-			this.txtProductInfo.Multiline = true;
-			this.txtProductInfo.Name = "txtProductInfo";
-			this.txtProductInfo.ReadOnly = true;
-			this.txtProductInfo.Size = new System.Drawing.Size(576, 120);
-			this.txtProductInfo.TabIndex = 1;
-			this.txtProductInfo.Text = "";
-			// 
-			// btnOk
-			// 
-			this.btnOk.Location = new System.Drawing.Point(520, 392);
-			this.btnOk.Name = "btnOk";
-			this.btnOk.TabIndex = 2;
-			this.btnOk.Text = "Ok";
-			this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
-			// 
-			// lnkURL
-			// 
-			this.lnkURL.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.lnkURL.Location = new System.Drawing.Point(16, 224);
-			this.lnkURL.Name = "lnkURL";
-			this.lnkURL.Size = new System.Drawing.Size(576, 32);
-			this.lnkURL.TabIndex = 3;
-			this.lnkURL.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-			this.lnkURL.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkURL_LinkClicked);
-			// 
-			// linkLabel1
-			// 
-			this.linkLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.linkLabel1.Location = new System.Drawing.Point(16, 424);
-			this.linkLabel1.Name = "linkLabel1";
-			this.linkLabel1.Size = new System.Drawing.Size(576, 23);
-			this.linkLabel1.TabIndex = 3;
-			this.linkLabel1.TabStop = true;
-			this.linkLabel1.Text = "Copyright © 2004-2006, MyGeneration Software. All Rights Reserved";
-			this.linkLabel1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-			this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
-			// 
-			// panel1
-			// 
-			this.panel1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel1.BackgroundImage")));
-			this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-			this.panel1.Location = new System.Drawing.Point(0, 0);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(610, 64);
-			this.panel1.TabIndex = 4;
-			// 
-			// NewAbout
-			// 
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(610, 456);
-			this.Controls.Add(this.panel1);
-			this.Controls.Add(this.lnkURL);
-			this.Controls.Add(this.btnOk);
-			this.Controls.Add(this.txtProductInfo);
-			this.Controls.Add(this.lstBoxProducts);
-			this.Controls.Add(this.linkLabel1);
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-			this.MaximizeBox = false;
-			this.MinimizeBox = false;
-			this.Name = "NewAbout";
-			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "About MyGeneration";
-			this.Load += new System.EventHandler(this.NewAbout_Load);
-			this.ResumeLayout(false);
+            this.lstBoxProducts = new System.Windows.Forms.ListBox();
+            this.txtProductInfo = new System.Windows.Forms.TextBox();
+            this.btnOk = new System.Windows.Forms.Button();
+            this.lnkURL = new System.Windows.Forms.LinkLabel();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.fun1 = new MyGeneration.AboutBoxLogo();
+            this.SuspendLayout();
+            // 
+            // lstBoxProducts
+            // 
+            this.lstBoxProducts.Font = new System.Drawing.Font("Courier New", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lstBoxProducts.ItemHeight = 16;
+            this.lstBoxProducts.Location = new System.Drawing.Point(1, 67);
+            this.lstBoxProducts.Name = "lstBoxProducts";
+            this.lstBoxProducts.Size = new System.Drawing.Size(449, 116);
+            this.lstBoxProducts.TabIndex = 0;
+            this.lstBoxProducts.SelectedIndexChanged += new System.EventHandler(this.lstBoxProducts_SelectedIndexChanged);
+            this.lstBoxProducts.SelectedValueChanged += new System.EventHandler(this.lstBoxProducts_SelectedValueChanged);
+            // 
+            // txtProductInfo
+            // 
+            this.txtProductInfo.AcceptsReturn = true;
+            this.txtProductInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtProductInfo.Location = new System.Drawing.Point(1, 226);
+            this.txtProductInfo.Multiline = true;
+            this.txtProductInfo.Name = "txtProductInfo";
+            this.txtProductInfo.ReadOnly = true;
+            this.txtProductInfo.Size = new System.Drawing.Size(449, 125);
+            this.txtProductInfo.TabIndex = 1;
+            // 
+            // btnOk
+            // 
+            this.btnOk.Location = new System.Drawing.Point(375, 357);
+            this.btnOk.Name = "btnOk";
+            this.btnOk.Size = new System.Drawing.Size(75, 23);
+            this.btnOk.TabIndex = 2;
+            this.btnOk.Text = "Ok";
+            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
+            // 
+            // lnkURL
+            // 
+            this.lnkURL.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lnkURL.Location = new System.Drawing.Point(1, 186);
+            this.lnkURL.Name = "lnkURL";
+            this.lnkURL.Size = new System.Drawing.Size(449, 37);
+            this.lnkURL.TabIndex = 3;
+            this.lnkURL.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.lnkURL.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkURL_LinkClicked);
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkLabel1.Location = new System.Drawing.Point(-2, 360);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(371, 23);
+            this.linkLabel1.TabIndex = 3;
+            this.linkLabel1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
+            // fun1
+            // 
+            this.fun1.Location = new System.Drawing.Point(1, 1);
+            this.fun1.Name = "fun1";
+            this.fun1.Size = new System.Drawing.Size(449, 68);
+            this.fun1.TabIndex = 5;
+            this.fun1.Text = "fun1";
+            // 
+            // NewAbout
+            // 
+            this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
+            this.ClientSize = new System.Drawing.Size(451, 382);
+            this.Controls.Add(this.lnkURL);
+            this.Controls.Add(this.btnOk);
+            this.Controls.Add(this.txtProductInfo);
+            this.Controls.Add(this.lstBoxProducts);
+            this.Controls.Add(this.linkLabel1);
+            this.Controls.Add(this.fun1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "NewAbout";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "About MyGeneration";
+            this.Load += new System.EventHandler(this.NewAbout_Load);
+            this.ResumeLayout(false);
+            this.PerformLayout();
 
 		}
 		#endregion
 
 		private void NewAbout_Load(object sender, System.EventArgs e)
 		{
+            this.fun1.Start();
 			Assembly asmblyMyGen = System.Reflection.Assembly.GetAssembly(typeof(NewAbout));
 			Assembly asmblyZeus = System.Reflection.Assembly.GetAssembly(typeof(Zeus.ZeusTemplate));
 			Assembly asmblyPlugins = System.Reflection.Assembly.GetAssembly(typeof(Zeus.IZeusCodeSegment));

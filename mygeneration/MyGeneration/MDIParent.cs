@@ -769,6 +769,7 @@ namespace MyGeneration
         {
             NewAbout about = new NewAbout();
             about.ShowDialog();
+            about.Dispose();
         }
 
         private void menuItemDefaultProperties_Click(object sender, System.EventArgs e)
