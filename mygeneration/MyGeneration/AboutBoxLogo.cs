@@ -106,7 +106,6 @@ namespace MyGeneration
 
             public void Paint(Graphics g)
             {
-                Color c = new Color();
                 g.FillEllipse(this.Brush, new Rectangle(Location.X - Radius,
                     Location.Y - Radius,
                     Radius * 2,

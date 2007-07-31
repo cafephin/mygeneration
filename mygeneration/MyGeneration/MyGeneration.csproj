@@ -78,7 +78,10 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="adodb, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="adodb, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\installer\adodb.dll</HintPath>
+    </Reference>
     <Reference Include="CollapsibleSplitter">
       <Name>CollapsibleSplitter</Name>
       <HintPath>CollapsableSplitter\CollapsibleSplitter.dll</HintPath>
@@ -543,16 +546,13 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>copy $(SolutionDir)\ZeusCmd\bin\$(ConfigurationName)\ZeusCmd.* $(TargetDir)
+    <PostBuildEvent>copy $(SolutionDir)ZeusCmd\bin\$(ConfigurationName)\ZeusCmd.* $(TargetDir)
 rem mkdir $(TargetDir)\Templates\
 rem xcopy $(SolutionDir)\..\templates\*.* $(TargetDir)\Templates\ /E
-
-copy $(SolutionDir)\..\plugins\MyMetaVistaDB3xPlugin\bin\$(ConfigurationName)\MyMeta.Plugins.*.* $(TargetDir)
-copy $(SolutionDir)\..\plugins\MyMetaSqlCePlugin\bin\$(ConfigurationName)\MyMeta.Plugins.*.* $(TargetDir)
-copy $(SolutionDir)\..\plugins\MyMetaTextFilePlugin\bin\$(ConfigurationName)\MyMeta.Plugins.*.* $(TargetDir)
-
-copy $(SolutionDir)\..\plugins\MyMetaXsd3bPlugin\bin\$(ConfigurationName)\*xsd3b*.* $(TargetDir)
-rem copy $(SolutionDir)\..\MyMetaXsd3bPlugin\templates\xsd3b\*.* $(TargetDir)Templates\ 
-</PostBuildEvent>
+rem copy $(SolutionDir)\..\plugins\MyMetaVistaDB3xPlugin\bin\$(ConfigurationName)\MyMeta.Plugins.*.* $(TargetDir)
+rem copy $(SolutionDir)\..\plugins\MyMetaSqlCePlugin\bin\$(ConfigurationName)\MyMeta.Plugins.*.* $(TargetDir)
+rem copy $(SolutionDir)\..\plugins\MyMetaTextFilePlugin\bin\$(ConfigurationName)\MyMeta.Plugins.*.* $(TargetDir)
+rem copy $(SolutionDir)\..\plugins\MyMetaXsd3bPlugin\bin\$(ConfigurationName)\*xsd3b*.* $(TargetDir)
+rem copy $(SolutionDir)\..\MyMetaXsd3bPlugin\templates\xsd3b\*.* $(TargetDir)Templates\</PostBuildEvent>
   </PropertyGroup>
 </Project>

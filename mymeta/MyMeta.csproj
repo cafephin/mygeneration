@@ -75,7 +75,10 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="adodb, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="adodb, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\installer\adodb.dll</HintPath>
+    </Reference>
     <Reference Include="FirebirdSql.Data.Firebird">
       <Name>FirebirdSql.Data.Firebird</Name>
       <HintPath>ThirdParty\FirebirdSql.Data.Firebird.dll</HintPath>
