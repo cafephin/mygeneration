@@ -21,8 +21,70 @@ namespace MyGeneration
 	/// Summary description for MetaDataBrowser.
 	/// </summary>
 	public class MetaDataBrowser : BaseWindow
-	{
-		private System.Windows.Forms.ToolBar toolBar1;
+    {
+        #region MyMeta Fonts
+        // This section was added because of some wierd arial font errors some people get
+        private static Font normalFont = null;
+        private static Font boldFont = null;
+        private static Font italicFont = null;
+
+        internal static Font NormalFont
+        {
+            get
+            {
+                if (normalFont == null)
+                {
+                    try
+                    {
+                        normalFont = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    }
+                    catch
+                    {
+                        normalFont = new System.Drawing.Font(FontFamily.GenericSansSerif, 9F, FontStyle.Regular);
+                    }
+                }
+                return normalFont;
+            }
+        }
+        internal static Font BoldFont
+        {
+            get
+            {
+                if (boldFont == null)
+                {
+                    try
+                    {
+                        boldFont = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    }
+                    catch
+                    {
+                        boldFont = new System.Drawing.Font(FontFamily.GenericSansSerif, 9F, FontStyle.Bold);
+                    }
+                }
+                return boldFont;
+            }
+        }
+        internal static Font ItalicFont 
+        { 
+            get
+            {
+                if (italicFont == null)
+                {
+                    try
+                    {
+                        italicFont = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    }
+                    catch
+                    {
+                        italicFont = new System.Drawing.Font(FontFamily.GenericSansSerif, 9F, FontStyle.Italic);
+                    }
+                 }
+                return italicFont; 
+            } 
+        }
+        #endregion
+
+        private System.Windows.Forms.ToolBar toolBar1;
 		private System.Windows.Forms.ImageList ToolbarImageList;
 		private System.ComponentModel.IContainer components;
 

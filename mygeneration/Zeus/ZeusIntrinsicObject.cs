@@ -7,11 +7,13 @@ namespace Zeus
 	/// </summary>
 	public class ZeusIntrinsicObject : IZeusIntrinsicObject
 	{
-		protected string _variableName;
-		protected string _classPath;
+        protected System .Reflection.Assembly _assembly;
+        protected string _variableName;
+        protected string _classPath;
 		protected string _assemblyPath;
 		protected string _namespace = null;
-		protected string _dllref = null;
+        protected string _dllref = null;
+        protected bool? _disabled = null;
 
 		/*internal ZeusIntrinsicObject(string line) 
 		{
@@ -36,26 +38,52 @@ namespace Zeus
 
 		public ZeusIntrinsicObject(string assemblyPath, string classPath, string variableName)
 		{
+            // Test Assembly
 			if (assemblyPath == null) assemblyPath = string.Empty;
 			this._assemblyPath = assemblyPath;
 			this._classPath = classPath;
 			this._variableName = variableName;
-		}
+        }
 
-		public string DllReference
-		{
-			get
-			{
-				if (_dllref == null)
-				{
-					_dllref = this.AssemblyPath;
-					int idx = _dllref.LastIndexOf("\\");
-					if (idx > 0) _dllref = _dllref.Substring(idx + 1);
-					if (_dllref == string.Empty) _dllref = null;
-				}
-				return _dllref;
-			}
-		}
+        public bool Disabled
+        {
+            get 
+            {
+                if (!_disabled.HasValue) _disabled = !AssemblyExistsIfDefined;
+
+                return _disabled.Value; 
+            }
+        }
+
+        public System.Reflection.Assembly Assembly
+        {
+            get
+            {
+                if (!Disabled)
+                {
+                    return _assembly;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        public string DllReference
+        {
+            get
+            {
+                if (_dllref == null)
+                {
+                    _dllref = this.AssemblyPath;
+                    int idx = _dllref.LastIndexOf("\\");
+                    if (idx > 0) _dllref = _dllref.Substring(idx + 1);
+                    if (_dllref == string.Empty) _dllref = null;
+                }
+                return _dllref;
+            }
+        }
 
 		public string Namespace
 		{
@@ -85,5 +113,27 @@ namespace Zeus
 		{
 			get { return _assemblyPath; }
 		}
+
+        private bool AssemblyExistsIfDefined
+        {
+            get
+            {
+                bool isdef = false;
+
+                if (AssemblyPath == string.Empty) isdef = true;
+                else
+                {
+                    string assemblyPath = FileTools.ResolvePath(this.AssemblyPath);
+                    isdef = System.IO.File.Exists(assemblyPath);
+                    if (isdef)
+                    {
+                        _assembly = DynamicAssemblyTools.LoadDynamicAssembly(assemblyPath);
+                        isdef = (_assembly != null);
+                    }
+                }
+
+                return isdef;
+            }
+        }
 	}
 }

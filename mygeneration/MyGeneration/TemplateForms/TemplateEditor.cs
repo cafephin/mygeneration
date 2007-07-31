@@ -1783,13 +1783,28 @@ namespace MyGeneration.TemplateForms
 			if (this._template.FileName != string.Empty) 
 			{
 				string path = this._template.FilePath + this._template.FileName;
-				if (File.Exists(path)) 
+				FileInfo fi = new FileInfo(path);
+                if (fi.Exists) 
 				{
-					_template.Save(path);
+                    if (fi.IsReadOnly)
+                    {
+                        MessageBox.Show(this, "File is read only.");
+                    }
+                    else
+                    {
+                        try
+                        {
+                            _template.Save(path);
+                            SetClean();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(this, "Error saving file. " + ex.Message);
+                        }
+                    }
 				} 
 			}
 
-			SetClean();
 		}
 
 		public void FileSaveAs(string path)
@@ -1800,20 +1815,38 @@ namespace MyGeneration.TemplateForms
 			{
 				this.RefreshTemplateFromControl();
 
-				_template.Save(path);
+                FileInfo fi = new FileInfo(path);
+                if (fi.Exists)
+                {
+                    if (fi.IsReadOnly)
+                    {
+                        MessageBox.Show(this, "File is read only.");
+                    }
+                    else
+                    {
+                        try
+                        {
+                            _template.Save(path);
+                            string dir = Path.GetDirectoryName(path);
+                            if (!dir.EndsWith("\\")) dir += "\\";
 
-				string dir = Path.GetDirectoryName(path);
-				if (!dir.EndsWith("\\")) dir += "\\";
+                            this._template.FilePath = dir;
+                            this._template.FileName = Path.GetFileName(path);
 
-				this._template.FilePath = dir;
-				this._template.FileName = Path.GetFileName(path);
+                            this.RefreshControlFromTemplate();
+                            SetClean();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(this, "Error saving file. " + ex.Message);
+                        }
+                    }
+                } 
 
-				this.RefreshControlFromTemplate();
-				SetClean();
 			}
 			else 
 			{
-				MessageBox.Show("The template you are trying to overwrite is currently open.\r\nClose the editor window for that template if you want to overwrite it.");
+                MessageBox.Show(this, "The template you are trying to overwrite is currently open.\r\nClose the editor window for that template if you want to overwrite it.");
 			}
 		}
 

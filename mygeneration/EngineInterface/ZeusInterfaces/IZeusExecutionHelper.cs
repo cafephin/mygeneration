@@ -2,7 +2,8 @@ using System;
 
 namespace Zeus
 {
-	public delegate void ShowGUIEventHandler(IZeusGuiControl controller, IZeusFunctionExecutioner executioner);
+	public delegate void ShowGUIEventHandler(IZeusGuiControl controller, IZeusFunctionExecutioner executioner);
+
 	public interface IZeusExecutionHelper : IZeusFunctionExecutioner
 	{
 		void EngineExecuteGuiCode(IZeusCodeSegment segment, IZeusContext context);

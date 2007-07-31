@@ -57,20 +57,44 @@ namespace MyGeneration
 			ds.Tables.Add(dt);
 			dt.Rows.Add(new object[] { this });
 
-			dt = new DataTable("MyData");			DataColumn k = dt.Columns.Add("Key", stringType);
+			dt = new DataTable("MyData");
+			DataColumn k = dt.Columns.Add("Key", stringType);
 			k.AllowDBNull = false;
-			DataColumn v = dt.Columns.Add("Value", stringType);			v.AllowDBNull = false;			ds.Tables.Add(dt);			UniqueConstraint pk = new UniqueConstraint(k, false);			dt.Constraints.Add(pk);			ds.EnforceConstraints = true;			this.colKey.HeaderText  = "Key";			this.colKey.TextBox.Enabled = true;			this.colValue.HeaderText  = "Value";			this.colValue.MappingName = "Value";
+			DataColumn v = dt.Columns.Add("Value", stringType);
+			v.AllowDBNull = false;
+			ds.Tables.Add(dt);
+
+			UniqueConstraint pk = new UniqueConstraint(k, false);
+
+			dt.Constraints.Add(pk);
+			ds.EnforceConstraints = true;
+
+			this.colKey.HeaderText  = "Key";
+			this.colKey.TextBox.Enabled = true;
+
+			this.colValue.HeaderText  = "Value";
+			this.colValue.MappingName = "Value";
 
 			DataRowCollection rows = dt.Rows;
 
 			foreach(IProperty prop in properties)
 			{
-				rows.Add(new object[] { prop.Key, prop.Value } );			}			this.Grid.DataSource = dt.DefaultView;			this.InitializeGrid();			this.colKey.TextBox.BorderStyle = BorderStyle.None;
+				rows.Add(new object[] { prop.Key, prop.Value } );
+			}
+
+			this.Grid.DataSource = dt.DefaultView;
+			this.InitializeGrid();
+
+			this.colKey.TextBox.BorderStyle = BorderStyle.None;
 			this.colValue.TextBox.BorderStyle = BorderStyle.None;
-			this.colKey.TextBox.Move   += new System.EventHandler(this.ColorTextBox);
-			this.colValue.TextBox.Move += new System.EventHandler(this.ColorTextBox);			dt.RowChanged  += new DataRowChangeEventHandler(PropertyGridRowChanged);
+
+			this.colKey.TextBox.Move   += new System.EventHandler(this.ColorTextBox);
+			this.colValue.TextBox.Move += new System.EventHandler(this.ColorTextBox);
+
+			dt.RowChanged  += new DataRowChangeEventHandler(PropertyGridRowChanged);
 			dt.RowDeleting += new DataRowChangeEventHandler(PropertyGridRowDeleting);
-			dt.RowDeleted  += new DataRowChangeEventHandler(PropertyGridRowDeleted);		}
+			dt.RowDeleted  += new DataRowChangeEventHandler(PropertyGridRowDeleted);
+		}
 
 		public void Edit(Table obj)
 		{
@@ -192,7 +216,7 @@ namespace MyGeneration
 			this.Grid.CaptionVisible = false;
 			this.Grid.DataMember = "";
 			this.Grid.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.Grid.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
+            this.Grid.Font = MetaDataBrowser.BoldFont;
 			this.Grid.HeaderFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.Grid.HeaderForeColor = System.Drawing.SystemColors.ControlText;
 			this.Grid.Location = new System.Drawing.Point(0, 26);
@@ -346,8 +370,18 @@ namespace MyGeneration
 			}
 		}
 
-		private void InitializeGrid()		{			if(!gridInitialized)			{				if(MyStyle.GridColumnStyles.Count > 0)				{					gridInitialized = true;					gridHelper = new GridLayoutHelper(this.Grid, this.MyStyle,
-						new decimal[] { 0.50M, 0.50M },	new int[] { 30, 30 });				}			}		}
+		private void InitializeGrid()
+		{
+			if(!gridInitialized)
+			{
+				if(MyStyle.GridColumnStyles.Count > 0)
+				{
+					gridInitialized = true;
+					gridHelper = new GridLayoutHelper(this.Grid, this.MyStyle,
+						new decimal[] { 0.50M, 0.50M },	new int[] { 30, 30 });
+				}
+			}
+		}
 
 		private void ColorTextBox(object sender, System.EventArgs e)
 		{

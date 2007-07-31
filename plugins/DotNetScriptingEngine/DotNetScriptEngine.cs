@@ -95,11 +95,14 @@ namespace Zeus.DotNetScript
 			{
 				foreach (IZeusIntrinsicObject scriptingObj in context.IntrinsicObjects)
 				{
-					if (scriptingObj.DllReference != null)
-					{
-						if(!list.Contains(scriptingObj.DllReference)) 
-							list.Add(scriptingObj.DllReference);
-					}
+                    if (!scriptingObj.Disabled)
+                    {
+                        if (scriptingObj.DllReference != null)
+                        {
+                            if (!list.Contains(scriptingObj.DllReference))
+                                list.Add(scriptingObj.DllReference);
+                        }
+                    }
 				}
 			}
 
@@ -143,11 +146,14 @@ namespace Zeus.DotNetScript
 
 				foreach (IZeusIntrinsicObject scriptingObj in iobjs)
 				{
-					builder.Append("\t\tprotected ");
-					builder.Append(scriptingObj.ClassPath);
-					builder.Append(" ");
-					builder.Append(scriptingObj.VariableName);
-					builder.Append(";\r\n");
+                    if (!scriptingObj.Disabled)
+                    {
+                        builder.Append("\t\tprotected ");
+                        builder.Append(scriptingObj.ClassPath);
+                        builder.Append(" ");
+                        builder.Append(scriptingObj.VariableName);
+                        builder.Append(";\r\n");
+                    }
 				}
 
 				builder.Append("\t\tpublic DotNetScriptGui(IZeusContext context) : base(context)\r\n");
@@ -155,13 +161,16 @@ namespace Zeus.DotNetScript
 			
 				foreach (IZeusIntrinsicObject scriptingObj in iobjs)
 				{
-					builder.Append("\t\t\tthis.");
-					builder.Append(scriptingObj.VariableName);
-					builder.Append(" = context.Objects[\"");
-					builder.Append(scriptingObj.VariableName);
-					builder.Append("\"] as ");
-					builder.Append(scriptingObj.ClassPath);
-					builder.Append(";\r\n");
+                    if (!scriptingObj.Disabled)
+                    {
+                        builder.Append("\t\t\tthis.");
+                        builder.Append(scriptingObj.VariableName);
+                        builder.Append(" = context.Objects[\"");
+                        builder.Append(scriptingObj.VariableName);
+                        builder.Append("\"] as ");
+                        builder.Append(scriptingObj.ClassPath);
+                        builder.Append(";\r\n");
+                    }
 				}
 		
 				builder.Append("\t\t}\r\n\t}\r\n}\r\n");
@@ -173,26 +182,32 @@ namespace Zeus.DotNetScript
 				builder.Append("\t\tInherits _DotNetScriptGui\r\n");
 
 				foreach (IZeusIntrinsicObject scriptingObj in iobjs)
-				{
-					builder.Append("\tProtected ");
-					builder.Append(scriptingObj.VariableName);
-					builder.Append(" As ");
-					builder.Append(scriptingObj.ClassPath);
-					builder.Append("\r\n");
+                {
+                    if (!scriptingObj.Disabled)
+                    {
+                        builder.Append("\tProtected ");
+                        builder.Append(scriptingObj.VariableName);
+                        builder.Append(" As ");
+                        builder.Append(scriptingObj.ClassPath);
+                        builder.Append("\r\n");
+                    }
 				}
 
 				builder.Append("\tPublic Sub New(context As IZeusContext)\r\n");
 				builder.Append("\t\tMyBase.New(context)\r\n");
 
 				foreach (IZeusIntrinsicObject scriptingObj in iobjs)
-				{
-					builder.Append("\t\tMe.");
-					builder.Append(scriptingObj.VariableName);
-					builder.Append(" = CType(context.Objects.Item(\"");
-					builder.Append(scriptingObj.VariableName);
-					builder.Append("\"), ");
-					builder.Append(scriptingObj.ClassPath);
-					builder.Append(")\r\n");
+                {
+                    if (!scriptingObj.Disabled)
+                    {
+                        builder.Append("\t\tMe.");
+                        builder.Append(scriptingObj.VariableName);
+                        builder.Append(" = CType(context.Objects.Item(\"");
+                        builder.Append(scriptingObj.VariableName);
+                        builder.Append("\"), ");
+                        builder.Append(scriptingObj.ClassPath);
+                        builder.Append(")\r\n");
+                    }
 				}
 		
 				builder.Append("\tEnd Sub\r\nEnd Class\r\n");
@@ -215,11 +230,14 @@ namespace Zeus.DotNetScript
 
 				foreach (IZeusIntrinsicObject scriptingObj in iobjs)
 				{
-					builder.Append("\t\tprotected ");
-					builder.Append(scriptingObj.ClassPath);
-					builder.Append(" ");
-					builder.Append(scriptingObj.VariableName);
-					builder.Append(";\r\n");
+                    if (!scriptingObj.Disabled)
+                    {
+                        builder.Append("\t\tprotected ");
+                        builder.Append(scriptingObj.ClassPath);
+                        builder.Append(" ");
+                        builder.Append(scriptingObj.VariableName);
+                        builder.Append(";\r\n");
+                    }
 				}		
 
 				builder.Append("\t\tpublic DotNetScriptTemplate(IZeusContext context) : base(context)\r\n");
@@ -227,13 +245,16 @@ namespace Zeus.DotNetScript
 
 				foreach (IZeusIntrinsicObject scriptingObj in iobjs)
 				{
-					builder.Append("\t\t\tthis.");
-					builder.Append(scriptingObj.VariableName);
-					builder.Append(" = context.Objects[\"");
-					builder.Append(scriptingObj.VariableName);
-					builder.Append("\"] as ");
-					builder.Append(scriptingObj.ClassPath);
-					builder.Append(";\r\n");
+                    if (!scriptingObj.Disabled)
+                    {
+                        builder.Append("\t\t\tthis.");
+                        builder.Append(scriptingObj.VariableName);
+                        builder.Append(" = context.Objects[\"");
+                        builder.Append(scriptingObj.VariableName);
+                        builder.Append("\"] as ");
+                        builder.Append(scriptingObj.ClassPath);
+                        builder.Append(";\r\n");
+                    }
 				}
 			
 				builder.Append("\t\t}\r\n\t}\r\n}\r\n");
@@ -245,12 +266,15 @@ namespace Zeus.DotNetScript
 				builder.Append("\t\tInherits _DotNetScriptTemplate\r\n");
 
 				foreach (IZeusIntrinsicObject scriptingObj in iobjs)
-				{
-					builder.Append("\tProtected ");
-					builder.Append(scriptingObj.VariableName);
-					builder.Append(" As ");
-					builder.Append(scriptingObj.ClassPath);
-					builder.Append("\r\n");
+                {
+                    if (!scriptingObj.Disabled)
+                    {
+                        builder.Append("\tProtected ");
+                        builder.Append(scriptingObj.VariableName);
+                        builder.Append(" As ");
+                        builder.Append(scriptingObj.ClassPath);
+                        builder.Append("\r\n");
+                    }
 				}
 
 				builder.Append("\tPublic Sub New(context As IZeusContext)\r\n");
@@ -258,13 +282,16 @@ namespace Zeus.DotNetScript
 
 				foreach (IZeusIntrinsicObject scriptingObj in iobjs)
 				{
-					builder.Append("\t\tMe.");
-					builder.Append(scriptingObj.VariableName);
-					builder.Append(" = CType(context.Objects.Item(\"");
-					builder.Append(scriptingObj.VariableName);
-					builder.Append("\"), ");
-					builder.Append(scriptingObj.ClassPath);
-					builder.Append(")\r\n");
+                    if (!scriptingObj.Disabled)
+                    {
+                        builder.Append("\t\tMe.");
+                        builder.Append(scriptingObj.VariableName);
+                        builder.Append(" = CType(context.Objects.Item(\"");
+                        builder.Append(scriptingObj.VariableName);
+                        builder.Append("\"), ");
+                        builder.Append(scriptingObj.ClassPath);
+                        builder.Append(")\r\n");
+                    }
 				}
 		
 				builder.Append("\tEnd Sub\r\nEnd Class\r\n");
@@ -402,11 +429,47 @@ namespace Zeus.DotNetScript
 				}
 			}
 		}
-		#region Static File Methods		public static string MakeAbsolute(string pathToChange, string basePath) 		{			string newPath = pathToChange;			DirectoryInfo dinfo = new DirectoryInfo(basePath);			string p1 = dinfo.FullName;			if (!p1.EndsWith("\\")) p1 += "\\";			if (dinfo.Exists) 
+
+		#region Static File Methods
+		public static string MakeAbsolute(string pathToChange, string basePath) 
+		{
+			string newPath = pathToChange;
+
+			DirectoryInfo dinfo = new DirectoryInfo(basePath);
+			string p1 = dinfo.FullName;
+			if (!p1.EndsWith("\\")) p1 += "\\";
+
+			if (dinfo.Exists) 
 			{
-				if (pathToChange.StartsWith("\\"))				{					newPath = dinfo.Root + pathToChange;				}				else if ((pathToChange.StartsWith(".")) ||					(pathToChange.IndexOf(":") == -1))				{					newPath = p1 + pathToChange;				}				FileInfo finfo = new FileInfo(newPath);				if (finfo.Exists) 
-				{					newPath = finfo.FullName;				}				else
-				{					finfo = new FileInfo(pathToChange);					if (finfo.Exists) 
-					{						newPath = finfo.FullName;					}				}			}			return newPath;		}		#endregion
+				if (pathToChange.StartsWith("\\"))
+				{
+					newPath = dinfo.Root + pathToChange;
+				}
+				else if ((pathToChange.StartsWith(".")) ||
+					(pathToChange.IndexOf(":") == -1))
+				{
+					newPath = p1 + pathToChange;
+				}
+
+				FileInfo finfo = new FileInfo(newPath);
+				if (finfo.Exists) 
+				{
+					newPath = finfo.FullName;
+				}
+				else
+				{
+					finfo = new FileInfo(pathToChange);
+					if (finfo.Exists) 
+					{
+						newPath = finfo.FullName;
+					}
+				}
+
+			}
+
+			return newPath;
+		}
+		#endregion
+
 	}
 }

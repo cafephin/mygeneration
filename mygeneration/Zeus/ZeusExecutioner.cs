@@ -1,4 +1,27 @@
-using System;using System.IO;using System.Collections;using System.Reflection;using System.CodeDom;using System.Windows.Forms;using Zeus.UserInterface;using Zeus.UserInterface.WinForms;using Zeus.ErrorHandling;using Zeus.Configuration;using Zeus.Serializers;namespace Zeus{	/// <summary>	/// Summary description for Zeusecutioner.	/// </summary>	public class ZeusExecutioner	{		private ILog _log;		public ZeusExecutioner(ILog log) 
+using System;
+using System.IO;
+using System.Collections;
+using System.Reflection;
+using System.CodeDom;
+using System.Windows.Forms;
+
+using Zeus.UserInterface;
+using Zeus.UserInterface.WinForms;
+using Zeus.ErrorHandling;
+using Zeus.Configuration;
+using Zeus.Serializers;
+
+namespace Zeus
+{
+
+	/// <summary>
+	/// Summary description for Zeusecutioner.
+	/// </summary>
+	public class ZeusExecutioner
+	{
+		private ILog _log;
+
+		public ZeusExecutioner(ILog log) 
 		{
 			this._log = log;
 		}
@@ -79,7 +102,9 @@ using System;using System.IO;using System.Collections;using System.Reflection
 				{
 					PopulateContextObjects(context);
 					foreach (IZeusContextProcessor processor in ZeusFactory.Preprocessors) 
-					{						processor.Process(context);					}
+					{
+						processor.Process(context);
+					}
 					result = true;
 				}
 				else 
@@ -145,11 +170,15 @@ using System;using System.IO;using System.Collections;using System.Reflection
 			{
 				_log.Write(ex);
 			}
-		}		#region Static Methods		static internal bool ExecuteCodeSegment(IZeusCodeSegment segment, IZeusContext context) 
+		}
+
+		#region Static Methods
+		static internal bool ExecuteCodeSegment(IZeusCodeSegment segment, IZeusContext context) 
 		{
 			bool returnValue = true;
 
-			if (context == null) context = new ZeusContext();			PopulateContextObjects(context as ZeusContext);
+			if (context == null) context = new ZeusContext();
+			PopulateContextObjects(context as ZeusContext);
 
 			//Push this template onto the template stack
 			if (context is ZeusContext)
@@ -160,7 +189,9 @@ using System;using System.IO;using System.Collections;using System.Reflection
 			if (segment.SegmentType == ZeusConstants.CodeSegmentTypes.GUI_SEGMENT) 
 			{
 				foreach (IZeusContextProcessor processor in ZeusFactory.Preprocessors) 
-				{					processor.Process(context);				}
+				{
+					processor.Process(context);
+				}
 
 				returnValue = ZeusExecutioner.ExecuteGuiCode(segment, context);
 			}
@@ -176,40 +207,176 @@ using System;using System.IO;using System.Collections;using System.Reflection
 			}
 
 			return returnValue;
-		}		static protected bool ExecuteGuiCode(IZeusCodeSegment segment, IZeusContext context) 		{			IZeusExecutionHelper helper = segment.ZeusScriptingEngine.ExecutionHelper;			// If the template has an interface block, execute it			if (!segment.IsEmpty)			{				ArrayList reqVars = segment.ITemplate.RequiredInputVariables;				if (!context.Input.Contains(reqVars)) 
-				{					helper.EngineExecuteGuiCode(segment, context);					if (helper.HasErrors) 
-					{						IZeusExecutionError[] errors = helper.Errors;						helper.ClearErrors();						throw new ZeusExecutionException(errors, false);					}				}				context.Input.AddItems(context.Gui);			}			return !context.Gui.IsCanceled;		}		static protected void ExecuteCode(IZeusCodeSegment segment, IZeusContext context) 		{			IZeusExecutionHelper helper = segment.ZeusScriptingEngine.ExecutionHelper;			ExecuteCode(helper, segment.ITemplate, context, new ArrayList());		}				static protected void ExecuteCode(IZeusExecutionHelper helper, IZeusTemplate template, IZeusContext context, ArrayList templateGroupIds) 		{			if (!template.BodySegment.IsEmpty)			{				// Execute Template Body				helper.EngineExecuteCode(template.BodySegment, context);				if (helper.HasErrors) 
-				{					IZeusExecutionError[] errors = helper.Errors;					helper.ClearErrors();					throw new ZeusExecutionException(errors, true);				}			}						if (template.Type == ZeusConstants.Types.GROUP) 
-			{				if (template.IncludedTemplates.Count > 0) 				{					// Execute Template Body					if (templateGroupIds.Contains(template.UniqueID)) return;					templateGroupIds.Add(template.UniqueID);					foreach (ZeusTemplate childTemplate in template.IncludedTemplates)					{						if (childTemplate.UniqueID != template.UniqueID) 						{							//clear the output buffer before executing the next template!							context.Output.clear();							//Push the current template onto the Execution stack
+		}
+
+		static protected bool ExecuteGuiCode(IZeusCodeSegment segment, IZeusContext context) 
+		{
+			IZeusExecutionHelper helper = segment.ZeusScriptingEngine.ExecutionHelper;
+
+			// If the template has an interface block, execute it
+			if (!segment.IsEmpty)
+			{
+				ArrayList reqVars = segment.ITemplate.RequiredInputVariables;
+
+				if (!context.Input.Contains(reqVars)) 
+				{
+					helper.EngineExecuteGuiCode(segment, context);
+					if (helper.HasErrors) 
+					{
+						IZeusExecutionError[] errors = helper.Errors;
+						helper.ClearErrors();
+						throw new ZeusExecutionException(errors, false);
+					}
+				}
+
+				context.Input.AddItems(context.Gui);
+			}
+
+			return !context.Gui.IsCanceled;
+		}
+
+		static protected void ExecuteCode(IZeusCodeSegment segment, IZeusContext context) 
+		{
+			IZeusExecutionHelper helper = segment.ZeusScriptingEngine.ExecutionHelper;
+			ExecuteCode(helper, segment.ITemplate, context, new ArrayList());
+		}
+		
+		static protected void ExecuteCode(IZeusExecutionHelper helper, IZeusTemplate template, IZeusContext context, ArrayList templateGroupIds) 
+		{
+			if (!template.BodySegment.IsEmpty)
+			{
+				// Execute Template Body
+				helper.EngineExecuteCode(template.BodySegment, context);
+
+				if (helper.HasErrors) 
+				{
+					IZeusExecutionError[] errors = helper.Errors;
+					helper.ClearErrors();
+					throw new ZeusExecutionException(errors, true);
+				}
+			}
+			
+			if (template.Type == ZeusConstants.Types.GROUP) 
+			{
+				if (template.IncludedTemplates.Count > 0) 
+				{
+					// Execute Template Body
+					if (templateGroupIds.Contains(template.UniqueID)) return;
+
+					templateGroupIds.Add(template.UniqueID);
+
+					foreach (ZeusTemplate childTemplate in template.IncludedTemplates)
+					{
+						if (childTemplate.UniqueID != template.UniqueID) 
+						{
+							//clear the output buffer before executing the next template!
+							context.Output.clear();
+
+							//Push the current template onto the Execution stack
 							if (context is ZeusContext)
 							{
 								((ZeusContext)context).TemplateStack.Push(childTemplate);
-							}														try 							{								IZeusScriptingEngine engine = ZeusFactory.GetEngine(childTemplate.BodySegment.Engine);
-								ExecuteCode(engine.ExecutionHelper, childTemplate, context, templateGroupIds);							}							finally 
-							{								//Pop the current template off of the Execution stack
+							}
+							
+							try 
+							{
+								IZeusScriptingEngine engine = ZeusFactory.GetEngine(childTemplate.BodySegment.Engine);
+								ExecuteCode(engine.ExecutionHelper, childTemplate, context, templateGroupIds);
+							}
+							finally 
+							{
+								//Pop the current template off of the Execution stack
 								if (context is ZeusContext)
 								{
 									((ZeusContext)context).TemplateStack.Pop();
-								}							}						}					}							}			}		}		#endregion		#region Populate Context with Intrinsic Objects		protected static void PopulateContextObjects(IZeusContext icontext)		{			ZeusContext context = icontext as ZeusContext;			if (icontext != null) 
-			{				ZeusConfig config = ZeusConfig.Current;				Assembly assembly = Assembly.GetCallingAssembly();				FileInfo assemblyinfo = new FileInfo(assembly.Location);				context.SetIntrinsicObjects(ZeusFactory.IntrinsicObjectsArray);				foreach (ZeusIntrinsicObject obj in config.IntrinsicObjects) 				{					if (!context.Objects.Contains(obj.VariableName)) 					{						object[] objs = null;						string assemblyPath = FileTools.ResolvePath(obj.AssemblyPath);						if (assemblyPath != string.Empty) 						{							Assembly newassembly = null;							FileInfo newassemblyinfo = null;						
-							if (File.Exists(assemblyPath)) 
-							{								newassemblyinfo = new FileInfo(assemblyPath);							}
-							else
-							{								newassembly = DynamicAssemblyTools.LoadDynamicAssembly(assemblyPath);							}
+								}
+							}
+						}
+					}			
+				}
+			}
+		}
+		#endregion
 
-                            if (newassemblyinfo != null) // k3b Exception, if Plugin is missing
+		#region Populate Context with Intrinsic Objects
+		protected static void PopulateContextObjects(IZeusContext icontext)
+		{
+			ZeusContext context = icontext as ZeusContext;
+			if (icontext != null) 
+			{
+				ZeusConfig config = ZeusConfig.Current;
+				context.SetIntrinsicObjects(ZeusFactory.IntrinsicObjectsArray);
+
+				foreach (ZeusIntrinsicObject obj in config.IntrinsicObjects) 
+				{
+					if (!context.Objects.Contains(obj.VariableName) && !obj.Disabled) 
+					{
+                        try
+                        {
+                            object[] objs = null;
+                            if (obj.AssemblyPath != string.Empty)
                             {
-                                if (assemblyinfo.FullName.ToUpper() == newassemblyinfo.FullName.ToUpper())
+                                string assemblyPath = obj.AssemblyPath;
+                                Assembly newassembly = obj.Assembly;
+
+                                if (newassembly == null)
                                 {
-                                    newassembly = assembly;
+                                    assemblyPath = FileTools.ResolvePath(assemblyPath);
+                                    FileInfo finf = new FileInfo(assemblyPath);
+                                    FileInfo callingfinf = new FileInfo(Assembly.GetCallingAssembly().Location);
+                                    if (callingfinf.FullName == finf.FullName)
+                                    {
+                                        newassembly = Assembly.GetCallingAssembly();
+                                    }
+                                }
+
+                                if (newassembly == null)
+                                {
+                                    throw new ZeusDynamicException(ZeusDynamicExceptionType.IntrinsicObjectPluginInvalid, "Invalid Assembly: " + assemblyPath);
                                 }
                                 else
                                 {
-                                    newassembly = DynamicAssemblyTools.LoadDynamicAssembly(newassemblyinfo.FullName);
+                                    objs = DynamicAssemblyTools.InstantiateClassesByType(newassembly, newassembly.GetType(obj.ClassPath));
+                                    if (objs == null)
+                                    {
+                                        throw new ZeusDynamicException(ZeusDynamicExceptionType.IntrinsicObjectPluginInvalid, "Invalid Type: " + obj.ClassPath);
+                                    }
+                                    else if (objs.Length == 0)
+                                    {
+                                        throw new ZeusDynamicException(ZeusDynamicExceptionType.IntrinsicObjectPluginInvalid, "Invalid Type: " + obj.ClassPath);
+                                    }
                                 }
-                            }							if (newassembly == null) 
-							{								throw new ZeusDynamicException(ZeusDynamicExceptionType.IntrinsicObjectPluginInvalid, "Invalid Assembly: " + assemblyPath);							}							else 
-							{
-								objs = DynamicAssemblyTools.InstantiateClassesByType(newassembly, newassembly.GetType(obj.ClassPath));								if (objs == null) 								{									throw new ZeusDynamicException(ZeusDynamicExceptionType.IntrinsicObjectPluginInvalid, "Invalid Type: " + obj.ClassPath);								}								else if (objs.Length == 0) 
-								{									throw new ZeusDynamicException(ZeusDynamicExceptionType.IntrinsicObjectPluginInvalid, "Invalid Type: " + obj.ClassPath);								}							}						}						else 						{							Type type = Type.GetType(obj.ClassPath);							if (type != null) 							{								objs = new object[1];								objs[0] = DynamicAssemblyTools.InstantiateClassByType(type);							}							else 
-							{								throw new ZeusDynamicException(ZeusDynamicExceptionType.IntrinsicObjectPluginInvalid, "Invalid Type: " + obj.ClassPath);							}						}						if (objs != null) 						{							if (objs.Length > 0) 							{								context.Objects[obj.VariableName] = objs[0];							}						}					}				}			}		}		#endregion	}}
+                            }
+                            else
+                            {
+                                Type type = Type.GetType(obj.ClassPath);
+                                if (type != null)
+                                {
+                                    objs = new object[1];
+                                    objs[0] = DynamicAssemblyTools.InstantiateClassByType(type);
+                                }
+                                else
+                                {
+                                    throw new ZeusDynamicException(ZeusDynamicExceptionType.IntrinsicObjectPluginInvalid, "Invalid Type: " + obj.ClassPath);
+                                }
+                            }
+
+                            if (objs != null)
+                            {
+                                if (objs.Length > 0)
+                                {
+                                    context.Objects[obj.VariableName] = objs[0];
+                                }
+                            }
+                        }
+                        catch (ZeusDynamicException zex)
+                        {
+                            context.Objects[obj.VariableName] = zex.Message;
+                        }
+					}
+				}
+			}
+		}
+		#endregion
+	}
+}

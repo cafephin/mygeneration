@@ -38,6 +38,7 @@ namespace MyGeneration
             // 
             // AboutBoxLogo
             // 
+            this.BackColor = System.Drawing.Color.White;
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.AboutBoxLogo_MouseUp);
             this.ResumeLayout(false);
 

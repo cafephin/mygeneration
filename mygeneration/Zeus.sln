@@ -1,5 +1,5 @@
 Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
+# Visual C# Express 2005
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus", "Zeus\Zeus.csproj", "{CE8A697D-D45C-4E60-838D-E36980227543}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicrosoftScriptingEngine", "..\plugins\MicrosoftScriptingEngine\MicrosoftScriptingEngine.csproj", "{5CFE661C-1C7D-4191-A6F7-D7891C448690}"

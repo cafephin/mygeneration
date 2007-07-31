@@ -928,11 +928,17 @@ namespace MyMeta
 		/// <returns>True if saved, False if not</returns>
 		public bool SaveUserMetaData()
 		{
-			if(null != UserData && string.Empty != _userMetaDataFileName)
-			{
-				UserData.Save(_userMetaDataFileName);
-				return true;
-			}
+            if (null != UserData && string.Empty != _userMetaDataFileName)
+            {
+                FileInfo f = new FileInfo(_userMetaDataFileName);
+                if (!f.Exists)
+                {
+                    if (!f.Directory.Exists) f.Directory.Create();
+                }
+
+                UserData.Save(_userMetaDataFileName);
+                return true;
+            }
 
 			return false;
 		}

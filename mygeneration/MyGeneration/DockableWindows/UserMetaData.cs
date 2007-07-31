@@ -120,7 +120,7 @@ namespace MyGeneration
 			this.Grid.CaptionVisible = false;
 			this.Grid.DataMember = "";
 			this.Grid.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.Grid.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
+            this.Grid.Font = MetaDataBrowser.BoldFont;
 			this.Grid.HeaderFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.Grid.HeaderForeColor = System.Drawing.SystemColors.ControlText;
 			this.Grid.Location = new System.Drawing.Point(0, 74);
@@ -307,88 +307,148 @@ namespace MyGeneration
 			}
 		}
 
-		private void InitializeGrid()		{			if(!gridInitialized)			{				if(MyStyle.GridColumnStyles.Count > 0)				{					gridInitialized = true;					gridHelper = new GridLayoutHelper(this.Grid, this.MyStyle,
-						new decimal[] { 0.50M, 0.50M },	new int[] { 30, 30 });				}			}		}
+		private void InitializeGrid()
+		{
+			if(!gridInitialized)
+			{
+				if(MyStyle.GridColumnStyles.Count > 0)
+				{
+					gridInitialized = true;
+					gridHelper = new GridLayoutHelper(this.Grid, this.MyStyle,
+						new decimal[] { 0.50M, 0.50M },	new int[] { 30, 30 });
+				}
+			}
+		}
 
 		#region MyMeta.Collection Logic
 
-		public void EditNiceNames(Databases coll)		{			DataTable dt = ProLogForNiceNames(coll);			DataRowCollection rows = dt.Rows;
+		public void EditNiceNames(Databases coll)
+		{
+			DataTable dt = ProLogForNiceNames(coll);
+			DataRowCollection rows = dt.Rows;
 
 			foreach(Database o in coll)
 			{
-				rows.Add(new object[] { o.Name, o.Alias, o } );			}
+				rows.Add(new object[] { o.Name, o.Alias, o } );
+			}
+
 			EpilogForNiceNames(dt);
 		}
 
-		public void EditNiceNames(Columns coll)		{			DataTable dt = ProLogForNiceNames(coll);			DataRowCollection rows = dt.Rows;
+		public void EditNiceNames(Columns coll)
+		{
+			DataTable dt = ProLogForNiceNames(coll);
+			DataRowCollection rows = dt.Rows;
 
 			foreach(Column o in coll)
 			{
-				rows.Add(new object[] { o.Name, o.Alias, o } );			}
+				rows.Add(new object[] { o.Name, o.Alias, o } );
+			}
+
 			EpilogForNiceNames(dt);
 		}
 
-		public void EditNiceNames(Tables coll)		{			DataTable dt = ProLogForNiceNames(coll);			DataRowCollection rows = dt.Rows;
+		public void EditNiceNames(Tables coll)
+		{
+			DataTable dt = ProLogForNiceNames(coll);
+			DataRowCollection rows = dt.Rows;
 
 			foreach(Table o in coll)
 			{
-				rows.Add(new object[] { o.Name, o.Alias, o } );			}
+				rows.Add(new object[] { o.Name, o.Alias, o } );
+			}
+
 			EpilogForNiceNames(dt);
 		}
 
-		public void EditNiceNames(Views coll)		{			DataTable dt = ProLogForNiceNames(coll);			DataRowCollection rows = dt.Rows;
+		public void EditNiceNames(Views coll)
+		{
+			DataTable dt = ProLogForNiceNames(coll);
+			DataRowCollection rows = dt.Rows;
 
 			foreach(MyMeta.View o in coll)
 			{
-				rows.Add(new object[] { o.Name, o.Alias, o } );			}
+				rows.Add(new object[] { o.Name, o.Alias, o } );
+			}
+
 			EpilogForNiceNames(dt);
 		}
 
-		public void EditNiceNames(Procedures coll)		{			DataTable dt = ProLogForNiceNames(coll);			DataRowCollection rows = dt.Rows;
+		public void EditNiceNames(Procedures coll)
+		{
+			DataTable dt = ProLogForNiceNames(coll);
+			DataRowCollection rows = dt.Rows;
 
 			foreach(Procedure o in coll)
 			{
-				rows.Add(new object[] { o.Name, o.Alias, o } );			}
+				rows.Add(new object[] { o.Name, o.Alias, o } );
+			}
+
 			EpilogForNiceNames(dt);
 		}
 
-		public void EditNiceNames(Domains coll)		{			DataTable dt = ProLogForNiceNames(coll);			DataRowCollection rows = dt.Rows;
+		public void EditNiceNames(Domains coll)
+		{
+			DataTable dt = ProLogForNiceNames(coll);
+			DataRowCollection rows = dt.Rows;
 
 			foreach(Domain o in coll)
 			{
-				rows.Add(new object[] { o.Name, o.Alias, o } );			}
+				rows.Add(new object[] { o.Name, o.Alias, o } );
+			}
+
 			EpilogForNiceNames(dt);
 		}
 
-		public void EditNiceNames(Parameters coll)		{			DataTable dt = ProLogForNiceNames(coll);			DataRowCollection rows = dt.Rows;
+		public void EditNiceNames(Parameters coll)
+		{
+			DataTable dt = ProLogForNiceNames(coll);
+			DataRowCollection rows = dt.Rows;
 
 			foreach(Parameter o in coll)
 			{
-				rows.Add(new object[] { o.Name, o.Alias, o } );			}
+				rows.Add(new object[] { o.Name, o.Alias, o } );
+			}
+
 			EpilogForNiceNames(dt);
 		}
 
-		public void EditNiceNames(Indexes coll)		{			DataTable dt = ProLogForNiceNames(coll);			DataRowCollection rows = dt.Rows;
+		public void EditNiceNames(Indexes coll)
+		{
+			DataTable dt = ProLogForNiceNames(coll);
+			DataRowCollection rows = dt.Rows;
 
 			foreach(Index o in coll)
 			{
-				rows.Add(new object[] { o.Name, o.Alias, o } );			}
+				rows.Add(new object[] { o.Name, o.Alias, o } );
+			}
+
 			EpilogForNiceNames(dt);
 		}
 
-		public void EditNiceNames(ForeignKeys coll)		{			DataTable dt = ProLogForNiceNames(coll);			DataRowCollection rows = dt.Rows;
+		public void EditNiceNames(ForeignKeys coll)
+		{
+			DataTable dt = ProLogForNiceNames(coll);
+			DataRowCollection rows = dt.Rows;
 
 			foreach(ForeignKey o in coll)
 			{
-				rows.Add(new object[] { o.Name, o.Alias, o } );			}
+				rows.Add(new object[] { o.Name, o.Alias, o } );
+			}
+
 			EpilogForNiceNames(dt);
 		}
 
-		public void EditNiceNames(ResultColumns coll)		{			DataTable dt = ProLogForNiceNames(coll);			DataRowCollection rows = dt.Rows;
+		public void EditNiceNames(ResultColumns coll)
+		{
+			DataTable dt = ProLogForNiceNames(coll);
+			DataRowCollection rows = dt.Rows;
 
 			foreach(ResultColumn o in coll)
 			{
-				rows.Add(new object[] { o.Name, o.Alias, o } );			}
+				rows.Add(new object[] { o.Name, o.Alias, o } );
+			}
+
 			EpilogForNiceNames(dt);
 		}
 
@@ -403,11 +463,26 @@ namespace MyGeneration
 			ds.Tables.Add(dt);
 			dt.Rows.Add(new object[] { this });
 
-			dt = new DataTable("MyData");			DataColumn k = dt.Columns.Add("Key", stringType);
+			dt = new DataTable("MyData");
+			DataColumn k = dt.Columns.Add("Key", stringType);
 			k.AllowDBNull = false;
-			DataColumn a = dt.Columns.Add("Alias", stringType);			a.AllowDBNull = false;			dt.Columns.Add("obj", Type.GetType("System.Object"));			ds.Tables.Add(dt);			UniqueConstraint pk = new UniqueConstraint(a, false);			dt.Constraints.Add(pk);			ds.EnforceConstraints = true;
-			this.txtNiceName.Enabled = false;
-			this.col_0.HeaderText  = "Name";			this.col_1.HeaderText  = "Alias";			this.col_1.MappingName = "Alias";
+			DataColumn a = dt.Columns.Add("Alias", stringType);
+			a.AllowDBNull = false;
+
+			dt.Columns.Add("obj", Type.GetType("System.Object"));
+			ds.Tables.Add(dt);
+
+			UniqueConstraint pk = new UniqueConstraint(a, false);
+
+			dt.Constraints.Add(pk);
+			ds.EnforceConstraints = true;
+
+			this.txtNiceName.Enabled = false;
+
+			this.col_0.HeaderText  = "Name";
+			this.col_1.HeaderText  = "Alias";
+			this.col_1.MappingName = "Alias";
+
 			return dt;
 		}
 
@@ -461,13 +536,39 @@ namespace MyGeneration
 			ds.Tables.Add(dt);
 			dt.Rows.Add(new object[] { this });
 
-			dt = new DataTable("MyData");			DataColumn k = dt.Columns.Add("Key", stringType);
+			dt = new DataTable("MyData");
+			DataColumn k = dt.Columns.Add("Key", stringType);
 			k.AllowDBNull = false;
-			DataColumn v = dt.Columns.Add("Value", stringType);			v.AllowDBNull = false;			ds.Tables.Add(dt);			UniqueConstraint pk = new UniqueConstraint(k, false);			dt.Constraints.Add(pk);			ds.EnforceConstraints = true;			this.txtNiceName.Enabled = true;			this.col_0.HeaderText  = "Key";			this.col_0.TextBox.Enabled = true;			this.col_1.HeaderText  = "Value";			this.col_1.MappingName = "Value";			this.txtNiceName.Text = niceName;			this.txtNiceName.Tag = obj;			IPropertyCollection properties = obj.Properties;			DataRowCollection rows = dt.Rows;
+			DataColumn v = dt.Columns.Add("Value", stringType);
+			v.AllowDBNull = false;
+			ds.Tables.Add(dt);
+
+			UniqueConstraint pk = new UniqueConstraint(k, false);
+
+			dt.Constraints.Add(pk);
+			ds.EnforceConstraints = true;
+
+			this.txtNiceName.Enabled = true;
+
+			this.col_0.HeaderText  = "Key";
+			this.col_0.TextBox.Enabled = true;
+
+			this.col_1.HeaderText  = "Value";
+			this.col_1.MappingName = "Value";
+
+			this.txtNiceName.Text = niceName;
+			this.txtNiceName.Tag = obj;
+
+			IPropertyCollection properties = obj.Properties;
+			DataRowCollection rows = dt.Rows;
 
 			foreach(IProperty prop in properties)
 			{
-				rows.Add(new object[] { prop.Key, prop.Value } );			}			dt.AcceptChanges();
+				rows.Add(new object[] { prop.Key, prop.Value } );
+			}
+
+			dt.AcceptChanges();
+
 			this.Grid.DataSource = dt.DefaultView;
 			this.InitializeGrid();
 

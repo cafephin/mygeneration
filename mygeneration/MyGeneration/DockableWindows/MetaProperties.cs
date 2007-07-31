@@ -88,7 +88,7 @@ namespace MyGeneration
 			this.Grid.CaptionBackColor = System.Drawing.SystemColors.Control;
 			this.Grid.CaptionVisible = false;
 			this.Grid.DataMember = "";
-			this.Grid.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+            this.Grid.Font = MetaDataBrowser.BoldFont;
 			this.Grid.HeaderForeColor = System.Drawing.SystemColors.ControlText;
 			this.Grid.Location = new System.Drawing.Point(0, 0);
 			this.Grid.Name = "Grid";
@@ -158,7 +158,7 @@ namespace MyGeneration
 			this.ClientSize = new System.Drawing.Size(431, 550);
 			this.Controls.Add(this.lnkHELP);
 			this.Controls.Add(this.Grid);
-			this.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+            this.Font = MetaDataBrowser.NormalFont;
 			this.HideOnClose = true;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "MetaProperties";

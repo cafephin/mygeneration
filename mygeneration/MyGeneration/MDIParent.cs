@@ -175,9 +175,46 @@ namespace MyGeneration
             Configuration.MyGeneration x = Configuration.MyGeneration.PopulatedObject;
             Scintilla.Legacy.Configuration.ConfigurationUtility cu = new Scintilla.Legacy.Configuration.ConfigurationUtility(GetType().Module.Assembly);
 
-            scintillaXmlConfig = (Configuration.MyGeneration)cu.LoadConfiguration(typeof(Configuration.MyGeneration),
-                startupPath + @"\settings\MyGeneration.xml");
-            scintillaXmlConfig.CollectScintillaNodes(null);
+            // If the file doesn't exist, create it.
+            FileInfo scintillaConfigFile = new FileInfo(startupPath + @"\settings\MyGeneration.xml");
+            if (!scintillaConfigFile.Exists)
+            {
+                File.WriteAllText(scintillaConfigFile.FullName,
+@"<?xml version=""1.0"" ?>
+<MyGeneration xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
+  <options/>
+  <Scintilla>
+    <includes>
+      <include file=""ScintillaNET.xml"" />
+    </includes>
+    <globals/>
+  </Scintilla>
+</MyGeneration>");
+            }
+
+            //TODO: Retry this with a copy of the file until we can upgrade Scintilla.Net with a fix.
+            int maxTries = 3;
+            while (maxTries > 0)
+            {
+                try
+                {
+                    scintillaXmlConfig = (Configuration.MyGeneration)cu.LoadConfiguration(typeof(Configuration.MyGeneration), scintillaConfigFile.FullName);
+                    scintillaXmlConfig.CollectScintillaNodes(null);
+                    break;
+                }
+                catch
+                {
+                    if (--maxTries == 1)
+                    {
+                        File.Copy(scintillaConfigFile.FullName, scintillaConfigFile.FullName + ".tmp", true);
+                        scintillaConfigFile = new FileInfo(scintillaConfigFile.FullName + ".tmp");
+                    }
+                    else
+                    {
+                        System.Threading.Thread.Sleep(10);
+                    }
+                }
+            }
 
             this.IsMdiContainer = true;
             this.MdiChildActivate += new EventHandler(this.MDIChildActivated);

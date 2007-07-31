@@ -87,7 +87,7 @@ namespace MyGeneration
 			this.XmlEditor.CaptionVisible = false;
 			this.XmlEditor.DataMember = "";
 			this.XmlEditor.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.XmlEditor.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+            this.XmlEditor.Font = MetaDataBrowser.BoldFont;
 			this.XmlEditor.GridLineColor = System.Drawing.Color.BurlyWood;
 			this.XmlEditor.HeaderForeColor = System.Drawing.SystemColors.ControlText;
 			this.XmlEditor.Location = new System.Drawing.Point(2, 49);
@@ -268,29 +268,43 @@ namespace MyGeneration
 		{
 			this.isDirty = isDirty;
 			this.toolBarButton_Save.Visible = isDirty;
-		}
+        }
 
-		private void DbTargetMappings_Load(object sender, System.EventArgs e)
-		{
-			this.col_From.TextBox.BorderStyle = BorderStyle.None;
-			this.col_To.TextBox.BorderStyle   = BorderStyle.None;
- 
-			this.col_From.TextBox.Move += new System.EventHandler(this.ColorTextBox);
-			this.col_To.TextBox.Move   += new System.EventHandler(this.ColorTextBox);
+        public override void ShowCatchingErrors(DockPanel dockManager)
+        {
+            DefaultSettings settings = new DefaultSettings();
+            if (!System.IO.File.Exists(settings.DbTargetMappingFile))
+            {
+                MessageBox.Show(this, "Database Target Mapping File does not exist at: " + settings.DbTargetMappingFile + "\r\nPlease fix this in DefaultSettings.");
+            }
+            else
+            {
+                base.ShowCatchingErrors(dockManager);
+            }
+        }
 
-			DefaultSettings settings = new DefaultSettings();
+        private void DbTargetMappings_Load(object sender, System.EventArgs e)
+        {
+            this.col_From.TextBox.BorderStyle = BorderStyle.None;
+            this.col_To.TextBox.BorderStyle = BorderStyle.None;
 
-			this.dbDriver = settings.DbDriver;
+            this.col_From.TextBox.Move += new System.EventHandler(this.ColorTextBox);
+            this.col_To.TextBox.Move += new System.EventHandler(this.ColorTextBox);
 
-			this.xml.Load(settings.DbTargetMappingFile);
+            DefaultSettings settings = new DefaultSettings();
 
-			PopulateComboBox(settings);
-			PopulateGrid(this.dbDriver);
+            this.dbDriver = settings.DbDriver;
 
-			MarkAsDirty(false);
 
-			gridLayoutHelper = new GridLayoutHelper(XmlEditor, MyXmlStyle, new decimal[] { 0.50M, 0.50M }, new int[] { 100, 100 });
-		}
+            this.xml.Load(settings.DbTargetMappingFile);
+
+            PopulateComboBox(settings);
+            PopulateGrid(this.dbDriver);
+
+            MarkAsDirty(false);
+
+            gridLayoutHelper = new GridLayoutHelper(XmlEditor, MyXmlStyle, new decimal[] { 0.50M, 0.50M }, new int[] { 100, 100 });
+        }
 
 		private void cboxLanguage_SelectionChangeCommitted(object sender, System.EventArgs e)
 		{
@@ -304,7 +318,9 @@ namespace MyGeneration
 
 			// Populate the ComboBox
 			dbRoot myMeta = new dbRoot();
-			myMeta.DbTargetMappingFileName	= settings.DbTargetMappingFile;			myMeta.DbTarget					= settings.DbTarget;
+			myMeta.DbTargetMappingFileName	= settings.DbTargetMappingFile;
+			myMeta.DbTarget					= settings.DbTarget;
+
 			string[] targets = myMeta.GetDbTargetMappings(settings.DbDriver);
 
 			if(null != targets)
@@ -350,10 +366,16 @@ namespace MyGeneration
 			ds.Tables.Add(dt);
 			dt.Rows.Add(new object[] { this });
 
-			dt = new DataTable("DbTarget");			DataColumn from = dt.Columns.Add("From", Type.GetType("System.String"));
+			dt = new DataTable("DbTarget");
+			DataColumn from = dt.Columns.Add("From", Type.GetType("System.String"));
 			from.AllowDBNull = false;
-			DataColumn to  = dt.Columns.Add("To", Type.GetType("System.String"));			to.AllowDBNull = false;			ds.Tables.Add(dt);
-			UniqueConstraint pk = new UniqueConstraint(from, false);			dt.Constraints.Add(pk);			ds.EnforceConstraints = true;
+			DataColumn to  = dt.Columns.Add("To", Type.GetType("System.String"));
+			to.AllowDBNull = false;
+			ds.Tables.Add(dt);
+
+			UniqueConstraint pk = new UniqueConstraint(from, false);
+			dt.Constraints.Add(pk);
+			ds.EnforceConstraints = true;
 
 			if(null != langNode)
 			{

@@ -26,15 +26,28 @@ namespace Zeus.DotNetScript
 		protected ArrayList _errors;
 		protected int _timeout = -1;
 		protected bool _compiledInMemory = true;
-		protected Stack _assemblyStack = new Stack();		protected event ShowGUIEventHandler ShowGUI;
+		protected Stack _assemblyStack = new Stack();
+
+		protected event ShowGUIEventHandler ShowGUI;
+
 		public DotNetScriptExecutioner(DotNetScriptEngine engine) 
 		{
 			this._engine = engine;
 		}
 
-		public void SetShowGuiHandler(ShowGUIEventHandler guiEventHandler)		{			this.ShowGUI = null;			this.ShowGUI += guiEventHandler;		}
+		public void SetShowGuiHandler(ShowGUIEventHandler guiEventHandler)
+		{
+			this.ShowGUI = null;
+			this.ShowGUI += guiEventHandler;
+		}
 
-		protected virtual void OnShowGUI(IZeusGuiControl gui) 		{			if (ShowGUI != null) 			{				ShowGUI(gui, this);			}		}
+		protected virtual void OnShowGUI(IZeusGuiControl gui) 
+		{
+			if (ShowGUI != null) 
+			{
+				ShowGUI(gui, this);
+			}
+		}
 
 		public void ExecuteFunction(string functionName, params object[] parameters)
 		{
@@ -134,12 +147,48 @@ namespace Zeus.DotNetScript
 		}
 		
 		public void ClearErrors() 
-		{			this._errors = null;		}		public bool HasErrors
-		{			get { return (_errors != null); }		}		public bool CompiledInMemory
-		{			get { return _compiledInMemory; }			set { _compiledInMemory = value; }		}		public IZeusExecutionError[] Errors
-		{			get 			{ 				if (_errors != null)					return (IZeusExecutionError[])_errors.ToArray(typeof(IZeusExecutionError)); 				else					return null;			}		}
-		/// <summary>		/// -1 means no timeout, otherwise we set the timeout = to this number.		/// </summary>		public int Timeout 		{			get 			{				return _timeout;			}			set 			{				_timeout = value;			}		}
-		protected bool LoadAssembly(IZeusContext context)
+		{
+			this._errors = null;
+		}
+
+		public bool HasErrors
+		{
+			get { return (_errors != null); }
+		}
+
+		public bool CompiledInMemory
+		{
+			get { return _compiledInMemory; }
+			set { _compiledInMemory = value; }
+		}
+
+		public IZeusExecutionError[] Errors
+		{
+			get 
+			{ 
+				if (_errors != null)
+					return (IZeusExecutionError[])_errors.ToArray(typeof(IZeusExecutionError)); 
+				else
+					return null;
+			}
+		}
+
+		/// <summary>
+		/// -1 means no timeout, otherwise we set the timeout = to this number.
+		/// </summary>
+		public int Timeout 
+		{
+			get 
+			{
+				return _timeout;
+			}
+			set 
+			{
+				_timeout = value;
+			}
+		}
+
+		protected bool LoadAssembly(IZeusContext context)
 		{
 			bool assemblyLoaded = false;
 			bool cacheAssembly = (_codeSegment.ITemplate.SourceType == ZeusConstants.SourceTypes.COMPILED);
@@ -244,7 +293,12 @@ namespace Zeus.DotNetScript
 		}
 
 		protected void AddError(DotNetScriptError error) 
-		{			if (_errors == null) _errors = new ArrayList(); 			this._errors.Add(error);		}
+		{
+			if (_errors == null) _errors = new ArrayList();
+ 
+			this._errors.Add(error);
+		}
+
 		#region Methods For Dynamic Loading
 		public static Assembly CreateAssembly(string code, DotNetLanguage language, bool compileInMemory, ArrayList references, out ArrayList errors, IZeusContext context)
 		{

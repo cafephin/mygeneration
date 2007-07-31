@@ -453,6 +453,8 @@
     <Content Include="Images\jeg_vbscript.bmp" />
     <Content Include="Images\logo.gif" />
     <Content Include="Images\logo.jpg" />
+    <None Include="Resources\dev01tiny.png" />
+    <None Include="Resources\dev02tiny.png" />
     <Content Include="Resources\mygenlogo.gif" />
     <Content Include="Images\show_preview.bmp" />
     <Content Include="Images\toolbarAccessConnection.bmp" />
@@ -524,8 +526,12 @@
     <Content Include="Images\TreeView\tables.bmp" />
     <Content Include="Images\TreeView\view.bmp" />
     <Content Include="Images\TreeView\views.bmp" />
-    <Content Include="ScintillaNET\SciLexer.dll" />
-    <Content Include="ScintillaNET\ScintillaNET.dll" />
+    <Content Include="SciLexer.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ScintillaNET\ScintillaNET.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="ScintillaNET\SlickControls.dll" />
     <Content Include="Settings\DbTargets.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

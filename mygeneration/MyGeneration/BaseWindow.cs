@@ -17,7 +17,7 @@ namespace MyGeneration
 			return true;
 		}
 
-		public void ShowCatchingErrors(DockPanel dockManager) 
+		public virtual void ShowCatchingErrors(DockPanel dockManager) 
 		{
 			try 
 			{
