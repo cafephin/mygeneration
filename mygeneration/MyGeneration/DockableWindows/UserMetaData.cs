@@ -5,7 +5,7 @@ using System.Drawing;
 using System.ComponentModel;
 using System.Windows.Forms;
 
-using WeifenLuo.WinFormsUI;
+using WeifenLuo.WinFormsUI.Docking;
 
 using MyMeta;
 
@@ -15,7 +15,8 @@ namespace MyGeneration
 	/// Summary description for UserMetaData.
 	/// </summary>
 	public class UserMetaData : BaseWindow
-	{
+    {
+        private IMyGenerationMDI mdi;
 		private System.Windows.Forms.ToolBar toolBar1;
 		private System.Windows.Forms.ImageList imageList1;
 		private System.Windows.Forms.ToolBarButton toolBarButton_Save;
@@ -30,11 +31,12 @@ namespace MyGeneration
 
 		private Type stringType = Type.GetType("System.String");
 
-		public UserMetaData()
+        public UserMetaData(IMyGenerationMDI mdi)
 		{
-			InitializeComponent();
+            InitializeComponent();
+            this.mdi = mdi;
 
-			this.ShowHint = WeifenLuo.WinFormsUI.DockState.DockRight;
+			this.ShowHint = DockState.DockRight;
 
 			DefaultSettings settings = new DefaultSettings();
 			this.UserMetaDataFileName = settings.UserMetaDataFileName;
@@ -187,10 +189,10 @@ namespace MyGeneration
 			// 
 			// UserMetaData
 			// 
-			this.DockableAreas = ((WeifenLuo.WinFormsUI.DockAreas)(((((WeifenLuo.WinFormsUI.DockAreas.Float | WeifenLuo.WinFormsUI.DockAreas.DockLeft) 
-				| WeifenLuo.WinFormsUI.DockAreas.DockRight) 
-				| WeifenLuo.WinFormsUI.DockAreas.DockTop) 
-				| WeifenLuo.WinFormsUI.DockAreas.DockBottom)));
+			this.DockAreas = ((DockAreas)(((((DockAreas.Float | DockAreas.DockLeft) 
+				| DockAreas.DockRight) 
+				| DockAreas.DockTop) 
+				| DockAreas.DockBottom)));
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.AutoScroll = true;
 			this.ClientSize = new System.Drawing.Size(832, 1013);
@@ -201,7 +203,7 @@ namespace MyGeneration
 			this.Controls.Add(this.toolBar1);
 			this.HideOnClose = true;
 			this.Name = "UserMetaData";
-			this.ShowHint = WeifenLuo.WinFormsUI.DockState.DockRight;
+			this.ShowHint = DockState.DockRight;
 			this.Text = "User Meta Data";
 			this.Load += new System.EventHandler(this.UserMetaData_Load);
 			((System.ComponentModel.ISupportInitialize)(this.Grid)).EndInit();

@@ -12,6 +12,7 @@ using Zeus.Serializers;
 using Zeus.UserInterface;
 using Zeus.UserInterface.WinForms;
 using MyMeta;
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace MyGeneration
 {
@@ -23,6 +24,7 @@ namespace MyGeneration
 		private const int INDEX_CLOSED_FOLDER = 0;
 		private const int INDEX_OPEN_FOLDER = 1;
 
+        private IMyGenerationMDI mdi;
 		private System.Windows.Forms.ToolBar toolBarToolbar;
 		private System.Windows.Forms.ImageList imageListFormIcons;
 		private System.Windows.Forms.ContextMenu contextMenuTree;
@@ -61,9 +63,10 @@ namespace MyGeneration
 		
 		private bool _isDirty = false;
 
-		public ProjectBrowser()
+        public ProjectBrowser(IMyGenerationMDI mdi)
 		{
-			InitializeComponent();
+            InitializeComponent();
+            this.mdi = mdi;
 		}
 
 		public override void ResetMenu() 
@@ -444,14 +447,14 @@ namespace MyGeneration
             this.ClientSize = new System.Drawing.Size(384, 542);
             this.Controls.Add(this.treeViewProject);
             this.Controls.Add(this.toolBarToolbar);
-            this.DockableAreas = ((WeifenLuo.WinFormsUI.DockAreas)(((((WeifenLuo.WinFormsUI.DockAreas.Float | WeifenLuo.WinFormsUI.DockAreas.DockLeft)
-                        | WeifenLuo.WinFormsUI.DockAreas.DockRight)
-                        | WeifenLuo.WinFormsUI.DockAreas.DockTop)
-                        | WeifenLuo.WinFormsUI.DockAreas.DockBottom)));
+            this.DockAreas = ((DockAreas)(((((DockAreas.Float | DockAreas.DockLeft)
+                        | DockAreas.DockRight)
+                        | DockAreas.DockTop)
+                        | DockAreas.DockBottom)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Menu = this.mainMenuProject;
             this.Name = "ProjectBrowser";
-            this.ShowHint = WeifenLuo.WinFormsUI.DockState.DockLeft;
+            this.ShowHint = DockState.DockLeft;
             this.TabText = "Project Browser";
             this.Text = "Project Browser";
             this.Closing += new System.ComponentModel.CancelEventHandler(this.ProjectBrowser_Closing);

@@ -6,7 +6,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
 
-using WeifenLuo.WinFormsUI;
+using WeifenLuo.WinFormsUI.Docking;
 
 using MyMeta;
 
@@ -16,7 +16,8 @@ namespace MyGeneration
 	/// Summary description for LanguageMappings.
 	/// </summary>
 	public class LanguageMappings : BaseWindow
-	{
+    {
+        private IMyGenerationMDI mdi;
 		GridLayoutHelper gridLayoutHelper;
 		private System.ComponentModel.IContainer components;
 
@@ -34,10 +35,11 @@ namespace MyGeneration
 
 		private System.Windows.Forms.DataGridTableStyle MyXmlStyle;
 
-		public LanguageMappings()
+        public LanguageMappings(IMyGenerationMDI mdi)
 		{
-			InitializeComponent();
-			this.ShowHint = WeifenLuo.WinFormsUI.DockState.DockRight;
+            InitializeComponent();
+            this.mdi = mdi;
+			this.ShowHint = DockState.DockRight;
 		}
 
 		/// <summary>
@@ -191,10 +193,10 @@ namespace MyGeneration
 			this.Controls.Add(this.XmlEditor);
 			this.Controls.Add(this.toolBar1);
 			this.Controls.Add(this.cboxLanguage);
-			this.DockableAreas = ((WeifenLuo.WinFormsUI.DockAreas)(((((WeifenLuo.WinFormsUI.DockAreas.Float | WeifenLuo.WinFormsUI.DockAreas.DockLeft) 
-				| WeifenLuo.WinFormsUI.DockAreas.DockRight) 
-				| WeifenLuo.WinFormsUI.DockAreas.DockTop) 
-				| WeifenLuo.WinFormsUI.DockAreas.DockBottom)));
+			this.DockAreas = ((DockAreas)(((((DockAreas.Float | DockAreas.DockLeft) 
+				| DockAreas.DockRight) 
+				| DockAreas.DockTop) 
+				| DockAreas.DockBottom)));
 			this.DockPadding.All = 2;
 			this.HideOnClose = true;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

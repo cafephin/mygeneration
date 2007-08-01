@@ -18,14 +18,6 @@ namespace MyGeneration
 		string Mode { get; }
         string Language { get; }
         string Text { get; set; }
-        /*string LastSearchText { get; }
-        bool LastSearchIsCaseSensitive { get; }
-        bool LastSearchIsRegex { get; }
-
-        int ReplaceNext(string find, string replace, bool isCaseSensitive, bool isRegex);
-        int ReplaceAll(string find, string replace, bool isCaseSensitive, bool isRegex);
-        bool FindNextAndHighlight(string text, bool isCaseSensitive, bool isRegex);
-        void ReplaceHighlightedText(string replaceText);*/
         void GrabFocus();
         void Activate();
 	}
@@ -54,8 +46,9 @@ namespace MyGeneration
 		public ZeusScintillaControl() : base() 
 		{
             Scintilla.Forms.SearchHelper.Translations.MessageBoxTitle = "MyGeneration";
-            this.SmartIndentingEnabled = true;
+            this.SmartIndentType = SmartIndent.Simple;
             this.GotFocus += new EventHandler(ZeusScintillaControl_GotFocus);
+            this.Configure = MDIParent.ScintillaConfigFile.MasterScintilla.Configure;
         }
 
         void ZeusScintillaControl_GotFocus(object sender, EventArgs e)
@@ -68,95 +61,6 @@ namespace MyGeneration
             FindDialog.Initialize(this);
             ReplaceDialog.Initialize(this);
         }
-
-        #region Adding Shortcuts from Form
-        public override bool PreProcessMessage(ref Message msg)
-        {
-            switch (msg.Msg)
-            {
-                case WM_KEYDOWN:
-                {
-                    if (ignoredKeys.ContainsKey((int)Control.ModifierKeys + (int)msg.WParam))
-                        return base.PreProcessMessage(ref msg);
-                }
-                break;
-            }
-            return false;
-        }
-
-        protected virtual void addShortcuts(Menu m)
-        {
-            foreach (MenuItem mi in m.MenuItems)
-            {
-                if (mi.Shortcut != Shortcut.None)
-                    AddIgnoredKey(mi.Shortcut);
-                if (mi.MenuItems.Count > 0)
-                    addShortcuts(mi);
-            }
-        }
-
-        public virtual void AddShortcutsFromForm(Form parentForm)
-        {
-            if ((parentForm != null) && (parentForm.Menu != null))
-            {
-                addShortcuts(parentForm.Menu);
-            }
-        }
-
-        public virtual void AddIgnoredKey(Shortcut shortcutkey)
-        {
-            int key = (int)shortcutkey;
-            this.ignoredKeys.Add(key, key);
-        }
-
-        public virtual void AddIgnoredKey(System.Windows.Forms.Keys key, System.Windows.Forms.Keys modifier)
-        {
-            this.ignoredKeys.Add((int)key + (int)modifier, (int)key + (int)modifier);
-        }
-#endregion
-
-        private void ZeusScintillaControl_MarginClick(object sender, MarginClickEventArgs e)
-        {
-            /*if (margin == 2)
-            {
-                int line = LineFromPosition();
-                sender.ToggleFold(line);
-            }*/
-        }
-
-
-		/*private void ScintillaControlMarginClick(ScintillaControl sender, int modifiers, int position, int margin)
-		{
-			if(margin == 2)
-			{
-				int line = LineFromPosition(position);    
-				sender.ToggleFold(line);
-			}
-		}*/
-
-		private void EnableFolding()
-		{
-//			//============== folding options....
-//			this.Property("fold", "1");
-//			this.Property("fold.compact", "0");
-//			this.Property("fold.comment", "1");
-//			this.Property("fold.html", "1");
-//
-//			//============== control properties
-//			this.SetMarginTypeN(2, (int) Scintilla.Enums.MarginType.symbol);
-//			this.MarginWidthN(2, 20);
-//		    this.MarginSensitiveN(2, true);
-//
-//			this.SetMarginMaskN(2, -33554431);
-//			this.MarkerDefine((int) MarkerOutline.folderopen, MarkerSymbol.boxminus);
-//			this.MarkerDefine((int) MarkerOutline.folder, MarkerSymbol.boxplus);
-//			this.MarkerDefine((int) MarkerOutline.foldersub, MarkerSymbol.vline);
-//			this.MarkerDefine((int) MarkerOutline.foldertail, MarkerSymbol.lcorner);
-//			this.MarkerDefine((int) MarkerOutline.folderend, MarkerSymbol.boxplusconnected);
-//			this.MarkerDefine((int) MarkerOutline.folderopenmid, MarkerSymbol.boxminusconnected);
-//			this.MarkerDefine((int) MarkerOutline.foldermidtail,MarkerSymbol.tcorner);
-        }
-
 
         public string FontFamilyOverride
         {
@@ -316,279 +220,6 @@ namespace MyGeneration
             this.Focus();
         }
 
-		#region Find/Replace stuff
-		/*public int ReplaceNext(string find, string replace, bool isCaseSensitive, bool isRegex) 
-		{
-            int i = 0;
-			if (FindNextAndHighlight(find, isCaseSensitive, isRegex)) 
-			{
-				ReplaceHighlightedText(replace);
-				++i;
-			}
-			return i;
-		}
-		
-		public int ReplaceAll(string find, string replace, bool isCaseSensitive, bool isRegex) 
-		{
-			int i = 0;
-			int savedPos = this.CurrentPos;
-
-			this.CurrentPos = 0;
-			while (FindNextAndHighlight(find, isCaseSensitive, isRegex)) 
-			{
-				ReplaceHighlightedText(replace);
-				++i;
-			}
-
-			this.CurrentPos = savedPos;
-			this.SelectionStart = savedPos;
-			this.SelectionEnd = savedPos;
-			return i;
-		}
-		
-		public bool FindNextAndHighlight(string find, bool isCaseSensitive, bool isRegex) 
-		{
-			LastSearchIsRegexStatic = isRegex;
-			if (isRegex) 
-			{
-				return FindNextAndHighlightRegex(find, isCaseSensitive);
-			}
-			else 
-			{
-				return FindNextAndHighlight(find, isCaseSensitive);
-			}
-		}
-
-		public void ReplaceHighlightedText(string replaceText) 
-		{
-            if (GetSelectedText().Length > 0) 
-			{
-				int startPos = this.SelectionStart;
-				this.ReplaceSelection(replaceText);
-
-				CurrentPos = startPos + replaceText.Length;
-				SelectionStart = CurrentPos;
-				SelectionEnd   = CurrentPos;
-			}
-		}
-
-		private bool FindNextAndHighlight(string find, bool isCaseSensitive)
-		{
-			if ((find == null) || (find == string.Empty)) return false;
-
-			LastSearchTextStatic = find;
-			LastSearchIsCaseSensitiveStatic = isCaseSensitive;
-
-			int x = -1, y = -1;
-			int visline = this.FirstVisibleLine;;
-			int curLineIndex = this.LineFromPosition( this.CurrentPos );
-			int offset = this.PositionFromLine(curLineIndex);
-			int origPos = this.CurrentPos;
-
-			offset = CurrentPos - offset;
-
-			for (int i = curLineIndex;  i < this.LineCount; i++) 
-			{
-				this.GotoLine(i);
-                string line = this.GetCurLine();// (this.LineLength(i)); //(this.PositionFromLine(i), this.LineLength(i));
-				int index = -1;
-				if (isCaseSensitive) 
-				{
-					index = line.IndexOf(find, offset);
-				}
-				else 
-				{
-					index = line.ToLower().IndexOf(find.ToLower(), offset);
-				}
-
-				if (index >= 0) 
-				{
-					if ( !((curLineIndex == i) && (index < offset)) )
-					{
-						x = index;
-						y = i;
-						break;
-					}
-				}
-				offset = 0;
-			}
-
-			if ((x >= 0) && (y >= 0))
-			{
-                this.GrabFocus();
-				this.GotoLine(y);
-				this.EnsureVisibleEnforcePolicy(y);
-
-				int selStart = this.CurrentPos + x;
-				int selEnd = selStart + find.Length;
-
-				this.CurrentPos = selEnd;
-				this.SelectionStart = selStart;
-				this.SelectionEnd   = selEnd;
-
-				return true;
-			}
-			else 
-			{
-                this.GrabFocus();
-				this.GotoLine(curLineIndex);
-				this.EnsureVisibleEnforcePolicy(visline);
-				
-				this.CurrentPos		= origPos;
-				this.SelectionStart = origPos;
-				this.SelectionEnd   = origPos;
-
-				return false;
-			}
-		}
-
-		private bool FindNextAndHighlightRegex(string regexp, bool isCaseSensitive) 
-		{
-			if ((regexp== null) || (regexp == string.Empty)) return false;
-
-			LastSearchTextStatic = regexp;
-			LastSearchIsCaseSensitiveStatic = isCaseSensitive;
-	
-			try 
-			{
-				RegexOptions reFlags = RegexOptions.Singleline | RegexOptions.Compiled;
-				if (isCaseSensitive) reFlags |= RegexOptions.IgnoreCase;
-				Regex re = new Regex(regexp, reFlags);
-
-				int x = -1, y = -1;
-				int visline = this.FirstVisibleLine;
-				int curLineIndex = this.LineFromPosition( this.CurrentPos );
-				int offset = this.PositionFromLine(curLineIndex);
-				int origPos = this.CurrentPos;
-				int matchLen = -1;
-
-				offset = CurrentPos - offset;
-
-				for (int i = curLineIndex;  i < this.LineCount; i++) 
-				{
-					this.GotoLine(i);
-					string line = this.GetCurLine();//this.LineLength(i)); //(this.PositionFromLine(i), this.LineLength(i));
-					int index = -1;
-					
-					Match match = re.Match(line, offset);
-					if (match.Success) 
-					{
-						index = match.Index;
-						matchLen = match.Length;
-					}
-
-					if (index >= 0) 
-					{
-						if ( !((curLineIndex == i) && (index < offset)) )
-						{
-							x = index;
-							y = i;
-							break;
-						}
-					}
-					offset = 0;
-				}
-
-				if ((x >= 0) && (y >= 0))
-				{
-                    this.GrabFocus();
-					this.GotoLine(y);
-					this.EnsureVisibleEnforcePolicy(y);
-
-					int selStart = this.CurrentPos + x;
-					int selEnd = selStart + matchLen;
-
-					this.CurrentPos = selEnd;
-					this.SelectionStart = selStart;
-					this.SelectionEnd   = selEnd;
-
-					return true;
-				}
-				else 
-				{
-                    this.GrabFocus();
-					this.GotoLine(curLineIndex);
-					this.EnsureVisibleEnforcePolicy(visline);
-				
-					this.CurrentPos		= origPos;
-					this.SelectionStart = origPos;
-					this.SelectionEnd   = origPos;
-
-					return false;
-				}
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message, "Regex Error!");
-				return false;
-			}
-		}*/
-		#endregion
-/*
-		#region Not-so-smart indenting support
-		public void ZeusScintillaControl_CharAdded(ScintillaControl ctrl, int ch)
-		{
-			if(ch == '\n')
-			{
-				int curLine = this.CurrentPos;
-				curLine = this.LineFromPosition(curLine);
-
-				int previousIndent = this.GetLineIndentation(curLine-1);
-				this.IndentLine(curLine, previousIndent);
-			}
-		}
-
-		public void IndentLine(int line, int indent)
-		{
-			if (indent < 0)
-			{
-				return;
-			}
-
-			int selStart = this.SelectionStart;
-			int selEnd = this.SelectionEnd;
-
-			int posBefore = this.LineIndentPosition(line);
-			this.SetLineIndentation(line, indent);
-			int posAfter = LineIndentPosition(line);
-			int posDifference = posAfter - posBefore;
-
-			if (posAfter > posBefore)
-			{
-				// Move selection on
-				if (selStart >= posBefore)
-				{
-					selStart += posDifference;
-				}
-
-				if (selEnd >= posBefore)
-				{
-					selEnd += posDifference;
-				}
-			}
-			else if (posAfter < posBefore)
-			{
-				// Move selection back
-				if (selStart >= posAfter)
-				{
-					if (selStart >= posBefore)
-						selStart += posDifference;
-					else
-						selStart = posAfter;
-				}
-				if (selEnd >= posAfter)
-				{
-					if (selEnd >= posBefore)
-						selEnd += posDifference;
-					else
-						selEnd = posAfter;
-				}
-			}
-
-			this.SetSel(selStart, selEnd);
-		}
-		#endregion
-*/
 		#region Base Scintilla Settings
 		protected void ConfigureBaseSettings() 
 		{
@@ -603,8 +234,8 @@ namespace MyGeneration
 	//		this.CaretLineVisible = false;
 			this.CaretPeriod = 500;
 			this.CaretWidth = 1;
-			this.LegacyConfiguration = null;
-			this.LegacyConfigurationLanguage = "";
+            //this.Configuration = null;
+			this.ConfigurationLanguage = "";
 			this.ControlCharSymbol = 0;
 			this.CurrentPos = 0;
 			this.Cursor_ = -1;
@@ -678,10 +309,8 @@ namespace MyGeneration
 		{
 			this.ConfigureBaseSettings();
 
-			this.LegacyConfiguration = MDIParent.scintillaXmlConfig.scintilla;
-			this.LegacyConfigurationLanguage = "C#";
-
-			this.EnableFolding();
+            this.ConfigurationLanguage = "C#";
+			//this.LegacyConfigurationLanguage = "C#";
 		}
 		#endregion
 
@@ -689,13 +318,12 @@ namespace MyGeneration
 		protected void ConfigureControlForVBNet()
 		{
 			this.ConfigureBaseSettings();
-
-			this.LegacyConfiguration = MDIParent.scintillaXmlConfig.scintilla;
-			this.LegacyConfigurationLanguage = "VB.Net";
+			//this.LegacyConfiguration = MDIParent.scintillaXmlConfig.scintilla;
+			this.ConfigurationLanguage = "VB.Net";
 
 			this.CaretFore = 0xffffff;
 
-		//	this.EnableFolding();
+            
 		}
 		#endregion
 
@@ -704,10 +332,10 @@ namespace MyGeneration
 		{
 			this.ConfigureBaseSettings();
 
-			this.LegacyConfiguration = MDIParent.scintillaXmlConfig.scintilla;
-			this.LegacyConfigurationLanguage = "PHP";
+			//this.LegacyConfiguration = MDIParent.scintillaXmlConfig.scintilla;
+			this.ConfigurationLanguage = "PHP";
 
-		//	this.EnableFolding();
+            
 		}
 		#endregion
 		
@@ -716,10 +344,10 @@ namespace MyGeneration
 		{
 			this.ConfigureBaseSettings();
 
-			this.LegacyConfiguration = MDIParent.scintillaXmlConfig.scintilla;
-			this.LegacyConfigurationLanguage = "JScript";
+			//this.LegacyConfiguration = MDIParent.scintillaXmlConfig.scintilla;
+			this.ConfigurationLanguage = "JScript";
 
-			this.EnableFolding();
+            
 		}
 		#endregion
 
@@ -728,10 +356,10 @@ namespace MyGeneration
 		{
 			this.ConfigureBaseSettings();
 
-			this.LegacyConfiguration = MDIParent.scintillaXmlConfig.scintilla;
-			this.LegacyConfigurationLanguage = "VBScript";
+			//this.LegacyConfiguration = MDIParent.scintillaXmlConfig.scintilla;
+			this.ConfigurationLanguage = "VBScript";
 
-			this.EnableFolding();
+            
 		}
 		#endregion
 
@@ -739,8 +367,8 @@ namespace MyGeneration
 		protected void ConfigureControlForMSSQL()
 		{
 			this.ConfigureBaseSettings();
-			this.LegacyConfiguration = MDIParent.scintillaXmlConfig.scintilla;
-			this.LegacyConfigurationLanguage = "MSSQL";
+			//this.LegacyConfiguration = MDIParent.scintillaXmlConfig.scintilla;
+			this.ConfigurationLanguage = "MSSQL";
 		}
 		#endregion
 		
@@ -748,8 +376,8 @@ namespace MyGeneration
 		protected void ConfigureControlForSQL()
 		{
 			this.ConfigureBaseSettings();
-			this.LegacyConfiguration = MDIParent.scintillaXmlConfig.scintilla;
-			this.LegacyConfigurationLanguage = "SQL";
+			//this.LegacyConfiguration = MDIParent.scintillaXmlConfig.scintilla;
+			this.ConfigurationLanguage = "SQL";
 		}
 		#endregion
 
@@ -757,8 +385,10 @@ namespace MyGeneration
 		protected void ConfigureControlForJetSQL()
 		{
 			this.ConfigureBaseSettings();
-			this.LegacyConfiguration = MDIParent.scintillaXmlConfig.scintilla;
-			this.LegacyConfigurationLanguage = "JetSQL";
+			//this.LegacyConfiguration = MDIParent.scintillaXmlConfig.scintilla;
+			this.ConfigurationLanguage = "JetSQL";
+
+            
 		}
 		#endregion
 
@@ -767,8 +397,10 @@ namespace MyGeneration
 		{
 			this.ConfigureBaseSettings();
 
-			this.LegacyConfiguration = MDIParent.scintillaXmlConfig.scintilla;
-			this.LegacyConfigurationLanguage = "TaggedC#";
+			//this.LegacyConfiguration = MDIParent.scintillaXmlConfig.scintilla;
+			this.ConfigurationLanguage = "TaggedC#";
+
+            
 		}
 		#endregion
 
@@ -777,8 +409,9 @@ namespace MyGeneration
 		{
 			this.ConfigureBaseSettings();
 
-			this.LegacyConfiguration = MDIParent.scintillaXmlConfig.scintilla;
-			this.LegacyConfigurationLanguage = "TaggedJScript";
+			//this.LegacyConfiguration = MDIParent.scintillaXmlConfig.scintilla;
+            this.ConfigurationLanguage = "TaggedJScript";
+            
 		}
 		#endregion
 
@@ -787,10 +420,11 @@ namespace MyGeneration
 		{
 			this.ConfigureBaseSettings();
 
-			this.LegacyConfiguration = MDIParent.scintillaXmlConfig.scintilla;
-			this.LegacyConfigurationLanguage = "TaggedVBScript";
+			//this.LegacyConfiguration = MDIParent.scintillaXmlConfig.scintilla;
+			this.ConfigurationLanguage = "TaggedVBScript";
 
-			this.CaretFore = 0x000000;
+            this.CaretFore = 0x000000;
+            
 		}
 		#endregion
 
@@ -799,10 +433,11 @@ namespace MyGeneration
 		{
 			this.ConfigureBaseSettings();
 
-			this.LegacyConfiguration = MDIParent.scintillaXmlConfig.scintilla;
-			this.LegacyConfigurationLanguage = "TaggedVB.Net";
+			//this.LegacyConfiguration = MDIParent.scintillaXmlConfig.scintilla;
+			this.ConfigurationLanguage = "TaggedVB.Net";
 
-			this.CaretFore = 0x000000;
+            this.CaretFore = 0x000000;
+            
 		}
 		#endregion
 	}

@@ -9,7 +9,7 @@ namespace MyGeneration.Configuration
 	/// Summary description for option.
 	/// </summary>
 	[Serializable]
-    public class option : Scintilla.Legacy.Configuration.ConfigItem 
+    public class option : Scintilla.Configuration.Legacy.ConfigItem 
 	{
 		[XmlAttributeAttribute]
 		public string name;

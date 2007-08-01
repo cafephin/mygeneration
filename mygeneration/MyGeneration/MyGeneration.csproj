@@ -86,10 +86,6 @@
       <Name>CollapsibleSplitter</Name>
       <HintPath>CollapsableSplitter\CollapsibleSplitter.dll</HintPath>
     </Reference>
-    <Reference Include="ScintillaNET">
-      <Name>ScintillaNET</Name>
-      <HintPath>ScintillaNET\ScintillaNET.dll</HintPath>
-    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -124,6 +120,10 @@
       <Name>DotNetScriptingEngine</Name>
       <Project>{497C072A-648D-4EF9-B5EC-71895D182018}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\..\scintilla\ScintillaNET\ScintillaNET.csproj">
+      <Project>{F9B6DABD-BBC1-4638-8CE6-A5C9506BFDCB}</Project>
+      <Name>ScintillaNET</Name>
     </ProjectReference>
     <ProjectReference Include="..\EngineInterface\PluginInterfaces.csproj">
       <Name>PluginInterfaces</Name>
@@ -240,6 +240,7 @@
     <Compile Include="GridLayoutHelper.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="IMyGenerationMDI.cs" />
     <Compile Include="MDIParent.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -256,12 +257,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="ScintillaNET\MyGeneration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ScintillaNET\option.cs">
-      <SubType>Code</SubType>
     </Compile>
     <Compile Include="TemplateForms\TemplateEditor.cs">
       <SubType>Form</SubType>
@@ -526,13 +521,6 @@
     <Content Include="Images\TreeView\tables.bmp" />
     <Content Include="Images\TreeView\view.bmp" />
     <Content Include="Images\TreeView\views.bmp" />
-    <Content Include="SciLexer.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ScintillaNET\ScintillaNET.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ScintillaNET\SlickControls.dll" />
     <Content Include="Settings\DbTargets.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

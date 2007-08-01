@@ -6,7 +6,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
 
-using WeifenLuo.WinFormsUI;
+using WeifenLuo.WinFormsUI.Docking;
 
 using MyMeta;
 
@@ -17,7 +17,8 @@ namespace MyGeneration
 	/// Summary description for GlobalUserMetaData.
 	/// </summary>
 	public class GlobalUserMetaData : BaseWindow
-	{
+    {
+        private IMyGenerationMDI mdi;
 		private System.Windows.Forms.ToolBarButton toolBarButton_Save;
 		private System.Windows.Forms.ImageList imageList1;
 		private System.Windows.Forms.ToolBar toolBar1;
@@ -29,11 +30,12 @@ namespace MyGeneration
 
 		private Type stringType = Type.GetType("System.String");
 
-		public GlobalUserMetaData()
+        public GlobalUserMetaData(IMyGenerationMDI mdi)
 		{
 			InitializeComponent();
 
-			this.ShowHint = WeifenLuo.WinFormsUI.DockState.DockRight;
+            this.mdi = mdi;
+			this.ShowHint = DockState.DockRight;
 
 			DefaultSettings settings = new DefaultSettings();
 			this.UserMetaDataFileName = settings.UserMetaDataFileName;
@@ -262,13 +264,13 @@ namespace MyGeneration
 			this.ClientSize = new System.Drawing.Size(776, 1002);
 			this.Controls.Add(this.Grid);
 			this.Controls.Add(this.toolBar1);
-			this.DockableAreas = ((WeifenLuo.WinFormsUI.DockAreas)(((((WeifenLuo.WinFormsUI.DockAreas.Float | WeifenLuo.WinFormsUI.DockAreas.DockLeft) 
-				| WeifenLuo.WinFormsUI.DockAreas.DockRight) 
-				| WeifenLuo.WinFormsUI.DockAreas.DockTop) 
-				| WeifenLuo.WinFormsUI.DockAreas.DockBottom)));
+			this.DockAreas = ((DockAreas)(((((DockAreas.Float | DockAreas.DockLeft) 
+				| DockAreas.DockRight) 
+				| DockAreas.DockTop) 
+				| DockAreas.DockBottom)));
 			this.HideOnClose = true;
 			this.Name = "GlobalUserMetaData";
-			this.ShowHint = WeifenLuo.WinFormsUI.DockState.DockRight;
+			this.ShowHint = DockState.DockRight;
 			this.Text = "Global User Meta Data";
 			this.Load += new System.EventHandler(this.GlobalUserMetaData_Load);
 			((System.ComponentModel.ISupportInitialize)(this.Grid)).EndInit();

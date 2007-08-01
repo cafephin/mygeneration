@@ -13,7 +13,7 @@ using Zeus.UserInterface;
 using Zeus.UserInterface.WinForms;
 
 using MyMeta;
-using WeifenLuo.WinFormsUI;
+using WeifenLuo.WinFormsUI.Docking;
 using Scintilla;
 
 namespace MyGeneration.TemplateForms
@@ -27,7 +27,9 @@ namespace MyGeneration.TemplateForms
 		public const int DEFAULT_OPEN_FILE_TYPE_INDEX = 5;
 		public const int DEFAULT_SAVE_FILE_TYPE_INDEX = 4;
 
-		private System.Windows.Forms.ToolBar toolBar1;
+
+        private IMyGenerationMDI mdi; 
+        private System.Windows.Forms.ToolBar toolBar1;
 		
 		private ZeusScintillaControl scintillaTemplateCode = null;
 		private ZeusScintillaControl scintillaGUICode = null;
@@ -126,33 +128,35 @@ namespace MyGeneration.TemplateForms
         private MenuItem menuItemFindNext;
 		private ZeusTemplate _template;
 
-		public TemplateEditor()
+		public TemplateEditor(IMyGenerationMDI mdi)
 		{
 			//
 			// Required for Windows Form Designer support
 			//
 			InitializeComponent();
 
+            this.mdi = mdi;
 			this.panelProperties.VisibleChanged += new EventHandler(panel_ToggleVisibility);
 			this.panelConsole.VisibleChanged += new EventHandler(panel_ToggleVisibility);
 
             
             // Create Scintilla Code controls for editing the template
             scintillaTemplateCode = new ZeusScintillaControl();
-            scintillaTemplateCode.AddShortcutsFromForm(this);
+            //scintillaTemplateCode.AddShortcutsFromForm(this);
+            scintillaTemplateCode.AddShortcuts(this);
             scintillaTemplateCode.InitializeFindReplace();
 
 			scintillaGUICode = new ZeusScintillaControl();
-			scintillaGUICode.AddShortcutsFromForm(this);
+            scintillaGUICode.AddShortcuts(this);
 
 			scintillaTemplateSource = new ZeusScintillaControl();
-			scintillaTemplateSource.AddShortcutsFromForm(this);
+            scintillaTemplateSource.AddShortcuts(this);
 
 			scintillaGuiSource = new ZeusScintillaControl();
-			scintillaGuiSource.AddShortcutsFromForm(this);
+            scintillaGuiSource.AddShortcuts(this);
 
 			scintillaOutput = new ZeusScintillaControl();
-			scintillaOutput.AddShortcutsFromForm(this);
+            scintillaOutput.AddShortcuts(this);
 
             DefaultSettings settings = new DefaultSettings();
             this.SetCodePageOverride(settings.CodePage);

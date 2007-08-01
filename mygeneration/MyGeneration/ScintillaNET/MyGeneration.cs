@@ -8,15 +8,15 @@ namespace MyGeneration.Configuration
 	/// Summary description for ScNotepad.
 	/// </summary>
 	[Serializable]
-    public class MyGeneration : Scintilla.Legacy.Configuration.ConfigFile 
+    public class MyGeneration : Scintilla.Configuration.Legacy.ConfigFile 
 	{
 		[XmlArray("options"),XmlArrayItem("option")]
 		public option[] options; 
 
 		[XmlElement(ElementName = "Scintilla")]
-		public Scintilla.Legacy.Configuration.Scintilla  scintilla;
+        public Scintilla.Configuration.Legacy.Scintilla scintilla;
 
-        public override void init(Scintilla.Legacy.Configuration.ConfigurationUtility utility, Scintilla.Legacy.Configuration.ConfigFile theParent)
+        public override void init(Scintilla.Configuration.Legacy.ConfigurationUtility utility, Scintilla.Configuration.Legacy.ConfigFile theParent)
 		{
 			base.init (utility, theParent);
 
@@ -24,13 +24,13 @@ namespace MyGeneration.Configuration
 			// 'cause after we've loaded all the dependant children, we gotta tell the scintilla
 			// object who they are.
 			if( theParent == null && scintilla == null )
-				scintilla  = new Scintilla.Legacy.Configuration.Scintilla();
+				scintilla  = new Scintilla.Configuration.Legacy.Scintilla();
 
 			if( scintilla != null )
 				scintilla.init( utility, _parent );
 		}
 
-        protected override Scintilla.Legacy.Configuration.Scintilla ChildScintilla
+        protected override Scintilla.Configuration.Legacy.Scintilla ChildScintilla
 		{
 			get
 			{
@@ -46,8 +46,8 @@ namespace MyGeneration.Configuration
 				MyGeneration result = new MyGeneration();
 				result._parent = null;
 				result.filename = "filename.txt";
-				result.includes = new Scintilla.Legacy.Configuration.include[1];
-				result.includes[0] = new Scintilla.Legacy.Configuration.include();
+				result.includes = new Scintilla.Configuration.Legacy.include[1];
+				result.includes[0] = new Scintilla.Configuration.Legacy.include();
 				result.includes[0].file = "sample.xml";
 
 				result.options = new option[2];
@@ -58,14 +58,14 @@ namespace MyGeneration.Configuration
 				result.options[1].name="name2";
 				result.options[1].val="val2";
 				
-				result.scintilla = new Scintilla.Legacy.Configuration.Scintilla();
-				result.scintilla.globals = new Scintilla.Legacy.Configuration.Value[1];
-				result.scintilla.globals[0] = new Scintilla.Legacy.Configuration.Value();
+				result.scintilla = new Scintilla.Configuration.Legacy.Scintilla();
+				result.scintilla.globals = new Scintilla.Configuration.Legacy.Value[1];
+				result.scintilla.globals[0] = new Scintilla.Configuration.Legacy.Value();
 				result.scintilla.globals[0].name = "test";
 				result.scintilla.globals[0].val = "val";
 				
-				result.scintilla.includes = new Scintilla.Legacy.Configuration.include[1];
-				result.scintilla.includes[0] = new Scintilla.Legacy.Configuration.include();
+				result.scintilla.includes = new Scintilla.Configuration.Legacy.include[1];
+				result.scintilla.includes[0] = new Scintilla.Configuration.Legacy.include();
 				result.scintilla.includes[0].file = "xml.test";
 
 				System.Xml.Serialization.XmlSerializer mySerializer = new System.Xml.Serialization.XmlSerializer(typeof(MyGeneration));

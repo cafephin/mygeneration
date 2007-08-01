@@ -10,7 +10,7 @@ using System.Diagnostics;
 using System.Net;
 using Microsoft.Win32;
 
-using WeifenLuo.WinFormsUI;
+using WeifenLuo.WinFormsUI.Docking;
 
 using Zeus;
 using Zeus.ScriptModel;
@@ -20,6 +20,10 @@ using Zeus.UserInterface;
 using Zeus.UserInterface.WinForms;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using Scintilla;
+using Scintilla.Forms;
+using Scintilla.Configuration;
+using Scintilla.Configuration.Legacy;
 
 using MyGeneration.TemplateForms;
 using MyGeneration.com.mygenerationsoftware.www;
@@ -29,7 +33,7 @@ namespace MyGeneration
     /// <summary>
     /// Summary description for Form1.
     /// </summary>
-    public class MDIParent : System.Windows.Forms.Form
+    public class MDIParent : System.Windows.Forms.Form, IMyGenerationMDI
     {
         [DllImportAttribute("kernel32.dll", EntryPoint = "SetProcessWorkingSetSize", ExactSpelling = true, CharSet = CharSet.Ansi, SetLastError = true)]
         private static extern int SetProcessWorkingSetSize(IntPtr process, int minimumWorkingSetSize, int maximumWorkingSetSize);
@@ -47,12 +51,12 @@ namespace MyGeneration
         private string[] validProjectExtentions = new string[] { ".zprj" };
 
         // Dockable Windows
-        private LanguageMappings languageMappings = new LanguageMappings();
-        private DbTargetMappings dbTargetMappings = new DbTargetMappings();
-        private MetaDataBrowser metaDataBrowser = new MetaDataBrowser();
-        private UserMetaData userMetaData = new UserMetaData();
-        private GlobalUserMetaData globalUserMetaData = new GlobalUserMetaData();
-        public MetaProperties metaProperties = new MetaProperties();
+        private LanguageMappings languageMappings;
+        private DbTargetMappings dbTargetMappings;
+        private MetaDataBrowser metaDataBrowser;
+        private UserMetaData userMetaData;
+        private GlobalUserMetaData globalUserMetaData;
+        public MetaProperties metaProperties;
 
         private TemplateBrowser _templateBrowser;
         //private SimpleFindReplace _findDialog = null;
@@ -62,7 +66,7 @@ namespace MyGeneration
         private System.Windows.Forms.MenuItem menuItem9;
         private System.Windows.Forms.MenuItem menuItem10;
 
-        internal static Configuration.MyGeneration scintillaXmlConfig = null;
+        //internal static Configuration.MyGeneration configFile = null;
         private System.Windows.Forms.StatusBar statusBar;
         private System.Windows.Forms.MenuItem menuItem4;
         private System.ComponentModel.IContainer components;
@@ -85,7 +89,7 @@ namespace MyGeneration
         private System.Windows.Forms.ToolBarButton toolBarButton2;
         private System.Windows.Forms.ToolBarButton toolBarButton_newVBTemplate;
         private System.Windows.Forms.ToolBarButton toolBarButton_newJavaTemplate;
-        private WeifenLuo.WinFormsUI.DockPanel dockManager;
+        private DockPanel dockManager;
         private System.Windows.Forms.ToolBarButton toolBarButton_LanguageMappings;
         private System.Windows.Forms.ToolBarButton toolBarButton_DbTargetMappings;
         private System.Windows.Forms.ToolBarButton toolBarButton_MetaBrowser;
@@ -135,6 +139,15 @@ namespace MyGeneration
         private System.Windows.Forms.MenuItem menuItemDnpUtils;
         bool webServiceError = false;
 
+        
+        private FindForm findDialog = new FindForm();
+        private ReplaceForm replaceDialog = new ReplaceForm();
+        private ScintillaConfigureDelegate configureDelegate;
+
+        private static ConfigFile configFile;
+
+        public static ConfigFile ScintillaConfigFile { get { return configFile; } }
+
         /// <summary>
         /// The main entry point for the application. Set the global application exception handlers here and load up the parent form.
         /// </summary>
@@ -159,6 +172,13 @@ namespace MyGeneration
         public MDIParent(string startupPath, params string[] args)
         {
             DefaultSettings settings = new DefaultSettings();
+            languageMappings = new LanguageMappings(this);
+            dbTargetMappings = new DbTargetMappings(this);
+       metaDataBrowser = new MetaDataBrowser(this);
+        userMetaData = new UserMetaData(this);
+        globalUserMetaData = new GlobalUserMetaData(this);
+        metaProperties = new MetaProperties(this);
+
 
             //Any files that were locked when the TemplateLibrary downloaded and tried to replace them will be replaced now.
             ProcessReplacementFiles();
@@ -172,48 +192,45 @@ namespace MyGeneration
 
             this.startupPath = startupPath;
 
-            Configuration.MyGeneration x = Configuration.MyGeneration.PopulatedObject;
-            Scintilla.Legacy.Configuration.ConfigurationUtility cu = new Scintilla.Legacy.Configuration.ConfigurationUtility(GetType().Module.Assembly);
+            //Configuration.MyGeneration x = Configuration.MyGeneration.PopulatedObject;
+            Scintilla.Configuration.Legacy.ConfigurationUtility cu = new Scintilla.Configuration.Legacy.ConfigurationUtility();
 
             // If the file doesn't exist, create it.
-            FileInfo scintillaConfigFile = new FileInfo(startupPath + @"\settings\MyGeneration.xml");
-            if (!scintillaConfigFile.Exists)
+            FileInfo scintillaConfigFile = new FileInfo(startupPath + @"\settings\ScintillaNET.xml");
+            if (scintillaConfigFile.Exists)
             {
-                File.WriteAllText(scintillaConfigFile.FullName,
-@"<?xml version=""1.0"" ?>
-<MyGeneration xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
-  <options/>
-  <Scintilla>
-    <includes>
-      <include file=""ScintillaNET.xml"" />
-    </includes>
-    <globals/>
-  </Scintilla>
-</MyGeneration>");
+                //TODO: Retry this with a copy of the file until we can upgrade Scintilla.Net with a fix.
+                int maxTries = 3;
+                while (maxTries > 0)
+                {
+                    try
+                    {
+                        //ConfigFile cf = new ConfigFile();
+                        configFile = cu.LoadConfiguration(scintillaConfigFile.FullName) as ConfigFile;
+                        //cf.
+                        //object o = cu.LoadConfiguration(typeof(Configuration.MyGeneration), scintillaConfigFile.FullName);
+                        //configFile = o as Configuration.;
+                        //configFile.CollectScintillaNodes(null);
+                        break;
+                    }
+                    catch
+                    {
+                        if (--maxTries == 1)
+                        {
+                            File.Copy(scintillaConfigFile.FullName, scintillaConfigFile.FullName + ".tmp", true);
+                            scintillaConfigFile = new FileInfo(scintillaConfigFile.FullName + ".tmp");
+                        }
+                        else
+                        {
+                            System.Threading.Thread.Sleep(10);
+                        }
+                    }
+                }
             }
 
-            //TODO: Retry this with a copy of the file until we can upgrade Scintilla.Net with a fix.
-            int maxTries = 3;
-            while (maxTries > 0)
+            if (configFile != null)
             {
-                try
-                {
-                    scintillaXmlConfig = (Configuration.MyGeneration)cu.LoadConfiguration(typeof(Configuration.MyGeneration), scintillaConfigFile.FullName);
-                    scintillaXmlConfig.CollectScintillaNodes(null);
-                    break;
-                }
-                catch
-                {
-                    if (--maxTries == 1)
-                    {
-                        File.Copy(scintillaConfigFile.FullName, scintillaConfigFile.FullName + ".tmp", true);
-                        scintillaConfigFile = new FileInfo(scintillaConfigFile.FullName + ".tmp");
-                    }
-                    else
-                    {
-                        System.Threading.Thread.Sleep(10);
-                    }
-                }
+                configureDelegate = configFile.MasterScintilla.Configure;
             }
 
             this.IsMdiContainer = true;
@@ -314,7 +331,7 @@ namespace MyGeneration
             this.toolBarButton_UserData = new System.Windows.Forms.ToolBarButton();
             this.toolBarButton_GlobalUserData = new System.Windows.Forms.ToolBarButton();
             this.toolbarImages = new System.Windows.Forms.ImageList(this.components);
-            this.dockManager = new WeifenLuo.WinFormsUI.DockPanel();
+            this.dockManager = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.menuItem13 = new System.Windows.Forms.MenuItem();
             this.menuItemDnpUtils = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.statusRow)).BeginInit();
@@ -1426,7 +1443,7 @@ namespace MyGeneration
         #region Template Editor Helper Methods
         private TemplateEditor OpenTemplateEditor(string engine, string language)
         {
-            TemplateEditor template = new TemplateEditor();
+            TemplateEditor template = new TemplateEditor(this);
             template.FileNew("ENGINE", engine, "LANGUAGE", language);
             template.ShowCatchingErrors(dockManager);
             return template;
@@ -1434,7 +1451,7 @@ namespace MyGeneration
 
         private TemplateEditor OpenTemplateEditor()
         {
-            TemplateEditor edit = new TemplateEditor();
+            TemplateEditor edit = new TemplateEditor(this);
             edit.FileNew("ENGINE", ZeusConstants.Engines.DOT_NET_SCRIPT, "LANGUAGE", ZeusConstants.Languages.CSHARP);
             edit.ShowCatchingErrors(dockManager);
             return edit;
@@ -1450,7 +1467,7 @@ namespace MyGeneration
 
                 if (!isopen)
                 {
-                    edit = new TemplateEditor();
+                    edit = new TemplateEditor(this);
                     edit.FileOpen(filename);
                     edit.ShowCatchingErrors(dockManager);
                 }
@@ -1506,7 +1523,7 @@ namespace MyGeneration
 
                             if (File.Exists(filename))
                             {
-                                editor = new TemplateEditor();
+                                editor = new TemplateEditor(this);
                                 editor.FileOpen(filename);
                                 editor.ShowCatchingErrors(dockManager);
                             }
@@ -1631,7 +1648,7 @@ namespace MyGeneration
 
         private ProjectBrowser OpenProjectEditor()
         {
-            ProjectBrowser proj = new ProjectBrowser();
+            ProjectBrowser proj = new ProjectBrowser(this);
             proj.CreateNewProject();
             proj.ShowCatchingErrors(dockManager);
 
@@ -1646,7 +1663,7 @@ namespace MyGeneration
 
             if (!isopen)
             {
-                proj = new ProjectBrowser();
+                proj = new ProjectBrowser(this);
                 proj.LoadProject(filename);
                 proj.ShowCatchingErrors(dockManager);
             }
@@ -1786,6 +1803,26 @@ namespace MyGeneration
             }
         }
 
+        public FindForm FindDialog
+        {
+            get { return findDialog; }
+        }
+
+        public ReplaceForm ReplaceDialog
+        {
+            get { return replaceDialog; }
+        }
+
+        public ScintillaConfigureDelegate ConfigureDelegate
+        {
+            get { return configureDelegate; }
+        }
+
+        public DockPanel DockPanel
+        {
+            get { return this.dockManager; }
+        }
+
         protected void MDIChildActivated(object sender, System.EventArgs e)
         {
             if (null == this.ActiveMdiChild)
@@ -1810,7 +1847,7 @@ namespace MyGeneration
             {
                 if (_templateBrowser == null)
                 {
-                    _templateBrowser = new TemplateBrowser();
+                    _templateBrowser = new TemplateBrowser(this);
                     this._templateBrowser.TemplateOpen += new EventHandler(templateBrowser_TemplateOpen);
                     this._templateBrowser.TemplateUpdate += new EventHandler(templateBrowser_TemplateUpdate);
                     this._templateBrowser.TemplateDelete += new EventHandler(templateBrowser_TemplateDelete);

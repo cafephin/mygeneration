@@ -8,6 +8,7 @@ using System.Text;
 
 using Zeus.Templates;
 using MyMeta;
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace MyGeneration
 {
@@ -153,7 +154,7 @@ namespace MyGeneration
 			Assembly asmblyPlugins = System.Reflection.Assembly.GetAssembly(typeof(Zeus.IZeusCodeSegment));
 			Assembly asmblyMyMeta = System.Reflection.Assembly.GetAssembly(typeof(MyMeta.Database));
 			Assembly asmblyScintilla = System.Reflection.Assembly.GetAssembly(typeof(Scintilla.ScintillaControl));
-			Assembly asmblyWinFormsUI = System.Reflection.Assembly.GetAssembly(typeof(WeifenLuo.WinFormsUI.DockContent));
+			Assembly asmblyWinFormsUI = System.Reflection.Assembly.GetAssembly(typeof(DockContent));
 
 			lstBoxProducts.Items.Add("MyGeneration".PadRight(29) + asmblyMyGen.GetName().Version.ToString());
 			lstBoxProducts.Items.Add("MyMeta".PadRight(29) + asmblyMyMeta.GetName().Version.ToString());

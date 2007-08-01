@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
-
+using WeifenLuo.WinFormsUI.Docking;
 using Zeus;
 using Zeus.UserInterface;
 using Zeus.UserInterface.WinForms;
@@ -23,6 +23,7 @@ namespace MyGeneration
 		private const int INDEX_CLOSED_FOLDER = 3;
 		private const int INDEX_OPEN_FOLDER = 4;
 
+        private IMyGenerationMDI mdi;
 		private System.Windows.Forms.ToolBar toolBarToolbar;
 		private System.Windows.Forms.ToolBarButton toolBarButtonOpen;
 		private System.Windows.Forms.ToolBarButton toolBarSeparator2;
@@ -49,12 +50,13 @@ namespace MyGeneration
 		private System.Windows.Forms.MenuItem menuItemCompileAs;
 		private WebTemplateLibrary templateLibrary;
 
-		public TemplateBrowser()
+        public TemplateBrowser(IMyGenerationMDI mdi)
 		{
 			//
 			// Required for Windows Form Designer support
 			//
-			InitializeComponent();
+            InitializeComponent();
+            this.mdi = mdi;
 
 			treeViewTemplates.MouseDown += new System.Windows.Forms.MouseEventHandler(this.treeViewTemplates_MouseDown);
 			treeViewTemplates.DoubleClick += new System.EventHandler(this.treeViewTemplates_OnDoubleClick);
@@ -385,14 +387,14 @@ namespace MyGeneration
 			this.ControlBox = false;
 			this.Controls.Add(this.treeViewTemplates);
 			this.Controls.Add(this.toolBarToolbar);
-			this.DockableAreas = ((WeifenLuo.WinFormsUI.DockAreas)(((((WeifenLuo.WinFormsUI.DockAreas.Float | WeifenLuo.WinFormsUI.DockAreas.DockLeft) 
-				| WeifenLuo.WinFormsUI.DockAreas.DockRight) 
-				| WeifenLuo.WinFormsUI.DockAreas.DockTop) 
-				| WeifenLuo.WinFormsUI.DockAreas.DockBottom)));
+			this.DockAreas = ((DockAreas)(((((DockAreas.Float | DockAreas.DockLeft) 
+				| DockAreas.DockRight) 
+				| DockAreas.DockTop) 
+				| DockAreas.DockBottom)));
 			this.HideOnClose = true;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "TemplateBrowser";
-			this.ShowHint = WeifenLuo.WinFormsUI.DockState.DockLeft;
+			this.ShowHint = DockState.DockLeft;
 			this.Text = "Template Browser";
 			this.MouseLeave += new System.EventHandler(this.TemplateBrowser_MouseLeave);
 			this.ResumeLayout(false);

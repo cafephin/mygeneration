@@ -11,7 +11,7 @@ using System.Windows.Forms;
 using ADODB;
 using MSDASC;
 
-using WeifenLuo.WinFormsUI;
+using WeifenLuo.WinFormsUI.Docking;
 
 using MyMeta;
 
@@ -84,6 +84,7 @@ namespace MyGeneration
         }
         #endregion
 
+        private IMyGenerationMDI mdi;
         private System.Windows.Forms.ToolBar toolBar1;
 		private System.Windows.Forms.ImageList ToolbarImageList;
 		private System.ComponentModel.IContainer components;
@@ -97,10 +98,11 @@ namespace MyGeneration
 		private System.Windows.Forms.ToolBarButton toolBarButton2;
 
 
-		public MetaDataBrowser()
+        public MetaDataBrowser(IMyGenerationMDI mdi)
 		{
-			InitializeComponent();
-			this.ShowHint = WeifenLuo.WinFormsUI.DockState.DockLeft;
+            InitializeComponent();
+            this.mdi = mdi;
+			this.ShowHint = DockState.DockLeft;
 		}
 
 
@@ -245,10 +247,10 @@ namespace MyGeneration
             this.Controls.Add(this.MyTree);
             this.Controls.Add(this.toolBar1);
             this.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.DockableAreas = ((WeifenLuo.WinFormsUI.DockAreas)(((((WeifenLuo.WinFormsUI.DockAreas.Float | WeifenLuo.WinFormsUI.DockAreas.DockLeft)
-                        | WeifenLuo.WinFormsUI.DockAreas.DockRight)
-                        | WeifenLuo.WinFormsUI.DockAreas.DockTop)
-                        | WeifenLuo.WinFormsUI.DockAreas.DockBottom)));
+            this.DockAreas = ((DockAreas)(((((DockAreas.Float | DockAreas.DockLeft)
+                        | DockAreas.DockRight)
+                        | DockAreas.DockTop)
+                        | DockAreas.DockBottom)));
             this.HideOnClose = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MetaDataBrowser";

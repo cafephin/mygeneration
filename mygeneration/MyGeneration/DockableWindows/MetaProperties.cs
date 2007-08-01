@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Diagnostics;
 
-using WeifenLuo.WinFormsUI;
+using WeifenLuo.WinFormsUI.Docking;
 
 using MyMeta;
 
@@ -16,7 +16,8 @@ namespace MyGeneration
 	/// Summary description for MetaProperties.
 	/// </summary>
 	public class MetaProperties : BaseWindow
-	{
+    {
+        private IMyGenerationMDI mdi;
 		private System.Windows.Forms.DataGrid Grid;
 		private System.Windows.Forms.DataGridTableStyle MyStyle;
 
@@ -34,15 +35,16 @@ namespace MyGeneration
 		/// </summary>
 		private System.ComponentModel.Container components = null;
 
-		public MetaProperties()
+        public MetaProperties(IMyGenerationMDI mdi)
 		{
 			emptyTable = new DataTable("MyData");
 
 			emptyTable.Columns.Add("Property", stringType);
 			emptyTable.Columns.Add("Value", stringType);
 
-			InitializeComponent();
-			this.ShowHint = WeifenLuo.WinFormsUI.DockState.DockRight;
+            InitializeComponent();
+            this.mdi = mdi;
+			this.ShowHint = DockState.DockRight;
 		}
 
 		/// <summary>
@@ -148,10 +150,10 @@ namespace MyGeneration
 			// 
 			// MetaProperties
 			// 
-			this.DockableAreas = ((WeifenLuo.WinFormsUI.DockAreas)(((((WeifenLuo.WinFormsUI.DockAreas.Float | WeifenLuo.WinFormsUI.DockAreas.DockLeft) 
-				| WeifenLuo.WinFormsUI.DockAreas.DockRight) 
-				| WeifenLuo.WinFormsUI.DockAreas.DockTop) 
-				| WeifenLuo.WinFormsUI.DockAreas.DockBottom)));
+			this.DockAreas = ((DockAreas)(((((DockAreas.Float | DockAreas.DockLeft) 
+				| DockAreas.DockRight) 
+				| DockAreas.DockTop) 
+				| DockAreas.DockBottom)));
 			this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
 			this.AutoScroll = true;
 			this.BackColor = System.Drawing.Color.Wheat;
@@ -162,7 +164,7 @@ namespace MyGeneration
 			this.HideOnClose = true;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "MetaProperties";
-			this.ShowHint = WeifenLuo.WinFormsUI.DockState.DockRight;
+			this.ShowHint = DockState.DockRight;
 			this.Text = "MyMeta Properties";
 			this.ToolTipText = "MyMeta Properties";
 			this.Load += new System.EventHandler(this.MetaProperties_Load);
