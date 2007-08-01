@@ -47,7 +47,7 @@ namespace MyGeneration
 
         private void AboutBoxLogo_MouseUp(object sender, MouseEventArgs e)
         {
-            pics.Add(new Rectangle(e.Location.X, 0, 40, 49));
+            pics.Add(new Rectangle(e.Location.X, 0, 4, 5));
             picindeces.Add(rand.Next(images.Count));
         }
 
@@ -126,7 +126,10 @@ namespace MyGeneration
                 }
                 else
                 {
-                    r.Y = r.Y + 2;
+                    r.Y = r.Y + 1;
+                    r.X = r.X - 1;
+                    r.Width = r.Width + 2;
+                    r.Height = r.Height + 2;
                     pics[i] = r;
                 }
             }
