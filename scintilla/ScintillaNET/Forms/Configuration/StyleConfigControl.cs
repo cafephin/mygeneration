@@ -21,6 +21,8 @@ namespace Scintilla.Forms.Configuration
             None
         }
 
+        private LexerStyle EmptyStyle = new LexerStyle(0);
+        
         private ChangeStyle changeType = ChangeStyle.None;
         private Point selectedPoint;
         private ColorWheel myColorWheel;
@@ -29,6 +31,9 @@ namespace Scintilla.Forms.Configuration
         private FontBrowser fontBrowser1;
         private bool isInUpdate = false;
         private IScintillaConfig configuration;
+        private SortedDictionary<int, ILexerStyle> styles;
+        private Type lexerType = null;
+        
        
         public StyleConfigControl()
         {
@@ -39,6 +44,44 @@ namespace Scintilla.Forms.Configuration
             {
                 this.comboBoxFontSize.Items.Add(i);
             }
+        }
+
+        private void StyleConfigControl_Load(object sender, EventArgs e)
+        {
+            // Turn on double-buffering, so the form looks better. 
+            this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            this.SetStyle(ControlStyles.UserPaint, true);
+            this.SetStyle(ControlStyles.DoubleBuffer, true);
+
+            // These properties are set in design view, as well, but they
+            // have to be set to false in order for the Paint
+            // event to be able to display their contents.
+            // Never hurts to make sure they're invisible.
+            panelSelectedColor.Visible = false;
+            panelBrightness.Visible = false;
+            panelColor.Visible = false;
+
+            // Calculate the coordinates of the three
+            // required regions on the form.
+            Rectangle SelectedColorRectangle =
+                new Rectangle(panelSelectedColor.Location, panelSelectedColor.Size);
+            Rectangle BrightnessRectangle =
+                new Rectangle(panelBrightness.Location, panelBrightness.Size);
+            Rectangle ColorRectangle =
+                new Rectangle(panelColor.Location, panelColor.Size);
+
+            // Create the new ColorWheel class, indicating
+            // the locations of the color wheel itself, the
+            // brightness area, and the position of the selected color.
+            myColorWheel = new ColorWheel(
+                ColorRectangle, BrightnessRectangle,
+                SelectedColorRectangle);
+            myColorWheel.ColorChanged += new EventHandler<ColorChangedEventArgs>(myColorWheel_ColorChanged);
+
+            // Set the RGB and HSV values 
+            // of the NumericUpDown controls.
+            SetRGB(RGB);
+            SetHSV(HSV);
         }
 
         public IScintillaConfig Configuration
@@ -55,11 +98,6 @@ namespace Scintilla.Forms.Configuration
             }
         }
 
-        //private ILanguageConfig langConfig;
-        private SortedDictionary<int, ILexerStyle> styles;
-        private Type lexerType = null;
-        private LexerStyle EmptyStyle = new LexerStyle(0);
-        
         private void BindConfigToForm()
         {
             this.comboBoxLanguage.Items.Clear();
@@ -77,7 +115,6 @@ namespace Scintilla.Forms.Configuration
                     comboBoxLexer.Items.Add(lc.Lexer.LexerName);
                 }
             }
-            //langConfig = this.configuration.LanguageDefaults;
 
             this.radioButtonGlobal.Checked = true;
 
@@ -214,53 +251,6 @@ namespace Scintilla.Forms.Configuration
                     BindStyleToForm(EmptyStyle);
                 }
             }
-        }
-
-        private void StyleConfigControl_Load(object sender, EventArgs e)
-        {
-            // Turn on double-buffering, so the form looks better. 
-            this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
-            this.SetStyle(ControlStyles.UserPaint, true);
-            this.SetStyle(ControlStyles.DoubleBuffer, true);
-
-            // These properties are set in design view, as well, but they
-            // have to be set to false in order for the Paint
-            // event to be able to display their contents.
-            // Never hurts to make sure they're invisible.
-            panelSelectedColor.Visible = false;
-            panelBrightness.Visible = false;
-            panelColor.Visible = false;
-
-            // Calculate the coordinates of the three
-            // required regions on the form.
-            Rectangle SelectedColorRectangle =
-                new Rectangle(panelSelectedColor.Location, panelSelectedColor.Size);
-            Rectangle BrightnessRectangle =
-                new Rectangle(panelBrightness.Location, panelBrightness.Size);
-            Rectangle ColorRectangle =
-                new Rectangle(panelColor.Location, panelColor.Size);
-
-            // Create the new ColorWheel class, indicating
-            // the locations of the color wheel itself, the
-            // brightness area, and the position of the selected color.
-            myColorWheel = new ColorWheel(
-                ColorRectangle, BrightnessRectangle,
-                SelectedColorRectangle);
-            myColorWheel.ColorChanged += new EventHandler<ColorChangedEventArgs>(myColorWheel_ColorChanged);
-
-            // Set the RGB and HSV values 
-            // of the NumericUpDown controls.
-            SetRGB(RGB);
-            SetHSV(HSV);
-
-            // load the dialogs from the config.
-            /*_languageCategory.DataSource = configManager.Languages;
-            _sampleLanguage.DataSource = configManager.Languages;
-
-            _masterSetting.DataSource = configManager.MasterStyles;
-            _inherits.DataSource = configManager.MasterStyles;
-
-            _languageCategory_SelectedIndexChanged(null, null);*/
         }
 
         private void StyleConfigControl_ColorChanged(object o, EventArgs args)
