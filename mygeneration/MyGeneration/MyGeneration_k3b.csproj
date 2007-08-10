@@ -1,0 +1,545 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{02EA6C17-3A7B-47A6-9AC9-0C27F41E394E}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>Icons\MainWindow.ico</ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>MyGeneration</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>MyGeneration</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <WebReference_EnableProperties>true</WebReference_EnableProperties>
+    <WebReference_EnableSQLTypes>false</WebReference_EnableSQLTypes>
+    <WebReference_EnableLegacyEventingModel>true</WebReference_EnableLegacyEventingModel>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>..\..\Build\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>..\..\Build\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="adodb, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\installer\adodb.dll</HintPath>
+    </Reference>
+    <Reference Include="CollapsibleSplitter">
+      <Name>CollapsibleSplitter</Name>
+      <HintPath>CollapsableSplitter\CollapsibleSplitter.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.EnterpriseServices">
+      <Name>System.EnterpriseServices</Name>
+    </Reference>
+    <Reference Include="System.Web.Services">
+      <Name>System.Web.Services</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <Reference Include="WeifenLuo.WinFormsUI.Docking">
+      <Name>WeifenLuo.WinFormsUI.Docking</Name>
+      <HintPath>DockManager\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    </Reference>
+    <ProjectReference Include="..\..\plugins\ContextProcessor\ContextProcessor.csproj">
+      <Name>ContextProcessor</Name>
+      <Project>{B43C4B09-6813-4C8D-A422-85ECF41CB75B}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\..\plugins\DotNetScriptingEngine\DotNetScriptingEngine.csproj">
+      <Name>DotNetScriptingEngine</Name>
+      <Project>{497C072A-648D-4EF9-B5EC-71895D182018}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\..\scintilla\ScintillaNET\ScintillaNET.csproj">
+      <Project>{F9B6DABD-BBC1-4638-8CE6-A5C9506BFDCB}</Project>
+      <Name>ScintillaNET</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EngineInterface\PluginInterfaces.csproj">
+      <Name>PluginInterfaces</Name>
+      <Project>{61B369D1-95DD-4158-9F30-2E051CEB9D50}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\..\plugins\MicrosoftScriptingEngine\MicrosoftScriptingEngine.csproj">
+      <Name>MicrosoftScriptingEngine</Name>
+      <Project>{5CFE661C-1C7D-4191-A6F7-D7891C448690}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\MyGenUtility\MyGenUtility.csproj">
+      <Name>MyGenUtility</Name>
+      <Project>{A1D6D035-420C-40A3-9598-9E34F11FB1AA}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\Zeus\Zeus.csproj">
+      <Name>Zeus</Name>
+      <Project>{CE8A697D-D45C-4E60-838D-E36980227543}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\..\mymeta\MyMeta.csproj">
+      <Name>MyMeta</Name>
+      <Project>{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <COMReference Include="MSDASC">
+      <Guid>{2206CEB0-19C1-11D1-89E0-00C04FD7A829}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AboutBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddDbTargetMappingDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddLanguageMappingDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BaseWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DefaultProperties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DockableWindows\DbTargetMappings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DockableWindows\GlobalUserMetaData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DockableWindows\LanguageMappings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DockableWindows\MetaDataBrowser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DockableWindows\MetaProperties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DockableWindows\ProjectEditor\AddEditModule.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DockableWindows\ProjectEditor\AddEditSavedObject.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DockableWindows\ProjectEditor\AddEditSavedObjectEx.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DockableWindows\ProjectEditor\ProjectBrowser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DockableWindows\ProjectEditor\ProjectExecuteStatus.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DockableWindows\ProjectEditor\ViewSavedInput.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DockableWindows\TemplateBrowser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DockableWindows\TemplateTreeBuilder.cs" />
+    <Compile Include="DockableWindows\TemplateWebUpdateHelper.cs" />
+    <Compile Include="DockableWindows\UserMetaData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DockableWindows\WebTemplateLibrary.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExceptionDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExceptionHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AboutBoxLogo.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AboutBoxLogo.Designer.cs">
+      <DependentUpon>AboutBoxLogo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Goto.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GridLayoutHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IMyGenerationMDI.cs" />
+    <Compile Include="MDIParent.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MyGeneration2005.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MyGeneration2005.Designer.cs">
+      <DependentUpon>MyGeneration2005.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Password.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="TemplateForms\TemplateEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestConnectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TroubleShooting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TroubleShooting.Designer.cs">
+      <DependentUpon>TroubleShooting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UpdatesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Web References\com.mygenerationsoftware.www\Reference.cs">
+      <DependentUpon>Reference.map</DependentUpon>
+      <SubType>code</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="ZeusScintillaControl.cs">
+    </Compile>
+    <EmbeddedResource Include="AboutBox.resx">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddDbTargetMappingDialog.resx">
+      <DependentUpon>AddDbTargetMappingDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddLanguageMappingDialog.resx">
+      <DependentUpon>AddLanguageMappingDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseWindow.resx">
+      <DependentUpon>BaseWindow.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DefaultProperties.resx">
+      <DependentUpon>DefaultProperties.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DockableWindows\DbTargetMappings.resx">
+      <DependentUpon>DbTargetMappings.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DockableWindows\GlobalUserMetaData.resx">
+      <DependentUpon>GlobalUserMetaData.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DockableWindows\LanguageMappings.resx">
+      <DependentUpon>LanguageMappings.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DockableWindows\MetaDataBrowser.resx">
+      <DependentUpon>MetaDataBrowser.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DockableWindows\MetaProperties.resx">
+      <DependentUpon>MetaProperties.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DockableWindows\ProjectEditor\AddEditModule.resx">
+      <DependentUpon>AddEditModule.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DockableWindows\ProjectEditor\AddEditSavedObject.resx">
+      <DependentUpon>AddEditSavedObject.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DockableWindows\ProjectEditor\AddEditSavedObjectEx.resx">
+      <DependentUpon>AddEditSavedObjectEx.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DockableWindows\ProjectEditor\ProjectBrowser.resx">
+      <DependentUpon>ProjectBrowser.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DockableWindows\ProjectEditor\ProjectExecuteStatus.resx">
+      <DependentUpon>ProjectExecuteStatus.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DockableWindows\ProjectEditor\ViewSavedInput.resx">
+      <DependentUpon>ViewSavedInput.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DockableWindows\TemplateBrowser.resx">
+      <DependentUpon>TemplateBrowser.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DockableWindows\UserMetaData.resx">
+      <DependentUpon>UserMetaData.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DockableWindows\WebTemplateLibrary.resx">
+      <DependentUpon>WebTemplateLibrary.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExceptionDialog.resx">
+      <DependentUpon>ExceptionDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AboutBoxLogo.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AboutBoxLogo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Goto.resx">
+      <DependentUpon>Goto.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MDIParent.resx">
+      <DependentUpon>MDIParent.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MyGeneration2005.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MyGeneration2005.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Password.resx">
+      <DependentUpon>Password.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings\MyGeneration.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings\ScintillaNET.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TemplateForms\TemplateEditor.resx">
+      <DependentUpon>TemplateEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestConnectionForm.resx">
+      <DependentUpon>TestConnectionForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TroubleShooting.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TroubleShooting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UpdatesForm.resx">
+      <DependentUpon>UpdatesForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ZeusScintillaControl.resx">
+      <DependentUpon>ZeusScintillaControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="MyGeneration.exe.config" />
+    <None Include="Settings\CSharp.INI" />
+    <None Include="Web References\com.mygenerationsoftware.www\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\com.mygenerationsoftware.www\VersionInfo.disco" />
+    <None Include="Web References\com.mygenerationsoftware.www\VersionInfo.wsdl" />
+    <Content Include="CollapsableSplitter\CollapsibleSplitter.dll" />
+    <Content Include="DockManager\WeifenLuo.WinFormsUI.Docking.dll" />
+    <Content Include="Icons\App.ico" />
+    <Content Include="Icons\DbTargetMappings.ico" />
+    <Content Include="Icons\LanguageMappings.ico" />
+    <Content Include="Icons\MainWindow.ico" />
+    <Content Include="Icons\MainWindow16x16.ico" />
+    <Content Include="Icons\MetaDataBrowser.ico" />
+    <Content Include="Icons\MetaProperties.ico" />
+    <Content Include="Icons\NewZeus.ico" />
+    <Content Include="Icons\NewZeus16x16.ico" />
+    <Content Include="Icons\TemplateEditor.ico" />
+    <Content Include="Images\about.jpg" />
+    <Content Include="Images\about_background.gif" />
+    <Content Include="Images\collapse.bmp" />
+    <Content Include="Images\earth.bmp" />
+    <Content Include="Images\folder1.bmp" />
+    <Content Include="Images\folder2.bmp" />
+    <Content Include="Images\icon_template.bmp" />
+    <Content Include="Images\icon_zeus.bmp" />
+    <Content Include="Images\jeg_csharp.bmp" />
+    <Content Include="Images\jeg_jscript.bmp" />
+    <Content Include="Images\jeg_newproject.bmp" />
+    <Content Include="Images\jeg_newzeus.bmp" />
+    <Content Include="Images\jeg_vbnet.bmp" />
+    <Content Include="Images\jeg_vbscript.bmp" />
+    <Content Include="Images\logo.gif" />
+    <Content Include="Images\logo.jpg" />
+    <None Include="Resources\dev01tiny.png" />
+    <None Include="Resources\dev02tiny.png" />
+    <Content Include="Resources\mygenlogo.gif" />
+    <Content Include="Images\show_preview.bmp" />
+    <Content Include="Images\toolbarAccessConnection.bmp" />
+    <Content Include="Images\toolbarDB2Connection.bmp" />
+    <Content Include="Images\toolbarDbDriver.bmp" />
+    <Content Include="Images\toolbarFileOpen.bmp" />
+    <Content Include="Images\toolbarLanguages.bmp" />
+    <Content Include="Images\toolbarMySqlConnection.bmp" />
+    <Content Include="Images\toolbarNewDBConnection.bmp" />
+    <Content Include="Images\toolbarOracleConnection.bmp" />
+    <Content Include="Images\toolbarRefresh.bmp" />
+    <Content Include="Images\toolbarSQLConnection.bmp" />
+    <Content Include="Images\toolbar_cascade.bmp" />
+    <Content Include="Images\toolbar_console.bmp" />
+    <Content Include="Images\toolbar_console_16x16.bmp" />
+    <Content Include="Images\toolbar_DbTargetMappings.bmp" />
+    <Content Include="Images\toolbar_delete_16x16.bmp" />
+    <Content Include="Images\toolbar_execute.bmp" />
+    <Content Include="Images\toolbar_execute_16x16.bmp" />
+    <Content Include="Images\toolbar_execute_save_16x16.bmp" />
+    <Content Include="Images\toolbar_fileOpen.bmp" />
+    <Content Include="Images\toolbar_GlobalUserData.bmp" />
+    <Content Include="Images\toolbar_LanguageMappings.bmp" />
+    <Content Include="Images\toolbar_LaunchFolderOpen.bmp" />
+    <Content Include="Images\toolbar_MetaBrowser.bmp" />
+    <Content Include="Images\toolbar_newCSharpTemplate.bmp" />
+    <Content Include="Images\toolbar_newJavaTemplate.bmp" />
+    <Content Include="Images\toolbar_newmapping_16x16.bmp" />
+    <Content Include="Images\toolbar_newVBNetTemplate.bmp" />
+    <Content Include="Images\toolbar_newVBTemplate.bmp" />
+    <Content Include="Images\toolbar_new_16x16.bmp" />
+    <Content Include="Images\toolbar_openBrowser.bmp" />
+    <Content Include="Images\toolbar_properties.bmp" />
+    <Content Include="Images\toolbar_properties_16x16.bmp" />
+    <Content Include="Images\toolbar_refresh_16x16.bmp" />
+    <Content Include="Images\toolbar_save.bmp" />
+    <Content Include="Images\toolbar_saveas_16x16.bmp" />
+    <Content Include="Images\toolbar_save_16x16.bmp" />
+    <Content Include="Images\toolbar_save_input_16x16.bmp" />
+    <Content Include="Images\toolbar_TemplateBrowser.bmp" />
+    <Content Include="Images\toolbar_tileHorz.bmp" />
+    <Content Include="Images\toolbar_tileVert.bmp" />
+    <Content Include="Images\toolbar_UserData.bmp" />
+    <Content Include="Images\TreeView\column.bmp" />
+    <Content Include="Images\TreeView\columnkey.bmp" />
+    <Content Include="Images\TreeView\columns.bmp" />
+    <Content Include="Images\TreeView\database.bmp" />
+    <Content Include="Images\TreeView\databases.bmp" />
+    <Content Include="Images\TreeView\domain.bmp" />
+    <Content Include="Images\TreeView\domains.bmp" />
+    <Content Include="Images\TreeView\folder1.bmp" />
+    <Content Include="Images\TreeView\folder2.bmp" />
+    <Content Include="Images\TreeView\foreignkey.bmp" />
+    <Content Include="Images\TreeView\foreignkeys.bmp" />
+    <Content Include="Images\TreeView\index.bmp" />
+    <Content Include="Images\TreeView\indexes.bmp" />
+    <Content Include="Images\TreeView\mymeta.bmp" />
+    <Content Include="Images\TreeView\parameter.bmp" />
+    <Content Include="Images\TreeView\parameters.bmp" />
+    <Content Include="Images\TreeView\primarykeys.bmp" />
+    <Content Include="Images\TreeView\providerType.bmp" />
+    <Content Include="Images\TreeView\providerTypes.bmp" />
+    <Content Include="Images\TreeView\resultcolumn.bmp" />
+    <Content Include="Images\TreeView\resultcolumns.bmp" />
+    <Content Include="Images\TreeView\show_preview.bmp" />
+    <Content Include="Images\TreeView\storedproc.bmp" />
+    <Content Include="Images\TreeView\storedprocs.bmp" />
+    <Content Include="Images\TreeView\table.bmp" />
+    <Content Include="Images\TreeView\tables.bmp" />
+    <Content Include="Images\TreeView\view.bmp" />
+    <Content Include="Images\TreeView\views.bmp" />
+    <Content Include="Settings\DbTargets.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Settings\DefaultSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Settings\Languages.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <WebReferenceUrl Include="http://www.mygenerationsoftware.com/WebServices/VersionInfo.asmx">
+      <RelPath>Web References\com.mygenerationsoftware.www\</RelPath>
+      <UrlBehavior>Static</UrlBehavior>
+    </WebReferenceUrl>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>
