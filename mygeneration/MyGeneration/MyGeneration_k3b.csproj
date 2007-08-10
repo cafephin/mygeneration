@@ -280,6 +280,7 @@
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="ZeusScintillaControl.cs">
+      <SubType>Component</SubType>
     </Compile>
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
