@@ -12,7 +12,7 @@ rem main app and all its dependencies
 
 rem plugins
 
-%DEVENV% "..\plugins\MyMetaSqlCePlugin\MyMetaSqlCePlugin_k3b.csproj" >> .\build2.log
+rem %DEVENV% "..\plugins\MyMetaSqlCePlugin\MyMetaSqlCePlugin_k3b.csproj" >> .\build2.log
 
 %DEVENV% "..\plugins\MyMetaTextFilePlugin\MyMetaTextFilePlugin_k3b.csproj" >> .\build2.log
 
