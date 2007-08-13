@@ -120,9 +120,9 @@ Section "-Install Mygeneration and Register Shell Extensions"
   File /oname=WeifenLuo.WinFormsUI.Docking.dll ..\build\Release\WeifenLuo.WinFormsUI.Docking.dll
 
 ; Plugins
-  File /nonfatal /oname=MyMeta.Plugins.DelimitedText.dll ..\plugins\MyMetaTextFilePlugin\bin\Release\MyMeta.Plugins.DelimitedText.dll
-  File /nonfatal /oname=MyMeta.Plugins.VistaDB3x.dll ..\plugins\MyMetaVistaDB3xPlugin\bin\Release\MyMeta.Plugins.VistaDB3x.dll
-  File /nonfatal /oname=MyMeta.Plugins.SqlCe.dll ..\plugins\MyMetaSqlCePlugin\bin\Release\MyMeta.Plugins.SqlCe.dll
+  File /nonfatal /oname=MyMeta.Plugins.DelimitedText.dll ..\build\Release\MyMeta.Plugins.DelimitedText.dll
+  File /nonfatal /oname=MyMeta.Plugins.VistaDB3x.dll ..\build\Release\MyMeta.Plugins.VistaDB3x.dll
+  File /nonfatal /oname=MyMeta.Plugins.SqlCe.dll ..\build\Release\MyMeta.Plugins.SqlCe.dll
   
   Delete $INSTDIR\WeifenLuo.WinFormsUI.dll
   Delete $INSTDIR\VistaDBHelper.dll

@@ -39,6 +39,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScintillaNET_k3b", "..\scin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StandardTemplates", "..\StandardTemplates.csproj", "{51CC4371-5969-40CA-A849-B8308D940F47}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMetaSqlCePlugin_k3b", "..\plugins\MyMetaSqlCePlugin\MyMetaSqlCePlugin_k3b.csproj", "{E172F96C-2642-42DA-AC44-873123D6970F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMetaVistaDB3xPlugin_k3b", "..\plugins\MyMetaVistaDB3xPlugin\MyMetaVistaDB3xPlugin_k3b.csproj", "{33C81FD4-E4A7-4D18-96FC-89EE447004EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +109,14 @@ Global
 		{51CC4371-5969-40CA-A849-B8308D940F47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51CC4371-5969-40CA-A849-B8308D940F47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51CC4371-5969-40CA-A849-B8308D940F47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E172F96C-2642-42DA-AC44-873123D6970F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E172F96C-2642-42DA-AC44-873123D6970F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E172F96C-2642-42DA-AC44-873123D6970F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E172F96C-2642-42DA-AC44-873123D6970F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33C81FD4-E4A7-4D18-96FC-89EE447004EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33C81FD4-E4A7-4D18-96FC-89EE447004EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33C81FD4-E4A7-4D18-96FC-89EE447004EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33C81FD4-E4A7-4D18-96FC-89EE447004EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
