@@ -34,19 +34,16 @@
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
-    <DefineConstants>DEBUG;TRACE;ENTERPRISE</DefineConstants>
-    <DocumentationFile>..\Build\Debug\MyMeta.XML</DocumentationFile>
+    <DefineConstants>DEBUG;TRACE;IGNORE_VISTA;ENTERPRISE</DefineConstants>
     <DebugSymbols>true</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <NoStdLib>false</NoStdLib>
-    <NoWarn>
-    </NoWarn>
     <Optimize>false</Optimize>
-    <RegisterForComInterop>false</RegisterForComInterop>
+    <RegisterForComInterop>true</RegisterForComInterop>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <WarningLevel>4</WarningLevel>
-    <DebugType>full</DebugType>
+    <DebugType>Full</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
@@ -57,22 +54,21 @@
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
-    <DefineConstants>TRACE; ENTERPRISE</DefineConstants>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DefineConstants>TRACE; IGNORE_VISTA;ENTERPRISE</DefineConstants>
     <DebugSymbols>false</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <NoStdLib>false</NoStdLib>
-    <NoWarn>
-    </NoWarn>
     <Optimize>true</Optimize>
     <RegisterForComInterop>true</RegisterForComInterop>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <WarningLevel>4</WarningLevel>
-    <DebugType>none</DebugType>
+    <DebugType>None</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="adodb, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
@@ -1138,144 +1134,85 @@
     <Compile Include="Views.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="VistaDB\ClassFactory.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\Column.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\Columns.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\Database.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\Databases.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\Domain.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\Domains.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\ForeignKey.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\ForeignKeys.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\Index.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\Indexes.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\MetaHelper.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\Parameter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\Parameters.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\Procedure.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\Procedures.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\ResultColumn.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\ResultColumns.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\Source\Interfaces.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\Source\MetaDataReader.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\Source\RemoteParameter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\Source\VistaDBAPI.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\Source\VistaDBDataRow.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="VistaDB3x\ClassFactory.cs" />
+    <Compile Include="VistaDB3x\Column.cs" />
+    <Compile Include="VistaDB3x\Columns.cs" />
+    <Compile Include="VistaDB3x\Database.cs" />
+    <Compile Include="VistaDB3x\Databases.cs" />
+    <Compile Include="VistaDB3x\Domain.cs" />
+    <Compile Include="VistaDB3x\Domains.cs" />
+    <Compile Include="VistaDB3x\ForeignKey.cs" />
+    <Compile Include="VistaDB3x\ForeignKeys.cs" />
+    <Compile Include="VistaDB3x\Index.cs" />
+    <Compile Include="VistaDB3x\Indexes.cs" />
+    <Compile Include="VistaDB3x\MetaHelper.cs" />
+    <Compile Include="VistaDB3x\Parameter.cs" />
+    <Compile Include="VistaDB3x\Parameters.cs" />
+    <Compile Include="VistaDB3x\Procedure.cs" />
+    <Compile Include="VistaDB3x\Procedures.cs" />
+    <Compile Include="VistaDB3x\ResultColumn.cs" />
+    <Compile Include="VistaDB3x\ResultColumns.cs" />
+    <Compile Include="VistaDB3x\Table.cs" />
+    <Compile Include="VistaDB3x\Tables.cs" />
+    <Compile Include="VistaDB3x\View.cs" />
+    <Compile Include="VistaDB3x\Views.cs" />
+    <Compile Include="VistaDB3x\VistaDB3xHelper\MyMetaHelper.cs" />
+    <Compile Include="VistaDB\ClassFactory.cs" />
+    <Compile Include="VistaDB\Column.cs" />
+    <Compile Include="VistaDB\Columns.cs" />
+    <Compile Include="VistaDB\Database.cs" />
+    <Compile Include="VistaDB\Databases.cs" />
+    <Compile Include="VistaDB\Domain.cs" />
+    <Compile Include="VistaDB\Domains.cs" />
+    <Compile Include="VistaDB\ForeignKey.cs" />
+    <Compile Include="VistaDB\ForeignKeys.cs" />
+    <Compile Include="VistaDB\Index.cs" />
+    <Compile Include="VistaDB\Indexes.cs" />
+    <Compile Include="VistaDB\MetaHelper.cs" />
+    <Compile Include="VistaDB\Parameter.cs" />
+    <Compile Include="VistaDB\Parameters.cs" />
+    <Compile Include="VistaDB\Procedure.cs" />
+    <Compile Include="VistaDB\Procedures.cs" />
+    <Compile Include="VistaDB\ResultColumn.cs" />
+    <Compile Include="VistaDB\ResultColumns.cs" />
+    <Compile Include="VistaDB\Source\Interfaces.cs" />
+    <Compile Include="VistaDB\Source\IVistaDBDataSet.cs" />
+    <Compile Include="VistaDB\Source\MetaDataReader.cs" />
+    <Compile Include="VistaDB\Source\RemoteParameter.cs" />
+    <Compile Include="VistaDB\Source\VistaDBAPI.cs" />
+    <Compile Include="VistaDB\Source\VistaDBDataRow.cs" />
     <Compile Include="VistaDB\Source\VistaDBDataSet.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="VistaDB\Source\VistaDBErrorMsgs.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\Source\VistaDBLocalConnection.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\Source\VistaDBLocalQuery.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\Source\VistaDBRemoteConnection.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\Source\VistaDBRemoteQuery.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\Source\VistaDBSQLConnection.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\Source\VistaDBSQLQuery.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="VistaDB\Source\VistaDBErrorMsgs.cs" />
+    <Compile Include="VistaDB\Source\VistaDBLocalConnection.cs" />
+    <Compile Include="VistaDB\Source\VistaDBLocalQuery.cs" />
+    <Compile Include="VistaDB\Source\VistaDBRemoteConnection.cs" />
+    <Compile Include="VistaDB\Source\VistaDBRemoteQuery.cs" />
+    <Compile Include="VistaDB\Source\VistaDBSQL.cs" />
+    <Compile Include="VistaDB\Source\VistaDBSQLConnection.cs" />
+    <Compile Include="VistaDB\Source\VistaDBSQLQuery.cs" />
     <Compile Include="VistaDB\Source\vnCommand.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="VistaDB\Source\vnCommandBuilder.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="VistaDB\Source\vnCommandBuilder.cs" />
     <Compile Include="VistaDB\Source\vnConnection.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="VistaDB\Source\vnDataAdapter.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="VistaDB\Source\vnDataReader.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\Source\vnParameter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\Source\vnParameterCollection.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\Source\vnParameterEnumerator.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\Source\vnTransaction.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="VistaDB\Source\vnDataAdapter.cs" />
+    <Compile Include="VistaDB\Source\vnDataReader.cs" />
+    <Compile Include="VistaDB\Source\vnParameter.cs" />
+    <Compile Include="VistaDB\Source\vnParameterCollection.cs" />
+    <Compile Include="VistaDB\Source\vnParameterEnumerator.cs" />
+    <Compile Include="VistaDB\Source\vnTransaction.cs" />
     <Compile Include="VistaDB\Source\vsDatabase.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="VistaDB\Source\vsTable.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\Table.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\Tables.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\View.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VistaDB\Views.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="VistaDB\Source\vsTable.cs" />
+    <Compile Include="VistaDB\Table.cs" />
+    <Compile Include="VistaDB\Tables.cs" />
+    <Compile Include="VistaDB\View.cs" />
+    <Compile Include="VistaDB\Views.cs" />
     <Content Include="MyMeta.chm" />
     <None Include="ThirdParty\FirebirdSql.Data.Firebird.dll" />
     <None Include="ThirdParty\Mono.Security.dll" />
@@ -1284,17 +1221,20 @@
     <None Include="ThirdParty\sqlite.dll" />
     <None Include="ThirdParty\SQLite.NET.dll" />
     <None Include="ThirdParty\SQLite3.dll" />
+    <None Include="VistaDB3x\VistaDB3xHelper\VistaDB3xHelper.csproj" />
+    <None Include="VistaDB3x\VistaDB3xHelper\VistaDB3xHelper.sln" />
+    <None Include="VistaDB\Source\VistaDB.Provider.csproj" />
     <EmbeddedResource Include="VistaDB\Source\VistaDBDataSet.resx">
-      <DependentUpon>VistaDBDataSet.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="VistaDB\Source\vnCommand.resx">
-      <DependentUpon>vnCommand.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="VistaDB\Source\vnCommandBuilder.resx">
-      <DependentUpon>vnCommandBuilder.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="VistaDB\Source\vnConnection.resx">
-      <DependentUpon>vnConnection.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

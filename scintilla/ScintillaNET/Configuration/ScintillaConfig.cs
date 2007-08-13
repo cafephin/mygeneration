@@ -14,7 +14,7 @@ namespace Scintilla.Configuration
         private ILanguageConfig languageDefaults;
         private SortedDictionary<string, string> properties;
         private SortedDictionary<string, string> extensionLanguages;
-        private SortedDictionary<int, ILexerStyle> styles;
+        // private SortedDictionary<int, ILexerStyle> styles;
         private List<string> languageNames;
         private List<IMenuItemConfig> languageMenuItems;
         private string defaultFileExtention;

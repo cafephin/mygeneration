@@ -541,12 +541,12 @@
     <PreBuildEvent>
     </PreBuildEvent>
     <PostBuildEvent>copy $(SolutionDir)ZeusCmd\bin\$(ConfigurationName)\ZeusCmd.* $(TargetDir)
-rem mkdir $(TargetDir)\Templates\
-rem xcopy $(SolutionDir)\..\templates\*.* $(TargetDir)\Templates\ /E
-rem copy $(SolutionDir)\..\plugins\MyMetaVistaDB3xPlugin\bin\$(ConfigurationName)\MyMeta.Plugins.*.* $(TargetDir)
-rem copy $(SolutionDir)\..\plugins\MyMetaSqlCePlugin\bin\$(ConfigurationName)\MyMeta.Plugins.*.* $(TargetDir)
-rem copy $(SolutionDir)\..\plugins\MyMetaTextFilePlugin\bin\$(ConfigurationName)\MyMeta.Plugins.*.* $(TargetDir)
-rem copy $(SolutionDir)\..\plugins\MyMetaXsd3bPlugin\bin\$(ConfigurationName)\*xsd3b*.* $(TargetDir)
-rem copy $(SolutionDir)\..\MyMetaXsd3bPlugin\templates\xsd3b\*.* $(TargetDir)Templates\</PostBuildEvent>
+mkdir $(TargetDir)\Templates\
+xcopy $(SolutionDir)\..\templates\*.* $(TargetDir)\Templates\ /E
+copy $(SolutionDir)\..\plugins\MyMetaVistaDB3xPlugin\bin\$(ConfigurationName)\MyMeta.Plugins.*.* $(TargetDir)
+copy $(SolutionDir)\..\plugins\MyMetaSqlCePlugin\bin\$(ConfigurationName)\MyMeta.Plugins.*.* $(TargetDir)
+copy $(SolutionDir)\..\plugins\MyMetaTextFilePlugin\bin\$(ConfigurationName)\MyMeta.Plugins.*.* $(TargetDir)
+copy $(SolutionDir)\..\plugins\MyMetaXsd3bPlugin\bin\$(ConfigurationName)\*xsd3b*.* $(TargetDir)
+copy $(SolutionDir)\..\MyMetaXsd3bPlugin\templates\xsd3b\*.* $(TargetDir)Templates\</PostBuildEvent>
   </PropertyGroup>
 </Project>

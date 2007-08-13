@@ -1,3 +1,5 @@
+#if !IGNORE_VISTA
+
 using System;
 using System.Data;
 using System.Collections;
@@ -443,3 +445,4 @@ namespace Vista
 
 	}
 }
+#endif

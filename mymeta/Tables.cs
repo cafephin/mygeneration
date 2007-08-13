@@ -79,7 +79,9 @@ namespace MyMeta
 
 		#region indexers
 
+#if ENTERPRISE
 		[DispId(0)]
+#endif		
 		public ITable this[object index]
 		{
 			get
@@ -96,7 +98,9 @@ namespace MyMeta
 			}
 		}
 
+#if ENTERPRISE
 		[ComVisible(false)]
+#endif
 		public Table GetByName(string name)
 		{
 			Table table = null;
@@ -117,7 +121,9 @@ namespace MyMeta
 			return table;
 		}
 
+#if ENTERPRISE
 		[ComVisible(false)]
+#endif
 		internal Table GetByPhysicalName(string name)
 		{
 			Table table = null;
@@ -151,7 +157,9 @@ namespace MyMeta
 
 		#region XML User Data
 
+#if ENTERPRISE
 		[ComVisible(false)]
+#endif
 		override public string UserDataXPath
 		{ 
 			get
@@ -160,7 +168,9 @@ namespace MyMeta
 			} 
 		}
 
+#if ENTERPRISE
 		[ComVisible(false)]
+#endif
 		override internal bool GetXmlNode(out XmlNode node, bool forceCreate)
 		{
 			node = null;
@@ -192,7 +202,9 @@ namespace MyMeta
 			return success;
 		}
 
+#if ENTERPRISE
 		[ComVisible(false)]
+#endif
 		override public void CreateUserMetaData(XmlNode parentNode)
 		{
 			XmlNode myNode = parentNode.OwnerDocument.CreateNode(XmlNodeType.Element, "Tables", null);

@@ -1,3 +1,5 @@
+#if !IGNORE_VISTA
+
 using System;
 using System.Data;
 using System.Data.Common;
@@ -392,3 +394,4 @@ namespace Provider.VistaDB
 		}
 	}
 }
+#endif

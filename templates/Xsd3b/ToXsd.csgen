@@ -23,7 +23,7 @@ public class GeneratedGui : DotNetScriptGui
 		{
 			ui.Title = "Export for typed Datasets (*.xsd)";
 			ui.Width = 340;
-			ui.Height = 600;
+			ui.Height = 640;
 	
 			// Grab default output path
 			string sOutputPath = "";
@@ -48,17 +48,23 @@ public class GeneratedGui : DotNetScriptGui
 			// Setup Tables selection multi-select listbox.
 			GuiLabel label_t = ui.AddLabel("lblTables", "Select tables:", "Select tables from the listbox below.");
 			GuiListBox lstTables = ui.AddListBox("lstTables", "Select tables.");
-			lstTables.Height = 80;
+			lstTables.Height = 70;
 	
 			// Setup Views selection multi-select listbox.
 			GuiLabel label_v = ui.AddLabel("lblViews", "Select views:", "Select views from the listbox below.");
 			GuiListBox lstViews = ui.AddListBox("lstViews", "Select views.");
-			lstViews.Height = 80;
+			lstViews.Height = 70;
 	
 			// Setup Procedures selection multi-select listbox.
 			GuiLabel label_p = ui.AddLabel("lblProcs", "Select procedures:", "Select procedures from the listbox below.");
 			GuiListBox lstProcs = ui.AddListBox("lstProcs", "Select procedures.");
-			lstProcs.Height = 80;
+			lstProcs.Height = 70;
+	
+			GuiCheckBox chkNamedSimpleTypes = ui.AddCheckBox("chkNamedSimpleTypes"
+						,"Use named Simple Types",false,"If Not Checked Simple Types are inlined");
+	
+			GuiCheckBox chkNamedComplexTypes = ui.AddCheckBox("chkNamedComplexTypes"
+						,"Use named Complex Types",false,"If Not Checked Complex Types are inlined");
 	
 			// Attach the onchange event to the cmbDatabases control.
 			setupDatabaseDropdown(cmbDatabases, lblError);
@@ -201,9 +207,8 @@ public class GeneratedGui : DotNetScriptGui
 ' 	These can be used to create "Typed Datasets" for DotNet
 ' Requires MyMeta.Plugins.Xsd3b.dll, Dl3bak.Xsd3b.dll,Dl3bak.Xsd3b.xsd.dll  in MyGeneration folder.
 '
-' Download from 
-'
-' v 0.1 (14.04.2007) - tables,views,relations,procedures
+' v 0.1 (14.04.2007) - Download from tables,views,relations,procedures
+' v 0.3 (09.08.2007) - Added Version Infos, Addes support for extending xsd
 '
 '----------------------------------------------------------------------------- */
 
@@ -218,6 +223,9 @@ public class GeneratedTemplate : DotNetScriptTemplate
 		ArrayList views = input["lstViews"] as ArrayList;	
 		ArrayList procs = input["lstProcs"] as ArrayList;	
 		IDatabase database = MyMeta.Databases[databaseName];
+		
+		bool bNamedSimpleTypes = (bool) input["chkNamedSimpleTypes"];
+		bool bNamedComplexTypes = (bool) input["chkNamedComplexTypes"];
 
 
 		Dnp.Utils.ProgressDialog pd = new Dnp.Utils.ProgressDialog();
@@ -280,11 +288,17 @@ databaseName " + databaseName ;
 		MyGen2Xsd3b.ImportRelations(database, xsd3b);
 		
 		pd.Close();
-		output.writeln(xsd3b.ToDataset().GetXmlSchema());
 		
-		xsd3b.ToDataset().WriteXmlSchema(filename);
+		//output.writeln(xsd3b.GetXml());
 		
-		// output.save(filename, "o"); // is not utf16		
+		xsd3b.GetSchemaDefinitionRow().UseNamedSimpleTypes = bNamedSimpleTypes;
+		xsd3b.GetSchemaDefinitionRow().UseNamedComplexTypes = bNamedComplexTypes;		
+		
+		output.writeln("bNamedSimpleTypes " + bNamedSimpleTypes);
+		
+		output.writeln(xsd3b.GetXmlSchema());
+		
+		output.save(filename, "o"); // is not utf16		
 	}
 }
 %>

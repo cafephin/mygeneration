@@ -1,8 +1,6 @@
 ;-----------------------------------------
 ; MyGeneration Installation Script
-; This version gets its dll-/exe-files from the 
-;	local build paths below the src directories
-;
+; this is the same as mygeneration.nsi except that the source comes from ..\build\Release instead of the local ...bin directories
 ; History
 ;	2007-08-12 installer will build with warning instead of fatalerror 
 ;				if plugins are not found
@@ -19,7 +17,7 @@ Name "MyGeneration"
 OutFile "mygeneration_installer.exe"
 
 ; Icon doesn't work for some reason
-Icon ".\modern-install.ico"
+Icon "modern-install.ico"
 
 XPStyle on
 
@@ -88,35 +86,40 @@ Section "Detect/Install Microsoft Script Control"
 SectionEnd
 
 
-; The stuff to install
+; The stuff to install.
 Section "-Install Mygeneration and Register Shell Extensions"
 
   ; Set output path to the installation directory.
   SetOutPath $INSTDIR
-  
+
   ;Create Settings Directory 
   ;ExecShell mkdir $INSTDIR\Settings
 
+; does not work with nsis 2.29 :-(
+  ; Var /GLOBAL INPUTPATH
+  ; StrCpy $INPUTPATH "..\build\Release"  
+  ; File /oname=ZeusCmd.exe "$INPUTPATH\ZeusCmd.exe"
+  
   ; Get latest DLLs and EXE
-  File /oname=ZeusCmd.exe ..\mygeneration\ZeusCmd\bin\Release\ZeusCmd.exe
-  File /oname=MyGeneration.exe ..\mygeneration\MyGeneration\bin\Release\MyGeneration.exe
+  File /oname=ZeusCmd.exe ..\build\Release\ZeusCmd.exe
+  File /oname=MyGeneration.exe ..\build\Release\MyGeneration.exe
 
-  File /oname=Interop.ADOX.dll ..\mygeneration\MyGeneration\bin\Release\Interop.ADOX.dll
-  File /oname=Interop.MSDASC.dll ..\mygeneration\MyGeneration\bin\Release\Interop.MSDASC.dll
-  File /oname=Interop.MSScriptControl.dll ..\mygeneration\MyGeneration\bin\Release\Interop.MSScriptControl.dll
-  File /oname=Interop.Scripting.dll ..\mygeneration\MyGeneration\bin\Release\Interop.Scripting.dll
+  File /oname=Interop.ADOX.dll ..\build\Release\Interop.ADOX.dll
+  File /oname=Interop.MSDASC.dll ..\build\Release\Interop.MSDASC.dll
+  File /oname=Interop.MSScriptControl.dll ..\build\Release\Interop.MSScriptControl.dll
+  File /oname=Interop.Scripting.dll ..\build\Release\Interop.Scripting.dll
 
-  File /oname=adodb.dll .\adodb.dll
-  File /oname=System.Data.SQLite.DLL ..\mymeta\ThirdParty\System.Data.SQLite.DLL
-  File /oname=CollapsibleSplitter.dll ..\mygeneration\MyGeneration\bin\Release\CollapsibleSplitter.dll
-  File /oname=ScintillaNET.dll ..\mygeneration\MyGeneration\ScintillaNET\ScintillaNET.dll
-  File /oname=SciLexer.dll ..\mygeneration\MyGeneration\ScintillaNET\SciLexer.dll
-  File /oname=Npgsql.dll ..\mymeta\ThirdParty\Npgsql.dll
-  File /oname=Mono.Security.dll ..\mymeta\ThirdParty\Mono.Security.dll
-  File /oname=FirebirdSql.Data.Firebird.dll ..\mymeta\ThirdParty\FirebirdSql.Data.Firebird.dll
-  File /oname=WeifenLuo.WinFormsUI.Docking.dll ..\mygeneration\MyGeneration\DockManager\WeifenLuo.WinFormsUI.Docking.dll
+  File /oname=adodb.dll ..\build\Release\adodb.dll
+  File /oname=System.Data.SQLite.DLL ..\build\Release\System.Data.SQLite.DLL
+  File /oname=CollapsibleSplitter.dll ..\build\Release\CollapsibleSplitter.dll
+  File /oname=ScintillaNET.dll ..\build\Release\ScintillaNET.dll
+  File /oname=SciLexer.dll ..\build\Release\SciLexer.dll
+  File /oname=Npgsql.dll ..\build\Release\Npgsql.dll
+  File /oname=Mono.Security.dll ..\build\Release\Mono.Security.dll
+  File /oname=FirebirdSql.Data.Firebird.dll ..\build\Release\FirebirdSql.Data.Firebird.dll
+  File /oname=WeifenLuo.WinFormsUI.Docking.dll ..\build\Release\WeifenLuo.WinFormsUI.Docking.dll
 
-; Plugins nonfatal means create installer even if the filese do not exist
+; Plugins
   File /nonfatal /oname=MyMeta.Plugins.DelimitedText.dll ..\plugins\MyMetaTextFilePlugin\bin\Release\MyMeta.Plugins.DelimitedText.dll
   File /nonfatal /oname=MyMeta.Plugins.VistaDB3x.dll ..\plugins\MyMetaVistaDB3xPlugin\bin\Release\MyMeta.Plugins.VistaDB3x.dll
   File /nonfatal /oname=MyMeta.Plugins.SqlCe.dll ..\plugins\MyMetaSqlCePlugin\bin\Release\MyMeta.Plugins.SqlCe.dll
@@ -124,15 +127,15 @@ Section "-Install Mygeneration and Register Shell Extensions"
   Delete $INSTDIR\WeifenLuo.WinFormsUI.dll
   Delete $INSTDIR\VistaDBHelper.dll
  
-  File /oname=Zeus.dll ..\mygeneration\Zeus\bin\Release\Zeus.dll
-  File /oname=PluginInterfaces.dll ..\mygeneration\EngineInterface\bin\Release\PluginInterfaces.dll
-  File /oname=DotNetScriptingEngine.dll ..\plugins\DotNetScriptingEngine\bin\Release\DotNetScriptingEngine.dll
-  File /oname=MicrosoftScriptingEngine.dll ..\plugins\MicrosoftScriptingEngine\bin\Release\MicrosoftScriptingEngine.dll
-  File /oname=MyMeta.dll ..\mymeta\bin\Release\MyMeta.dll
-  File /oname=MyMeta.tlb ..\mymeta\bin\Release\MyMeta.tlb
-  File /oname=ContextProcessor.dll ..\plugins\ContextProcessor\bin\Release\ContextProcessor.dll
-  File /oname=MyGenUtility.dll ..\mygeneration\MyGenUtility\bin\Release\MyGenUtility.dll
-  File /oname=TypeSerializer.dll ..\plugins\TypeSerializer\bin\Release\TypeSerializer.dll
+  File /oname=Zeus.dll ..\build\Release\Zeus.dll
+  File /oname=PluginInterfaces.dll ..\build\Release\PluginInterfaces.dll
+  File /oname=DotNetScriptingEngine.dll ..\build\Release\DotNetScriptingEngine.dll
+  File /oname=MicrosoftScriptingEngine.dll ..\build\Release\MicrosoftScriptingEngine.dll
+  File /oname=MyMeta.dll ..\build\Release\MyMeta.dll
+  File /oname=MyMeta.tlb ..\build\Release\MyMeta.tlb
+  File /oname=ContextProcessor.dll ..\build\Release\ContextProcessor.dll
+  File /oname=MyGenUtility.dll ..\build\Release\MyGenUtility.dll
+  File /oname=TypeSerializer.dll ..\build\Release\TypeSerializer.dll
 
   File /oname=MyWinformUI.dll ..\mygeneration\MyGeneration\MyWinformUI.dll
   
@@ -146,7 +149,7 @@ Section "-Install Mygeneration and Register Shell Extensions"
 
   ;Install DnpUtils
   File /oname=Dnp.Utils.chm ..\plugins\Dnp.Utils\Dnp.Utils.chm
-  File /oname=Dnp.Utils.dll ..\plugins\Dnp.Utils\bin\Release\Dnp.Utils.dll
+  File /oname=Dnp.Utils.dll ..\build\Release\Dnp.Utils.dll
   
   ExecWait `"$INSTDIR\ZeusCmd.exe" -aio "%ZEUSHOME%\Dnp.Utils.dll" "Dnp.Utils.Utils" "DnpUtils"`
   
@@ -526,7 +529,7 @@ SectionEnd
 
 ; uninstall stuff
 UninstallText "This will uninstall the MyGeneration Code Generator. Hit next to continue."
-UninstallIcon ".\modern-uninstall.ico"
+UninstallIcon "modern-uninstall.ico"
 
 ; special uninstall section.
 Section "Uninstall"

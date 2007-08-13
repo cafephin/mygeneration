@@ -1,3 +1,4 @@
+#if !IGNORE_VISTA
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -634,3 +635,4 @@ namespace MyMeta.Plugins
 		#endregion
 	}
 }
+#endif

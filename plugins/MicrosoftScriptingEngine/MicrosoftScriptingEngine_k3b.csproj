@@ -91,11 +91,6 @@
       <Lcid>0</Lcid>
       <WrapperTool>tlbimp</WrapperTool>
     </COMReference>
-    <ProjectReference Include="..\..\mygeneration\EngineInterface\PluginInterfaces.csproj">
-      <Name>PluginInterfaces</Name>
-      <Project>{61B369D1-95DD-4158-9F30-2E051CEB9D50}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs">
@@ -113,6 +108,12 @@
     <Compile Include="MicrosoftScriptExecutioner.cs">
       <SubType>Code</SubType>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\mygeneration\EngineInterface\PluginInterfaces_k3b.csproj">
+      <Project>{61B369D1-95DD-4158-9F30-2E051CEB9D50}</Project>
+      <Name>PluginInterfaces_k3b</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

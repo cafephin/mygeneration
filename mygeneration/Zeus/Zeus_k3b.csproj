@@ -93,16 +93,6 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
-    <ProjectReference Include="..\EngineInterface\PluginInterfaces.csproj">
-      <Name>PluginInterfaces</Name>
-      <Project>{61B369D1-95DD-4158-9F30-2E051CEB9D50}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
-    <ProjectReference Include="..\..\plugins\TypeSerializer\TypeSerializer.csproj">
-      <Name>TypeSerializer</Name>
-      <Project>{E184159A-9644-4315-98EC-0F5967E8A735}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
     <COMReference Include="Scripting">
       <Guid>{420B2830-E718-11CF-893D-00A0C9054228}</Guid>
       <VersionMajor>1</VersionMajor>
@@ -331,6 +321,16 @@
     <EmbeddedResource Include="UserInterface\WinForms\ZeusDisplayError.resx">
       <DependentUpon>ZeusDisplayError.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\plugins\TypeSerializer\TypeSerializer_k3b.csproj">
+      <Project>{E184159A-9644-4315-98EC-0F5967E8A735}</Project>
+      <Name>TypeSerializer_k3b</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EngineInterface\PluginInterfaces_k3b.csproj">
+      <Project>{61B369D1-95DD-4158-9F30-2E051CEB9D50}</Project>
+      <Name>PluginInterfaces_k3b</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

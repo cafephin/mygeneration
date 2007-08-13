@@ -108,7 +108,9 @@ namespace MyMeta
 			}
 		}
 
+#if ENTERPRISE
 		[ComVisible(false)]
+#endif
 		public Parameter GetByName(string name)
 		{
 			Parameter obj = null;
@@ -129,7 +131,9 @@ namespace MyMeta
 			return obj;
 		}
 
+#if ENTERPRISE
 		[ComVisible(false)]
+#endif
 		public Parameter GetByPhysicalName(string name)
 		{
 			Parameter obj = null;
@@ -163,7 +167,9 @@ namespace MyMeta
 
 		#region XML User Data
 
+#if ENTERPRISE
 		[ComVisible(false)]
+#endif
 		override public string UserDataXPath
 		{ 
 			get
@@ -172,7 +178,9 @@ namespace MyMeta
 			} 
 		}
 
+#if ENTERPRISE
 		[ComVisible(false)]
+#endif
 		override internal bool GetXmlNode(out XmlNode node, bool forceCreate)
 		{
 			node = null;
@@ -204,7 +212,9 @@ namespace MyMeta
 			return success;
 		}
 
+#if ENTERPRISE
 		[ComVisible(false)]
+#endif
 		override public void CreateUserMetaData(XmlNode parentNode)
 		{
 			XmlNode myNode = parentNode.OwnerDocument.CreateNode(XmlNodeType.Element, "Parameters", null);

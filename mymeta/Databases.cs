@@ -21,7 +21,9 @@ namespace MyMeta
 
 		#region XML User Data
 
+#if ENTERPRISE
 		[ComVisible(false)]
+#endif		
 		override public string UserDataXPath
 		{ 
 			get
@@ -30,7 +32,9 @@ namespace MyMeta
 			} 
 		}
 
+#if ENTERPRISE
 		[ComVisible(false)]
+#endif		
 		override internal bool GetXmlNode(out XmlNode node, bool forceCreate)
 		{
 			node = null;
@@ -62,7 +66,9 @@ namespace MyMeta
 			return success;
 		}
 
+#if ENTERPRISE
 		[ComVisible(false)]
+#endif		
 		override public void CreateUserMetaData(XmlNode parentNode)
 		{
 			XmlNode myNode = parentNode.OwnerDocument.CreateNode(XmlNodeType.Element, "Databases", null);
@@ -171,7 +177,9 @@ namespace MyMeta
 
 		#region indexers
 
+#if ENTERPRISE
 		[DispId(0)]
+#endif		
 		virtual public IDatabase this[object index]
 		{
 			get
@@ -188,7 +196,9 @@ namespace MyMeta
 			}
 		}
 
+#if ENTERPRISE
 		[ComVisible(false)]
+#endif		
 		virtual public Database GetByName(string name)
 		{
 			Database obj = null;
@@ -209,7 +219,9 @@ namespace MyMeta
 			return obj;
 		}
 
+#if ENTERPRISE
 		[ComVisible(false)]
+#endif		
 		internal Database GetByPhysicalName(string name)
 		{
 			Database obj = null;

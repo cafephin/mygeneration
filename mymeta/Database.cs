@@ -378,7 +378,9 @@ namespace MyMeta
 //			}
 //		}
 
+#if ENTERPRISE
 		[DispId(0)]
+#endif		
 		override public string Alias
 		{
 			get
@@ -475,7 +477,9 @@ namespace MyMeta
 
 		#region XML User Data
 
+#if ENTERPRISE
 		[ComVisible(false)]
+#endif		
 		override public string UserDataXPath
 		{ 
 			get
@@ -484,7 +488,9 @@ namespace MyMeta
 			} 
 		}
 
+#if ENTERPRISE
 		[ComVisible(false)]
+#endif
 		override public string GlobalUserDataXPath
 		{
 			get
@@ -493,7 +499,9 @@ namespace MyMeta
 			}
 		}
 
+#if ENTERPRISE
 		[ComVisible(false)]
+#endif		
 		override internal bool GetXmlNode(out XmlNode node, bool forceCreate)
 		{
 			node = null;
@@ -525,7 +533,9 @@ namespace MyMeta
 			return success;
 		}
 
+#if ENTERPRISE
 		[ComVisible(false)]
+#endif		
 		internal XmlNode CreateGlobalXmlNode()
 		{
 			XmlNode node = null;
@@ -565,7 +575,9 @@ namespace MyMeta
 			return node;
 		}
 
+#if ENTERPRISE
 		[ComVisible(false)]
+#endif		
 		override public void CreateUserMetaData(XmlNode parentNode)
 		{
 			XmlNode myNode = parentNode.OwnerDocument.CreateNode(XmlNodeType.Element, "Database", null);

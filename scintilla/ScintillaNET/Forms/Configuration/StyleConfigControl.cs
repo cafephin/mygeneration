@@ -28,7 +28,7 @@ namespace Scintilla.Forms.Configuration
         private ColorWheel myColorWheel;
         private ColorHandler.RGB RGB;
         private ColorHandler.HSV HSV;
-        private FontBrowser fontBrowser1;
+//      private FontBrowser fontBrowser1;
         private bool isInUpdate = false;
         private IScintillaConfig configuration;
         private SortedDictionary<int, ILexerStyle> styles;

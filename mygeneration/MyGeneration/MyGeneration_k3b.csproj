@@ -37,19 +37,15 @@
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DocumentationFile>
-    </DocumentationFile>
     <DebugSymbols>true</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <NoStdLib>false</NoStdLib>
-    <NoWarn>
-    </NoWarn>
     <Optimize>false</Optimize>
     <RegisterForComInterop>false</RegisterForComInterop>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <WarningLevel>4</WarningLevel>
-    <DebugType>full</DebugType>
+    <DebugType>Full</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
@@ -76,6 +72,9 @@
     <DebugType>none</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="adodb, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
@@ -111,45 +110,6 @@
       <Name>WeifenLuo.WinFormsUI.Docking</Name>
       <HintPath>DockManager\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
-    <ProjectReference Include="..\..\plugins\ContextProcessor\ContextProcessor.csproj">
-      <Name>ContextProcessor</Name>
-      <Project>{B43C4B09-6813-4C8D-A422-85ECF41CB75B}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
-    <ProjectReference Include="..\..\plugins\DotNetScriptingEngine\DotNetScriptingEngine.csproj">
-      <Name>DotNetScriptingEngine</Name>
-      <Project>{497C072A-648D-4EF9-B5EC-71895D182018}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
-    <ProjectReference Include="..\..\scintilla\ScintillaNET\ScintillaNET.csproj">
-      <Project>{F9B6DABD-BBC1-4638-8CE6-A5C9506BFDCB}</Project>
-      <Name>ScintillaNET</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EngineInterface\PluginInterfaces.csproj">
-      <Name>PluginInterfaces</Name>
-      <Project>{61B369D1-95DD-4158-9F30-2E051CEB9D50}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
-    <ProjectReference Include="..\..\plugins\MicrosoftScriptingEngine\MicrosoftScriptingEngine.csproj">
-      <Name>MicrosoftScriptingEngine</Name>
-      <Project>{5CFE661C-1C7D-4191-A6F7-D7891C448690}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
-    <ProjectReference Include="..\MyGenUtility\MyGenUtility.csproj">
-      <Name>MyGenUtility</Name>
-      <Project>{A1D6D035-420C-40A3-9598-9E34F11FB1AA}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
-    <ProjectReference Include="..\Zeus\Zeus.csproj">
-      <Name>Zeus</Name>
-      <Project>{CE8A697D-D45C-4E60-838D-E36980227543}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
-    <ProjectReference Include="..\..\mymeta\MyMeta.csproj">
-      <Name>MyMeta</Name>
-      <Project>{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
     <COMReference Include="MSDASC">
       <Guid>{2206CEB0-19C1-11D1-89E0-00C04FD7A829}</Guid>
       <VersionMajor>1</VersionMajor>
@@ -535,6 +495,40 @@
       <UrlBehavior>Static</UrlBehavior>
     </WebReferenceUrl>
     <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\mymeta\MyMeta_k3b.csproj">
+      <Project>{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}</Project>
+      <Name>MyMeta_k3b</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\plugins\ContextProcessor\ContextProcessor_k3b.csproj">
+      <Project>{B43C4B09-6813-4C8D-A422-85ECF41CB75B}</Project>
+      <Name>ContextProcessor_k3b</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\plugins\DotNetScriptingEngine\DotNetScriptingEngine_k3b.csproj">
+      <Project>{497C072A-648D-4EF9-B5EC-71895D182018}</Project>
+      <Name>DotNetScriptingEngine_k3b</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\plugins\MicrosoftScriptingEngine\MicrosoftScriptingEngine_k3b.csproj">
+      <Project>{5CFE661C-1C7D-4191-A6F7-D7891C448690}</Project>
+      <Name>MicrosoftScriptingEngine_k3b</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\scintilla\ScintillaNET\ScintillaNET_k3b.csproj">
+      <Project>{F9B6DABD-BBC1-4638-8CE6-A5C9506BFDCB}</Project>
+      <Name>ScintillaNET_k3b</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EngineInterface\PluginInterfaces_k3b.csproj">
+      <Project>{61B369D1-95DD-4158-9F30-2E051CEB9D50}</Project>
+      <Name>PluginInterfaces_k3b</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MyGenUtility\MyGenUtility_k3b.csproj">
+      <Project>{A1D6D035-420C-40A3-9598-9E34F11FB1AA}</Project>
+      <Name>MyGenUtility_k3b</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Zeus\Zeus_k3b.csproj">
+      <Project>{CE8A697D-D45C-4E60-838D-E36980227543}</Project>
+      <Name>Zeus_k3b</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

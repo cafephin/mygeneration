@@ -1,0 +1,70 @@
+﻿!!Not implemented yet
+
+XSD3bGui can read from and write to UML - XMI files.s. 
+All Xsd3bImportFromUml is performed by the Xsd3bPlugin Dl3bak.Xsd3b.Uml14Xmi12Import.dll.
+
+!!!!supported fileformats
+	* xmi1.2/uml1.4 (ArgoUml 0.24)
+		* xmlns:UML = 'org.omg.xmi.namespace.UML' 
+		* *.xmi and *.uml (from argouml. *.zargo not supported)
+	* xmi1.1/uml1.3/ (StarUml 5.0)
+		* xmlns:UML="href://org.omg/UML/1.3"
+		* *.xmi ( *.uml from staruml not supported)
+
+case matters
+
+!!!!Mapping between uml and xsd3b
+	* UML:Class with stereotype <<Table>>			==> TableDefinition
+		* Templateparameter/TaggedValue TableName=xxx (casesensitive)
+			* Table is renamed to xxx
+			* TableAlias is set to last original name
+			* OriginalName is set to first original name
+			* fields of classes  with same TableName are merged to one Table (aka "one table per classhirarchy")
+		* TableName, TableComment, DBTableType <= stereotype,  UMLNamespace
+		* Tables without Attributes are removed
+		* autocreate <<AutoInnc> PK if table has none
+
+	* UML:Attribute						==> FieldDefinition
+		* FieldName. FieldComment, DataType , DBFieldType <= stereotype
+		* StringSize <= TaggedValue[MaxSize]=xxx (casesensitive, Not Supported by StarUML)
+		* AllowDBNull if cardinality 0..
+		* ReadOnly	if changeability!="changeable"
+		* DefaultValue only if not AllowDBNull
+		* NullValue is DefaultValue if AllowDBNull
+		* UniqueValue is true if stereotype <<Unique>>
+		* AutoIncrement and PrimaryKeyNumber and UniqueValue is true if stereotype <<AutoInc>>
+			* AutoIncrementSeed <= TaggedValue AutoIncSeed=xxx (casesensitive, Not Supported by StarUML). Default is 1
+			* AutoIncrementStep <= TaggedValue AutoIncStep=xxx (casesensitive, Not Supported by StarUML). Default is 1
+		* PrimaryKeyNumber and UniqueValue set if stereotype <<pk>>
+
+	* UML:Generalization
+		* inherit Datacolums from Superclass if Superclass has no stereotype <<Table>>
+
+	* UML:Whole Part
+		* subtypes
+			* UML:Association[.//@aggregation='none']		=> parent 1:1
+			* UML:Association[.//@aggregation='composite']	=> non-nested master/detail
+			* UML:Association[.//@aggregation='aggregate']	=> nested master/detail ( IsNested = true )
+		* members
+			* Inherits foreign keys from master
+			* foreign keys nullable if cardinality is 0..
+			* ExportParentAlias and ExportGetChildrenAlias <= assoziationname
+			* RelationComment, DBRelationType <= stereotype
+
+		
+!ToDO Mapping between uml and xsd3b
+
+	* UML:Class with stereotype <<Table>>			==> Datatable
+		* ExportDataRowAlias give the item or xxxRow a different name.
+		* ExportDataTableAlias give the collection or xxxDataTable a different name.
+		
+	* UML:Generalization
+		* association to Superclass if Superclass has stereotype <<Table>>
+
+	 * UML:Whole Part
+		* Support for many to many relations
+---
+see also
+	* Xsd3bExportToUml 
+	* Xsd3bImportFromUml 
+	* StereotypeSupport

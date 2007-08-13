@@ -1,3 +1,6 @@
+// #define IGNORE_VISTA // if defined in csproj compile without VISTADB
+// #define ENTERPRISE // if defined in csproj create com component
+
 using System;
 using System.Text;
 using System.IO;
@@ -215,7 +218,7 @@ namespace MyMeta
                 case "SQLITE":
                     conn = new SQLiteConnection(connectionString);
                     break;
-
+#if !IGNORE_VISTA
 				case "VISTADB":	
 					try
 					{
@@ -227,6 +230,7 @@ namespace MyMeta
 						throw new Exception("Invalid VistaDB connection or VistaDB not installed");
 					}
 					break;
+#endif
 				default:
                     if (Plugins.ContainsKey(driver))
                     {
@@ -328,9 +332,10 @@ namespace MyMeta
 				case "SQLITE":
 					return this.Connect(dbDriver.SQLite, connectionString);
 
+#if !IGNORE_VISTA
 				case "VISTADB":
                     return this.Connect(dbDriver.VistaDB, connectionString);
-
+#endif
                 case "ADVANTAGE":
                     return this.Connect(dbDriver.Advantage, connectionString);
                     
@@ -531,7 +536,7 @@ namespace MyMeta
 					this.requiredDatabaseName = false;
 					ClassFactory = new MyMeta.SQLite.ClassFactory();
 					break;
-
+#if !IGNORE_VISTA
 				case dbDriver.VistaDB:
 
 					try
@@ -554,7 +559,7 @@ namespace MyMeta
 					}
 
 					break;
-
+#endif
 				case dbDriver.Advantage:
 
 					ConnectUsingOleDb(_driver, _connectionString);
@@ -1232,10 +1237,12 @@ namespace MyMeta
 		/// </summary>
 		SQLite,
 
+#if !IGNORE_VISTA
 		/// <summary>
 		/// String form is "VISTADB" for DriverString property
 		/// </summary>
 		VistaDB,
+#endif
 
 		/// <summary>
 		/// String form is "ADVANTAGE" for DriverString property

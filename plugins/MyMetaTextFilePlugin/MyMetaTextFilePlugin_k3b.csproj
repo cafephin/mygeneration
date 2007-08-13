@@ -39,9 +39,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\mymeta\MyMeta.csproj">
+    <ProjectReference Include="..\..\mymeta\MyMeta_k3b.csproj">
       <Project>{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}</Project>
-      <Name>MyMeta</Name>
+      <Name>MyMeta_k3b</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

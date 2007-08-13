@@ -129,7 +129,9 @@ namespace MyGeneration
             dt.Rows.Add(new object[] { "PostgreSQL", "POSTGRESQL", false });
             dt.Rows.Add(new object[] { "PostgreSQL 8+", "POSTGRESQL8", false });
             dt.Rows.Add(new object[] { "SQLite", "SQLITE", false });
+#if !IGNORE_VISTA
             dt.Rows.Add(new object[] { "VistaDB", "VISTADB", false });
+#endif
 
             foreach (IMyMetaPlugin plugin in MyMeta.dbRoot.Plugins.Values)
             {
@@ -151,7 +153,9 @@ namespace MyGeneration
 				case "INTERBASE":
 				case "SQLITE":
 				case "MYSQL2":
+#if !IGNORE_VISTA
 				case "VISTADB":
+#endif
 				case "ISERIES":
 				case "NONE":
 				case "":
@@ -1322,9 +1326,11 @@ namespace MyGeneration
 					settings.SQLITE = this.txtConnectionString.Text;
 					break;
 
+#if !IGNORE_VISTA
 				case "VISTADB":
 					settings.VISTADB = this.txtConnectionString.Text;
 					break;
+#endif
 
 				case "ADVANTAGE":
 					settings.ADVANTAGE = this.txtConnectionString.Text;
@@ -1499,6 +1505,7 @@ namespace MyGeneration
 						this.txtConnectionString.Text = "Data Source=database.db;New=False;Compress=True;Synchronous=Off";
 					break;
 
+#if !IGNORE_VISTA
 				case "VISTADB":
 					this.btnOleDb.Enabled = false;
 					this.btnOleDb.BackColor = defaultOleDbButtonColor;
@@ -1507,6 +1514,7 @@ namespace MyGeneration
 					else
 						this.txtConnectionString.Text = @"DataSource=C:\Program Files\VistaDB 2.0\Data\Northwind.vdb;Cypher= None;Password=;Exclusive=False;Readonly=False;";
 					break;
+#endif
 
 				case "ADVANTAGE":
 					this.btnOleDb.Enabled = true;

@@ -200,6 +200,7 @@
     </Content>
     <None Include="templates\Xsd3b\ToXsd.csgen" />
     <None Include="templates\Xsd3b\ToXsd3b.csgen" />
+    <Compile Include="Dummy.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="templates\Microsoft_SQL_Server\sql_library.js">

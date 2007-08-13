@@ -1,3 +1,5 @@
+#if !IGNORE_VISTA
+
 using System;
 using System.Data;
 using System.ComponentModel;
@@ -440,3 +442,4 @@ namespace Provider.VistaDB
 		}
 	}
 }
+#endif

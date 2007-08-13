@@ -1,3 +1,4 @@
+#if !IGNORE_SQLCE
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -763,3 +764,4 @@ namespace MyMeta.Plugins
 
     }
 }
+#endif

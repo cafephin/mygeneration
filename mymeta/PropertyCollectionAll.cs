@@ -29,7 +29,9 @@ namespace MyMeta
 		}
 
 		#region IPropertyCollection
+#if ENTERPRISE
 		[DispId(0)]
+#endif		
 		public IProperty this[string key] 
 		{ 
 			get

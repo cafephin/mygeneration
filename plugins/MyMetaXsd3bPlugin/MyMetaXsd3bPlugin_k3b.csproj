@@ -62,16 +62,16 @@
     <None Include="lib\MyGenXsd3b.wiki" />
     <None Include="lib\XSD3bHistory.wiki" />
     <None Include="templates\xsd3b\ToXsd.csgen">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="templates\xsd3b\ToXsd3b.csgen">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\mymeta\MyMeta.csproj">
+    <ProjectReference Include="..\..\mymeta\MyMeta_k3b.csproj">
       <Project>{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}</Project>
-      <Name>MyMeta</Name>
+      <Name>MyMeta_k3b</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

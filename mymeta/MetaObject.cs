@@ -34,14 +34,18 @@ namespace MyMeta
 
 		#region XML User Data
 
+#if ENTERPRISE
 		[ComVisible(false)]
+#endif
 		virtual internal bool GetXmlNode(out XmlNode node, bool forceCreate)
 		{
 			node = null;
 			return false;
 		}
 
+#if ENTERPRISE
 		[ComVisible(false)]
+#endif
 		virtual public string UserDataXPath
 		{
 			get
@@ -50,7 +54,9 @@ namespace MyMeta
 			}
 		}
 
+#if ENTERPRISE
 		[ComVisible(false)]
+#endif
 		virtual public string GlobalUserDataXPath
 		{
 			get
@@ -59,13 +65,17 @@ namespace MyMeta
 			}
 		}
 
+#if ENTERPRISE
 		[ComVisible(false)]
+#endif
 		virtual public void CreateUserMetaData(XmlNode parentNode)
 		{
 
 		}
 
+#if ENTERPRISE
 		[ComVisible(false)]
+#endif
 		virtual public void CreateUserMetaData()
 		{
 

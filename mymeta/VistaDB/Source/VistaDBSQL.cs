@@ -1,6 +1,8 @@
+#if !IGNORE_VISTA
+
 using System;
 using System.Data;
-using System.Windows.Forms;
+// using System.Windows.Forms;
 using System.Text;
 using System.ComponentModel;
 
@@ -1409,4 +1411,4 @@ namespace VistaDB
 		}
 	}
 }
-
+#endif

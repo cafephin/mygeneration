@@ -166,7 +166,11 @@ namespace MyGeneration
 			lstBoxProducts.Items.Add("Npgsql".PadRight(29) + GetAssemblyVersion("Npgsql", "1.0.0.0"));
 			lstBoxProducts.Items.Add("Firebird .Net Data Provider".PadRight(29) + GetAssemblyVersion("FirebirdSql.Data.Firebird", "1.7.1.0"));
 			lstBoxProducts.Items.Add("System.Data.SQLite".PadRight(29) + GetAssemblyVersion("System.Data.SQLite", "1.0.38.0"));
+#if !IGNORE_VISTA
 			lstBoxProducts.Items.Add("VistaDB 2.0 ADO.NET Provider".PadRight(29) + "2.0.16");
+#else
+            lstBoxProducts.Items.Add(""); // number of items must match
+#endif
 			lstBoxProducts.Items.Add("Dnp.Utils".PadRight(29) + GetAssemblyVersion("Dnp.Utils", "1.0.0.0"));
 
             foreach (string pluginName in MyMeta.dbRoot.Plugins.Keys)

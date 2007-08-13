@@ -537,6 +537,7 @@ namespace MyGeneration
 			set	{ this.SetSetting("SQLITE", value); }
 		}
 
+#if !IGNORE_VISTA
 		public string VISTADB
 		{
 			get 
@@ -546,6 +547,7 @@ namespace MyGeneration
 			}
 			set	{ this.SetSetting("VISTADB", value); }
 		}
+#endif
 
 		public string ADVANTAGE
 		{

@@ -93,7 +93,9 @@ namespace MyMeta
 
 		#region indexers
 
+#if ENTERPRISE
 		[DispId(0)]
+#endif		
 		public IProviderType this[object index]
 		{
 			get
