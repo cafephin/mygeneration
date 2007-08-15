@@ -43,9 +43,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\Dl3bak.Xsd3b.dll</HintPath>
     </Reference>
+    <Reference Include="Dl3bak.Xsd3b.Uml14Xmi12Import, Version=2.1.0.8, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\Dl3bak.Xsd3b.Uml14Xmi12Import.dll</HintPath>
+    </Reference>
     <Reference Include="Dl3bak.Xsd3b.Xsd, Version=2.1.0.5, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\Dl3bak.Xsd3b.Xsd.dll</HintPath>
+    </Reference>
+    <Reference Include="Dl3bak.Xsd3b.Xslt, Version=2.1.0.8, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\Dl3bak.Xsd3b.Xslt.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -73,5 +81,13 @@
       <Project>{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}</Project>
       <Name>MyMeta</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DatabaseReport.xsd3b.htm.xsl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Mogwai_ERDesignerModel.xdm.xsd3b.xsl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

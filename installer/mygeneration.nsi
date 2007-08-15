@@ -468,7 +468,7 @@ Section "Install Xsd3b Provider for xml (xsd, uml, entityrelationship)"
     
   File /nonfatal /oname=MyMeta.Plugins.Xsd3b.dll ..\build\Release\MyMeta.Plugins.Xsd3b.dll
   File /nonfatal ..\plugins\MyMetaXsd3bPlugin\lib\*.dll
-  File /nonfatal ..\plugins\MyMetaXsd3bPlugin\lib\*.xsl
+  File /nonfatal ..\plugins\MyMetaXsd3bPlugin\*.xsl
 
   SetOutPath "$INSTDIR\Templates\Xsd3b"
   ; CreateDirectory "$INSTDIR\Templates\Xsd3b"
