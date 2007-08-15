@@ -11,7 +11,16 @@ namespace MyMeta.Oracle
 #endif
 	public class ClassFactory : IClassFactory
 	{
-		public ClassFactory()
+        public static void Register()
+        {
+            InternalDriver drv = new InternalDriver
+                (typeof(ClassFactory)
+                , "Provider=OraOLEDB.Oracle.1;Password=myPassword;Persist Security Info=True;User ID=myID;Data Source=myDataSource"
+                , true);
+            drv.RequiredDatabaseName = true;
+            InternalDriver.Register("ORACLE",drv);
+        }
+        public ClassFactory()
 		{
 
 		}
@@ -125,5 +134,9 @@ namespace MyMeta.Oracle
 		{
 			return new ProviderTypes();
 		}
-	}
+        public System.Data.IDbConnection CreateConnection()
+        {
+            return new System.Data.OleDb.OleDbConnection();
+        }
+    }
 }

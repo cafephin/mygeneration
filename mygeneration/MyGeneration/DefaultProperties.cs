@@ -114,7 +114,7 @@ namespace MyGeneration
             dt.Columns.Add("VALUE");
             dt.Columns.Add("ISPLUGIN");
 
-            dt.Rows.Add(new object[] { "<None>", "NONE", false });
+            // dt.Rows.Add(new object[] { "<None>", "NONE", false });
             dt.Rows.Add(new object[] { "Advantage Database Server", "ADVANTAGE", false });
             dt.Rows.Add(new object[] { "Firebird", "FIREBIRD", false });
             dt.Rows.Add(new object[] { "IBM DB2", "DB2", false });
@@ -1140,7 +1140,8 @@ namespace MyGeneration
 
 				if(string.Empty == connstr)
 				{
-					connstr = this.GetDefaultConnectionString(driver);
+                    InternalDriver drv = InternalDriver.Get(settings.DbDriver);
+					connstr = (drv != null) ? drv.ConnectString : string.Empty;
 				}
 
 				DataLinksClass dl = new MSDASC.DataLinksClass();
@@ -1272,80 +1273,14 @@ namespace MyGeneration
 
 			settings.FirstLoad = false;
 
-			switch(settings.DbDriver)
-			{
-				case "SQL":
-					settings.SQL = this.txtConnectionString.Text;
-					break;
-
-				case "ORACLE":
-					settings.ORACLE = this.txtConnectionString.Text;
-					break;
-
-				case "ACCESS":
-					settings.ACCESS = this.txtConnectionString.Text;
-					break;
-
-				case "DB2":
-					settings.DB2 = this.txtConnectionString.Text;
-					break;
-
-				case "ISERIES":
-					settings.ISERIES = this.txtConnectionString.Text;
-					break;
-
-				case "MYSQL":
-					settings.MYSQL = this.txtConnectionString.Text;
-					break;
-
-				case "MYSQL2":
-					settings.MYSQL2 = this.txtConnectionString.Text;
-					break;
-
-				case "FIREBIRD":
-					settings.FIREBIRD = this.txtConnectionString.Text;
-					break;
-
-				case "INTERBASE":
-					settings.INTERBASE = this.txtConnectionString.Text;
-					break;
-
-				case "PERVASIVE":
-					settings.PERVASIVE = this.txtConnectionString.Text;
-					break;
-
-				case "POSTGRESQL":
-					settings.POSTGRESQL = this.txtConnectionString.Text;
-					break;
-
-				case "POSTGRESQL8":
-					settings.POSTGRESQL8 = this.txtConnectionString.Text;
-					break;
-
-				case "SQLITE":
-					settings.SQLITE = this.txtConnectionString.Text;
-					break;
-
-#if !IGNORE_VISTA
-				case "VISTADB":
-					settings.VISTADB = this.txtConnectionString.Text;
-					break;
-#endif
-
-				case "ADVANTAGE":
-					settings.ADVANTAGE = this.txtConnectionString.Text;
-					break;
-
-				case "NONE":
-					MessageBox.Show(this, "Choosing '<None>' will eliminate your ability to run 99.9% of the MyGeneration Templates. Most templates will crash if you run them", 
-						"Warning !!!",MessageBoxButtons.OK, MessageBoxIcon.Stop); 
-					break;
-                default:
-                    if (MyMeta.dbRoot.Plugins.Contains(settings.DbDriver))
-                    {
-                        settings.SetPlugin(settings.DbDriver, this.txtConnectionString.Text);
-                    }
-                    break;
+            InternalDriver drv = InternalDriver.Get(settings.DbDriver);
+            if (drv != null)
+            {
+                drv.ConnectString = this.txtConnectionString.Text;
+                settings.SetSetting(drv.DriverId, this.txtConnectionString.Text);
+            } else {
+				MessageBox.Show(this, "Choosing '<None>' will eliminate your ability to run 99.9% of the MyGeneration Templates. Most templates will crash if you run them", 
+					"Warning !!!",MessageBoxButtons.OK, MessageBoxIcon.Stop); 
 			}
 		}
 
@@ -1384,214 +1319,31 @@ namespace MyGeneration
 			if(null != cboDbDriver.SelectedValue) driver = cboDbDriver.SelectedValue as string;
 			driver = driver.ToUpper();
 
-			this.btnTestConnection.Enabled = true;
+            this.btnOleDb.BackColor = defaultOleDbButtonColor;
+            this.btnOleDb.Enabled = true;
+            this.btnTestConnection.Enabled = true;
 
-			switch(driver)
-			{
-				case "SQL":
-					this.btnOleDb.Enabled = true;
-					this.btnOleDb.BackColor = System.Drawing.Color.LightBlue;
-					if(settings.SQL != "")
-						this.txtConnectionString.Text = settings.SQL;
-					else
-						this.txtConnectionString.Text = "Provider=SQLOLEDB.1;Persist Security Info=False;User ID=sa;Initial Catalog=Northwind;Data Source=localhost";
-					break;
+            InternalDriver drv = InternalDriver.Get(driver);
+            if (drv != null)
+            {
+                bool oleDB  = drv.IsOleDB;
+                this.btnOleDb.Enabled = oleDB;
+                if (oleDB)
+                {
+                    this.btnOleDb.BackColor = System.Drawing.Color.LightBlue;
+                }
 
-				case "ORACLE":
-					this.btnOleDb.Enabled = true;
-					this.btnOleDb.BackColor = System.Drawing.Color.LightBlue;
-					if(settings.ORACLE != "")
-						this.txtConnectionString.Text = settings.ORACLE;
-					else
-						this.txtConnectionString.Text = "Provider=OraOLEDB.Oracle.1;Password=myPassword;Persist Security Info=True;User ID=myID;Data Source=myDataSource";
-					break;
+                this.txtConnectionString.Text = settings.GetSetting(drv.DriverId);
+                if (this.txtConnectionString.Text == DefaultSettings.MISSING)
+                    this.txtConnectionString.Text = drv.ConnectString;
+            }
+            else
+            {
+                this.btnTestConnection.Enabled = false;
+                //MessageBox.Show(this, "Choosing '<None>' will eliminate your ability to run 99.9% of the MyGeneration Templates. Most templates will crash if you run them",
+                //    "Warning !!!", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+            }
 
-				case "ACCESS":
-					this.btnOleDb.Enabled = true;
-					this.btnOleDb.BackColor = System.Drawing.Color.LightBlue;
-					if(settings.ACCESS != "")
-						this.txtConnectionString.Text = settings.ACCESS;
-					else
-						this.txtConnectionString.Text = @"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=c:\access\Northwind.mdb;User Id=;Password=";
-					break;
-
-				case "DB2":
-					this.btnOleDb.Enabled = true;
-					this.btnOleDb.BackColor = System.Drawing.Color.LightBlue;
-					if(settings.DB2 != "")
-						this.txtConnectionString.Text = settings.DB2;
-					else
-						this.txtConnectionString.Text = "Provider=IBMDADB2.1;Password=myPassword;User ID=myUser;Data Source=myDatasource;Persist Security Info=True";
-					break;
-
-				case "ISERIES":
-					this.btnOleDb.Enabled = true;
-					this.btnOleDb.BackColor = System.Drawing.Color.LightBlue;
-					if(settings.ISERIES != "")
-						this.txtConnectionString.Text = settings.ISERIES;
-					else
-						this.txtConnectionString.Text = "PROVIDER=IBMDA400; DATA SOURCE=MY_SYSTEM_NAME;USER ID=myUserName;PASSWORD=myPwd;DEFAULT COLLECTION=MY_LIBRARY;";
-					break;
-
-				case "MYSQL":
-					this.btnOleDb.Enabled = true;
-					this.btnOleDb.BackColor = System.Drawing.Color.LightBlue;
-					if(settings.MYSQL != "")
-						this.txtConnectionString.Text = settings.MYSQL;
-					else
-						this.txtConnectionString.Text = "Provider=MySQLProv;Persist Security Info=True;Data Source=test;UID=myUser;PWD=myPassword;PORT=3306";
-					break;
-
-				case "MYSQL2":
-					this.btnOleDb.Enabled = false;
-					this.btnOleDb.BackColor = defaultOleDbButtonColor;
-					if(settings.MYSQL2 != "")
-						this.txtConnectionString.Text = settings.MYSQL2;
-					else
-						this.txtConnectionString.Text = "Database=Test;Data Source=Griffo;User Id=anonymous;Password=;";
-					break;
-
-				case "FIREBIRD":
-					this.btnOleDb.Enabled = false;
-					this.btnOleDb.BackColor = defaultOleDbButtonColor;
-					if(settings.FIREBIRD != "")
-						this.txtConnectionString.Text = settings.FIREBIRD;
-					else
-						this.txtConnectionString.Text = @"Database=C:\firebird\EMPLOYEE.GDB;User=SYSDBA;Password=wow;Dialect=3;Server=localhost";
-					break;
-
-				case "INTERBASE":
-					this.btnOleDb.Enabled = false;
-					this.btnOleDb.BackColor = defaultOleDbButtonColor;
-					if(settings.INTERBASE != "")
-						this.txtConnectionString.Text = settings.INTERBASE;
-					else
-						this.txtConnectionString.Text =  @"Database=C:\firebird\EMPLOYEE.GDB;User=SYSDBA;Password=wow;Server=localhost";
-					break;
-
-				case "PERVASIVE":
-					this.btnOleDb.Enabled = true;
-					this.btnOleDb.BackColor = defaultOleDbButtonColor;
-					if(settings.PERVASIVE != "")
-						this.txtConnectionString.Text = settings.PERVASIVE;
-					else
-						this.txtConnectionString.Text = "Provider=PervasiveOLEDB.8.60;Data Source=demodata;Location=Griffo;Persist Security Info=False";
-					break;
-
-				case "POSTGRESQL":
-					this.btnOleDb.Enabled = false;
-					this.btnOleDb.BackColor = defaultOleDbButtonColor;
-					if(settings.POSTGRESQL != "")
-						this.txtConnectionString.Text = settings.POSTGRESQL;
-					else
-						this.txtConnectionString.Text = "Server=127.0.0.1;Port=5432;User Id=myUser;Password=myPasswordt;Database=test;";
-					break;
-
-				case "POSTGRESQL8":
-					this.btnOleDb.Enabled = false;
-					this.btnOleDb.BackColor = defaultOleDbButtonColor;
-					if(settings.POSTGRESQL8 != "")
-						this.txtConnectionString.Text = settings.POSTGRESQL8;
-					else
-						this.txtConnectionString.Text = "Server=127.0.0.1;Port=5432;User Id=myUser;Password=myPasswordt;Database=test;";
-					break;
-
-				case "SQLITE":
-					this.btnOleDb.Enabled = false;
-					this.btnOleDb.BackColor = defaultOleDbButtonColor;
-					if(settings.SQLITE != "")
-						this.txtConnectionString.Text = settings.SQLITE;
-					else 
-						this.txtConnectionString.Text = "Data Source=database.db;New=False;Compress=True;Synchronous=Off";
-					break;
-
-#if !IGNORE_VISTA
-				case "VISTADB":
-					this.btnOleDb.Enabled = false;
-					this.btnOleDb.BackColor = defaultOleDbButtonColor;
-					if(settings.VISTADB != "")
-						this.txtConnectionString.Text = settings.VISTADB;
-					else
-						this.txtConnectionString.Text = @"DataSource=C:\Program Files\VistaDB 2.0\Data\Northwind.vdb;Cypher= None;Password=;Exclusive=False;Readonly=False;";
-					break;
-#endif
-
-				case "ADVANTAGE":
-					this.btnOleDb.Enabled = true;
-					this.btnOleDb.BackColor = defaultOleDbButtonColor;
-					this.btnOleDb.BackColor = System.Drawing.Color.LightBlue;
-					if(settings.ADVANTAGE != "")
-						this.txtConnectionString.Text = settings.ADVANTAGE;
-					else
-						this.txtConnectionString.Text = @"Provider=Advantage.OLEDB.1;Password="";User ID=AdsSys;Data Source=C:\Program Files\Extended Systems\Advantage\Help\examples\aep_tutorial\task1;Initial Catalog=aep_tutorial.add;Persist Security Info=True;Advantage Server Type=ADS_LOCAL_SERVER;Trim Trailing Spaces=TRUE";
-					break;
-
-				case "NONE":
-					this.btnOleDb.Enabled = false;
-					this.btnOleDb.BackColor = defaultOleDbButtonColor;
-					this.txtConnectionString.Text = "";
-					this.btnTestConnection.Enabled = false;
-					break;
-
-				default:
-                    this.btnOleDb.Enabled = false;
-                    this.btnOleDb.BackColor = defaultOleDbButtonColor;
-                    string currentSetting = settings.GetPlugin(driver);
-                    if (!string.IsNullOrEmpty(currentSetting))
-                        this.txtConnectionString.Text = currentSetting;
-                    else
-                        this.txtConnectionString.Text = GetDefaultConnectionString(driver);
-                    break;
-			}
-		}
-
-		private string GetDefaultConnectionString(string driver)
-		{
-			switch(driver)
-			{
-				case "SQL":
-					return @"Provider=SQLOLEDB.1;Persist Security Info=True;User ID=sa;Data Source=localhost";
-
-				case "ORACLE":
-					return @"Provider=OraOLEDB.Oracle.1;Password=Password;Persist Security Info=True;User ID=UserID;Data Source=DataSource";
-
-				case "ACCESS":
-					return @"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=northwind.mdb;User Id=;Password=";
-
-				case "DB2":
-					return @"Provider=IBMDADB2.1;Password=sa;User ID=UserID;Data Source=Source;Persist Security Info=True";
-
-				case "ISERIES":
-					return @"PROVIDER=IBMDA400; DATA SOURCE=MY_SYSTEM_NAME;USER ID=myUserName;PASSWORD=myPwd;DEFAULT COLLECTION=MY_LIBRARY;";
-
-				case "MYSQL":
-					return @"Provider=MySQLProv;Persist Security Info=True;Data Source=test;UID=test;PWD=test;PORT=3306";
-
-				case "MYSQL2":
-
-					return @"Database=test;Data Source=localhost;User Id=anonymous;Password=;";
-
-				case "ADVANTAGE":
-					return @"Provider=Advantage.OLEDB.1;Advantage Server Type=ADS_LOCAL_SERVER;Trim Trailing Spaces=TRUE";
-
-				case "PERVASIVE":
-					return @"Provider=PervasiveOLEDB.8.60;Data Source=demodata;Location=Griffo;Persist Security Info=False";
-
-//				case "FIREBIRD":
-//				case "INTERBASE":
-//					return @"Provider=LCPI.IBProvider.2;";
-
-				default:
-                    if (MyMeta.dbRoot.Plugins.ContainsKey(driver)) 
-                    {
-                        IMyMetaPlugin plugin = dbRoot.Plugins[driver] as IMyMetaPlugin;
-                        return plugin.SampleConnectionString;
-                    }
-                    else 
-                    {
-					    return string.Empty;
-                    }
-			}
 		}
 
 		private bool TestConnection(bool silent)

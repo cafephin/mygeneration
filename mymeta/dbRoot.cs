@@ -81,6 +81,21 @@ namespace MyMeta
     {
 		public dbRoot()
 		{
+            Access.ClassFactory.Register();
+            Advantage.ClassFactory.Register();
+            DB2.ClassFactory.Register();
+            Firebird.ClassFactory.Register();
+            ISeries.ClassFactory.Register();
+            MySql.ClassFactory.Register();
+            MySql5.ClassFactory.Register();
+            Oracle.ClassFactory.Register();
+            Pervasive.ClassFactory.Register();
+            PostgreSQL.ClassFactory.Register();
+            PostgreSQL8.ClassFactory.Register();
+            Sql.ClassFactory.Register();
+            SQLite.ClassFactory.Register();
+            VistaDB.ClassFactory.Register();
+
 			Reset();
 		}
 
@@ -375,6 +390,55 @@ namespace MyMeta
 
 			this._connectionString = connectionString.Replace("\"", "");
 			this._driver = driver;
+
+/*
+not fully implemented yet
+            
+            InternalDriver drv = InternalDriver.Get(settings.DbDriver);
+            if (drv != null)
+            {
+                this._driverString = drv.DriverId;
+                this.StripTrailingNulls = drv.StripTrailingNulls;
+                this.requiredDatabaseName = drv.RequiredDatabaseName;
+
+                IDbConnection con = null;
+		        try
+		        {
+                    ClassFactory = drv.CreateBuildInClass();
+                    if (ClassFactory != null)
+                        con = ClassFactory.CreateConnection();
+                    else
+                    {
+                        IMyMetaPlugin plugin = drv.CreateMyMetaPluginClass();
+                        if (plugin != null)
+                        {
+                            MyMetaPluginContext pluginContext = new MyMetaPluginContext(drv.DriverId, this._connectionString);
+                            plugin.Initialize(pluginContext);
+                            con = plugin.NewConnection;
+                        }
+                    }
+                    if (con != null)
+                    {
+                        con.ConnectionString = this._connectionString;
+			            // cn.Open();
+                    }
+			        this._defaultDatabase = drv.GetDataBaseName(cn);
+		        }
+		        catch(Exception Ex)
+		        {
+			        throw Ex;
+		        } finally {
+                    if (con != null)
+			            cn.Close();
+                }
+            }
+            else
+            {
+                // Error
+            }
+not fully implemented yet
+            
+*/
 
 			switch(_driver)
 			{
@@ -859,6 +923,9 @@ namespace MyMeta
 			
 			                IMyMetaPlugin plugin = constructor.Invoke(BindingFlags.CreateInstance, null, new object[] { }, null) as IMyMetaPlugin;
 			                plugins[plugin.ProviderUniqueKey] = plugin;
+                            InternalDriver.Register(plugin.ProviderUniqueKey,
+                                                    new PluginDriver(plugin));
+
 			            }
 			            catch {}
 			        }

@@ -11,7 +11,17 @@ namespace MyMeta.MySql
 #endif
 	public class ClassFactory : IClassFactory
 	{
-		public ClassFactory()
+        public static void Register()
+        {
+            InternalDriver drv = new InternalDriver
+                (typeof(ClassFactory)
+                , "Provider=MySQLProv;Persist Security Info=True;Data Source=test;UID=myUser;PWD=myPassword;PORT=3306"
+                , true);
+            drv.StripTrailingNulls = true;
+            drv.RequiredDatabaseName = true;
+            InternalDriver.Register("MYSQL",drv);
+        }
+        public ClassFactory()
 		{
 
 		}
@@ -125,5 +135,9 @@ namespace MyMeta.MySql
 		{
 			return new ProviderTypes();
 		}
-	}
+        public System.Data.IDbConnection CreateConnection()
+        {
+            return new System.Data.OleDb.OleDbConnection();
+        }
+    }
 }

@@ -11,7 +11,15 @@ namespace MyMeta.DB2
 #endif
 	public class ClassFactory : IClassFactory
 	{
-		public ClassFactory()
+        public static void Register()
+        {
+            InternalDriver.Register("DB2",
+                new InternalDriver
+                (typeof(ClassFactory)
+                , "Provider=IBMDADB2.1;Password=myPassword;User ID=myUser;Data Source=myDatasource;Persist Security Info=True"
+                , true));
+        }
+        public ClassFactory()
 		{
 
 		}
@@ -126,5 +134,9 @@ namespace MyMeta.DB2
 		{
 			return new ProviderTypes();
 		}
-	}
+        public System.Data.IDbConnection CreateConnection()
+        {
+            return new System.Data.OleDb.OleDbConnection();
+        }
+    }
 }

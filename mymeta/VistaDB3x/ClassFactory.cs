@@ -126,5 +126,11 @@ namespace MyMeta.VistaDB3x
 		{
 			return new ProviderTypes();
 		}
-	}
+
+        public System.Data.IDbConnection CreateConnection()
+        {
+            return new Provider.VistaDB.VistaDBConnection();
+        }
+
+    }
 }

@@ -11,7 +11,18 @@ namespace MyMeta.MySql5
 #endif
 	public class ClassFactory : IClassFactory
 	{
-		public ClassFactory()
+        public static void Register()
+        {
+            InternalDriver drv = new InternalDriver
+                (typeof(ClassFactory)
+                , "Database=Test;Data Source=Griffo;User Id=anonymous;Password=;"
+                , false);
+            drv.StripTrailingNulls = true;
+            drv.RequiredDatabaseName = true;
+
+            InternalDriver.Register("MYSQL2", drv);
+        }
+        public ClassFactory()
 		{
 
 		}
@@ -125,5 +136,17 @@ namespace MyMeta.MySql5
 		{
 			return new ProviderTypes();
 		}
-	}
+
+        #region IClassFactory Members
+
+        public System.Data.IDbConnection CreateConnection()
+        {
+            MyMeta.MySql5.MySql5Databases.LoadAssembly();
+            System.Data.IDbConnection conn = MyMeta.MySql5.MySql5Databases.CreateConnection();
+
+            return conn;
+        }
+
+        #endregion
+    }
 }

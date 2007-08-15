@@ -11,7 +11,15 @@ namespace MyMeta.Pervasive
 #endif
 	public class ClassFactory : IClassFactory
 	{
-		public ClassFactory()
+        public static void Register()
+        {
+            InternalDriver.Register("PERVASIVE",
+                new InternalDriver
+                (typeof(ClassFactory)
+                ,"Provider=PervasiveOLEDB.8.60;Data Source=demodata;Location=Griffo;Persist Security Info=False"
+                , true));
+        }
+        public ClassFactory()
 		{
 
 		}
@@ -125,5 +133,10 @@ namespace MyMeta.Pervasive
 		{
 			return new ProviderTypes();
 		}
-	}
+
+        public System.Data.IDbConnection CreateConnection()
+        {
+            return new System.Data.OleDb.OleDbConnection();
+        }
+    }
 }

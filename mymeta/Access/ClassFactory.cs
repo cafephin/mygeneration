@@ -11,7 +11,15 @@ namespace MyMeta.Access
 #endif
 	public class ClassFactory : IClassFactory
 	{
-		public ClassFactory()
+        public static void Register()
+        {
+            InternalDriver.Register("ACCESS",
+                new InternalDriver
+                (typeof(ClassFactory)
+                , @"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=c:\access\Northwind.mdb;User Id=;Password="
+                , true));
+        }
+        public ClassFactory()
 		{
 
 		}
@@ -125,5 +133,9 @@ namespace MyMeta.Access
 		{
 			return new ProviderTypes();
 		}
-	}
+        public System.Data.IDbConnection CreateConnection()
+        {
+            return new System.Data.OleDb.OleDbConnection();
+        }
+    }
 }

@@ -11,6 +11,17 @@ namespace MyMeta.Sql
 #endif
 	public class ClassFactory : IClassFactory
 	{
+        public static void Register()
+        {
+            InternalDriver drv = new InternalDriver
+                (typeof(ClassFactory)
+                , "Provider=SQLOLEDB.1;Persist Security Info=False;User ID=sa;Initial Catalog=Northwind;Data Source=localhost"
+                , true);
+            drv.RequiredDatabaseName = true;
+
+            InternalDriver.Register("SQL", drv);
+        }
+
 		public ClassFactory()
 		{
 
@@ -125,5 +136,9 @@ namespace MyMeta.Sql
 		{
 			return new ProviderTypes();
 		}
-	}
+        public System.Data.IDbConnection CreateConnection()
+        {
+            return new System.Data.OleDb.OleDbConnection();
+        }
+    }
 }

@@ -84,19 +84,19 @@ namespace MyMeta.MySql5
 			catch {}
 		}
 
+        static internal IDbConnection CreateConnection()
+        {
+            Type type = mod.GetType(nameSpace + "MySqlConnection");
+            IDbConnection con = type.Assembly.CreateInstance(type.Name) as IDbConnection;
+            return con;
+        }
+
 		static internal IDbConnection CreateConnection(string connStr)
 		{
-			if(IDbConnectionCtor == null)
-			{
-				Type type = mod.GetType(nameSpace + "MySqlConnection");
-
-				IDbConnectionCtor = type.GetConstructor(new Type[]{typeof(string)});
-			}
-
-			object obj =  IDbConnectionCtor.Invoke(BindingFlags.CreateInstance | BindingFlags.OptionalParamBinding, 
-				null, new object[] {connStr}, null);
-
-			return obj as IDbConnection;
+            IDbConnection con = CreateConnection();
+            con.ConnectionString = connStr;
+            con.Open();
+            return con;
 		}
 
 		static internal DbDataAdapter CreateAdapter(string query, string connStr)

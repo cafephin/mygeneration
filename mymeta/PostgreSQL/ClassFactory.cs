@@ -11,7 +11,15 @@ namespace MyMeta.PostgreSQL
 #endif
 	public class ClassFactory : IClassFactory
 	{
-		public ClassFactory()
+        public static void Register()
+        {
+            InternalDriver.Register("POSTGRESQL",
+                new InternalDriver
+                (typeof(ClassFactory)
+                , "Server=127.0.0.1;Port=5432;User Id=myUser;Password=myPasswordt;Database=test;"
+                , false));
+        }
+        public ClassFactory()
 		{
 
 		}
@@ -125,5 +133,11 @@ namespace MyMeta.PostgreSQL
 		{
 			return new ProviderTypes();
 		}
-	}
+
+        public System.Data.IDbConnection CreateConnection()
+        {
+            return new Npgsql.NpgsqlConnection();
+        }
+
+    }
 }

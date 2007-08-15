@@ -11,7 +11,29 @@ namespace MyMeta.Advantage
 #endif
 	public class ClassFactory : IClassFactory
 	{
-		public ClassFactory()
+        internal class MyInternalDriver : InternalDriver
+        {
+            internal MyInternalDriver(Type factory, string connString, bool isOleDB)
+                : base(factory, connString, isOleDB)
+            {
+            }
+
+            public override string GetDataBaseName(System.Data.IDbConnection con)
+            {
+                string result = GetDataBaseName(con).Split('.')[0];
+                return result;
+            }
+        }
+
+        public static void Register()
+        {
+            InternalDriver.Register("ADVANTAGE",
+                new MyInternalDriver
+                (typeof(ClassFactory)
+                , @"Provider=Advantage.OLEDB.1;Password="";User ID=AdsSys;Data Source=C:\Program Files\Extended Systems\Advantage\Help\examples\aep_tutorial\task1;Initial Catalog=aep_tutorial.add;Persist Security Info=True;Advantage Server Type=ADS_LOCAL_SERVER;Trim Trailing Spaces=TRUE"
+                , true));
+        }
+        public ClassFactory()
 		{
 
 		}
@@ -125,5 +147,11 @@ namespace MyMeta.Advantage
 		{
 			return new ProviderTypes();
 		}
-	}
+
+        public System.Data.IDbConnection CreateConnection()
+        {
+            return null;
+        }
+
+    }
 }

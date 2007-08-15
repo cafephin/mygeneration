@@ -127,5 +127,11 @@ namespace MyMeta.Plugin
 		{
             return new ProviderTypes();
 		}
+
+        public System.Data.IDbConnection CreateConnection()
+        {
+            return plugin.NewConnection;
+        }
+
 	}
 }

@@ -13,7 +13,7 @@ namespace MyGeneration
 	/// </summary>
 	public class DefaultSettings
 	{
-		private const string MISSING = "*&?$%";
+		public const string MISSING = "*&?$%";
 		private string _appPath;
 		private Hashtable _savedConnections;
 		private ArrayList _recentFiles;
@@ -380,187 +380,6 @@ namespace MyGeneration
 			set	{ this.SetSetting("UserMetaDataFileName", value); }
 		}
 		
-		#region LastConnection Settings
-
-		public string SQL
-		{
-			get 
-			{ 
-				string str = this.GetSetting("SQL"); 
-				return (str == MISSING) ? "" : str;				
-			}
-			set	{ this.SetSetting("SQL", value); }
-		}
-
-		public string ACCESS
-		{
-			get 
-			{ 
-				string str = this.GetSetting("ACCESS"); 
-				return (str == MISSING) ? "" : str;				
-			}
-			set	{ this.SetSetting("ACCESS", value); }
-		}
-
-		public string FIREBIRD
-		{
-			get 
-			{ 
-				string str = this.GetSetting("FIREBIRD"); 
-				return (str == MISSING) ? "" : str;				
-			}
-			set	{ this.SetSetting("FIREBIRD", value); }
-		}
-
-		public string DB2
-		{
-			get 
-			{ 
-				string str = this.GetSetting("DB2"); 
-				return (str == MISSING) ? "" : str;				
-			}
-			set	{ this.SetSetting("DB2", value); }
-		}
-
-		public string ISERIES
-		{
-			get 
-			{ 
-				string str = this.GetSetting("ISERIES"); 
-				return (str == MISSING) ? "" : str;				
-			}
-			set	{ this.SetSetting("ISERIES", value); }
-		}
-
-		public string INTERBASE
-		{
-			get 
-			{ 
-				string str = this.GetSetting("INTERBASE"); 
-				return (str == MISSING) ? "" : str;				
-			}
-			set	{ this.SetSetting("INTERBASE", value); }
-		}
-
-		public string MYSQL
-		{
-			get 
-			{ 
-				string str = this.GetSetting("MYSQL"); 
-				return (str == MISSING) ? "" : str;				
-			}
-			set	{ this.SetSetting("MYSQL", value); }
-		}
-
-        public string GetPlugin(string driver)
-        {
-            string str = this.GetSetting("PLUGIN_" + CleanName(driver));
-            return (str == MISSING) ? "" : str;	
-        }
-
-        public void SetPlugin(string driver, string value)
-        {
-            this.SetSetting("PLUGIN_" + CleanName(driver), value); 
-        }
-
-        private string CleanName(string name)
-        {
-            StringBuilder outName = new StringBuilder();
-            foreach (char c in name)
-            {
-                if (Char.IsLetterOrDigit(c))
-                {
-                    outName.Append(c);
-                }
-            }
-            return outName.ToString();
-        }
-
-		public string MYSQL2
-		{
-			get 
-			{ 
-				string str = this.GetSetting("MYSQL2"); 
-				return (str == MISSING) ? "" : str;				
-			}
-			set	{ this.SetSetting("MYSQL2", value); }
-		}
-
-		public string PERVASIVE
-		{
-			get 
-			{ 
-				string str = this.GetSetting("PERVASIVE"); 
-				return (str == MISSING) ? "" : str;				
-			}
-			set	{ this.SetSetting("PERVASIVE", value); }
-		}
-
-
-		public string POSTGRESQL
-		{
-			get 
-			{ 
-				string str = this.GetSetting("POSTGRESQL"); 
-				return (str == MISSING) ? "" : str;				
-			}
-			set	{ this.SetSetting("POSTGRESQL", value); }
-		}
-
-		public string POSTGRESQL8
-		{
-			get 
-			{ 
-				string str = this.GetSetting("POSTGRESQL8"); 
-				return (str == MISSING) ? "" : str;				
-			}
-			set	{ this.SetSetting("POSTGRESQL8", value); }
-		}
-
-		public string ORACLE
-		{
-			get 
-			{ 
-				string str = this.GetSetting("ORACLE"); 
-				return (str == MISSING) ? "" : str;				
-			}
-			set	{ this.SetSetting("ORACLE", value); }
-		}
-
-		public string SQLITE
-		{
-			get 
-			{ 
-				string str = this.GetSetting("SQLITE"); 
-				return (str == MISSING) ? "" : str;				
-			}
-			set	{ this.SetSetting("SQLITE", value); }
-		}
-
-#if !IGNORE_VISTA
-		public string VISTADB
-		{
-			get 
-			{ 
-				string str = this.GetSetting("VISTADB"); 
-				return (str == MISSING) ? "" : str;				
-			}
-			set	{ this.SetSetting("VISTADB", value); }
-		}
-#endif
-
-		public string ADVANTAGE
-		{
-			get 
-			{ 
-				string str = this.GetSetting("ADVANTAGE"); 
-				return (str == MISSING) ? "" : str;				
-			}
-			set	{ this.SetSetting("ADVANTAGE", value); }
-		}
-
-		#endregion
-
 		public bool EnableLineNumbering
 		{
 			get { return Convert.ToBoolean(this.GetSetting("EnableLineNumbering")); }
@@ -842,7 +661,7 @@ namespace MyGeneration
 		}
 
 		#region Internal Stuff
-		protected string GetSetting(string name)
+		public string GetSetting(string name)
 		{
 			string xPath = @"//DefaultSettings/Setting[@Name='" + name + "']";
 			XmlNode node = xmlDoc.SelectSingleNode(xPath, null);
@@ -857,7 +676,7 @@ namespace MyGeneration
 			}
 		}
 
-		protected void SetSetting(string name, string data)
+        public void SetSetting(string name, string data)
 		{
 			string xPath = @"//DefaultSettings/Setting[@Name='" + name + "']";
 			XmlNode node = xmlDoc.SelectSingleNode(xPath, null);

@@ -11,7 +11,15 @@ namespace MyMeta.ISeries
 #endif
 	public class ClassFactory : IClassFactory
 	{
-		public ClassFactory()
+        public static void Register()
+        {
+            InternalDriver.Register("ISERIES",
+                new InternalDriver
+                (typeof(ClassFactory)
+                , "PROVIDER=IBMDA400; DATA SOURCE=MY_SYSTEM_NAME;USER ID=myUserName;PASSWORD=myPwd;DEFAULT COLLECTION=MY_LIBRARY;"
+                , true));
+        }
+        public ClassFactory()
 		{
 
 		}
@@ -126,5 +134,9 @@ namespace MyMeta.ISeries
 		{
 			return new ProviderTypes();
 		}
-	}
+        public System.Data.IDbConnection CreateConnection()
+        {
+            return new System.Data.OleDb.OleDbConnection();
+        }
+    }
 }

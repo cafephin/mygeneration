@@ -11,7 +11,39 @@ namespace MyMeta.Firebird
 #endif
 	public class ClassFactory : IClassFactory
 	{
-		public ClassFactory()
+        internal class MyInternalDriver : InternalDriver
+        {
+            internal MyInternalDriver(Type factory, string connString, bool isOleDB)
+                : base(factory, connString, isOleDB)
+            {
+            }
+
+            public override string GetDataBaseName(System.Data.IDbConnection con)
+            {
+                string result = GetDataBaseName(con);
+                int index = result.LastIndexOf("\\");
+                if (index >= 0)
+                {
+                    result = result.Substring(index + 1);
+                }
+                return result;
+            }
+        }
+        public static void Register()
+        {
+            InternalDriver.Register("FIREBIRD",
+                new MyInternalDriver
+                (typeof(ClassFactory)
+                , @"Database=C:\firebird\EMPLOYEE.GDB;User=SYSDBA;Password=wow;Dialect=3;Server=localhost"
+                , false));
+            InternalDriver.Register("INTERBASE",
+                new MyInternalDriver
+                (typeof(ClassFactory)
+                , @"Database=C:\firebird\EMPLOYEE.GDB;User=SYSDBA;Password=wow;Server=localhost"
+                , false));
+
+        }
+        public ClassFactory()
 		{
 
 		}
@@ -125,5 +157,14 @@ namespace MyMeta.Firebird
 		{
 			return new ProviderTypes();
 		}
-	}
+
+        #region IClassFactory Members
+
+        public System.Data.IDbConnection CreateConnection()
+        {
+            return new FirebirdSql.Data.Firebird.FbConnection();
+        }
+
+        #endregion
+    }
 }

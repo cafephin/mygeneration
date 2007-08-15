@@ -11,7 +11,15 @@ namespace MyMeta.VistaDB
 #endif
 	public class ClassFactory : IClassFactory
 	{
-		public ClassFactory()
+        public static void Register()
+        {
+            InternalDriver.Register("VISTADB",
+                new InternalDriver
+                (typeof(ClassFactory)
+                , @"DataSource=C:\Program Files\VistaDB 2.0\Data\Northwind.vdb;Cypher= None;Password=;Exclusive=False;Readonly=False;"
+                , false));
+        }
+        public ClassFactory()
 		{
 
 		}
@@ -126,5 +134,14 @@ namespace MyMeta.VistaDB
 		{
 			return new ProviderTypes();
 		}
-	}
+
+        #region IClassFactory Members
+
+        public System.Data.IDbConnection CreateConnection()
+        {
+            return new Provider.VistaDB.VistaDBConnection();
+        }
+
+        #endregion
+    }
 }

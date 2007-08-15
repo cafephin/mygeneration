@@ -11,7 +11,15 @@ namespace MyMeta.SQLite
 #endif
 	public class ClassFactory : IClassFactory
 	{
-		public ClassFactory()
+        public static void Register()
+        {
+            InternalDriver.Register("SQLITE",
+                new InternalDriver
+                (typeof(ClassFactory)
+                , "Data Source=database.db;New=False;Compress=True;Synchronous=Off"
+                , false));
+        }
+        public ClassFactory()
 		{
 
 		}
@@ -125,5 +133,10 @@ namespace MyMeta.SQLite
 		{
 			return new ProviderTypes();
 		}
-	}
+
+        public System.Data.IDbConnection CreateConnection()
+        {
+            return new System.Data.SQLite.SQLiteConnection();
+        }
+    }
 }
