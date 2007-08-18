@@ -63,7 +63,7 @@ namespace MyGeneration
 
 				if (_nsRootNode == null) 
 				{
-					DefaultSettings settings = new DefaultSettings();
+					DefaultSettings settings = DefaultSettings.Instance;
 					string exePath = Directory.GetCurrentDirectory();
 					try 
 					{
@@ -138,7 +138,7 @@ namespace MyGeneration
 
 				if (_wuRootNode == null) 
 				{
-					DefaultSettings settings = new DefaultSettings();
+					DefaultSettings settings = DefaultSettings.Instance;
 
 					defaultTemplatePath = settings.DefaultTemplateDirectory;
 					string exePath = Directory.GetCurrentDirectory();
@@ -209,7 +209,7 @@ namespace MyGeneration
 
 				if (_fsRootNode == null) 
 				{
-					DefaultSettings settings = new DefaultSettings();
+					DefaultSettings settings = DefaultSettings.Instance;
 
 					defaultTemplatePath = settings.DefaultTemplateDirectory;
 					string exePath = Directory.GetCurrentDirectory();

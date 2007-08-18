@@ -20,7 +20,7 @@ namespace MyGeneration
 	/// <summary>
 	/// Summary description for MetaDataBrowser.
 	/// </summary>
-	public class MetaDataBrowser : BaseWindow
+    public class MetaDataBrowser : DockContent, IMyGenContent
     {
         #region MyMeta Fonts
         // This section was added because of some wierd arial font errors some people get
@@ -263,7 +263,7 @@ namespace MyGeneration
 		}
 		#endregion
 
-		override public void DefaultSettingsChanged(DefaultSettings settings)
+		public void DefaultSettingsChanged(DefaultSettings settings)
 		{
 			bool doRefresh = false;
 
@@ -341,13 +341,22 @@ namespace MyGeneration
 		{
             this.startupPath = Zeus.FileTools.RootFolder;
 
-			DefaultSettings settings = new DefaultSettings();
+			DefaultSettings settings = DefaultSettings.Instance;
 			this.Setup(settings);
 
-			this.MetaData		= ((MDIParent)this.DockPanel.Parent).MetaDataWindow;
-			this.UserData		= ((MDIParent)this.DockPanel.Parent).UserMetaWindow;
-			this.GlobalUserData = ((MDIParent)this.DockPanel.Parent).GlobalUserMetaWindow;
-			MyTree.Scrollable = true;
+            if (this.mdi is MyGenerationMDI)
+            {
+                this.MetaData = ((MyGenerationMDI)this.DockPanel.Parent).MetaPropertiesDockContent;
+                this.UserData = ((MyGenerationMDI)this.DockPanel.Parent).UserMetaDataDockContent;
+                this.GlobalUserData = ((MyGenerationMDI)this.DockPanel.Parent).GlobalUserMetaDataDockContent;
+            }
+            else
+            {
+                this.MetaData = ((MDIParent)this.DockPanel.Parent).MetaDataWindow;
+                this.UserData = ((MDIParent)this.DockPanel.Parent).UserMetaWindow;
+                this.GlobalUserData = ((MDIParent)this.DockPanel.Parent).GlobalUserMetaWindow;
+            }
+            MyTree.Scrollable = true;
 		}
 #if !DEBUG
 		private static bool isFirstRun = true;
@@ -427,7 +436,7 @@ namespace MyGeneration
 						}
 					}
 
-					DefaultSettings settings = new DefaultSettings();
+					DefaultSettings settings = DefaultSettings.Instance;
 					this.Setup(settings);
 
 					this.UserData.MetaBrowserRefresh();
@@ -439,7 +448,7 @@ namespace MyGeneration
 
 		private void chkSystem_CheckedChanged(object sender, System.EventArgs e)
 		{
-			DefaultSettings settings = new DefaultSettings();
+			DefaultSettings settings = DefaultSettings.Instance;
 			this.Setup(settings);
 		}
 
@@ -1211,5 +1220,24 @@ namespace MyGeneration
 		public MetaProperties		MetaData = null;
 		public UserMetaData			UserData = null;
 		public GlobalUserMetaData   GlobalUserData = null;
-	}
+
+        #region IMyGenContent Members
+
+        public ToolStrip ToolStrip
+        {
+            get { throw new Exception("The method or operation is not implemented."); }
+        }
+
+        public void Alert(IMyGenContent sender, string command, params object[] args)
+        {
+            //
+        }
+
+        public bool CanClose(bool allowPrevent)
+        {
+            return true;
+        }
+
+        #endregion
+    }
 }

@@ -16,7 +16,7 @@ namespace MyGeneration
 	/// <summary>
 	/// Summary description for DbTargetMappings.
 	/// </summary>
-	public class DbTargetMappings : BaseWindow
+    public class DbTargetMappings : DockContent, IMyGenContent
 	{
         private IMyGenerationMDI mdi;
         GridLayoutHelper gridLayoutHelper;
@@ -210,7 +210,7 @@ namespace MyGeneration
 		}
 		#endregion
 
-		override public void DefaultSettingsChanged(DefaultSettings settings)
+		public void DefaultSettingsChanged(DefaultSettings settings)
 		{
 			PromptForSave(false);
 
@@ -222,7 +222,7 @@ namespace MyGeneration
 			MarkAsDirty(false);
 		}
 
-		override public bool CanClose(bool allowPrevent)
+		public bool CanClose(bool allowPrevent)
 		{
 			return PromptForSave(allowPrevent);
 		}
@@ -250,7 +250,7 @@ namespace MyGeneration
 				{
 					case DialogResult.Yes:
 					{
-						DefaultSettings settings = new DefaultSettings();
+						DefaultSettings settings = DefaultSettings.Instance;
 						xml.Save(settings.DbTargetMappingFile);
 						MarkAsDirty(false);
 					}
@@ -272,16 +272,16 @@ namespace MyGeneration
 			this.toolBarButton_Save.Visible = isDirty;
         }
 
-        public override void ShowCatchingErrors(DockPanel dockManager)
+        public void Show(DockPanel dockManager)
         {
-            DefaultSettings settings = new DefaultSettings();
+            DefaultSettings settings = DefaultSettings.Instance;
             if (!System.IO.File.Exists(settings.DbTargetMappingFile))
             {
                 MessageBox.Show(this, "Database Target Mapping File does not exist at: " + settings.DbTargetMappingFile + "\r\nPlease fix this in DefaultSettings.");
             }
             else
             {
-                base.ShowCatchingErrors(dockManager);
+                base.Show(dockManager);
             }
         }
 
@@ -293,7 +293,7 @@ namespace MyGeneration
             this.col_From.TextBox.Move += new System.EventHandler(this.ColorTextBox);
             this.col_To.TextBox.Move += new System.EventHandler(this.ColorTextBox);
 
-            DefaultSettings settings = new DefaultSettings();
+            DefaultSettings settings = DefaultSettings.Instance;
 
             this.dbDriver = settings.DbDriver;
 
@@ -310,7 +310,7 @@ namespace MyGeneration
 
 		private void cboxLanguage_SelectionChangeCommitted(object sender, System.EventArgs e)
 		{
-			DefaultSettings settings = new DefaultSettings();
+			DefaultSettings settings = DefaultSettings.Instance;
 			PopulateGrid(this.dbDriver);
 		}
 
@@ -525,7 +525,7 @@ namespace MyGeneration
 
 		private void toolBar1_ButtonClick(object sender, System.Windows.Forms.ToolBarButtonClickEventArgs e)
 		{
-			DefaultSettings settings = new DefaultSettings();
+			DefaultSettings settings = DefaultSettings.Instance;
 
 			switch(e.Button.Tag as string)
 			{		
@@ -620,5 +620,19 @@ namespace MyGeneration
 		private XmlNode langNode = null;
 		private string dbDriver = "";
 		private bool isDirty = false;
-	}
+
+        #region IMyGenContent Members
+
+        public ToolStrip ToolStrip
+        {
+            get { throw new Exception("The method or operation is not implemented."); }
+        }
+
+        public void Alert(IMyGenContent sender, string command, params object[] args)
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
+        #endregion
+    }
 }

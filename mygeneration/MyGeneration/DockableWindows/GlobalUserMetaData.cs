@@ -16,7 +16,7 @@ namespace MyGeneration
 	/// <summary>
 	/// Summary description for GlobalUserMetaData.
 	/// </summary>
-	public class GlobalUserMetaData : BaseWindow
+    public class GlobalUserMetaData : DockContent, IMyGenContent
     {
         private IMyGenerationMDI mdi;
 		private System.Windows.Forms.ToolBarButton toolBarButton_Save;
@@ -37,7 +37,7 @@ namespace MyGeneration
             this.mdi = mdi;
 			this.ShowHint = DockState.DockRight;
 
-			DefaultSettings settings = new DefaultSettings();
+			DefaultSettings settings = DefaultSettings.Instance;
 			this.UserMetaDataFileName = settings.UserMetaDataFileName;
 		}
 
@@ -279,10 +279,10 @@ namespace MyGeneration
 		}
 		#endregion
 
-		override public void DefaultSettingsChanged(DefaultSettings settings)
+		public void DefaultSettingsChanged(DefaultSettings settings)
 		{
-			PromptForSave(false);
-			this.Clear();
+			//PromptForSave(false);
+			//this.Clear();
 		}
 
 		public void Clear()
@@ -295,7 +295,7 @@ namespace MyGeneration
 			}
 		}
 
-		override public bool CanClose(bool allowPrevent)
+		 public bool CanClose(bool allowPrevent)
 		{
 			return PromptForSave(allowPrevent);
 		}
@@ -360,7 +360,7 @@ namespace MyGeneration
 
 		private void toolBar1_ButtonClick(object sender, System.Windows.Forms.ToolBarButtonClickEventArgs e)
 		{
-			DefaultSettings settings = new DefaultSettings();
+			DefaultSettings settings = DefaultSettings.Instance;
 
 			switch(e.Button.Tag as string)
 			{		
@@ -492,5 +492,23 @@ namespace MyGeneration
 		private GridLayoutHelper gridHelper;
 		private bool gridInitialized = false;
 		private MetaDataBrowser _metaDataBrowser = null;
-	}
+
+        #region IMyGenContent Members
+
+        public ToolStrip ToolStrip
+        {
+            get { return null; }
+        }
+
+        public void Alert(IMyGenContent sender, string command, params object[] args)
+        {
+            if (command == "UpdateDefaultSettings")
+            {
+                PromptForSave(false);
+                this.Clear();
+            }
+        }
+
+        #endregion
+    }
 }

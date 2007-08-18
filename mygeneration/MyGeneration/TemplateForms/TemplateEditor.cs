@@ -16,12 +16,12 @@ using MyMeta;
 using WeifenLuo.WinFormsUI.Docking;
 using Scintilla;
 
-namespace MyGeneration.TemplateForms
+namespace MyGeneration
 {
 	/// <summary>
 	/// Summary description for TemplateProperties.
 	/// </summary>
-	public class TemplateEditor : BaseWindow, ILogger
+    public class TemplateEditor : DockContent, IScintillaEditControl, ILogger
 	{
 		public const string FILE_TYPES = "JScript Templates (*.jgen)|*.jgen|VBScript Templates (*.vbgen)|*.vbgen|C# Templates (*.csgen)|*.csgen|Zeus Templates (*.zeus)|*.zeus|All files (*.*)|*.*";
 		public const int DEFAULT_OPEN_FILE_TYPE_INDEX = 5;
@@ -158,7 +158,7 @@ namespace MyGeneration.TemplateForms
 			scintillaOutput = new ZeusScintillaControl();
             scintillaOutput.AddShortcuts(this);
 
-            DefaultSettings settings = new DefaultSettings();
+            DefaultSettings settings = DefaultSettings.Instance;
             this.SetCodePageOverride(settings.CodePage);
             this.SetFontOverride(settings.FontFamily);
 
@@ -201,11 +201,6 @@ namespace MyGeneration.TemplateForms
 			}
 		}*/
 
-		public override void ResetMenu() 
-		{
-			this.Menu = this.mainMenu1;
-		}
-
 		protected override string GetPersistString()
 		{
 			return GetType().ToString() + "," + this.FileName;
@@ -242,8 +237,8 @@ namespace MyGeneration.TemplateForms
 
             int caretPos = scintilla.CurrentPos;
 			int line = scintilla.LineFromPosition(caretPos);
-			MDIParent.TheParent.statusRow.Text = "Line: "   + (scintilla.LineFromPosition(caretPos) + 1).ToString(); 
-			MDIParent.TheParent.statusCol.Text = "Column: " + (scintilla.Column(caretPos) + 1).ToString(); 
+			///MDIParent.TheParent.statusRow.Text = "Line: "   + (scintilla.LineFromPosition(caretPos) + 1).ToString(); 
+			//MDIParent.TheParent.statusCol.Text = "Column: " + (scintilla.Column(caretPos) + 1).ToString(); 
 		}
 
 		protected void CheckPropertiesDirty(object sender, EventArgs args) 
@@ -278,16 +273,16 @@ namespace MyGeneration.TemplateForms
             this.scintillaTemplateSource.FontFamilyOverride = family;
         }
 
-		override public void DefaultSettingsChanged(DefaultSettings settings)
+		/*public void DefaultSettingsChanged(DefaultSettings settings)
 		{
             SetCodePageOverride(settings.CodePage);
             SetFontOverride(settings.FontFamily);
 
             this.scintillaTemplateCode.TabWidth = settings.Tabs;
 			this.menuItemClipboard.Checked = settings.EnableClipboard;
-		}
+		}*/
 
-		override public bool CanClose(bool allowPrevent)
+		public bool CanClose(bool allowPrevent)
 		{
 			return PromptForSave(allowPrevent);
 		}
@@ -1582,7 +1577,7 @@ namespace MyGeneration.TemplateForms
 				Directory.SetCurrentDirectory(Application.StartupPath);
 				this.RefreshTemplateFromControl();
 
-				DefaultSettings settings = new DefaultSettings();
+				DefaultSettings settings = DefaultSettings.Instance;
 
 				ZeusSimpleLog log = new ZeusSimpleLog();
 				log.LogEntryAdded += new EventHandler(Log_EntryAdded);
@@ -1634,7 +1629,7 @@ namespace MyGeneration.TemplateForms
 
 			this.RefreshTemplateFromControl();
 
-			DefaultSettings settings = new DefaultSettings();
+			DefaultSettings settings = DefaultSettings.Instance;
 			
 			ZeusContext context = new ZeusContext();
 			if (context.Log is ZeusSimpleLog) 
@@ -2268,7 +2263,7 @@ namespace MyGeneration.TemplateForms
 
 			this.scintillaTemplateCode.IsViewEOL = on;
 			this.menuItemEndOfLine.Checked = on;	
-			DefaultSettings settings = new DefaultSettings();
+			DefaultSettings settings = DefaultSettings.Instance;
 		}
 
 		private void menuItem1_Click(object sender, System.EventArgs e)
@@ -2420,7 +2415,47 @@ namespace MyGeneration.TemplateForms
                 this.scintillaTemplateSource.SpecialRefresh();
             }
         }
-	}
+
+        #region IScintillaEditControl Members
+
+        public ScintillaControl ScintillaEditor
+        {
+            get { return this.CurrentScintilla; }
+        }
+
+        #endregion
+
+        #region IMyGenDocument Members
+
+        public string DocumentIndentity
+        {
+            get { return this.UniqueID; }
+        }
+        public ToolStrip ToolStrip
+        {
+            get { return null; }
+        }
+
+        #endregion
+
+        #region IMyGenContent Members
+
+
+        public void Alert(IMyGenContent sender, string command, params object[] args)
+        {
+            if (command == "UpdateDefaultSettings")
+            {
+                DefaultSettings settings = DefaultSettings.Instance;
+                SetCodePageOverride(settings.CodePage);
+                SetFontOverride(settings.FontFamily);
+
+                this.scintillaTemplateCode.TabWidth = settings.Tabs;
+                this.menuItemClipboard.Checked = settings.EnableClipboard;
+            }
+        }
+
+        #endregion
+    }
 
 	/// <summary>
 	/// An item for a listbox that holds a filename

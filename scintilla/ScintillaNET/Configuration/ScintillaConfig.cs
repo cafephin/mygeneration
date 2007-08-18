@@ -216,9 +216,11 @@ namespace Scintilla.Configuration
                     scintilla.WordChars(lang.WordCharacters);
 
                 ILexerConfig lexer = lang.Lexer;
-
-                scintilla.Lexer = lexer.LexerID;
-                //scintilla.LexerLanguage(lang.Name);
+                if (lexer != null)
+                {
+                    scintilla.Lexer = lexer.LexerID;
+                    //scintilla.LexerLanguage(lang.Name);
+                }
 
                 SortedDictionary<int, ILexerStyle> styles = lang.Styles;
                 foreach (ILexerStyle style in styles.Values)

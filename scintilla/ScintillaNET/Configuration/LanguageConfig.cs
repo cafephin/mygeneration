@@ -116,6 +116,7 @@ namespace Scintilla.Configuration
         {
             get
             {
+                if (this.lexer == null) return this;
                 LanguageConfig combinedConfig = new LanguageConfig(this.scintillaConf, this.name);
                 int lex = 0, lang = 0, sc = 0;
                 bool lexUsedUp = false, langUsedUp = false, scUsedUp = false;

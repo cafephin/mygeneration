@@ -25,7 +25,6 @@ using Scintilla.Forms;
 using Scintilla.Configuration;
 using Scintilla.Configuration.Legacy;
 
-using MyGeneration.TemplateForms;
 using MyGeneration.com.mygenerationsoftware.www;
 
 namespace MyGeneration
@@ -148,21 +147,6 @@ namespace MyGeneration
 
         public static ConfigFile ScintillaConfigFile { get { return configFile; } }
 
-        /// <summary>
-        /// The main entry point for the application. Set the global application exception handlers here and load up the parent form.
-        /// </summary>
-        [STAThread]
-        static void Main(string[] args)
-        {
-            AppDomain currentDomain = AppDomain.CurrentDomain;
-
-            currentDomain.UnhandledException += new UnhandledExceptionEventHandler(ExceptionHandler.UnhandledExceptions);
-            Application.ThreadException += new ThreadExceptionEventHandler(ExceptionHandler.OnThreadException);
-
-            TheParent = new MDIParent(Application.StartupPath, args);
-
-            Application.Run(TheParent);
-        }
 
         /// <summary>
         /// Constructor loads up the default settings, starts an async version check, loads the scintilla config, etc.
@@ -171,7 +155,7 @@ namespace MyGeneration
         /// <param name="args"></param>
         public MDIParent(string startupPath, params string[] args)
         {
-            DefaultSettings settings = new DefaultSettings();
+            DefaultSettings settings = DefaultSettings.Instance;
             languageMappings = new LanguageMappings(this);
             dbTargetMappings = new DbTargetMappings(this);
        metaDataBrowser = new MetaDataBrowser(this);
@@ -828,25 +812,25 @@ namespace MyGeneration
 
         private void menuItemDefaultProperties_Click(object sender, System.EventArgs e)
         {
-            DefaultProperties dp = new DefaultProperties();
+            DefaultProperties dp = new DefaultProperties(this);
             DialogResult result = dp.ShowDialog(this);
 
             if (result == DialogResult.OK)
             {
-                BaseWindow bw = null;
+                IMyGenContent bw = null;
                 DockContentCollection coll = this.dockManager.Contents;
 
-                DefaultSettings settings = new DefaultSettings();
+                DefaultSettings settings = DefaultSettings.Instance;
 
                 for (int i = 0; i < coll.Count; i++)
                 {
-                    bw = coll[i] as BaseWindow;
+                    bw = coll[i] as IMyGenContent;
 
                     if (bw != null)
                     {
                         try
                         {
-                            bw.DefaultSettingsChanged(settings);
+                            bw.Alert(dp, "UpdateDefaultSettings");
                         }
 #if DEBUG
 						catch (Exception ex) { throw ex; }
@@ -1036,7 +1020,7 @@ namespace MyGeneration
 
         private void menuItemTemplateBrowser_Click(object sender, System.EventArgs e)
         {
-            templateBrowser.ShowCatchingErrors(dockManager);
+            templateBrowser.Show(dockManager);
         }
 
         private void menuItemContents_Click(object sender, System.EventArgs e)
@@ -1123,27 +1107,27 @@ namespace MyGeneration
                     break;
 
                 case "languageMappings":
-                    this.languageMappings.ShowCatchingErrors(dockManager);
+                    this.languageMappings.Show(dockManager);
                     break;
 
                 case "dbTargetMappings":
-                    this.dbTargetMappings.ShowCatchingErrors(dockManager);
+                    this.dbTargetMappings.Show(dockManager);
                     break;
 
                 case "metaBrowser":
-                    this.metaProperties.ShowCatchingErrors(dockManager);
+                    this.metaProperties.Show(dockManager);
                     break;
 
                 case "userMetaData":
-                    this.userMetaData.ShowCatchingErrors(dockManager);
+                    this.userMetaData.Show(dockManager);
                     break;
 
                 case "globalUserMetaData":
-                    this.globalUserMetaData.ShowCatchingErrors(dockManager);
+                    this.globalUserMetaData.Show(dockManager);
                     break;
 
                 case "templateBrowser":
-                    this.templateBrowser.ShowCatchingErrors(dockManager);
+                    this.templateBrowser.Show(dockManager);
                     break;
 
                 case "tileVert":
@@ -1165,7 +1149,7 @@ namespace MyGeneration
 
         private void MDIParent_Load(object sender, System.EventArgs e)
         {
-            DefaultSettings settings = new DefaultSettings();
+            DefaultSettings settings = DefaultSettings.Instance;
 
             if (settings.CompactMemoryOnStartup) FlushMemory();
 
@@ -1195,7 +1179,7 @@ namespace MyGeneration
 
             if (settings.FirstLoad)
             {
-                DefaultProperties dp = new DefaultProperties();
+                DefaultProperties dp = new DefaultProperties(this);
                 DialogResult result = dp.ShowDialog(this);
             }
 
@@ -1209,10 +1193,10 @@ namespace MyGeneration
                     //TemplateEditor e1 = this.OpenTemplateEditor();
                     foreach (DockContent content in dockManager.Contents)
                     {
-                        if (content is BaseWindow)
+                        if (content is IMyGenContent)
                         {
-                            BaseWindow baseWindow = content as BaseWindow;
-                            baseWindow.ResetMenu();
+                            IMyGenContent baseWindow = content as IMyGenContent;
+                            //baseWindow.ResetMenu();
                         }
                     }
                 }
@@ -1311,8 +1295,7 @@ namespace MyGeneration
         protected override void OnClosing(CancelEventArgs e)
         {
             // This saves the window state and size
-            DefaultSettings ds = new DefaultSettings();
-
+            DefaultSettings ds = DefaultSettings.Instance;
             FormWindowState state = this.WindowState;
 
             switch (state)
@@ -1356,7 +1339,7 @@ namespace MyGeneration
 
         private void MDIParent_Layout(object sender, System.Windows.Forms.LayoutEventArgs e)
         {
-            DefaultSettings settings = new DefaultSettings();
+            DefaultSettings settings = DefaultSettings.Instance;
 
             switch (settings.WindowState)
             {
@@ -1436,7 +1419,7 @@ namespace MyGeneration
         #region MyMeta Helper Methods
         private void OpenDatabaseBrowser()
         {
-            metaDataBrowser.ShowCatchingErrors(dockManager);
+            metaDataBrowser.Show(dockManager);
         }
         #endregion
 
@@ -1445,7 +1428,7 @@ namespace MyGeneration
         {
             TemplateEditor template = new TemplateEditor(this);
             template.FileNew("ENGINE", engine, "LANGUAGE", language);
-            template.ShowCatchingErrors(dockManager);
+            template.Show(dockManager);
             return template;
         }
 
@@ -1453,7 +1436,7 @@ namespace MyGeneration
         {
             TemplateEditor edit = new TemplateEditor(this);
             edit.FileNew("ENGINE", ZeusConstants.Engines.DOT_NET_SCRIPT, "LANGUAGE", ZeusConstants.Languages.CSHARP);
-            edit.ShowCatchingErrors(dockManager);
+            edit.Show(dockManager);
             return edit;
         }
 
@@ -1469,7 +1452,7 @@ namespace MyGeneration
                 {
                     edit = new TemplateEditor(this);
                     edit.FileOpen(filename);
-                    edit.ShowCatchingErrors(dockManager);
+                    edit.Show(dockManager);
                 }
                 else
                 {
@@ -1525,7 +1508,7 @@ namespace MyGeneration
                             {
                                 editor = new TemplateEditor(this);
                                 editor.FileOpen(filename);
-                                editor.ShowCatchingErrors(dockManager);
+                                editor.Show(dockManager);
                             }
                         }
 
@@ -1650,7 +1633,7 @@ namespace MyGeneration
         {
             ProjectBrowser proj = new ProjectBrowser(this);
             proj.CreateNewProject();
-            proj.ShowCatchingErrors(dockManager);
+            proj.Show(dockManager);
 
             return proj;
         }
@@ -1665,7 +1648,7 @@ namespace MyGeneration
             {
                 proj = new ProjectBrowser(this);
                 proj.LoadProject(filename);
-                proj.ShowCatchingErrors(dockManager);
+                proj.Show(dockManager);
             }
 
             return proj;
@@ -1827,7 +1810,7 @@ namespace MyGeneration
         {
             if (null == this.ActiveMdiChild)
             {
-                statusBar.Text = "";
+                statusBar.Text = string.Empty;
             }
             else
             {
@@ -1859,7 +1842,7 @@ namespace MyGeneration
 
         private void OpenOutputFolder()
         {
-            DefaultSettings ds = new DefaultSettings();
+            DefaultSettings ds = DefaultSettings.Instance;
             Process p = new Process();
             p.StartInfo.FileName = "explorer";
             p.StartInfo.Arguments = "/e," + ds.DefaultOutputDirectory;
@@ -1869,7 +1852,7 @@ namespace MyGeneration
 
         private void FileOpen()
         {
-            DefaultSettings settings = new DefaultSettings();
+            DefaultSettings settings = DefaultSettings.Instance;
 
             Stream myStream;
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -1925,13 +1908,13 @@ namespace MyGeneration
         {
             try
             {
-                BaseWindow bw = null;
+                IMyGenContent bw = null;
                 DockContentCollection coll = this.dockManager.Contents;
                 bool canClose = true;
 
                 for (int i = 0; i < coll.Count; i++)
                 {
-                    bw = coll[i] as BaseWindow;
+                    bw = coll[i] as IMyGenContent;
 
                     // We need the MetaDataBrowser window to be closed last because it houses the UserMetaData.
                     if (null == (bw as MetaDataBrowser))
@@ -2087,7 +2070,7 @@ namespace MyGeneration
             // Clear the Recent Items List
             menuItemRecentFiles.MenuItems.Clear();
 
-            DefaultSettings ds = new DefaultSettings();
+            DefaultSettings ds = DefaultSettings.Instance;
             if (ds.RecentFiles.Count == 0)
             {
                 menuItemRecentFiles.Visible = false;
@@ -2108,7 +2091,7 @@ namespace MyGeneration
 
         public void AddRecentFile(string path)
         {
-            DefaultSettings ds = new DefaultSettings();
+            DefaultSettings ds = DefaultSettings.Instance;
 
             if (ds.RecentFiles.Contains(path))
             {

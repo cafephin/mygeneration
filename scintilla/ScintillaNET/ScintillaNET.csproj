@@ -9,6 +9,8 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Scintilla</RootNamespace>
     <AssemblyName>ScintillaNET</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>ScintillaNet.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -242,6 +244,7 @@
   <ItemGroup>
     <None Include="languages.iface" />
     <None Include="Scintilla.iface" />
+    <None Include="ScintillaNet.snk" />
     <None Include="SciTEConfigFiles\abbrev.properties" />
     <None Include="SciTEConfigFiles\ada.properties" />
     <None Include="SciTEConfigFiles\asm.properties" />

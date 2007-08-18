@@ -383,7 +383,7 @@ namespace MyGeneration
 			try 
 			{
 				ZeusTemplate template = new ZeusTemplate(this.SelectedTemplate.Tag.ToString());
-				DefaultSettings settings = new DefaultSettings();
+				DefaultSettings settings = DefaultSettings.Instance;
 
 				ZeusSimpleLog log = new ZeusSimpleLog();
 				ZeusContext context = new ZeusContext();

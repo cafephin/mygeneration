@@ -14,7 +14,7 @@ namespace MyGeneration
 	/// <summary>
 	/// Summary description for UserMetaData.
 	/// </summary>
-	public class UserMetaData : BaseWindow
+    public class UserMetaData : DockContent, IMyGenContent
     {
         private IMyGenerationMDI mdi;
 		private System.Windows.Forms.ToolBar toolBar1;
@@ -38,7 +38,7 @@ namespace MyGeneration
 
 			this.ShowHint = DockState.DockRight;
 
-			DefaultSettings settings = new DefaultSettings();
+			DefaultSettings settings = DefaultSettings.Instance;
 			this.UserMetaDataFileName = settings.UserMetaDataFileName;
 		}
 
@@ -217,13 +217,13 @@ namespace MyGeneration
 			this.toolBarButton_Save.Visible = false;
 		}
 
-		override public void DefaultSettingsChanged(DefaultSettings settings)
+		/*public void DefaultSettingsChanged(DefaultSettings settings)
 		{
 			PromptForSave(false);
 			this.Clear();
-		}
+		}*/
 
-		override public bool CanClose(bool allowPrevent)
+		public bool CanClose(bool allowPrevent)
 		{
 			return PromptForSave(allowPrevent);
 		}
@@ -282,7 +282,7 @@ namespace MyGeneration
 
 		private void toolBar1_ButtonClick(object sender, System.Windows.Forms.ToolBarButtonClickEventArgs e)
 		{
-			DefaultSettings settings = new DefaultSettings();
+			DefaultSettings settings = DefaultSettings.Instance;
 
 			switch(e.Button.Tag as string)
 			{		
@@ -702,5 +702,23 @@ namespace MyGeneration
 		private bool gridInitialized = false;
 		private MetaDataBrowser _metaDataBrowser = null;
 		private MyMeta.Single single = null;
-	}
+
+        #region IMyGenContent Members
+
+        public ToolStrip ToolStrip
+        {
+            get { return null; }
+        }
+
+        public void Alert(IMyGenContent sender, string command, params object[] args)
+        {
+            if (command == "UpdateDefaultSettings")
+            {
+                PromptForSave(false);
+                Clear();
+            }
+        }
+
+        #endregion
+    }
 }

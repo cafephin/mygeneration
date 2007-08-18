@@ -221,14 +221,14 @@ namespace Zeus
 				}
 				else if (collectedInput != null) 
 				{
-					settings = new DefaultSettings();
+                    settings = DefaultSettings.Instance;
 					settings.PopulateZeusContext(context);
 					template.ExecuteAndCollect(context, this._argmgr.Timeout, collectedInput.InputData.InputItems);
 					collectedInput.Save();
 				}
 				else 
 				{
-					settings = new DefaultSettings();
+                    settings = DefaultSettings.Instance;
 					settings.PopulateZeusContext(context);
 					template.Execute(context, this._argmgr.Timeout, false);
 				}

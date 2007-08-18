@@ -10,14 +10,13 @@ using Zeus;
 using Zeus.UserInterface;
 using Zeus.UserInterface.WinForms;
 using MyMeta;
-using MyGeneration.TemplateForms;
 
 namespace MyGeneration
 {
 	/// <summary>
 	/// Summary description for TemplateBrowser.
 	/// </summary>
-	public class TemplateBrowser : BaseWindow
+    public class TemplateBrowser : DockContent, IMyGenContent
 	{
 		private const string UPDATE_URL = "http://www.mygenerationsoftware.com/update/";
 		private const int INDEX_CLOSED_FOLDER = 3;
@@ -57,6 +56,7 @@ namespace MyGeneration
 			//
             InitializeComponent();
             this.mdi = mdi;
+            this.DockPanel = mdi.DockPanel;
 
 			treeViewTemplates.MouseDown += new System.Windows.Forms.MouseEventHandler(this.treeViewTemplates_MouseDown);
 			treeViewTemplates.DoubleClick += new System.EventHandler(this.treeViewTemplates_OnDoubleClick);
@@ -114,7 +114,7 @@ namespace MyGeneration
 			base.Dispose( disposing );
 		}
 
-		override public void DefaultSettingsChanged(DefaultSettings settings)
+		/*public void DefaultSettingsChanged(DefaultSettings settings)
 		{
 			bool doRefresh = false;
 
@@ -133,7 +133,7 @@ namespace MyGeneration
 			if (doRefresh) 
 				this.RefreshTree();
 			
-		}
+		}*/
 
 		private void treeViewTemplates_AfterExpand(object sender, System.Windows.Forms.TreeViewEventArgs e) 
 		{
@@ -671,7 +671,7 @@ namespace MyGeneration
 		{
 			Cursor.Current = Cursors.WaitCursor;
 
-			DefaultSettings settings = new DefaultSettings();
+			DefaultSettings settings = DefaultSettings.Instance;
 
 			IZeusContext context = new ZeusContext();
 			IZeusGuiControl guiController = context.Gui;
@@ -729,7 +729,7 @@ namespace MyGeneration
 		{
 			try 
 			{
-				DefaultSettings settings = new DefaultSettings();
+				DefaultSettings settings = DefaultSettings.Instance;
 
 				ZeusSimpleLog log = new ZeusSimpleLog();
 				ZeusContext context = new ZeusContext();
@@ -777,7 +777,7 @@ namespace MyGeneration
 		{
 			try 
 			{
-				DefaultSettings settings = new DefaultSettings();
+				DefaultSettings settings = DefaultSettings.Instance;
 				ZeusSimpleLog log = new ZeusSimpleLog();
 
 				OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -918,6 +918,44 @@ namespace MyGeneration
 		{
 			//this.CompileAs();
 		}
-	}
+
+        #region IMyGenContent Members
+
+        public ToolStrip ToolStrip
+        {
+            get { throw new Exception("The method or operation is not implemented."); }
+        }
+
+        public void Alert(IMyGenContent sender, string command, params object[] args)
+        {
+            DefaultSettings settings = DefaultSettings.Instance;
+            if (command == "UpdateDefaultSettings")
+            {
+                bool doRefresh = false;
+
+                try
+                {
+                    if (this.treeBuilder.DefaultTemplatePath != settings.DefaultTemplateDirectory)
+                    {
+                        doRefresh = true;
+                    }
+                }
+                catch
+                {
+                    doRefresh = true;
+                }
+
+                if (doRefresh)
+                    this.RefreshTree();
+            }
+        }
+
+        public bool CanClose(bool allowPrevent)
+        {
+            return true;
+        }
+
+        #endregion
+    }
 
 }

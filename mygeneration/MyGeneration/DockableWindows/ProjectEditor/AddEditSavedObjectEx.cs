@@ -295,7 +295,7 @@ this.Close();
 
 public void LoadTemplates(string selectedid) 
 {
-DefaultSettings settings = new DefaultSettings();
+DefaultSettings settings = DefaultSettings.Instance;
 ArrayList filenames = new ArrayList();
 filenames.Add(settings.DefaultTemplateDirectory);
 ArrayList templatePaths = FileTools.GetFilenamesRecursive(filenames, this._extensions);
@@ -354,7 +354,7 @@ try
 				}*/
 
 ZeusTemplate template = new ZeusTemplate(this.SelectedTemplate.Path);
-DefaultSettings settings = new DefaultSettings();
+DefaultSettings settings = DefaultSettings.Instance;
 
 ZeusSimpleLog log = new ZeusSimpleLog();
 ZeusContext context = new ZeusContext();

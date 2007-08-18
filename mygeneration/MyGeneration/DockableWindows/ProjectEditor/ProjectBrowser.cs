@@ -19,7 +19,7 @@ namespace MyGeneration
 	/// <summary>
 	/// Summary description for ProjectBrowser.
 	/// </summary>
-	public class ProjectBrowser : BaseWindow
+    public class ProjectBrowser : DockContent, IMyGenDocument
 	{
 		private const int INDEX_CLOSED_FOLDER = 0;
 		private const int INDEX_OPEN_FOLDER = 1;
@@ -67,11 +67,6 @@ namespace MyGeneration
 		{
             InitializeComponent();
             this.mdi = mdi;
-		}
-
-		public override void ResetMenu() 
-		{
-			this.Menu = this.mainMenuProject;
 		}
 
 		protected override string GetPersistString()
@@ -141,7 +136,7 @@ namespace MyGeneration
 			}
 		}
 
-		override public bool CanClose(bool allowPrevent)
+		public bool CanClose(bool allowPrevent)
 		{
 			return PromptForSave(allowPrevent);
 		}
@@ -848,7 +843,7 @@ namespace MyGeneration
 			{
 				ZeusModule module = node.Tag as ZeusModule;
 				ZeusContext context = new ZeusContext();
-				DefaultSettings settings = new DefaultSettings();
+				DefaultSettings settings = DefaultSettings.Instance;
 				settings.PopulateZeusContext(context);
 				module.SavedItems.Add(context.Input);
 			}
@@ -967,7 +962,7 @@ namespace MyGeneration
 			Cursor.Current = Cursors.WaitCursor;
 
 			TreeNode node = this.treeViewProject.SelectedNode;
-			DefaultSettings settings = new DefaultSettings();
+			DefaultSettings settings = DefaultSettings.Instance;
 
 			ProjectExecuteStatus log = new ProjectExecuteStatus();
 			log.Show();
@@ -1034,7 +1029,30 @@ namespace MyGeneration
 		}
 
 		#endregion
-	}
+
+        #region IMyGenDocument Members
+
+        public string DocumentIndentity
+        {
+            get { throw new Exception("The method or operation is not implemented."); }
+        }
+
+        #endregion
+
+        #region IMyGenContent Members
+
+        public ToolStrip ToolStrip
+        {
+            get { return null; }
+        }
+
+        public void Alert(IMyGenContent sender, string command, params object[] args)
+        {
+            //
+        }
+
+        #endregion
+    }
 
 	#region Project Browser Tree Node Classes
 	public abstract class SortedProjectTreeNode : TreeNode 

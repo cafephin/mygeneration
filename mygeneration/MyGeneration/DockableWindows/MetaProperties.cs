@@ -15,7 +15,7 @@ namespace MyGeneration
 	/// <summary>
 	/// Summary description for MetaProperties.
 	/// </summary>
-	public class MetaProperties : BaseWindow
+    public class MetaProperties : DockContent, IMyGenContent
     {
         private IMyGenerationMDI mdi;
 		private System.Windows.Forms.DataGrid Grid;
@@ -186,10 +186,10 @@ namespace MyGeneration
 			this.Clear();
 		}
 
-		override public void DefaultSettingsChanged(DefaultSettings settings)
+		/*public void DefaultSettingsChanged(DefaultSettings settings)
 		{
 			this.Clear();
-		}
+		}*/
 
 		public void MetaBrowserRefresh()
 		{
@@ -648,8 +648,32 @@ namespace MyGeneration
 					myProcess.Start();
 				}
 			}
-			catch {}		
+			catch {}
 		}
 
-	}
+        #region IMyGenContent Members
+        public ToolStrip ToolStrip
+        {
+            get { return null; }
+        }
+
+        public void Alert(IMyGenContent sender, string command, params object[] args)
+        {
+            if (command == "UpdateDefaultSettings")
+            {
+                this.Clear();
+            }
+        }
+
+        public bool CanClose(bool allowPrevent)
+        {
+            return true;
+        }
+
+        public void ResetMenu()
+        {
+            //
+        }
+        #endregion
+    }
 }

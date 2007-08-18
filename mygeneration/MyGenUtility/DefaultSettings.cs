@@ -18,7 +18,27 @@ namespace MyGeneration
 		private Hashtable _savedConnections;
 		private ArrayList _recentFiles;
 
-		public DefaultSettings()
+        #region Singleton Static Members
+        private static DefaultSettings instance;
+        public static DefaultSettings Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new DefaultSettings();
+                }
+                return instance;
+            }
+        }
+
+        public static void Refresh()
+        {
+            instance = null;
+        }
+        #endregion
+
+        private DefaultSettings()
 		{
 			xmlDoc = new XmlDocument();
 
@@ -603,7 +623,7 @@ namespace MyGeneration
 		
 		public void PopulateZeusContext(IZeusContext context) 
 		{
-			DefaultSettings settings = new DefaultSettings();
+			DefaultSettings settings = DefaultSettings.Instance;
 			IZeusInput input = context.Input;
 
 			if (!input.Contains("__version"))

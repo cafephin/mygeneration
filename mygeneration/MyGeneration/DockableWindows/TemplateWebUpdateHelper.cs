@@ -249,7 +249,7 @@ namespace MyGeneration
 			XmlDocument xmldoc = new XmlDocument();
 
 			HttpWebRequest request = HttpWebRequest.Create(url) as HttpWebRequest;
-			DefaultSettings settings = new DefaultSettings();
+			DefaultSettings settings = DefaultSettings.Instance;
 			if (settings.UseProxyServer) 
 			{
 				if (settings.ProxyAuthUsername != string.Empty) 
@@ -297,7 +297,7 @@ namespace MyGeneration
 			byte[] bytes = null;
 
 			HttpWebRequest request = HttpWebRequest.Create(url) as HttpWebRequest;
-			DefaultSettings settings = new DefaultSettings();
+			DefaultSettings settings = DefaultSettings.Instance;
 			if (settings.UseProxyServer) 
 			{
 				if (settings.ProxyAuthUsername != string.Empty) 

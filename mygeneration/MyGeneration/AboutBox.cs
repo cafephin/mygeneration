@@ -18,8 +18,7 @@ namespace MyGeneration
 	public class NewAbout : System.Windows.Forms.Form
 	{
 		private System.Windows.Forms.ListBox lstBoxProducts;
-		private System.Windows.Forms.TextBox txtProductInfo;
-		private System.Windows.Forms.Button btnOk;
+        private System.Windows.Forms.TextBox txtProductInfo;
 		private System.Windows.Forms.LinkLabel lnkURL;
         private System.Windows.Forms.LinkLabel linkLabel1;
         private AboutBoxLogo fun1;
@@ -57,7 +56,6 @@ namespace MyGeneration
 		{
             this.lstBoxProducts = new System.Windows.Forms.ListBox();
             this.txtProductInfo = new System.Windows.Forms.TextBox();
-            this.btnOk = new System.Windows.Forms.Button();
             this.lnkURL = new System.Windows.Forms.LinkLabel();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.fun1 = new MyGeneration.AboutBoxLogo();
@@ -69,7 +67,7 @@ namespace MyGeneration
             this.lstBoxProducts.ItemHeight = 16;
             this.lstBoxProducts.Location = new System.Drawing.Point(1, 67);
             this.lstBoxProducts.Name = "lstBoxProducts";
-            this.lstBoxProducts.Size = new System.Drawing.Size(449, 116);
+            this.lstBoxProducts.Size = new System.Drawing.Size(449, 148);
             this.lstBoxProducts.TabIndex = 0;
             this.lstBoxProducts.SelectedIndexChanged += new System.EventHandler(this.lstBoxProducts_SelectedIndexChanged);
             this.lstBoxProducts.SelectedValueChanged += new System.EventHandler(this.lstBoxProducts_SelectedValueChanged);
@@ -78,28 +76,19 @@ namespace MyGeneration
             // 
             this.txtProductInfo.AcceptsReturn = true;
             this.txtProductInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtProductInfo.Location = new System.Drawing.Point(1, 226);
+            this.txtProductInfo.Location = new System.Drawing.Point(1, 247);
             this.txtProductInfo.Multiline = true;
             this.txtProductInfo.Name = "txtProductInfo";
             this.txtProductInfo.ReadOnly = true;
-            this.txtProductInfo.Size = new System.Drawing.Size(449, 125);
+            this.txtProductInfo.Size = new System.Drawing.Size(449, 136);
             this.txtProductInfo.TabIndex = 1;
-            // 
-            // btnOk
-            // 
-            this.btnOk.Location = new System.Drawing.Point(375, 357);
-            this.btnOk.Name = "btnOk";
-            this.btnOk.Size = new System.Drawing.Size(75, 23);
-            this.btnOk.TabIndex = 2;
-            this.btnOk.Text = "Ok";
-            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
             // lnkURL
             // 
             this.lnkURL.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lnkURL.Location = new System.Drawing.Point(1, 186);
+            this.lnkURL.Location = new System.Drawing.Point(1, 218);
             this.lnkURL.Name = "lnkURL";
-            this.lnkURL.Size = new System.Drawing.Size(449, 37);
+            this.lnkURL.Size = new System.Drawing.Size(449, 26);
             this.lnkURL.TabIndex = 3;
             this.lnkURL.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.lnkURL.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkURL_LinkClicked);
@@ -116,6 +105,7 @@ namespace MyGeneration
             // 
             // fun1
             // 
+            this.fun1.BackColor = System.Drawing.Color.White;
             this.fun1.Location = new System.Drawing.Point(1, 1);
             this.fun1.Name = "fun1";
             this.fun1.Size = new System.Drawing.Size(449, 68);
@@ -127,7 +117,6 @@ namespace MyGeneration
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.ClientSize = new System.Drawing.Size(451, 382);
             this.Controls.Add(this.lnkURL);
-            this.Controls.Add(this.btnOk);
             this.Controls.Add(this.txtProductInfo);
             this.Controls.Add(this.lstBoxProducts);
             this.Controls.Add(this.linkLabel1);

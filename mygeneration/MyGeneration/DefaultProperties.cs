@@ -13,22 +13,21 @@ using ADODB;
 using MSDASC;
 
 using MyMeta;
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace MyGeneration
 {
 	/// <summary>
 	/// Summary description for DefaultProperties.
 	/// </summary>
-	public class DefaultProperties : System.Windows.Forms.Form
+    public class DefaultProperties : DockContent, IMyGenDocument
 	{
 		private const string MISSING = "*&?$%";
 
 		private System.Windows.Forms.TabControl tabControl;
 		private System.Windows.Forms.TabPage tabConnection;
 		private System.Windows.Forms.TabPage tabScript;
-		private OpenFileDialog openFileDialog = new OpenFileDialog();
-		private System.Windows.Forms.Button btnOK;
-		private System.Windows.Forms.Button btnCancel;
+        private OpenFileDialog openFileDialog = new OpenFileDialog();
 		private System.Windows.Forms.Button btnUserMetaDataFile;
 		private System.Windows.Forms.TextBox txtUserMetaDataFile;
 		private System.Windows.Forms.GroupBox groupBox1;
@@ -83,7 +82,7 @@ namespace MyGeneration
 		private System.Windows.Forms.Button btnOleDb;
 		private System.Windows.Forms.CheckBox chkDomainOverride;
 		private System.Windows.Forms.Button btnTestConnection;
-		private DefaultSettings settings = new DefaultSettings();
+		private DefaultSettings settings = DefaultSettings.Instance;
 		private System.Windows.Forms.GroupBox groupBox5;
 		private System.Windows.Forms.Button buttonDelete;
 		private System.Windows.Forms.Button buttonLoad;
@@ -101,12 +100,17 @@ namespace MyGeneration
         private Label label4;
         private ComboBox comboBoxCodePage;
         private FontDialog fontDialog1;
-		private string lastLoadedConnection = string.Empty;
+        private string lastLoadedConnection = string.Empty;
+        private ToolStrip toolStripOptions;
+        private ToolStripButton toolStripButtonSave;
+        private ToolStripSeparator toolStripSeparator1;
+        private IMyGenerationMDI parent;
 
-		public DefaultProperties()
+		public DefaultProperties(IMyGenerationMDI parent)
 		{
 			InitializeComponent();
 
+            this.parent = parent;
 			this.defaultOleDbButtonColor = this.btnOleDb.BackColor;
 
 			DataTable dt = new DataTable();
@@ -313,6 +317,7 @@ namespace MyGeneration
 		/// </summary>
 		private void InitializeComponent()
 		{
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DefaultProperties));
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabConnection = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
@@ -343,6 +348,12 @@ namespace MyGeneration
             this.txtUserMetaDataFile = new System.Windows.Forms.TextBox();
             this.labelUserMetaData = new System.Windows.Forms.Label();
             this.tabScript = new System.Windows.Forms.TabPage();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.buttonFont = new System.Windows.Forms.Button();
+            this.textBoxFont = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.comboBoxCodePage = new System.Windows.Forms.ComboBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.textBoxProxyDomain = new System.Windows.Forms.TextBox();
             this.labelProxyDomain = new System.Windows.Forms.Label();
@@ -370,15 +381,10 @@ namespace MyGeneration
             this.tabMisc = new System.Windows.Forms.TabPage();
             this.chkDomainOverride = new System.Windows.Forms.CheckBox();
             this.chkForUpdates = new System.Windows.Forms.CheckBox();
-            this.btnOK = new System.Windows.Forms.Button();
-            this.btnCancel = new System.Windows.Forms.Button();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.toolStripOptions = new System.Windows.Forms.ToolStrip();
+            this.toolStripButtonSave = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
-            this.comboBoxCodePage = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.textBoxFont = new System.Windows.Forms.TextBox();
-            this.buttonFont = new System.Windows.Forms.Button();
             this.tabControl.SuspendLayout();
             this.tabConnection.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -387,23 +393,27 @@ namespace MyGeneration
             this.groupBox3.SuspendLayout();
             this.groupBoxUserMetaData.SuspendLayout();
             this.tabScript.SuspendLayout();
+            this.groupBox6.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBoxTimout.SuspendLayout();
             this.tabMisc.SuspendLayout();
-            this.groupBox6.SuspendLayout();
+            this.toolStripOptions.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
             // 
-            this.tabControl.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl.Controls.Add(this.tabConnection);
             this.tabControl.Controls.Add(this.tabScript);
             this.tabControl.Controls.Add(this.tabMisc);
             this.tabControl.Location = new System.Drawing.Point(0, 12);
+            this.tabControl.MinimumSize = new System.Drawing.Size(595, 498);
             this.tabControl.Name = "tabControl";
             this.tabControl.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(704, 500);
+            this.tabControl.Size = new System.Drawing.Size(612, 520);
             this.tabControl.TabIndex = 0;
             // 
             // tabConnection
@@ -416,12 +426,14 @@ namespace MyGeneration
             this.tabConnection.Location = new System.Drawing.Point(4, 22);
             this.tabConnection.Name = "tabConnection";
             this.tabConnection.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.tabConnection.Size = new System.Drawing.Size(696, 474);
+            this.tabConnection.Size = new System.Drawing.Size(604, 494);
             this.tabConnection.TabIndex = 0;
             this.tabConnection.Text = "Connection";
             // 
             // groupBox5
             // 
+            this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox5.Controls.Add(this.buttonDelete);
             this.groupBox5.Controls.Add(this.buttonLoad);
             this.groupBox5.Controls.Add(this.buttonSave);
@@ -429,17 +441,18 @@ namespace MyGeneration
             this.groupBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox5.Location = new System.Drawing.Point(16, 16);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(664, 64);
+            this.groupBox5.Size = new System.Drawing.Size(569, 64);
             this.groupBox5.TabIndex = 32;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Saved Connections";
             // 
             // buttonDelete
             // 
+            this.buttonDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonDelete.BackColor = System.Drawing.SystemColors.Control;
             this.buttonDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonDelete.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.buttonDelete.Location = new System.Drawing.Point(608, 24);
+            this.buttonDelete.Location = new System.Drawing.Point(510, 24);
             this.buttonDelete.Name = "buttonDelete";
             this.buttonDelete.Size = new System.Drawing.Size(48, 23);
             this.buttonDelete.TabIndex = 35;
@@ -449,10 +462,11 @@ namespace MyGeneration
             // 
             // buttonLoad
             // 
+            this.buttonLoad.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonLoad.BackColor = System.Drawing.SystemColors.Control;
             this.buttonLoad.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonLoad.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.buttonLoad.Location = new System.Drawing.Point(488, 24);
+            this.buttonLoad.Location = new System.Drawing.Point(390, 24);
             this.buttonLoad.Name = "buttonLoad";
             this.buttonLoad.Size = new System.Drawing.Size(56, 23);
             this.buttonLoad.TabIndex = 34;
@@ -462,10 +476,11 @@ namespace MyGeneration
             // 
             // buttonSave
             // 
+            this.buttonSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonSave.BackColor = System.Drawing.SystemColors.Control;
             this.buttonSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonSave.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.buttonSave.Location = new System.Drawing.Point(552, 24);
+            this.buttonSave.Location = new System.Drawing.Point(454, 24);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(48, 23);
             this.buttonSave.TabIndex = 33;
@@ -475,16 +490,20 @@ namespace MyGeneration
             // 
             // comboBoxSavedConns
             // 
+            this.comboBoxSavedConns.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxSavedConns.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.comboBoxSavedConns.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxSavedConns.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.comboBoxSavedConns.Location = new System.Drawing.Point(8, 24);
             this.comboBoxSavedConns.Name = "comboBoxSavedConns";
-            this.comboBoxSavedConns.Size = new System.Drawing.Size(472, 21);
+            this.comboBoxSavedConns.Size = new System.Drawing.Size(374, 21);
             this.comboBoxSavedConns.TabIndex = 32;
             // 
             // groupBox2
             // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.cboDbTarget);
@@ -493,7 +512,7 @@ namespace MyGeneration
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(16, 304);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(664, 88);
+            this.groupBox2.Size = new System.Drawing.Size(569, 88);
             this.groupBox2.TabIndex = 22;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Database Target Mapping";
@@ -530,17 +549,20 @@ namespace MyGeneration
             // 
             // txtDbTargetFile
             // 
+            this.txtDbTargetFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.txtDbTargetFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtDbTargetFile.Location = new System.Drawing.Point(88, 24);
             this.txtDbTargetFile.Name = "txtDbTargetFile";
             this.txtDbTargetFile.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtDbTargetFile.Size = new System.Drawing.Size(536, 20);
+            this.txtDbTargetFile.Size = new System.Drawing.Size(438, 20);
             this.txtDbTargetFile.TabIndex = 20;
             // 
             // btnDbTargetFile
             // 
+            this.btnDbTargetFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDbTargetFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDbTargetFile.Location = new System.Drawing.Point(632, 24);
+            this.btnDbTargetFile.Location = new System.Drawing.Point(534, 24);
             this.btnDbTargetFile.Name = "btnDbTargetFile";
             this.btnDbTargetFile.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.btnDbTargetFile.Size = new System.Drawing.Size(24, 23);
@@ -550,6 +572,8 @@ namespace MyGeneration
             // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.cboLanguage);
             this.groupBox1.Controls.Add(this.txtLanguageFile);
@@ -558,7 +582,7 @@ namespace MyGeneration
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(16, 208);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(664, 88);
+            this.groupBox1.Size = new System.Drawing.Size(569, 88);
             this.groupBox1.TabIndex = 21;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Language Mapping";
@@ -585,17 +609,20 @@ namespace MyGeneration
             // 
             // txtLanguageFile
             // 
+            this.txtLanguageFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.txtLanguageFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtLanguageFile.Location = new System.Drawing.Point(88, 24);
             this.txtLanguageFile.Name = "txtLanguageFile";
             this.txtLanguageFile.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtLanguageFile.Size = new System.Drawing.Size(536, 20);
+            this.txtLanguageFile.Size = new System.Drawing.Size(438, 20);
             this.txtLanguageFile.TabIndex = 23;
             // 
             // btnLanguageFile
             // 
+            this.btnLanguageFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnLanguageFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLanguageFile.Location = new System.Drawing.Point(632, 24);
+            this.btnLanguageFile.Location = new System.Drawing.Point(534, 24);
             this.btnLanguageFile.Name = "btnLanguageFile";
             this.btnLanguageFile.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.btnLanguageFile.Size = new System.Drawing.Size(24, 23);
@@ -615,6 +642,8 @@ namespace MyGeneration
             // 
             // groupBox3
             // 
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox3.Controls.Add(this.btnTestConnection);
             this.groupBox3.Controls.Add(this.label6);
             this.groupBox3.Controls.Add(this.cboDbDriver);
@@ -623,15 +652,16 @@ namespace MyGeneration
             this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox3.Location = new System.Drawing.Point(16, 88);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(664, 112);
+            this.groupBox3.Size = new System.Drawing.Size(569, 112);
             this.groupBox3.TabIndex = 23;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Connection String";
             // 
             // btnTestConnection
             // 
+            this.btnTestConnection.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnTestConnection.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnTestConnection.Location = new System.Drawing.Point(456, 24);
+            this.btnTestConnection.Location = new System.Drawing.Point(358, 24);
             this.btnTestConnection.Name = "btnTestConnection";
             this.btnTestConnection.Size = new System.Drawing.Size(112, 23);
             this.btnTestConnection.TabIndex = 27;
@@ -660,8 +690,9 @@ namespace MyGeneration
             // 
             // btnOleDb
             // 
+            this.btnOleDb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOleDb.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnOleDb.Location = new System.Drawing.Point(576, 24);
+            this.btnOleDb.Location = new System.Drawing.Point(478, 24);
             this.btnOleDb.Name = "btnOleDb";
             this.btnOleDb.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.btnOleDb.Size = new System.Drawing.Size(80, 23);
@@ -671,32 +702,37 @@ namespace MyGeneration
             // 
             // txtConnectionString
             // 
+            this.txtConnectionString.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.txtConnectionString.Enabled = false;
             this.txtConnectionString.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtConnectionString.Location = new System.Drawing.Point(8, 56);
             this.txtConnectionString.Multiline = true;
             this.txtConnectionString.Name = "txtConnectionString";
             this.txtConnectionString.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtConnectionString.Size = new System.Drawing.Size(648, 40);
+            this.txtConnectionString.Size = new System.Drawing.Size(550, 40);
             this.txtConnectionString.TabIndex = 20;
             // 
             // groupBoxUserMetaData
             // 
+            this.groupBoxUserMetaData.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxUserMetaData.Controls.Add(this.btnUserMetaDataFile);
             this.groupBoxUserMetaData.Controls.Add(this.txtUserMetaDataFile);
             this.groupBoxUserMetaData.Controls.Add(this.labelUserMetaData);
             this.groupBoxUserMetaData.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBoxUserMetaData.Location = new System.Drawing.Point(16, 400);
             this.groupBoxUserMetaData.Name = "groupBoxUserMetaData";
-            this.groupBoxUserMetaData.Size = new System.Drawing.Size(664, 56);
+            this.groupBoxUserMetaData.Size = new System.Drawing.Size(569, 56);
             this.groupBoxUserMetaData.TabIndex = 33;
             this.groupBoxUserMetaData.TabStop = false;
             this.groupBoxUserMetaData.Text = "User Meta-Data";
             // 
             // btnUserMetaDataFile
             // 
+            this.btnUserMetaDataFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnUserMetaDataFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnUserMetaDataFile.Location = new System.Drawing.Point(632, 24);
+            this.btnUserMetaDataFile.Location = new System.Drawing.Point(534, 24);
             this.btnUserMetaDataFile.Name = "btnUserMetaDataFile";
             this.btnUserMetaDataFile.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.btnUserMetaDataFile.Size = new System.Drawing.Size(24, 23);
@@ -706,11 +742,13 @@ namespace MyGeneration
             // 
             // txtUserMetaDataFile
             // 
+            this.txtUserMetaDataFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.txtUserMetaDataFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtUserMetaDataFile.Location = new System.Drawing.Point(88, 24);
             this.txtUserMetaDataFile.Name = "txtUserMetaDataFile";
             this.txtUserMetaDataFile.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtUserMetaDataFile.Size = new System.Drawing.Size(536, 20);
+            this.txtUserMetaDataFile.Size = new System.Drawing.Size(438, 20);
             this.txtUserMetaDataFile.TabIndex = 17;
             // 
             // labelUserMetaData
@@ -741,9 +779,66 @@ namespace MyGeneration
             this.tabScript.Controls.Add(this.txtDefaultTemplatePath);
             this.tabScript.Location = new System.Drawing.Point(4, 22);
             this.tabScript.Name = "tabScript";
-            this.tabScript.Size = new System.Drawing.Size(696, 474);
+            this.tabScript.Size = new System.Drawing.Size(604, 494);
             this.tabScript.TabIndex = 1;
             this.tabScript.Text = "Templates";
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.buttonFont);
+            this.groupBox6.Controls.Add(this.textBoxFont);
+            this.groupBox6.Controls.Add(this.label10);
+            this.groupBox6.Controls.Add(this.label4);
+            this.groupBox6.Controls.Add(this.comboBoxCodePage);
+            this.groupBox6.Location = new System.Drawing.Point(12, 343);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(216, 100);
+            this.groupBox6.TabIndex = 14;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Globalization";
+            // 
+            // buttonFont
+            // 
+            this.buttonFont.Location = new System.Drawing.Point(152, 72);
+            this.buttonFont.Name = "buttonFont";
+            this.buttonFont.Size = new System.Drawing.Size(56, 23);
+            this.buttonFont.TabIndex = 18;
+            this.buttonFont.Text = "Browse";
+            this.buttonFont.Click += new System.EventHandler(this.buttonFont_Click);
+            // 
+            // textBoxFont
+            // 
+            this.textBoxFont.Location = new System.Drawing.Point(8, 72);
+            this.textBoxFont.Name = "textBoxFont";
+            this.textBoxFont.Size = new System.Drawing.Size(144, 20);
+            this.textBoxFont.TabIndex = 17;
+            // 
+            // label10
+            // 
+            this.label10.Location = new System.Drawing.Point(8, 56);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(200, 15);
+            this.label10.TabIndex = 16;
+            this.label10.Text = "Font Override";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            // 
+            // label4
+            // 
+            this.label4.Location = new System.Drawing.Point(8, 16);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(160, 15);
+            this.label4.TabIndex = 15;
+            this.label4.Text = "CodePage Override";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            // 
+            // comboBoxCodePage
+            // 
+            this.comboBoxCodePage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxCodePage.FormattingEnabled = true;
+            this.comboBoxCodePage.Location = new System.Drawing.Point(8, 32);
+            this.comboBoxCodePage.Name = "comboBoxCodePage";
+            this.comboBoxCodePage.Size = new System.Drawing.Size(200, 21);
+            this.comboBoxCodePage.TabIndex = 0;
             // 
             // groupBox4
             // 
@@ -756,7 +851,7 @@ namespace MyGeneration
             this.groupBox4.Controls.Add(this.checkBoxUseProxyServer);
             this.groupBox4.Controls.Add(this.textBoxProxyServer);
             this.groupBox4.Controls.Add(this.labelProxyServer);
-            this.groupBox4.Location = new System.Drawing.Point(320, 240);
+            this.groupBox4.Location = new System.Drawing.Point(234, 235);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(344, 208);
             this.groupBox4.TabIndex = 13;
@@ -854,7 +949,7 @@ namespace MyGeneration
             this.groupBoxTimout.Controls.Add(this.checkBoxDisableTimeout);
             this.groupBoxTimout.Controls.Add(this.textBoxTimeout);
             this.groupBoxTimout.Controls.Add(this.label9);
-            this.groupBoxTimout.Location = new System.Drawing.Point(32, 240);
+            this.groupBoxTimout.Location = new System.Drawing.Point(12, 231);
             this.groupBoxTimout.Name = "groupBoxTimout";
             this.groupBoxTimout.Size = new System.Drawing.Size(216, 104);
             this.groupBoxTimout.TabIndex = 12;
@@ -894,7 +989,7 @@ namespace MyGeneration
             // 
             // buttonBrowseOutPath
             // 
-            this.buttonBrowseOutPath.Location = new System.Drawing.Point(480, 128);
+            this.buttonBrowseOutPath.Location = new System.Drawing.Point(460, 119);
             this.buttonBrowseOutPath.Name = "buttonBrowseOutPath";
             this.buttonBrowseOutPath.Size = new System.Drawing.Size(56, 23);
             this.buttonBrowseOutPath.TabIndex = 8;
@@ -903,7 +998,7 @@ namespace MyGeneration
             // 
             // labelOutputPath
             // 
-            this.labelOutputPath.Location = new System.Drawing.Point(40, 112);
+            this.labelOutputPath.Location = new System.Drawing.Point(20, 103);
             this.labelOutputPath.Name = "labelOutputPath";
             this.labelOutputPath.Size = new System.Drawing.Size(312, 16);
             this.labelOutputPath.TabIndex = 5;
@@ -912,14 +1007,14 @@ namespace MyGeneration
             // 
             // textBoxOutputPath
             // 
-            this.textBoxOutputPath.Location = new System.Drawing.Point(40, 128);
+            this.textBoxOutputPath.Location = new System.Drawing.Point(20, 119);
             this.textBoxOutputPath.Name = "textBoxOutputPath";
             this.textBoxOutputPath.Size = new System.Drawing.Size(440, 20);
             this.textBoxOutputPath.TabIndex = 6;
             // 
             // btnBrowse
             // 
-            this.btnBrowse.Location = new System.Drawing.Point(480, 80);
+            this.btnBrowse.Location = new System.Drawing.Point(460, 71);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(56, 23);
             this.btnBrowse.TabIndex = 4;
@@ -928,14 +1023,14 @@ namespace MyGeneration
             // 
             // txtTabs
             // 
-            this.txtTabs.Location = new System.Drawing.Point(40, 40);
+            this.txtTabs.Location = new System.Drawing.Point(20, 31);
             this.txtTabs.Name = "txtTabs";
             this.txtTabs.Size = new System.Drawing.Size(56, 20);
             this.txtTabs.TabIndex = 3;
             // 
             // label7
             // 
-            this.label7.Location = new System.Drawing.Point(40, 24);
+            this.label7.Location = new System.Drawing.Point(20, 15);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(72, 16);
             this.label7.TabIndex = 2;
@@ -944,7 +1039,7 @@ namespace MyGeneration
             // 
             // checkBoxClipboard
             // 
-            this.checkBoxClipboard.Location = new System.Drawing.Point(40, 192);
+            this.checkBoxClipboard.Location = new System.Drawing.Point(20, 183);
             this.checkBoxClipboard.Name = "checkBoxClipboard";
             this.checkBoxClipboard.Size = new System.Drawing.Size(248, 24);
             this.checkBoxClipboard.TabIndex = 1;
@@ -952,7 +1047,7 @@ namespace MyGeneration
             // 
             // checkBoxLineNumbers
             // 
-            this.checkBoxLineNumbers.Location = new System.Drawing.Point(40, 160);
+            this.checkBoxLineNumbers.Location = new System.Drawing.Point(20, 151);
             this.checkBoxLineNumbers.Name = "checkBoxLineNumbers";
             this.checkBoxLineNumbers.Size = new System.Drawing.Size(152, 24);
             this.checkBoxLineNumbers.TabIndex = 0;
@@ -960,7 +1055,7 @@ namespace MyGeneration
             // 
             // label8
             // 
-            this.label8.Location = new System.Drawing.Point(40, 64);
+            this.label8.Location = new System.Drawing.Point(20, 55);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(400, 16);
             this.label8.TabIndex = 2;
@@ -969,7 +1064,7 @@ namespace MyGeneration
             // 
             // txtDefaultTemplatePath
             // 
-            this.txtDefaultTemplatePath.Location = new System.Drawing.Point(40, 80);
+            this.txtDefaultTemplatePath.Location = new System.Drawing.Point(20, 71);
             this.txtDefaultTemplatePath.Name = "txtDefaultTemplatePath";
             this.txtDefaultTemplatePath.Size = new System.Drawing.Size(440, 20);
             this.txtDefaultTemplatePath.TabIndex = 3;
@@ -980,7 +1075,7 @@ namespace MyGeneration
             this.tabMisc.Controls.Add(this.chkForUpdates);
             this.tabMisc.Location = new System.Drawing.Point(4, 22);
             this.tabMisc.Name = "tabMisc";
-            this.tabMisc.Size = new System.Drawing.Size(696, 474);
+            this.tabMisc.Size = new System.Drawing.Size(604, 494);
             this.tabMisc.TabIndex = 2;
             this.tabMisc.Text = "Misc";
             // 
@@ -1000,99 +1095,50 @@ namespace MyGeneration
             this.chkForUpdates.TabIndex = 0;
             this.chkForUpdates.Text = "Check For New Build When Launched";
             // 
-            // btnOK
+            // toolStripOptions
             // 
-            this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOK.Location = new System.Drawing.Point(528, 528);
-            this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(75, 23);
-            this.btnOK.TabIndex = 1;
-            this.btnOK.Text = "OK";
-            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
+            this.toolStripOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButtonSave,
+            this.toolStripSeparator1});
+            this.toolStripOptions.Location = new System.Drawing.Point(0, 0);
+            this.toolStripOptions.Name = "toolStripOptions";
+            this.toolStripOptions.Size = new System.Drawing.Size(614, 25);
+            this.toolStripOptions.TabIndex = 34;
+            this.toolStripOptions.Visible = false;
             // 
-            // btnCancel
+            // toolStripButtonSave
             // 
-            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(608, 528);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 2;
-            this.btnCancel.Text = "&Cancel";
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            this.toolStripButtonSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonSave.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonSave.Image")));
+            this.toolStripButtonSave.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonSave.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.toolStripButtonSave.MergeIndex = 0;
+            this.toolStripButtonSave.Name = "toolStripButtonSave";
+            this.toolStripButtonSave.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonSave.Text = "Save Settings";
+            this.toolStripButtonSave.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
-            // groupBox6
+            // toolStripSeparator1
             // 
-            this.groupBox6.Controls.Add(this.buttonFont);
-            this.groupBox6.Controls.Add(this.textBoxFont);
-            this.groupBox6.Controls.Add(this.label10);
-            this.groupBox6.Controls.Add(this.label4);
-            this.groupBox6.Controls.Add(this.comboBoxCodePage);
-            this.groupBox6.Location = new System.Drawing.Point(32, 352);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(216, 100);
-            this.groupBox6.TabIndex = 14;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Globalization";
-            // 
-            // comboBoxCodePage
-            // 
-            this.comboBoxCodePage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxCodePage.FormattingEnabled = true;
-            this.comboBoxCodePage.Location = new System.Drawing.Point(8, 32);
-            this.comboBoxCodePage.Name = "comboBoxCodePage";
-            this.comboBoxCodePage.Size = new System.Drawing.Size(200, 21);
-            this.comboBoxCodePage.TabIndex = 0;
-            // 
-            // label4
-            // 
-            this.label4.Location = new System.Drawing.Point(8, 16);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(160, 15);
-            this.label4.TabIndex = 15;
-            this.label4.Text = "CodePage Override";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            // 
-            // label10
-            // 
-            this.label10.Location = new System.Drawing.Point(8, 56);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(200, 15);
-            this.label10.TabIndex = 16;
-            this.label10.Text = "Font Override";
-            this.label10.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            // 
-            // textBoxFont
-            // 
-            this.textBoxFont.Location = new System.Drawing.Point(8, 72);
-            this.textBoxFont.Name = "textBoxFont";
-            this.textBoxFont.Size = new System.Drawing.Size(144, 20);
-            this.textBoxFont.TabIndex = 17;
-            // 
-            // buttonFont
-            // 
-            this.buttonFont.Location = new System.Drawing.Point(152, 72);
-            this.buttonFont.Name = "buttonFont";
-            this.buttonFont.Size = new System.Drawing.Size(56, 23);
-            this.buttonFont.TabIndex = 18;
-            this.buttonFont.Text = "Browse";
-            this.buttonFont.Click += new System.EventHandler(this.buttonFont_Click);
+            this.toolStripSeparator1.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.toolStripSeparator1.MergeIndex = 1;
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
             // DefaultProperties
             // 
-            this.AcceptButton = this.btnOK;
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-            this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(706, 560);
-            this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.btnOK);
+            this.ClientSize = new System.Drawing.Size(614, 534);
+            this.Controls.Add(this.toolStripOptions);
             this.Controls.Add(this.tabControl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "DefaultProperties";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.TabText = "Default Settings";
             this.Text = "Default Settings";
+            this.Shown += new System.EventHandler(this.DefaultProperties_Shown);
             this.Closing += new System.ComponentModel.CancelEventHandler(this.DefaultProperties_Closing);
             this.Load += new System.EventHandler(this.DefaultProperties_Load);
             this.tabControl.ResumeLayout(false);
@@ -1108,14 +1154,17 @@ namespace MyGeneration
             this.groupBoxUserMetaData.PerformLayout();
             this.tabScript.ResumeLayout(false);
             this.tabScript.PerformLayout();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.groupBoxTimout.ResumeLayout(false);
             this.groupBoxTimout.PerformLayout();
             this.tabMisc.ResumeLayout(false);
-            this.groupBox6.ResumeLayout(false);
-            this.groupBox6.PerformLayout();
+            this.toolStripOptions.ResumeLayout(false);
+            this.toolStripOptions.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
 		}
 		#endregion
@@ -1196,23 +1245,6 @@ namespace MyGeneration
 			{
 				this.txtUserMetaDataFile.Text = fileName;
 			}		
-		}
-
-		private void btnCancel_Click(object sender, System.EventArgs e)
-		{
-			this.DialogResult = DialogResult.Cancel;
-		}
-
-		private void btnOK_Click(object sender, System.EventArgs e)
-		{
-			if(this.TestConnection(true))
-			{
-				BindControlsToSettings();
-
-				settings.Save();
-
-				this.DialogResult = DialogResult.OK;
-			}
 		}
 
 		private void BindControlsToSettings()
@@ -1656,5 +1688,47 @@ namespace MyGeneration
                 this.textBoxFont.Text = string.Empty;
             }
         }
-	}
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            if (this.TestConnection(true))
+            {
+                BindControlsToSettings();
+
+                settings.Save();
+            }
+        }
+
+        private void DefaultProperties_Shown(object sender, EventArgs e)
+        {
+        }
+
+        #region IMyGenDocument Members
+
+        public ToolStrip ToolStrip
+        {
+            get { return this.toolStripOptions; }
+        }
+
+        public string DocumentIndentity
+        {
+            get { return "::DefaultSettings::"; }
+        }
+
+        #endregion
+
+        #region IMyGenDocument Members
+
+        public void Alert(IMyGenContent sender, string command, params object[] args)
+        {
+            //throw new Exception("The method or operation is not implemented.");
+        }
+
+        public bool CanClose(bool allowPrevent)
+        {
+            return true;
+        }
+
+        #endregion
+    }
 }
