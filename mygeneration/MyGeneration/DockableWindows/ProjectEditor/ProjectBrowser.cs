@@ -843,7 +843,7 @@ namespace MyGeneration
 			{
 				ZeusModule module = node.Tag as ZeusModule;
 				ZeusContext context = new ZeusContext();
-				DefaultSettings settings = DefaultSettings.Instance;
+                DefaultSettings settings = DefaultSettings.Instance;
 				settings.PopulateZeusContext(context);
 				module.SavedItems.Add(context.Input);
 			}
@@ -962,7 +962,7 @@ namespace MyGeneration
 			Cursor.Current = Cursors.WaitCursor;
 
 			TreeNode node = this.treeViewProject.SelectedNode;
-			DefaultSettings settings = DefaultSettings.Instance;
+            DefaultSettings settings = DefaultSettings.Instance;
 
 			ProjectExecuteStatus log = new ProjectExecuteStatus();
 			log.Show();
@@ -1052,7 +1052,7 @@ namespace MyGeneration
         }
 
         #endregion
-    }
+	}
 
 	#region Project Browser Tree Node Classes
 	public abstract class SortedProjectTreeNode : TreeNode 

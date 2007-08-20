@@ -671,7 +671,7 @@ namespace MyGeneration
 		{
 			Cursor.Current = Cursors.WaitCursor;
 
-			DefaultSettings settings = DefaultSettings.Instance;
+            DefaultSettings settings = DefaultSettings.Instance;
 
 			IZeusContext context = new ZeusContext();
 			IZeusGuiControl guiController = context.Gui;
@@ -729,7 +729,7 @@ namespace MyGeneration
 		{
 			try 
 			{
-				DefaultSettings settings = DefaultSettings.Instance;
+                DefaultSettings settings = DefaultSettings.Instance;
 
 				ZeusSimpleLog log = new ZeusSimpleLog();
 				ZeusContext context = new ZeusContext();
@@ -777,7 +777,7 @@ namespace MyGeneration
 		{
 			try 
 			{
-				DefaultSettings settings = DefaultSettings.Instance;
+                DefaultSettings settings = DefaultSettings.Instance;
 				ZeusSimpleLog log = new ZeusSimpleLog();
 
 				OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -956,6 +956,6 @@ namespace MyGeneration
         }
 
         #endregion
-    }
+	}
 
 }

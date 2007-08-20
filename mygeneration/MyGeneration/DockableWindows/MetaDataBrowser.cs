@@ -352,11 +352,11 @@ namespace MyGeneration
             }
             else
             {
-                this.MetaData = ((MDIParent)this.DockPanel.Parent).MetaDataWindow;
-                this.UserData = ((MDIParent)this.DockPanel.Parent).UserMetaWindow;
-                this.GlobalUserData = ((MDIParent)this.DockPanel.Parent).GlobalUserMetaWindow;
+			this.MetaData		= ((MDIParent)this.DockPanel.Parent).MetaDataWindow;
+			this.UserData		= ((MDIParent)this.DockPanel.Parent).UserMetaWindow;
+			this.GlobalUserData = ((MDIParent)this.DockPanel.Parent).GlobalUserMetaWindow;
             }
-            MyTree.Scrollable = true;
+			MyTree.Scrollable = true;
 		}
 #if !DEBUG
 		private static bool isFirstRun = true;
@@ -1239,5 +1239,5 @@ namespace MyGeneration
         }
 
         #endregion
-    }
+	}
 }

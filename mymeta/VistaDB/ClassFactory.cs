@@ -14,10 +14,10 @@ namespace MyMeta.VistaDB
         public static void Register()
         {
             InternalDriver.Register("VISTADB",
-                new InternalDriver
+                new FileDbDriver
                 (typeof(ClassFactory)
-                , @"DataSource=C:\Program Files\VistaDB 2.0\Data\Northwind.vdb;Cypher= None;Password=;Exclusive=False;Readonly=False;"
-                , false));
+                , @"DataSource=", @"C:\Program Files\VistaDB 2.0\Data\Northwind.vdb", @";Cypher= None;Password=;Exclusive=False;Readonly=False;"
+                , "VistaDB (*.vbd)|*.vbd|all files (*.*)|*.*"));
         }
         public ClassFactory()
 		{

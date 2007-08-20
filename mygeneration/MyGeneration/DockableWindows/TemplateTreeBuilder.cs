@@ -54,6 +54,7 @@ namespace MyGeneration
 			_nsRootNode = null;
 		}
 
+        // for "Zeus Templates by Namespace"
 		public void LoadTemplates() 
 		{
 			if (_tree != null) 
@@ -84,6 +85,16 @@ namespace MyGeneration
 
 					_buildChildren(rootInfo, templates);
 
+#if RUN_AS_NON_ADMIN
+                    string userTemplates = settings.UserTemplateDirectory;
+
+                    if ((userTemplates != null) && (userTemplates != defaultTemplatePath))
+                    {
+                        rootInfo = new DirectoryInfo(userTemplates);
+                        _buildChildren(rootInfo, templates);
+                    }
+#endif
+          
 					_nsRootNode = new RootTreeNode("Zeus Templates by Namespace");
 					string[] nsarray;
 					foreach (ZeusTemplateHeader template in templates) 
@@ -138,7 +149,7 @@ namespace MyGeneration
 
 				if (_wuRootNode == null) 
 				{
-					DefaultSettings settings = DefaultSettings.Instance;
+                    DefaultSettings settings = DefaultSettings.Instance;
 
 					defaultTemplatePath = settings.DefaultTemplateDirectory;
 					string exePath = Directory.GetCurrentDirectory();
@@ -209,7 +220,7 @@ namespace MyGeneration
 
 				if (_fsRootNode == null) 
 				{
-					DefaultSettings settings = DefaultSettings.Instance;
+                    DefaultSettings settings = DefaultSettings.Instance;
 
 					defaultTemplatePath = settings.DefaultTemplateDirectory;
 					string exePath = Directory.GetCurrentDirectory();
@@ -219,20 +230,44 @@ namespace MyGeneration
 						defaultTemplatePath = exePath;
 					}
 
-					ArrayList templates = new ArrayList();
+					// ArrayList templates = new ArrayList();
 					DirectoryInfo rootInfo = new DirectoryInfo(defaultTemplatePath);
 
-					_fsRootNode = new RootTreeNode("Zeus Templates by File");
+                    _fsRootNode = new RootTreeNode("Zeus Templates by File");
 
+#if RUN_AS_NON_ADMIN
+                    SortedTreeNode item = new RootTreeNode("System");
+                    _fsRootNode.Nodes.Add(item);
+                    _buildChildren(item, rootInfo);
+                    item.Expand();
+
+                    string userTemplates = settings.UserTemplateDirectory;
+
+                    if ((userTemplates != null) && (userTemplates != defaultTemplatePath))
+                    {
+                        rootInfo = new DirectoryInfo(userTemplates);
+
+                        item = new RootTreeNode("User:" + Environment.UserName);
+                        _fsRootNode.Nodes.Add(item);
+                        _buildChildren(item, rootInfo);
+                        item.Expand();
+                    }
+#else
 					_buildChildren(_fsRootNode, rootInfo);
-
-					_fsRootNode.Expand();
+#endif                    
+                    _fsRootNode.Expand();
 				}
 
 				this._tree.Nodes.Add(_fsRootNode);
 			}
 		}
 
+        /// <summary>
+        /// loads all *.xxgen and *.zeus into templates<ZeusTemplateHeader>[]
+        /// updates IdPathHash<TemplateID,filename>
+        /// 
+        /// used by "Zeus Templates by Namespace"
+        /// </summary>
 		private void _buildChildren(DirectoryInfo rootInfo, ArrayList templates)
 		{
 			ZeusTemplateHeader template;
@@ -241,36 +276,30 @@ namespace MyGeneration
 			{
 				if (dirInfo.Attributes != (FileAttributes.System | dirInfo.Attributes)) 
 				{
-					this._buildChildren(dirInfo, templates);
+					this._buildChildren(dirInfo, templates); // recurse into subdirectories
 				}
 			}
 
 			foreach (FileInfo fileInfo in rootInfo.GetFiles()) 
 			{
-				if (fileInfo.Attributes != (FileAttributes.System | fileInfo.Attributes)) 
+				if (IsTemplateFile(fileInfo)) 
 				{
-					if ( (fileInfo.Extension == ".jgen")
-						|| (fileInfo.Extension == ".vbgen")
-						|| (fileInfo.Extension == ".csgen")
-						|| (fileInfo.Extension == ".zeus") ) 
-					{
-						string filename = fileInfo.FullName;
+					string filename = fileInfo.FullName;
 
-						if (!templates.Contains(filename))
-						{ 
-							try 
-							{
-								
-								template = ZeusTemplateParser.LoadTemplateHeader(filename);
-								IdPathHash.Add(template.UniqueID.ToUpper(), template.FilePath + template.FileName);
-							}
-							catch 
-							{
-								continue;
-							}
-
-							templates.Add(template);
+					if (!templates.Contains(filename))
+					{ 
+						try 
+						{
+							
+							template = ZeusTemplateParser.LoadTemplateHeader(filename);
+							IdPathHash.Add(template.UniqueID.ToUpper(), template.FilePath + template.FileName);
 						}
+						catch 
+						{
+							continue;
+						}
+
+						templates.Add(template);
 					}
 				}
 			}
@@ -293,32 +322,38 @@ namespace MyGeneration
 
 			foreach (FileInfo fileInfo in rootInfo.GetFiles()) 
 			{
-				if (fileInfo.Attributes != (FileAttributes.System | fileInfo.Attributes)) 
+				if (IsTemplateFile(fileInfo)) 
 				{
-					if ( (fileInfo.Extension == ".jgen")
-						|| (fileInfo.Extension == ".vbgen")
-						|| (fileInfo.Extension == ".csgen")
-						|| (fileInfo.Extension == ".zeus") ) 
+					string filename = fileInfo.FullName;
+
+					try 
 					{
-						string filename = fileInfo.FullName;
-
-						try 
-						{
-							template = ZeusTemplateParser.LoadTemplateHeader(filename);
-							IdPathHash.Add(template.UniqueID.ToUpper(), template.FilePath + template.FileName);
-						}
-						catch 
-						{
-							continue;
-						}
-
-						TemplateTreeNode node = new TemplateTreeNode(template, true);
-						rootNode.AddSorted(node);
-
+						template = ZeusTemplateParser.LoadTemplateHeader(filename);
+						IdPathHash.Add(template.UniqueID.ToUpper(), template.FilePath + template.FileName);
 					}
+					catch 
+					{
+						continue;
+					}
+
+					TemplateTreeNode node = new TemplateTreeNode(template, true);
+					rootNode.AddSorted(node);
+
 				}
 			}
 		}
+
+        private static bool IsTemplateFile(FileInfo fileInfo)
+        {
+            if (fileInfo.Attributes != (FileAttributes.System | fileInfo.Attributes))
+            {
+                return (fileInfo.Extension == ".jgen")
+                                        || (fileInfo.Extension == ".vbgen")
+                                        || (fileInfo.Extension == ".csgen")
+                                        || (fileInfo.Extension == ".zeus");
+            }
+            return false;
+        }
 
 	}
 

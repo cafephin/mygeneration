@@ -172,6 +172,9 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BaseWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="DefaultProperties.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -289,6 +292,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AddLanguageMappingDialog.resx">
       <DependentUpon>AddLanguageMappingDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseWindow.resx">
+      <DependentUpon>BaseWindow.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="DefaultProperties.resx">

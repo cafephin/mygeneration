@@ -120,7 +120,12 @@ namespace MyGeneration
             }
             else
             {
-                this.textBoxErrorMessage.Text = text;
+                string nl = "@!!nl@!!";
+                this.textBoxErrorMessage.Text = text
+                    .Replace("\r\n", nl)
+                    .Replace("\n", nl)
+                    .Replace("\r", nl)
+                    .Replace(nl, Environment.NewLine);
             }
         }
 
@@ -182,6 +187,10 @@ namespace MyGeneration
             else
             {
                 this.Size = size;
+
+                this.MaximumSize = new Size(0, 0);
+                this.FormBorderStyle = FormBorderStyle.Sizable;
+
             }
         }
 
@@ -328,11 +337,12 @@ namespace MyGeneration
             // 
             // buttonCancel
             // 
+            this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCancel.BackColor = System.Drawing.Color.WhiteSmoke;
             this.buttonCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonCancel.Location = new System.Drawing.Point(278, 9);
+            this.buttonCancel.Location = new System.Drawing.Point(292, 8);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(68, 28);
+            this.buttonCancel.Size = new System.Drawing.Size(56, 24);
             this.buttonCancel.TabIndex = 0;
             this.buttonCancel.Text = "&Cancel";
             this.buttonCancel.UseVisualStyleBackColor = false;
@@ -340,32 +350,37 @@ namespace MyGeneration
             // 
             // labelState
             // 
+            this.labelState.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.labelState.BackColor = System.Drawing.Color.LemonChiffon;
             this.labelState.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.labelState.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelState.ForeColor = System.Drawing.Color.Blue;
-            this.labelState.Location = new System.Drawing.Point(10, 9);
+            this.labelState.Location = new System.Drawing.Point(8, 8);
             this.labelState.Name = "labelState";
-            this.labelState.Size = new System.Drawing.Size(259, 28);
+            this.labelState.Size = new System.Drawing.Size(276, 24);
             this.labelState.TabIndex = 2;
             this.labelState.Text = "Connecting";
             this.labelState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // textBoxErrorMessage
             // 
+            this.textBoxErrorMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxErrorMessage.BackColor = System.Drawing.Color.LemonChiffon;
             this.textBoxErrorMessage.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxErrorMessage.ForeColor = System.Drawing.Color.Red;
-            this.textBoxErrorMessage.Location = new System.Drawing.Point(10, 46);
+            this.textBoxErrorMessage.Location = new System.Drawing.Point(8, 40);
             this.textBoxErrorMessage.Multiline = true;
             this.textBoxErrorMessage.Name = "textBoxErrorMessage";
             this.textBoxErrorMessage.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxErrorMessage.Size = new System.Drawing.Size(336, 120);
+            this.textBoxErrorMessage.Size = new System.Drawing.Size(340, 0);
             this.textBoxErrorMessage.TabIndex = 4;
             // 
             // TestConnectionForm
             // 
-            this.AutoScaleBaseSize = new System.Drawing.Size(6, 15);
+            this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(356, 46);
             this.ControlBox = false;

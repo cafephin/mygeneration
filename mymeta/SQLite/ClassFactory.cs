@@ -13,11 +13,12 @@ namespace MyMeta.SQLite
 	{
         public static void Register()
         {
-            InternalDriver.Register("SQLITE",
-                new InternalDriver
+            InternalDriver driver = new FileDbDriver
                 (typeof(ClassFactory)
-                , "Data Source=database.db;New=False;Compress=True;Synchronous=Off"
-                , false));
+                , "Data Source=","database.db",";New=False;Compress=True;Synchronous=Off"
+                , "SqlLiteDB (*.db)|*.db|all files (*.*)|*.*");
+            InternalDriver.Register("SQLITE",
+                driver);
         }
         public ClassFactory()
 		{

@@ -32,15 +32,15 @@ namespace MyMeta.Firebird
         public static void Register()
         {
             InternalDriver.Register("FIREBIRD",
-                new MyInternalDriver
+                new FileDbDriver
                 (typeof(ClassFactory)
-                , @"Database=C:\firebird\EMPLOYEE.GDB;User=SYSDBA;Password=wow;Dialect=3;Server=localhost"
-                , false));
+                , @"Database=", @"C:\firebird\EMPLOYEE.GDB", @";User=SYSDBA;Password=wow;Dialect=3;Server=localhost"
+                , "FirebirdDB (*.GDB)|*.GDB|all files (*.*|*.*"));
             InternalDriver.Register("INTERBASE",
-                new MyInternalDriver
+                new FileDbDriver
                 (typeof(ClassFactory)
-                , @"Database=C:\firebird\EMPLOYEE.GDB;User=SYSDBA;Password=wow;Server=localhost"
-                , false));
+                , @"Database=", @"C:\firebird\EMPLOYEE.GDB", @";User=SYSDBA;Password=wow;Server=localhost"
+                , "InterbaseDB (*.GDB)|*.GDB|all files (*.*)|*.*"));
 
         }
         public ClassFactory()

@@ -108,6 +108,7 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Access\ClassFactory.cs">
@@ -248,6 +249,7 @@
     <Compile Include="Columns.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="FileDbDriver.cs" />
     <Compile Include="IMyMetaPluginContext.cs" />
     <Compile Include="IMyMetaPlugin.cs" />
     <Compile Include="Interfaces\IProperty.cs" />
@@ -1304,6 +1306,14 @@
       <Guid>{00000600-0000-0010-8000-00AA006D2EA4}</Guid>
       <VersionMajor>2</VersionMajor>
       <VersionMinor>8</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+    <COMReference Include="MSDASC">
+      <Guid>{2206CEB0-19C1-11D1-89E0-00C04FD7A829}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
       <Lcid>0</Lcid>
       <WrapperTool>tlbimp</WrapperTool>
       <Isolated>False</Isolated>

@@ -194,7 +194,7 @@ namespace MyGeneration
 					break;
 			}
 
-			DefaultSettings settings = DefaultSettings.Instance;
+            DefaultSettings settings = DefaultSettings.Instance;
 			this.TabWidth = settings.Tabs;
 
             if (!string.IsNullOrEmpty(this.FontFamilyOverride))

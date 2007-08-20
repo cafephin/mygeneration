@@ -2,6 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Data;
+using System.Windows.Forms;
+
+using ADODB;
+using MSDASC;
 
 namespace MyMeta
 {
@@ -14,10 +18,11 @@ namespace MyMeta
             this.ConnectString = connString;
         }
 
+
         #region driver properties
         private bool isOleDB;
 
-        private string connectString;
+        private string connectString; // last connect string
 
         private string driverId;
 
@@ -70,7 +75,7 @@ namespace MyMeta
         public bool IsOleDB
         {
             get { return isOleDB; }
-            private set { isOleDB = value; }
+            protected set { isOleDB = value; }
         }
 
         public virtual string GetDataBaseName(IDbConnection con)
@@ -79,6 +84,31 @@ namespace MyMeta
         }
         #endregion
 
+        public virtual string BrowseConnectionString(string connstr)
+        {
+            if (this.IsOleDB)
+                return BrowseOleDbConnectionString(connstr);
+            return null;
+        }
+
+        protected string BrowseOleDbConnectionString(string connstr)
+        {
+            DataLinksClass dl = new MSDASC.DataLinksClass();
+
+            ADODB.Connection conn = new ADODB.ConnectionClass();
+            conn.ConnectionString = connstr;
+
+            object objCn = (object)conn;
+
+            //	dl.PromptNew();
+            if (dl.PromptEdit(ref objCn))
+            {
+                return conn.ConnectionString;
+            }
+            return null;
+        }
+
+        #region driver mapping
         public static InternalDriver Register(string driverId, InternalDriver driver)
         {
             internalDrivers[driverId] = driver;
@@ -95,5 +125,6 @@ namespace MyMeta
                 return result;
             return null;
         }
+        #endregion
     }
 }

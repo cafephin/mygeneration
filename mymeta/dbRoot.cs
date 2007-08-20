@@ -639,9 +639,11 @@ not fully implemented yet
 
                     IMyMetaPlugin plugin;
                     IDbConnection connection = this.GetConnectionFromPlugin(pluginName, _connectionString, out plugin);
-                    connection.Open();
+                    if (connection != null)
+                        connection.Open();
                     dbName = connection.Database;
-                    connection.Close();
+                    if (connection != null)
+                        connection.Close();
                     this._driverString = pluginName;
                     //this.StripTrailingNulls = plugin.StripTrailingNulls;
                     //this.requiredDatabaseName = plugin.RequiredDatabaseName;

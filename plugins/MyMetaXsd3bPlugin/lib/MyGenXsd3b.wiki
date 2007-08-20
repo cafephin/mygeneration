@@ -7,7 +7,7 @@ It uses the RelationalDatastructure of a sql database (ie Microsoft SQL, Oracle,
 There is an online repository with lots of templates available.
 
 Note:
-in XSDFile the the interfaces of "database views" and "stored procedures" are mapped to TableDefinition and FieldDefinition.
+in XSDFile the interfaces of "database views" and "stored procedures" are mapped to TableDefinition and FieldDefinition.
 The following fields are used to define the mapping 
 	* TableDefinition DBTableType
 		* TABLE this is a Database Table
@@ -43,6 +43,13 @@ Paths
 	* XSD3b => Xsd3bPlugin => MyGenXsd3b
 ----
 History of MyGenXsd3b
+	* 20070815 Xsd3b will become a part of the next mygeneration release
+		* Version 0.7.0.8 requires Dl3bak.Xsd3b.dll >= 2.1.0.8
+		* New Added support for "browse for database form" for MyGeneration >= 1.2.0.8
+		* Included uml/xmi-Import-Plugin Dl3bak.Xsd3b.Uml14Xmi12Import.dll
+		* Included xsl-Import-Plugin Dl3bak.Xsd3b.Xslt.dll
+		* Included Mogwai_ERDesignerModel.xdm.xsd3b.xsl
+		* Included DatabaseReport.xsd3b.htm.xsl
 	* 20070710 Fix in MyGeneration\plugins\PluginResultColumns 
 		* Implemented missing parts of MyMeta-s.PluginResultColumns. Now MyGeneration correctly display Stored-Procedures-Resutlculumns when using the MyGenXsd3b provider.
 	* 20070703 Added the MyGenXsd3b Plugin to MyGeneration Subversion Repository 

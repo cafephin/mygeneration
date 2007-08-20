@@ -38,7 +38,7 @@ namespace MyGeneration
 
 			this.ShowHint = DockState.DockRight;
 
-			DefaultSettings settings = DefaultSettings.Instance;
+            DefaultSettings settings = DefaultSettings.Instance;
 			this.UserMetaDataFileName = settings.UserMetaDataFileName;
 		}
 
@@ -282,7 +282,7 @@ namespace MyGeneration
 
 		private void toolBar1_ButtonClick(object sender, System.Windows.Forms.ToolBarButtonClickEventArgs e)
 		{
-			DefaultSettings settings = DefaultSettings.Instance;
+            DefaultSettings settings = DefaultSettings.Instance;
 
 			switch(e.Button.Tag as string)
 			{		
@@ -720,5 +720,5 @@ namespace MyGeneration
         }
 
         #endregion
-    }
+	}
 }

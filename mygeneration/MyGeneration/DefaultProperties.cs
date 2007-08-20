@@ -9,8 +9,8 @@ using System.Windows.Forms;
 using System.Globalization;
 using System.Text;
 
-using ADODB;
-using MSDASC;
+//using ADODB;
+//using MSDASC;
 
 using MyMeta;
 using WeifenLuo.WinFormsUI.Docking;
@@ -24,6 +24,7 @@ namespace MyGeneration
 	{
 		private const string MISSING = "*&?$%";
 
+        #region gui elements
 		private System.Windows.Forms.TabControl tabControl;
 		private System.Windows.Forms.TabPage tabConnection;
 		private System.Windows.Forms.TabPage tabScript;
@@ -62,7 +63,6 @@ namespace MyGeneration
 		private System.Windows.Forms.Label labelOutputPath;
 		private System.Windows.Forms.TextBox textBoxOutputPath;
 
-		private	dbRoot myMeta = new dbRoot();
 		private System.Windows.Forms.TextBox textBoxTimeout;
 		private System.Windows.Forms.Label label9;
 		private System.Windows.Forms.CheckBox checkBoxDisableTimeout;
@@ -90,9 +90,8 @@ namespace MyGeneration
 		private System.Windows.Forms.ComboBox comboBoxSavedConns;
 		private System.Windows.Forms.Label labelUserMetaData;
 		private System.Windows.Forms.GroupBox groupBoxUserMetaData;
-
 		private System.Drawing.Color defaultOleDbButtonColor;
-		private bool haveSettingsChanged = false;
+
         private GroupBox groupBox6;
         private Button buttonFont;
         private TextBox textBoxFont;
@@ -100,11 +99,15 @@ namespace MyGeneration
         private Label label4;
         private ComboBox comboBoxCodePage;
         private FontDialog fontDialog1;
+        #endregion // gui elements
+		// private bool haveSettingsChanged = false; // not used
+
         private string lastLoadedConnection = string.Empty;
         private ToolStrip toolStripOptions;
         private ToolStripButton toolStripButtonSave;
         private ToolStripSeparator toolStripSeparator1;
         private IMyGenerationMDI parent;
+        private dbRoot myMeta = new dbRoot();
 
 		public DefaultProperties(IMyGenerationMDI parent)
 		{
@@ -1173,45 +1176,48 @@ namespace MyGeneration
 		{
 			try
 			{
-				string driver  = string.Empty;
-				string connstr = string.Empty;
+            string driver = string.Empty;
+            string connstr = string.Empty;
 
 				if(null != cboDbDriver.SelectedValue) driver = cboDbDriver.SelectedValue as string;
-				connstr = this.txtConnectionString.Text;
+                    connstr = this.txtConnectionString.Text;
 
 				if(driver == string.Empty)
-				{
-					MessageBox.Show("You Must Choose Driver", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-					return;
-				}
+                {
+                    MessageBox.Show("You Must Choose Driver", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
-				driver = driver.ToUpper();
+                driver = driver.ToUpper();
+                InternalDriver drv = InternalDriver.Get(driver);
+                if (drv != null)
+                {
+                    if (string.Empty == connstr)
+                    {
+                        connstr = (drv != null) ? drv.ConnectString : string.Empty;
+                    }
 
-				if(string.Empty == connstr)
-				{
-                    InternalDriver drv = InternalDriver.Get(settings.DbDriver);
-					connstr = (drv != null) ? drv.ConnectString : string.Empty;
-				}
-
-				DataLinksClass dl = new MSDASC.DataLinksClass();
-
-				ADODB.Connection conn = new ADODB.ConnectionClass();
-				conn.ConnectionString = connstr;
-
-				object objCn = (object) conn;
-
-				//	dl.PromptNew();
-				if(dl.PromptEdit(ref objCn))
-				{
-					dbRoot myMeta = new dbRoot();
-					if(myMeta.Connect(driver, conn.ConnectionString))
-					{
-						this.txtConnectionString.Text = conn.ConnectionString;
-					}
-				}	
-			}
+                    connstr = drv.BrowseConnectionString(connstr);
+                    if (connstr != null)
+                    {
+                        try
+                        {
+                            if (TestConnection(true, driver, connstr))
+                            //dbRoot myMeta = new dbRoot();
+                            //if (myMeta.Connect(driver, connstr))
+                            {
+                                this.txtConnectionString.Text = connstr;
+                                return;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                        }
+                    }
+                }
+            }
 			catch {}
-		}
+        }
 
 		private void btnLanguageFile_Click(object sender, System.EventArgs e)
 		{
@@ -1246,6 +1252,36 @@ namespace MyGeneration
 				this.txtUserMetaDataFile.Text = fileName;
 			}		
 		}
+
+        private bool ConnectionInfoModified()
+        {
+            ConnectionInfo info = settings.SavedConnections[lastLoadedConnection] as ConnectionInfo;
+
+            if ((lastLoadedConnection == string.Empty)
+                || (settings.SavedConnections.ContainsKey(lastLoadedConnection)))
+            {
+                return false;
+            }
+
+            return (info.Driver != this.cboDbDriver.SelectedValue.ToString()) ||
+                                        (info.ConnectionString != this.txtConnectionString.Text) ||
+                                        (info.LanguagePath != this.txtLanguageFile.Text) ||
+                                        (info.Language != this.cboLanguage.Text) ||
+                                        (info.DbTargetPath != this.txtDbTargetFile.Text) ||
+                                        (info.DbTarget != this.cboDbTarget.Text) ||
+                                        (info.UserMetaDataPath != this.txtUserMetaDataFile.Text);
+        }
+
+        private bool SettingsModified()
+        {
+            return (settings.DbDriver != this.cboDbDriver.SelectedValue.ToString()) ||
+                                (settings.ConnectionString != this.txtConnectionString.Text) ||
+                                (settings.LanguageMappingFile != this.txtLanguageFile.Text) ||
+                                (settings.Language != this.cboLanguage.Text) ||
+                                (settings.DbTargetMappingFile != this.txtDbTargetFile.Text) ||
+                                (settings.DbTarget != this.cboDbTarget.Text) ||
+                                (settings.UserMetaDataFileName != this.txtUserMetaDataFile.Text);
+        }
 
 		private void BindControlsToSettings()
 		{
@@ -1365,9 +1401,7 @@ namespace MyGeneration
                     this.btnOleDb.BackColor = System.Drawing.Color.LightBlue;
                 }
 
-                this.txtConnectionString.Text = settings.GetSetting(drv.DriverId);
-                if (this.txtConnectionString.Text == DefaultSettings.MISSING)
-                    this.txtConnectionString.Text = drv.ConnectString;
+                this.txtConnectionString.Text = settings.GetSetting(drv.DriverId, drv.ConnectString);
             }
             else
             {
@@ -1401,20 +1435,8 @@ namespace MyGeneration
 				}
 
 				if (driver.ToUpper() != "NONE") 
-				{ 
-					TestConnectionForm tcf = new TestConnectionForm(driver, connstr, silent);//silent);
-					tcf.ShowDialog(this);
-					if (TestConnectionForm.State == ConnectionTestState.Error) 
-					{
-						//MessageBox.Show("Invalid ConnectionString", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-						return false;
-					}
-					else if(!silent)
-					{
-
-						//MessageBox.Show("Test Connection Successful ", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
-					}
-					tcf = null;
+				{
+                    return TestConnection(silent, driver, connstr);
 				}
 
 				return true;
@@ -1438,6 +1460,24 @@ namespace MyGeneration
 				return false;
 			}	
 		}
+
+        private bool TestConnection(bool silent, string driver, string connstr)
+        {
+            TestConnectionForm tcf = new TestConnectionForm(driver, connstr, silent);//silent);
+            tcf.ShowDialog(this);
+            if (TestConnectionForm.State == ConnectionTestState.Error)
+            {
+                //MessageBox.Show("Invalid ConnectionString", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            else if (!silent)
+            {
+
+                //MessageBox.Show("Test Connection Successful ", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            tcf = null;
+            return true;
+        }
 
 		private void btnBrowse_Click(object sender, System.EventArgs e)
 		{
@@ -1615,55 +1655,37 @@ namespace MyGeneration
 		{
 			if (this.DialogResult == DialogResult.Cancel) 
 			{
-				if ((settings.DbDriver != this.cboDbDriver.SelectedValue.ToString()) ||
-					(settings.ConnectionString != this.txtConnectionString.Text ) ||
-					(settings.LanguageMappingFile != this.txtLanguageFile.Text ) ||
-					(settings.Language != this.cboLanguage.Text ) ||
-					(settings.DbTargetMappingFile != this.txtDbTargetFile.Text ) ||
-					(settings.DbTarget != this.cboDbTarget.Text ) ||
-					(settings.UserMetaDataFileName != this.txtUserMetaDataFile.Text ))
+                if (SettingsModified())
 				{
 					// Something's Changed since the load...
 					DialogResult r = MessageBox.Show("Default settings have changed.\r\n Exit without saving anyway?", "Default Settings Changed", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+					if (r == DialogResult.No) 
+					{                        
+						e.Cancel = true;
+					}
+				}
+				else if (ConnectionInfoModified()) 
+				{
+					// Something's Changed since the load...
+					DialogResult r = MessageBox.Show("The loaded connection profile has changed.\r\n Exit without saving anyway?", "Connection Profile Changed", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
 					if (r == DialogResult.No) 
 					{
 						e.Cancel = true;
 					}
 				}
-				else if (lastLoadedConnection != string.Empty) 
-				{
-					if (settings.SavedConnections.ContainsKey(lastLoadedConnection)) 
-					{
-						ConnectionInfo info = settings.SavedConnections[lastLoadedConnection] as ConnectionInfo;
-
-						if ((info.Driver != this.cboDbDriver.SelectedValue.ToString()) ||
-							(info.ConnectionString != this.txtConnectionString.Text ) ||
-							(info.LanguagePath != this.txtLanguageFile.Text ) ||
-							(info.Language != this.cboLanguage.Text ) ||
-							(info.DbTargetPath != this.txtDbTargetFile.Text ) ||
-							(info.DbTarget != this.cboDbTarget.Text ) ||
-							(info.UserMetaDataPath != this.txtUserMetaDataFile.Text ))
-						{
-							// Something's Changed since the load...
-							DialogResult r = MessageBox.Show("The loaded connection profile has changed.\r\n Exit without saving anyway?", "Connection Profile Changed", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
-							if (r == DialogResult.No) 
-							{
-								e.Cancel = true;
-							}
-						}
-					}
-
-				}
-			}
+			} // if cancel
+            if (!e.Cancel)
+                settings.DiscardChanges();
 		}
 
-		public bool HaveSettingsChanged 
-		{
-			get 
-			{
-				return this.haveSettingsChanged;
-			}
-		}
+        // not used
+        //public bool HaveSettingsChanged 
+        //{
+        //    get 
+        //    {
+        //        return this.haveSettingsChanged;
+        //    }
+        //}
 
         private void buttonFont_Click(object sender, EventArgs e)
         {

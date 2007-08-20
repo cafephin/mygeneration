@@ -294,8 +294,6 @@ databaseName " + databaseName ;
 		xsd3b.GetSchemaDefinitionRow().UseNamedSimpleTypes = bNamedSimpleTypes;
 		xsd3b.GetSchemaDefinitionRow().UseNamedComplexTypes = bNamedComplexTypes;		
 		
-		output.writeln("bNamedSimpleTypes " + bNamedSimpleTypes);
-		
 		output.writeln(xsd3b.GetXmlSchema());
 		
 		output.save(filename, "o"); // is not utf16		

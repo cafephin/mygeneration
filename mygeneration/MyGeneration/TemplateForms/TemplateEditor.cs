@@ -28,7 +28,9 @@ namespace MyGeneration
 		public const int DEFAULT_SAVE_FILE_TYPE_INDEX = 4;
 
 
-        private IMyGenerationMDI mdi; 
+        private IMyGenerationMDI mdi;
+
+        #region gui elements
         private System.Windows.Forms.ToolBar toolBar1;
 		
 		private ZeusScintillaControl scintillaTemplateCode = null;
@@ -127,6 +129,8 @@ namespace MyGeneration
         private System.Windows.Forms.MenuItem menuItem5;
         private MenuItem menuItemFindNext;
 		private ZeusTemplate _template;
+        #endregion
+
 
 		public TemplateEditor(IMyGenerationMDI mdi)
 		{
@@ -1481,8 +1485,7 @@ namespace MyGeneration
 			saveFileDialog.FilterIndex = DEFAULT_SAVE_FILE_TYPE_INDEX;
 			saveFileDialog.RestoreDirectory = true;
 
-			saveFileDialog.FileName = this.FileName;
-
+            saveFileDialog.FileName = GetSaveAsFileName();
 			if(saveFileDialog.ShowDialog() == DialogResult.OK)
 			{
 				myStream = saveFileDialog.OpenFile();
@@ -1495,6 +1498,25 @@ namespace MyGeneration
 			}
 			this.CurrentScintilla.GrabFocus();// = true;
 		}
+
+        private string GetSaveAsFileName()
+        {
+            string fname = this.FileName;
+#if RUN_AS_NON_ADMIN
+
+            DefaultSettings settings = DefaultSettings.Settings;
+
+            string dir = settings.DefaultTemplateDirectory;
+            if (fname.StartsWith(dir))
+                fname = settings.UserTemplateDirectory + fname.Substring(dir.Length);
+
+            dir = Path.GetDirectoryName(fname);
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+                
+#endif
+            return fname;
+        }
 
 		private void _Initialize(string path, params object[] options) 
 		{
@@ -1783,25 +1805,23 @@ namespace MyGeneration
 			{
 				string path = this._template.FilePath + this._template.FileName;
 				FileInfo fi = new FileInfo(path);
-                if (fi.Exists) 
-				{
-                    if (fi.IsReadOnly)
+                if (fi.Exists && fi.IsReadOnly)
+                {
+                    MessageBox.Show(this, "File is read only.");
+                }
+                else
+                {
+                    try
                     {
-                        MessageBox.Show(this, "File is read only.");
+                        _template.Save(path);
+                        SetClean();
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        try
-                        {
-                            _template.Save(path);
-                            SetClean();
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show(this, "Error saving file. " + ex.Message);
-                        }
+                        MessageBox.Show(this, "Error saving file. " + ex.Message);
                     }
-				} 
+
+                }
 			}
 
 		}
@@ -2455,7 +2475,7 @@ namespace MyGeneration
         }
 
         #endregion
-    }
+	}
 
 	/// <summary>
 	/// An item for a listbox that holds a filename

@@ -51,7 +51,7 @@ namespace MyMeta
         string SampleConnectionString { get; }
 
         /// <summary>
-        /// Get a IDbConnection for the database
+        /// Get a IDbConnection for the database that is not opend yet
         /// </summary>
         /// <param name="connectionString"></param>
         /// <returns></returns>
@@ -271,14 +271,25 @@ namespace MyMeta
         */
         DataTable GetForeignKeys(string database, string table);
 
-        /*
-        This is a way to return proprietary meta data specific to the Database engine. 
-        An example would be: 
-            sqlServerPlugin.GetDatabaseSpecificMetaData(userITable, "ExtendedProperties");
-        
-        The myMetaObject match a specific MyMeta object of a type like IColumn, ITable, IView, IProcedure, etc.
-        The key is something that describes the kind of meta data requested.
-        */
+        /// <summary>
+        /// since MyGeneration 1.2.0.7
+        /// This is a way to return proprietary meta data specific to the Database engine. 
+        /// An example would be: 
+        ///     sqlServerPlugin.GetDatabaseSpecificMetaData(userITable, "ExtendedProperties");
+        /// 
+        /// The myMetaObject match a specific MyMeta object of a type like IColumn, ITable, IView, IProcedure, etc.
+        /// The key is something that describes the kind of meta data requested.
+        ///  
+        /// special keys (since MyGeneration 1.2.0.8)
+        /// 
+        /// GetDatabaseSpecificMetaData(null,"CanBrowseDatabase")
+        ///     - if not null the plugin supports Browse for Database
+        /// 
+        /// GetDatabaseSpecificMetaData(null,"BrowseDatabase")
+        ///     - Asks the plugin to display a dialog to browse for the database
+        ///     - returns a new connectionstring or null
+        /// 
+        /// </summary>
         object GetDatabaseSpecificMetaData(object myMetaObject, string key);
     }
 }

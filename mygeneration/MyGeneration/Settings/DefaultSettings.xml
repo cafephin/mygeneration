@@ -2,28 +2,13 @@
 <DefaultSettings Version="0.9.41.0" FirstTime="false">
   <Setting Name="DbDriver" value="FIREBIRD" />
   <Setting Name="ConnectionString" value="Database=C:\firebird\EMPLOYEE.GDB;User=SYSDBA;Password=MyGen;Dialect=3;Server=localhost&quot;;" />
-  <Setting Name="DbTargetMappingFile" value="C:\Program Files\MyGeneration\Settings\DbTargets.xml" />
-  <Setting Name="LanguageMappingFile" value="C:\Program Files\MyGeneration\Settings\Languages.xml" />
-  <Setting Name="UserMetaDataFileName" value="C:\Program Files\MyGeneration\Settings\UserMetaData.xml" />
   <Setting Name="Language" value="C#" />
   <Setting Name="DbTarget" value="FirebirdSQL" />
   <Setting Name="EnableLineNumbering" value="False" />
   <Setting Name="EnableClipboard" value="True" />
   <Setting Name="Tabs" value="4" />
   <Setting Name="ScriptTimeout" value="-1" />
-  <Setting Name="CheckForNewBuild" value="True" />
-  <Setting Name="DefaultTemplateDirectory" value="C:\Program Files\MyGeneration\Templates\" />
-  <Setting Name="DefaultOutputDirectory" value="C:\Program Files\MyGeneration\GeneratedCode\" />
-  <Setting Name="UseProxyServer" value="False" />
-  <Setting Name="ProxyServerUri" value="" />
-  <Setting Name="ProxyAuthUsername" value="" />
-  <Setting Name="ProxyAuthPassword" value="" />
-  <Setting Name="ProxyAuthDomain" value="" />
-  <Setting Name="WindowState" value="Maximized" />
-  <Setting Name="WindowPosTop" value="-4" />
-  <Setting Name="WindowPosLeft" value="-4" />
-  <Setting Name="WindowPosWidth" value="1288" />
-  <Setting Name="WindowPosHeight" value="998" />
+  <Setting Name="CheckForNewBuild" value="False" />
   <SavedSettings 
 	name="My Connection" 
 	driver="FIREBIRD" 

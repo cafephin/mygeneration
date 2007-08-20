@@ -8,6 +8,8 @@ using Dl3bak.Data.OleDB;
 using MyMeta.Plugins.Xsd3b;
 using System.Data.OleDb;
 using System.Reflection;
+using System.Windows.Forms;
+using Dl3bak.Data.Xsd3b.Plugin;
 
 namespace MyMeta.Plugins
 {
@@ -650,8 +652,7 @@ perspective: with the Xsd3b plugin you can use MyGeneration without the need to 
                 if (myConnection == null)
                 {
                     this.myConnection = new Xsd3bConnection();
-                    this.myConnection.ConnectionString = this.context.ConnectionString;
-                    this.myConnection.Open();
+                    this.myConnection.ConnectionString = this.context.ConnectionString;                    
                 }
 
                 return myConnection;
@@ -721,6 +722,40 @@ perspective: with the Xsd3b plugin you can use MyGeneration without the need to 
         /// <returns></returns>
         public object GetDatabaseSpecificMetaData(object myMetaObject, string key)
         {
+            if (string.Compare("CanBrowseDatabase", key, true) == 0)
+                return Dl3bak.Data.Xsd3b.Plugin.PlugInSupport.GetPluginDescripton();
+            if (string.Compare("BrowseDatabase", key, true) == 0)
+                return this.browseDatabase();
+
+            return null;
+        }
+
+        private static OpenFileDialog dlg = null;
+        private object browseDatabase()
+        {
+            if (dlg == null)
+            {
+                dlg = new OpenFileDialog();
+                dlg.CheckFileExists = true;
+                dlg.CheckPathExists = true;
+                dlg.DereferenceLinks = true;
+                dlg.Filter = ""
+                    + "Extendet Schema (*.xsd3b;*.xsd3b.xml)|*.xsd3b;*.xsd3b.xml|"
+                    + PlugInSupport.GetSupportedImportFileTypes()
+                    + "All files (*.*)|*.*";
+                dlg.AddExtension = true;
+                dlg.ValidateNames = true;
+                dlg.SupportMultiDottedExtensions = true;
+
+            }
+            dlg.FileName = MyConnection.ConnectionString;
+            // dlg.FilterIndex = filterIndexLoad + DLG_INDEX_OFFSET;
+
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                return dlg.FileName;
+            }
+
             return null;
         }
 
