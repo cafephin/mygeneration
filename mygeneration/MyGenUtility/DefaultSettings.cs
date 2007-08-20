@@ -50,14 +50,14 @@ namespace MyGeneration
 
         // k3b: there is only one setting for all modules (sigelton) 
         // reason: improved loading speed, no risk to work with outdated data
-        private static DefaultSettings theSettings;
+        private static DefaultSettings instance;
         public static DefaultSettings Instance
         {
             get 
             {
-                if (theSettings == null)
-                    theSettings = new DefaultSettings();
-                return theSettings; 
+                if (instance == null)
+                    instance = new DefaultSettings();
+                return instance; 
             }
         }
         public void DiscardChanges()

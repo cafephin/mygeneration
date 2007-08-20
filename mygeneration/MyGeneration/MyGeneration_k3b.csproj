@@ -200,7 +200,6 @@
     <Compile Include="GridLayoutHelper.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IMyGenerationMDI.cs" />
     <Compile Include="MDIParent.cs">
       <SubType>Form</SubType>
     </Compile>

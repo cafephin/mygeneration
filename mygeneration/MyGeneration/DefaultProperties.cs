@@ -1210,7 +1210,7 @@ namespace MyGeneration
                                 return;
                             }
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                         }
                     }
