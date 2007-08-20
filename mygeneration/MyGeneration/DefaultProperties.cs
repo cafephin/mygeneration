@@ -29,6 +29,8 @@ namespace MyGeneration
 		private System.Windows.Forms.TabPage tabConnection;
 		private System.Windows.Forms.TabPage tabScript;
         private OpenFileDialog openFileDialog = new OpenFileDialog();
+		private System.Windows.Forms.Button btnOK;
+		private System.Windows.Forms.Button btnCancel;
 		private System.Windows.Forms.Button btnUserMetaDataFile;
 		private System.Windows.Forms.TextBox txtUserMetaDataFile;
 		private System.Windows.Forms.GroupBox groupBox1;
@@ -388,6 +390,8 @@ namespace MyGeneration
             this.toolStripButtonSave = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
+            this.btnOK = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
             this.tabControl.SuspendLayout();
             this.tabConnection.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -1128,11 +1132,36 @@ namespace MyGeneration
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
+            // btnOK
+            // 
+            this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnOK.Location = new System.Drawing.Point(424, 528);
+            this.btnOK.Name = "btnOK";
+            this.btnOK.Size = new System.Drawing.Size(75, 23);
+            this.btnOK.TabIndex = 1;
+            this.btnOK.Text = "OK";
+            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancel.Location = new System.Drawing.Point(514, 528);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.TabIndex = 2;
+            this.btnCancel.Text = "&Cancel";
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
             // DefaultProperties
             // 
+            this.AcceptButton = this.btnOK;
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-            this.ClientSize = new System.Drawing.Size(614, 534);
+            this.CancelButton = this.btnCancel;
+            this.ClientSize = new System.Drawing.Size(706, 560);
             this.Controls.Add(this.toolStripOptions);
+            this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.btnOK);
             this.Controls.Add(this.tabControl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -1251,6 +1280,23 @@ namespace MyGeneration
 			{
 				this.txtUserMetaDataFile.Text = fileName;
 			}		
+		}
+
+		private void btnCancel_Click(object sender, System.EventArgs e)
+		{
+			this.DialogResult = DialogResult.Cancel;
+		}
+
+		private void btnOK_Click(object sender, System.EventArgs e)
+		{
+			if(this.TestConnection(true))
+			{
+				BindControlsToSettings();
+
+				settings.Save();
+
+				this.DialogResult = DialogResult.OK;
+			}
 		}
 
         private bool ConnectionInfoModified()
