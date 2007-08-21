@@ -155,6 +155,7 @@ namespace MyGeneration
         /// <param name="args"></param>
         public MDIParent(string startupPath, params string[] args)
         {
+            TheParent = this;
             DefaultSettings settings = DefaultSettings.Instance;
             languageMappings = new LanguageMappings(this);
             dbTargetMappings = new DbTargetMappings(this);

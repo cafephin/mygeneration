@@ -34,6 +34,16 @@ namespace MyMeta.Plugins
     /// </summary>
     public class Xsd3bProvider : IMyMetaPlugin
     {
+#if PLUGINS_FROM_SUBDIRS
+        static Xsd3bProvider()
+        {
+            string mainPath = System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            string dllPath = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            if (mainPath != dllPath)
+                AppDomain.CurrentDomain.AppendPrivatePath(dllPath);
+
+        }
+#endif
         #region IMyMetaPlugin Interface
 
         #region context information

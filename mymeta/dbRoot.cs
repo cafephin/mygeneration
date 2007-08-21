@@ -1,5 +1,6 @@
 // #define IGNORE_VISTA // if defined in csproj compile without VISTADB
 // #define ENTERPRISE // if defined in csproj create com component
+// #define PLUGINS_FROM_SUBDIRS  if defined Plugins can also live in subdirectories of the MyMeta-bin-di
 
 using System;
 using System.Text;
@@ -882,7 +883,13 @@ not fully implemented yet
                     {
                     	StringBuilder fileNames = new StringBuilder();
                     	Exception err = null;
+
+#if PLUGINS_FROM_SUBDIRS
+                        // k3b allow plugins to be in its own directory
+                        foreach (FileInfo dllFile in info.Directory.GetFiles("MyMeta.Plugins.*.dll",SearchOption.AllDirectories))
+#else                        
                         foreach (FileInfo dllFile in info.Directory.GetFiles("MyMeta.Plugins.*.dll"))
+#endif                        
                         {
                         	try
                         	{
@@ -909,8 +916,13 @@ not fully implemented yet
         
 		private static void loadPlugin(string filename, Hashtable plugins)
 		{
-			// MyMeta.Plugins.
-			Assembly assembly = Assembly.LoadFile(filename);
+#if PLUGINS_FROM_SUBDIRS
+            if (System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) != System.IO.Path.GetDirectoryName(filename))
+                AppDomain.CurrentDomain.AppendPrivatePath(System.IO.Path.GetDirectoryName(filename));
+#endif
+            Assembly assembly = Assembly.LoadFile(filename);
+
+            assembly.ModuleResolve += new ModuleResolveEventHandler(assembly_ModuleResolve);
 			foreach (Type type in assembly.GetTypes())
 			{
 			    Type[] interfaces = type.GetInterfaces();
@@ -924,16 +936,31 @@ not fully implemented yet
 			                ConstructorInfo constructor = constructors[0];
 			
 			                IMyMetaPlugin plugin = constructor.Invoke(BindingFlags.CreateInstance, null, new object[] { }, null) as IMyMetaPlugin;
-			                plugins[plugin.ProviderUniqueKey] = plugin;
                             InternalDriver.Register(plugin.ProviderUniqueKey,
                                                     new PluginDriver(plugin));
 
-			            }
-			            catch {}
+                            plugins[plugin.ProviderUniqueKey] = plugin; // after register because if exception in register, donot remeber plugin
+                        }
+			            catch (Exception ex) 
+                        {
+                            System.Diagnostics.Trace.WriteLine("Cannot load plugin " + filename);
+                            while (ex != null)
+                            {
+                                System.Diagnostics.Trace.WriteLine(ex.Message);
+                                System.Diagnostics.Trace.WriteLine(ex.StackTrace);
+                                ex = ex.InnerException;
+                            }
+                        }
 			        }
 			    }
 			}
 		}
+
+        static Module assembly_ModuleResolve(object sender, ResolveEventArgs e)
+        {
+            // throw new Exception("The method or operation is not implemented.");
+            return null;
+        }
         
         #endregion
         
