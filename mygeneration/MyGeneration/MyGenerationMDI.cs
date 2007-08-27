@@ -299,16 +299,17 @@ namespace MyGeneration
 
         private void dockPanel_ActiveContentChanged(object sender, EventArgs e)
         {
-            ToolStripManager.RevertMerge(toolStrip1);
-
+            
             IDockContent fe = this.dockPanel.ActiveContent as IDockContent;
             if (fe is IEditControl)
             {
-                this.FindDialog.Close();
-                this.ReplaceDialog.Close();
+                ToolStripManager.RevertMerge(toolStrip1);
+                //this.FindDialog.Close();
+                //this.ReplaceDialog.Close();
             }
             else if (fe is IMyGenDocument)
             {
+                ToolStripManager.RevertMerge(toolStrip1);
                 IMyGenDocument mgd = fe as IMyGenDocument;
                 if (mgd.ToolStrip != null)
                 {

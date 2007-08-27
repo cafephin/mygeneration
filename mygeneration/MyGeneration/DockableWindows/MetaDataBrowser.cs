@@ -344,20 +344,20 @@ namespace MyGeneration
 			DefaultSettings settings = DefaultSettings.Instance;
 			this.Setup(settings);
 
-            if (this.mdi is MyGenerationMDI)
-            {
+            //if (this.mdi is MyGenerationMDI)
+            //{
                 MyGenerationMDI p = mdi as MyGenerationMDI;
                 this.MetaData = p.MetaPropertiesDockContent;
                 this.UserData = p.UserMetaDataDockContent;
                 this.GlobalUserData = p.GlobalUserMetaDataDockContent;
-            }
-            else
-            {
-                MDIParent p = mdi as MDIParent;
-                this.MetaData = p.MetaDataWindow;
-                this.UserData = p.UserMetaWindow;
-                this.GlobalUserData = p.GlobalUserMetaWindow;
-            }
+           // }
+           // else
+           // {
+            //    MDIParent p = mdi as MDIParent;
+            //    this.MetaData = p.MetaDataWindow;
+           //     this.UserData = p.UserMetaWindow;
+           //     this.GlobalUserData = p.GlobalUserMetaWindow;
+           // }
 			MyTree.Scrollable = true;
 		}
 #if !DEBUG
@@ -415,11 +415,10 @@ namespace MyGeneration
 			this.InitializeTree(myMeta, error);
 		}
 
-		private void menuItemClose_Click(object sender, System.EventArgs e)
+		/*private void menuItemClose_Click(object sender, System.EventArgs e)
 		{
-			this.MdiParent.RemoveOwnedForm(this);
 			this.Close();
-		}
+		}*/
 
 		private void toolBar1_ButtonClick(object sender, System.Windows.Forms.ToolBarButtonClickEventArgs e)
 		{
