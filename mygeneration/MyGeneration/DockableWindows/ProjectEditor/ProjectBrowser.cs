@@ -1037,10 +1037,6 @@ namespace MyGeneration
             get { throw new Exception("The method or operation is not implemented."); }
         }
 
-        #endregion
-
-        #region IMyGenContent Members
-
         public ToolStrip ToolStrip
         {
             get { return null; }
@@ -1049,6 +1045,11 @@ namespace MyGeneration
         public void Alert(IMyGenContent sender, string command, params object[] args)
         {
             //
+        }
+
+        public DockContent DockContent
+        {
+            get { return this; }
         }
 
         #endregion

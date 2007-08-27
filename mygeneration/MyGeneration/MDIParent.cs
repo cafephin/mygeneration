@@ -9,6 +9,8 @@ using System.Threading;
 using System.Diagnostics;
 using System.Net;
 using Microsoft.Win32;
+using System.Reflection;
+using System.Runtime.InteropServices;
 
 using WeifenLuo.WinFormsUI.Docking;
 
@@ -18,8 +20,6 @@ using Zeus.Templates;
 using Zeus.ErrorHandling;
 using Zeus.UserInterface;
 using Zeus.UserInterface.WinForms;
-using System.Reflection;
-using System.Runtime.InteropServices;
 using Scintilla;
 using Scintilla.Forms;
 using Scintilla.Configuration;
@@ -216,6 +216,7 @@ namespace MyGeneration
             if (configFile != null)
             {
                 configureDelegate = configFile.MasterScintilla.Configure;
+                ZeusScintillaControl.StaticConfigure = configureDelegate;
             }
 
             this.IsMdiContainer = true;
@@ -852,96 +853,14 @@ namespace MyGeneration
             }
         }
 
-        #region Browser launch code
-        public static void LaunchBrowser(string url) 
-        {
-            try
-            {
-                Process p = new Process();
-                p.StartInfo.FileName = DefaultBrowser;
-                p.StartInfo.Arguments = url;
-                p.Start();
-            }
-            catch
-            {
-                System.Diagnostics.Process.Start(url);
-            }
-        }
-        public static void LaunchBrowser(string url, ProcessWindowStyle windowStyle, bool createNoWindow)
-        {
-            try
-            {
-                try
-                {
-                    Process p = new Process();
-                    p.StartInfo.FileName = DefaultBrowser;
-                    p.StartInfo.Arguments = url;
-                    p.StartInfo.CreateNoWindow = createNoWindow;
-                    p.StartInfo.WindowStyle = windowStyle;
-                    p.Start();
-                }
-                catch { }
-            }
-            catch
-            {
-                try
-                {
-                    Process p = new Process();
-                    p.StartInfo.FileName = url;
-                    p.StartInfo.CreateNoWindow = createNoWindow;
-                    p.StartInfo.WindowStyle = windowStyle;
-                    p.Start();
-                }
-                catch { }
-            }
-        }
-
-        private static string s_browser = string.Empty;
-
-        private static string DefaultBrowser
-        {
-            get
-            {
-                if (s_browser == string.Empty)
-                {
-                    s_browser = getDefaultBrowser();
-                }
-                return s_browser;
-            }
-        }
-
-        private static string getDefaultBrowser()
-        {
-            string browser = string.Empty;
-            RegistryKey key = null;
-            try
-            {
-                key = Registry.ClassesRoot.OpenSubKey(@"HTTP\shell\open\command", false);
-
-                //trim off quotes
-                browser = key.GetValue(null).ToString().ToLower().Replace("\"", "");
-                if (!browser.EndsWith("exe"))
-                {
-                    //get rid of everything after the ".exe"
-                    browser = browser.Substring(0, browser.LastIndexOf(".exe") + 4);
-                }
-            }
-            finally
-            {
-                if (key != null) key.Close();
-            }
-            return browser;
-        }
-        #endregion
-
         private void menuItemWebSite_Click(object sender, System.EventArgs e)
         {
-            MDIParent.LaunchBrowser(URL_HOMEPAGE);
+            Program.LaunchBrowser(URL_HOMEPAGE);
         }
 
         private void menuItemDocs_Click(object sender, System.EventArgs e)
         {
-            MDIParent.LaunchBrowser(URL_DOCUMENTATION);
+            Program.LaunchBrowser(URL_DOCUMENTATION);
         }
 
         private void menuItemMyMetaHelp_Click(object sender, System.EventArgs e)
@@ -1744,7 +1663,7 @@ namespace MyGeneration
         {
             try
             {
-                MDIParent.LaunchBrowser(URL_LATESTVERSION, ProcessWindowStyle.Minimized, true);
+                Program.LaunchBrowser(URL_LATESTVERSION, ProcessWindowStyle.Minimized, true);
                 /*Process myProcess = new Process();
 
                 myProcess.StartInfo.FileName = URL_LATESTVERSION;
@@ -2153,5 +2072,29 @@ namespace MyGeneration
             catch { }
 #endif
         }
+
+        #region IMyGenerationMDI Members
+
+        public void OpenDocuments(params string[] filenames)
+        {
+            //
+        }
+
+        public void CreateDocument(params string[] args)
+        {
+            //
+        }
+
+        public bool IsDocumentOpen(string text, params IMyGenDocument[] docsToExclude)
+        {
+            return false;
+        }
+
+        public IMyGenDocument FindDocument(string text, params IMyGenDocument[] docsToExclude)
+        {
+            return null;
+        }
+
+        #endregion
     }
 }

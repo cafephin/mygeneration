@@ -36,19 +36,21 @@ namespace MyGeneration
         private int _codePageOverride = DEFAULT_CODE_PAGE;
 
 		private static string LastSearchTextStatic = string.Empty;
-		private static bool LastSearchIsCaseSensitiveStatic = true;
-		private static bool LastSearchIsRegexStatic = false;
+        private static bool LastSearchIsCaseSensitiveStatic = true;
+        private static bool LastSearchIsRegexStatic = false;
         private Hashtable ignoredKeys = new Hashtable();
         
         public static FindForm FindDialog = new FindForm();
         public static ReplaceForm ReplaceDialog = new ReplaceForm();
+        public static ScintillaConfigureDelegate StaticConfigure = null;
 
 		public ZeusScintillaControl() : base() 
 		{
             Scintilla.Forms.SearchHelper.Translations.MessageBoxTitle = "MyGeneration";
             this.SmartIndentType = SmartIndent.Simple;
             this.GotFocus += new EventHandler(ZeusScintillaControl_GotFocus);
-            this.Configure = MDIParent.ScintillaConfigFile.MasterScintilla.Configure;
+
+            this.Configure = StaticConfigure;
         }
 
         void ZeusScintillaControl_GotFocus(object sender, EventArgs e)

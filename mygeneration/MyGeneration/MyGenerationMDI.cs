@@ -51,6 +51,9 @@ namespace MyGeneration
         private DefaultProperties options;
         private TemplateBrowser templateBrowser;
 
+        private Dictionary<string, IEditorManager> editorManagers = new Dictionary<string,IEditorManager>();
+
+        private string openFileDialogString = "All files (*.*)|*.*";
         private string startupPath;
         private string[] startupFiles;
 
@@ -65,10 +68,48 @@ namespace MyGeneration
 
             InitializeComponent();
 
-            this.IsMdiContainer = true;
+            //this.IsMdiContainer = true;
             //this.MdiChildActivate += new EventHandler(this.MDIChildActivated);
 
             startupFiles = args;
+
+            // Open File Dialog Setup
+            StringBuilder dialogString = new StringBuilder();
+            IEditorManager editorManager = new TemplateEditorManager();
+            if (editorManager.FileExtensions.Count > 0)
+            {
+                dialogString.Append("All MyGeneration Files (");
+                StringBuilder exts = new StringBuilder();
+                foreach (string ext in editorManager.FileExtensions.Keys)
+                {
+                    if (exts.Length == 0)
+                        exts.AppendFormat("*.{0}", ext);
+                    else
+                        exts.AppendFormat(";*.{0}", ext);
+                }
+                dialogString.Append(exts).Append(")|").Append(exts).Append("|");
+
+                foreach (string ext in editorManager.FileExtensions.Keys)
+                    dialogString.AppendFormat("{0} (*.{1})|*.{1}|", editorManager.FileExtensions[ext], ext);
+            }
+            dialogString.Append("All files (*.*)|*.*");
+
+            openFileDialogString = dialogString.ToString();
+            editorManagers[editorManager.Name] = editorManager;
+
+            // New File Menu Setup
+            foreach (string ftype in editorManager.FileTypes)
+            {
+                ToolStripMenuItem i = new ToolStripMenuItem(ftype, null, newFileDynamicToolStripMenuItem_Click);
+                this.newToolStripMenuItem.DropDownItems.Add(i);
+
+                ToolStripMenuItem ti = new ToolStripMenuItem(ftype, null, newFileDynamicToolStripMenuItem_Click);
+                toolStripDropDownButtonNew.DropDownItems.Add(ti);
+            }
+
+            //editorManager = new ProjectBrowser();
+            //openFileDialogString = editorManager.OpenFileDialogString + openFileDialogString;
+            //editorManagers[editorManager.Name] = editorManager;
 
             this.RefreshRecentFiles();
         }
@@ -133,7 +174,8 @@ namespace MyGeneration
             #endregion
             if (configFile != null)
             {
-                configureDelegate = configFile.MasterScintilla.Configure;
+                configureDelegate = configFile.MasterScintilla.Configure; 
+                ZeusScintillaControl.StaticConfigure = configureDelegate;
             }
 
             // Dock Content configuration
@@ -158,12 +200,79 @@ namespace MyGeneration
             }
         }
 
-        private void CreateDocument(params string[] args)
+        private void PickFiles()
         {
+            DefaultSettings settings = DefaultSettings.Instance;
+
+            Stream myStream;
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.InitialDirectory = Directory.GetCurrentDirectory();
+            openFileDialog.Filter = this.openFileDialogString;
+            openFileDialog.RestoreDirectory = true;
+            openFileDialog.Multiselect = true;
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                this.OpenDocuments(openFileDialog.FileNames);
+            }
         }
 
-        private void OpenDocuments(params string[] filename)
+        public void CreateDocument(params string[] args)
         {
+            if (args.Length == 1)
+            {
+                foreach (IEditorManager manager in this.editorManagers.Values)
+                {
+                    if (manager.FileTypes.Contains(args[0]))
+                    {
+                        IMyGenDocument mygenDoc = manager.Create(this, args);
+                        if (mygenDoc != null)
+                        {
+                            mygenDoc.DockContent.Show(dockPanel);
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+        public void OpenDocuments(params string[] filenames)
+        {
+            foreach (string file in filenames)
+            {
+                FileInfo info = new FileInfo(file);
+                
+                if (info.Exists)
+                {
+                    if (this.IsDocumentOpen(info.FullName))
+                    {
+                        this.FindDocument(info.FullName).DockContent.Activate();
+                    }
+                    else
+                    {
+                        bool isOpened = false;
+                        foreach (IEditorManager manager in this.editorManagers.Values)
+                        {
+                            if (manager.CanOpenFile(info))
+                            {
+                                IMyGenDocument mygenDoc = manager.Open(this, info);
+                                if (mygenDoc != null)
+                                {
+                                    isOpened = true;
+                                    mygenDoc.DockContent.Show(dockPanel);
+                                    this.AddRecentFile(info.FullName);
+                                }
+                                break;
+                            }
+                        }
+
+                        if (!isOpened)
+                        {
+                            MessageBox.Show(this, string.Format("Unknown file type in file {0}", info.Name), "Unknown file type");
+                        }
+                    }
+                }
+            }
         }
 
         private IDockContent GetContentFromPersistString(string persistString)
@@ -265,27 +374,65 @@ namespace MyGeneration
         }
 
         #region DockManager Helper Methods
-        private IDockContent FindDocument(string text)
+        public bool IsDocumentOpen(string text, params IMyGenDocument[] docsToExclude)
         {
+            IMyGenDocument doc = this.FindDocument(text, docsToExclude);
+            return (doc != null);
+        }
+
+        public IMyGenDocument FindDocument(string text, params IMyGenDocument[] docsToExclude)
+        {
+            IMyGenDocument found = null;
             if (dockPanel.DocumentStyle == DocumentStyle.SystemMdi)
             {
                 foreach (Form form in MdiChildren)
-                    if (form.Text == text)
-                        return form as IDockContent;
-
-                return null;
+                {
+                    if (form is IMyGenDocument)
+                    {
+                        IMyGenDocument doc = form as IMyGenDocument;
+                        if (doc.DocumentIndentity == text)
+                        {
+                            foreach (IMyGenDocument exclude in docsToExclude)
+                            {
+                                if (exclude == doc) doc = null;
+                            }
+                            if (doc != null)
+                            {
+                                found = doc;
+                                break;
+                            }
+                        }
+                    }
+                }
             }
             else
             {
                 foreach (IDockContent content in dockPanel.Documents)
-                    if (content.DockHandler.TabText == text)
-                        return content;
-
-                return null;
+                {
+                    if (content is IMyGenDocument)
+                    {
+                        IMyGenDocument doc = content as IMyGenDocument;
+                        if (doc.DocumentIndentity == text)
+                        {
+                            foreach (IMyGenDocument exclude in docsToExclude)
+                            {
+                                if (exclude == doc) doc = null;
+                            }
+                            if (doc != null)
+                            {
+                                found = doc;
+                                break;
+                            }
+                        }
+                    }
+                }
             }
+
+            return found;
         }
         #endregion
-/*
+
+        /*
         #region Template Editor members
         public enum TemplateKeyType 
         {
@@ -428,7 +575,13 @@ namespace MyGeneration
         #region Menu Events
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenDocuments();
+            PickFiles();
+        }
+
+        private void newFileDynamicToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem i = sender as ToolStripMenuItem;
+            this.CreateDocument(i.Text);
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -469,7 +622,14 @@ namespace MyGeneration
 
         private void defaultSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            if (this.OptionsDockContent.IsHidden)
+            {
+                this.OptionsDockContent.Show(this.dockPanel);
+            }
+            else
+            {
+                this.OptionsDockContent.Activate();
+            }
         }
 
         private void contentsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -545,6 +705,11 @@ namespace MyGeneration
             {
                 this.MetaPropertiesDockContent.Hide();
             }
+        }
+
+        private void toolStripButtonOpen_Click(object sender, EventArgs e)
+        {
+            PickFiles();
         }
         #endregion
 
@@ -727,7 +892,45 @@ namespace MyGeneration
             get { return dockPanel;  }
         }
 
-       /* public SciTEProperties Properties
+        private void docItemToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem i = sender as ToolStripMenuItem;
+            if (i != null)
+            {
+                IMyGenDocument mgd = this.FindDocument(i.Tag.ToString());
+                mgd.DockContent.Activate();
+            }
+        }
+
+        private void windowToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
+        {
+            windowToolStripMenuItem.DropDownItems.Clear();
+            foreach (DockContent doc in this.dockPanel.Contents)
+            {
+                if (doc is IMyGenDocument)
+                {
+                    IMyGenDocument mgd = doc as IMyGenDocument;
+                    if (!doc.IsHidden)
+                    {
+
+                        ToolStripMenuItem i = new ToolStripMenuItem(doc.Text, null, docItemToolStripMenuItem_Click);
+                        i.Tag = mgd.DocumentIndentity;
+                        if (doc.IsActivated) i.Checked = true;
+                        windowToolStripMenuItem.DropDownItems.Add(i);
+                    }
+                }
+            }
+                if (windowToolStripMenuItem.DropDownItems.Count == 0) {
+                }
+
+        }
+
+        private void dockPanel_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        /*public SciTEProperties Properties
         {
             get { return properties; }
         }*/

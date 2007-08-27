@@ -633,6 +633,11 @@ namespace MyGeneration
             throw new Exception("The method or operation is not implemented.");
         }
 
+        public DockContent DockContent
+        {
+            get { return this; }
+        }
+
         #endregion
     }
 }

@@ -29,8 +29,6 @@ namespace MyGeneration
 		private System.Windows.Forms.TabPage tabConnection;
 		private System.Windows.Forms.TabPage tabScript;
         private OpenFileDialog openFileDialog = new OpenFileDialog();
-		private System.Windows.Forms.Button btnOK;
-		private System.Windows.Forms.Button btnCancel;
 		private System.Windows.Forms.Button btnUserMetaDataFile;
 		private System.Windows.Forms.TextBox txtUserMetaDataFile;
 		private System.Windows.Forms.GroupBox groupBox1;
@@ -390,8 +388,6 @@ namespace MyGeneration
             this.toolStripButtonSave = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
-            this.btnOK = new System.Windows.Forms.Button();
-            this.btnCancel = new System.Windows.Forms.Button();
             this.tabControl.SuspendLayout();
             this.tabConnection.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -415,12 +411,12 @@ namespace MyGeneration
             this.tabControl.Controls.Add(this.tabConnection);
             this.tabControl.Controls.Add(this.tabScript);
             this.tabControl.Controls.Add(this.tabMisc);
-            this.tabControl.Location = new System.Drawing.Point(0, 12);
+            this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.MinimumSize = new System.Drawing.Size(595, 498);
             this.tabControl.Name = "tabControl";
             this.tabControl.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(612, 520);
+            this.tabControl.Size = new System.Drawing.Size(706, 561);
             this.tabControl.TabIndex = 0;
             // 
             // tabConnection
@@ -433,7 +429,7 @@ namespace MyGeneration
             this.tabConnection.Location = new System.Drawing.Point(4, 22);
             this.tabConnection.Name = "tabConnection";
             this.tabConnection.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.tabConnection.Size = new System.Drawing.Size(604, 494);
+            this.tabConnection.Size = new System.Drawing.Size(698, 535);
             this.tabConnection.TabIndex = 0;
             this.tabConnection.Text = "Connection";
             // 
@@ -448,7 +444,7 @@ namespace MyGeneration
             this.groupBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox5.Location = new System.Drawing.Point(16, 16);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(569, 64);
+            this.groupBox5.Size = new System.Drawing.Size(663, 64);
             this.groupBox5.TabIndex = 32;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Saved Connections";
@@ -459,7 +455,7 @@ namespace MyGeneration
             this.buttonDelete.BackColor = System.Drawing.SystemColors.Control;
             this.buttonDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonDelete.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.buttonDelete.Location = new System.Drawing.Point(510, 24);
+            this.buttonDelete.Location = new System.Drawing.Point(604, 24);
             this.buttonDelete.Name = "buttonDelete";
             this.buttonDelete.Size = new System.Drawing.Size(48, 23);
             this.buttonDelete.TabIndex = 35;
@@ -473,7 +469,7 @@ namespace MyGeneration
             this.buttonLoad.BackColor = System.Drawing.SystemColors.Control;
             this.buttonLoad.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonLoad.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.buttonLoad.Location = new System.Drawing.Point(390, 24);
+            this.buttonLoad.Location = new System.Drawing.Point(484, 24);
             this.buttonLoad.Name = "buttonLoad";
             this.buttonLoad.Size = new System.Drawing.Size(56, 23);
             this.buttonLoad.TabIndex = 34;
@@ -487,7 +483,7 @@ namespace MyGeneration
             this.buttonSave.BackColor = System.Drawing.SystemColors.Control;
             this.buttonSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonSave.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.buttonSave.Location = new System.Drawing.Point(454, 24);
+            this.buttonSave.Location = new System.Drawing.Point(548, 24);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(48, 23);
             this.buttonSave.TabIndex = 33;
@@ -504,7 +500,7 @@ namespace MyGeneration
             this.comboBoxSavedConns.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.comboBoxSavedConns.Location = new System.Drawing.Point(8, 24);
             this.comboBoxSavedConns.Name = "comboBoxSavedConns";
-            this.comboBoxSavedConns.Size = new System.Drawing.Size(374, 21);
+            this.comboBoxSavedConns.Size = new System.Drawing.Size(468, 21);
             this.comboBoxSavedConns.TabIndex = 32;
             // 
             // groupBox2
@@ -519,7 +515,7 @@ namespace MyGeneration
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(16, 304);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(569, 88);
+            this.groupBox2.Size = new System.Drawing.Size(663, 88);
             this.groupBox2.TabIndex = 22;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Database Target Mapping";
@@ -562,14 +558,14 @@ namespace MyGeneration
             this.txtDbTargetFile.Location = new System.Drawing.Point(88, 24);
             this.txtDbTargetFile.Name = "txtDbTargetFile";
             this.txtDbTargetFile.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtDbTargetFile.Size = new System.Drawing.Size(438, 20);
+            this.txtDbTargetFile.Size = new System.Drawing.Size(532, 20);
             this.txtDbTargetFile.TabIndex = 20;
             // 
             // btnDbTargetFile
             // 
             this.btnDbTargetFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDbTargetFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDbTargetFile.Location = new System.Drawing.Point(534, 24);
+            this.btnDbTargetFile.Location = new System.Drawing.Point(628, 24);
             this.btnDbTargetFile.Name = "btnDbTargetFile";
             this.btnDbTargetFile.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.btnDbTargetFile.Size = new System.Drawing.Size(24, 23);
@@ -589,7 +585,7 @@ namespace MyGeneration
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(16, 208);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(569, 88);
+            this.groupBox1.Size = new System.Drawing.Size(663, 88);
             this.groupBox1.TabIndex = 21;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Language Mapping";
@@ -622,14 +618,14 @@ namespace MyGeneration
             this.txtLanguageFile.Location = new System.Drawing.Point(88, 24);
             this.txtLanguageFile.Name = "txtLanguageFile";
             this.txtLanguageFile.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtLanguageFile.Size = new System.Drawing.Size(438, 20);
+            this.txtLanguageFile.Size = new System.Drawing.Size(532, 20);
             this.txtLanguageFile.TabIndex = 23;
             // 
             // btnLanguageFile
             // 
             this.btnLanguageFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnLanguageFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLanguageFile.Location = new System.Drawing.Point(534, 24);
+            this.btnLanguageFile.Location = new System.Drawing.Point(628, 24);
             this.btnLanguageFile.Name = "btnLanguageFile";
             this.btnLanguageFile.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.btnLanguageFile.Size = new System.Drawing.Size(24, 23);
@@ -659,7 +655,7 @@ namespace MyGeneration
             this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox3.Location = new System.Drawing.Point(16, 88);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(569, 112);
+            this.groupBox3.Size = new System.Drawing.Size(663, 112);
             this.groupBox3.TabIndex = 23;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Connection String";
@@ -668,7 +664,7 @@ namespace MyGeneration
             // 
             this.btnTestConnection.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnTestConnection.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnTestConnection.Location = new System.Drawing.Point(358, 24);
+            this.btnTestConnection.Location = new System.Drawing.Point(452, 24);
             this.btnTestConnection.Name = "btnTestConnection";
             this.btnTestConnection.Size = new System.Drawing.Size(112, 23);
             this.btnTestConnection.TabIndex = 27;
@@ -699,7 +695,7 @@ namespace MyGeneration
             // 
             this.btnOleDb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOleDb.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnOleDb.Location = new System.Drawing.Point(478, 24);
+            this.btnOleDb.Location = new System.Drawing.Point(572, 24);
             this.btnOleDb.Name = "btnOleDb";
             this.btnOleDb.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.btnOleDb.Size = new System.Drawing.Size(80, 23);
@@ -717,7 +713,7 @@ namespace MyGeneration
             this.txtConnectionString.Multiline = true;
             this.txtConnectionString.Name = "txtConnectionString";
             this.txtConnectionString.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtConnectionString.Size = new System.Drawing.Size(550, 40);
+            this.txtConnectionString.Size = new System.Drawing.Size(644, 40);
             this.txtConnectionString.TabIndex = 20;
             // 
             // groupBoxUserMetaData
@@ -730,7 +726,7 @@ namespace MyGeneration
             this.groupBoxUserMetaData.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBoxUserMetaData.Location = new System.Drawing.Point(16, 400);
             this.groupBoxUserMetaData.Name = "groupBoxUserMetaData";
-            this.groupBoxUserMetaData.Size = new System.Drawing.Size(569, 56);
+            this.groupBoxUserMetaData.Size = new System.Drawing.Size(663, 56);
             this.groupBoxUserMetaData.TabIndex = 33;
             this.groupBoxUserMetaData.TabStop = false;
             this.groupBoxUserMetaData.Text = "User Meta-Data";
@@ -739,7 +735,7 @@ namespace MyGeneration
             // 
             this.btnUserMetaDataFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnUserMetaDataFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnUserMetaDataFile.Location = new System.Drawing.Point(534, 24);
+            this.btnUserMetaDataFile.Location = new System.Drawing.Point(628, 24);
             this.btnUserMetaDataFile.Name = "btnUserMetaDataFile";
             this.btnUserMetaDataFile.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.btnUserMetaDataFile.Size = new System.Drawing.Size(24, 23);
@@ -755,7 +751,7 @@ namespace MyGeneration
             this.txtUserMetaDataFile.Location = new System.Drawing.Point(88, 24);
             this.txtUserMetaDataFile.Name = "txtUserMetaDataFile";
             this.txtUserMetaDataFile.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtUserMetaDataFile.Size = new System.Drawing.Size(438, 20);
+            this.txtUserMetaDataFile.Size = new System.Drawing.Size(532, 20);
             this.txtUserMetaDataFile.TabIndex = 17;
             // 
             // labelUserMetaData
@@ -1109,7 +1105,7 @@ namespace MyGeneration
             this.toolStripSeparator1});
             this.toolStripOptions.Location = new System.Drawing.Point(0, 0);
             this.toolStripOptions.Name = "toolStripOptions";
-            this.toolStripOptions.Size = new System.Drawing.Size(614, 25);
+            this.toolStripOptions.Size = new System.Drawing.Size(706, 25);
             this.toolStripOptions.TabIndex = 34;
             this.toolStripOptions.Visible = false;
             // 
@@ -1132,36 +1128,11 @@ namespace MyGeneration
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
-            // btnOK
-            // 
-            this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOK.Location = new System.Drawing.Point(424, 528);
-            this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(75, 23);
-            this.btnOK.TabIndex = 1;
-            this.btnOK.Text = "OK";
-            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
-            // 
-            // btnCancel
-            // 
-            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(514, 528);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 2;
-            this.btnCancel.Text = "&Cancel";
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-            // 
             // DefaultProperties
             // 
-            this.AcceptButton = this.btnOK;
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-            this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(706, 560);
             this.Controls.Add(this.toolStripOptions);
-            this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.btnOK);
             this.Controls.Add(this.tabControl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -1783,10 +1754,6 @@ namespace MyGeneration
             get { return "::DefaultSettings::"; }
         }
 
-        #endregion
-
-        #region IMyGenDocument Members
-
         public void Alert(IMyGenContent sender, string command, params object[] args)
         {
             //throw new Exception("The method or operation is not implemented.");
@@ -1795,6 +1762,11 @@ namespace MyGeneration
         public bool CanClose(bool allowPrevent)
         {
             return true;
+        }
+
+        public DockContent DockContent
+        {
+            get { return this; }
         }
 
         #endregion

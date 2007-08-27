@@ -351,7 +351,7 @@ The C# provider, the very minor C code modifications to SQLite, documentation an
 		{
 			try 
 			{
-                MDIParent.LaunchBrowser(url);
+                Program.LaunchBrowser(url);
 			}
 			catch 
 			{

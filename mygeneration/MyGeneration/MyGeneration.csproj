@@ -193,6 +193,7 @@
     <Compile Include="DockableWindows\MetaProperties.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="DockableWindows\ProjectEditorManager.cs" />
     <Compile Include="DockableWindows\ProjectEditor\AddEditModule.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -214,6 +215,7 @@
     <Compile Include="DockableWindows\TemplateBrowser.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="DockableWindows\TemplateEditorManager.cs" />
     <Compile Include="DockableWindows\TemplateTreeBuilder.cs" />
     <Compile Include="DockableWindows\TemplateWebUpdateHelper.cs" />
     <Compile Include="DockableWindows\UserMetaData.cs">

@@ -100,6 +100,7 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="IEditorManager.cs" />
     <Compile Include="IMyGenContent.cs" />
     <Compile Include="IMyGenDocument.cs" />
     <Compile Include="IDocumentPlugin.cs" />

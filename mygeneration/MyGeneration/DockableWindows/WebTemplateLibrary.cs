@@ -76,7 +76,7 @@ namespace MyGeneration
 			{
 				try
                 {
-                    MDIParent.LaunchBrowser(node.Url);
+                    Program.LaunchBrowser(node.Url);
 				}
 				catch 
 				{

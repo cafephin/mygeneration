@@ -955,6 +955,11 @@ namespace MyGeneration
             return true;
         }
 
+        public DockContent DockContent
+        {
+            get { return this; }
+        }
+
         #endregion
 	}
 

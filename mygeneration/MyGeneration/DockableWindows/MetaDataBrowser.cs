@@ -346,15 +346,17 @@ namespace MyGeneration
 
             if (this.mdi is MyGenerationMDI)
             {
-                this.MetaData = ((MyGenerationMDI)this.DockPanel.Parent).MetaPropertiesDockContent;
-                this.UserData = ((MyGenerationMDI)this.DockPanel.Parent).UserMetaDataDockContent;
-                this.GlobalUserData = ((MyGenerationMDI)this.DockPanel.Parent).GlobalUserMetaDataDockContent;
+                MyGenerationMDI p = mdi as MyGenerationMDI;
+                this.MetaData = p.MetaPropertiesDockContent;
+                this.UserData = p.UserMetaDataDockContent;
+                this.GlobalUserData = p.GlobalUserMetaDataDockContent;
             }
             else
             {
-			this.MetaData		= ((MDIParent)this.DockPanel.Parent).MetaDataWindow;
-			this.UserData		= ((MDIParent)this.DockPanel.Parent).UserMetaWindow;
-			this.GlobalUserData = ((MDIParent)this.DockPanel.Parent).GlobalUserMetaWindow;
+                MDIParent p = mdi as MDIParent;
+                this.MetaData = p.MetaDataWindow;
+                this.UserData = p.UserMetaWindow;
+                this.GlobalUserData = p.GlobalUserMetaWindow;
             }
 			MyTree.Scrollable = true;
 		}
@@ -1236,6 +1238,11 @@ namespace MyGeneration
         public bool CanClose(bool allowPrevent)
         {
             return true;
+        }
+
+        public DockContent DockContent
+        {
+            get { return this; }
         }
 
         #endregion

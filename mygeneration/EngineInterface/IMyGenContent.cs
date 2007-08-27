@@ -14,5 +14,6 @@ namespace MyGeneration
         ToolStrip ToolStrip { get; }
         void Alert(IMyGenContent sender, string command, params object[] args);
         bool CanClose(bool allowPrevent);
+        DockContent DockContent { get; }
     }
 }
