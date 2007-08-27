@@ -311,24 +311,27 @@ namespace Zeus.DotNetScript
 
 			//Create an instance whichever code provider that is needed
 			CodeDomProvider codeProvider = null;
-			
+
+            // string extraParams;
 			if (language == DotNetLanguage.VBNet)
 			{
 				codeProvider = new VBCodeProvider();
 				ext = ".vb";
+                // extraParams = " /libpath:plugins";
 			}
 			else
 			{
 				codeProvider = new CSharpCodeProvider();
 				ext = ".cs";
-			}
+                // extraParams = @" /lib:Plugins"; // does not work to allow dll-s outside main-dir see "#define PLUGINS_FROM_SUBDIRS" for details
+            }
 
 			//create the language specific code compiler
 			ICodeCompiler compiler = codeProvider.CreateCompiler();
 
 			//add compiler parameters
 			CompilerParameters compilerParams = new CompilerParameters();
-			compilerParams.CompilerOptions = "/target:library /optimize";
+            compilerParams.CompilerOptions = "/target:library /optimize"; // + extraParams;
 			CompilerResults results = null; 
 
 			// Add References

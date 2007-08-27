@@ -110,6 +110,38 @@
       <Name>WeifenLuo.WinFormsUI.Docking</Name>
       <HintPath>DockManager\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
+    <ProjectReference Include="..\..\plugins\ContextProcessor\ContextProcessor_k3b.csproj">
+      <Name>ContextProcessor_k3b</Name>
+      <Project>{B43C4B09-6813-4C8D-A422-85ECF41CB75B}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\plugins\DotNetScriptingEngine\DotNetScriptingEngine_k3b.csproj">
+      <Name>DotNetScriptingEngine_k3b</Name>
+      <Project>{497C072A-648D-4EF9-B5EC-71895D182018}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\scintilla\ScintillaNET\ScintillaNET_k3b.csproj">
+      <Project>{F9B6DABD-BBC1-4638-8CE6-A5C9506BFDCB}</Project>
+      <Name>ScintillaNET_k3b</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EngineInterface\PluginInterfaces_k3b.csproj">
+      <Name>PluginInterfaces_k3b</Name>
+      <Project>{61B369D1-95DD-4158-9F30-2E051CEB9D50}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\plugins\MicrosoftScriptingEngine\MicrosoftScriptingEngine_k3b.csproj">
+      <Name>MicrosoftScriptingEngine_k3b</Name>
+      <Project>{5CFE661C-1C7D-4191-A6F7-D7891C448690}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\MyGenUtility\MyGenUtility_k3b.csproj">
+      <Name>MyGenUtility_k3b</Name>
+      <Project>{A1D6D035-420C-40A3-9598-9E34F11FB1AA}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Zeus\Zeus_k3b.csproj">
+      <Name>Zeus_k3b</Name>
+      <Project>{CE8A697D-D45C-4E60-838D-E36980227543}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\mymeta\MyMeta_k3b.csproj">
+      <Name>MyMeta_k3b</Name>
+      <Project>{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}</Project>
+    </ProjectReference>
     <COMReference Include="MSDASC">
       <Guid>{2206CEB0-19C1-11D1-89E0-00C04FD7A829}</Guid>
       <VersionMajor>1</VersionMajor>
@@ -153,6 +185,7 @@
     <Compile Include="DockableWindows\MetaProperties.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="DockableWindows\ProjectEditorManager.cs" />
     <Compile Include="DockableWindows\ProjectEditor\AddEditModule.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -174,6 +207,7 @@
     <Compile Include="DockableWindows\TemplateBrowser.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="DockableWindows\TemplateEditorManager.cs" />
     <Compile Include="DockableWindows\TemplateTreeBuilder.cs" />
     <Compile Include="DockableWindows\TemplateWebUpdateHelper.cs" />
     <Compile Include="DockableWindows\UserMetaData.cs">
@@ -200,21 +234,6 @@
     <Compile Include="GridLayoutHelper.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MDIParent.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MyGeneration2005.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MyGeneration2005.Designer.cs">
-      <DependentUpon>MyGeneration2005.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MyGenerationMDI.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MyGenerationMDI.designer.cs">
-      <DependentUpon>MyGenerationMDI.cs</DependentUpon>
-    </Compile>
     <Compile Include="Password.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -223,6 +242,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="MyGenerationMDI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MyGenerationMDI.designer.cs">
+      <DependentUpon>MyGenerationMDI.cs</DependentUpon>
     </Compile>
     <Compile Include="TemplateForms\TemplateEditor.cs">
       <SubType>Form</SubType>
@@ -336,18 +361,6 @@
       <DependentUpon>Goto.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="MDIParent.resx">
-      <DependentUpon>MDIParent.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MyGeneration2005.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>MyGeneration2005.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MyGenerationMDI.resx">
-      <DependentUpon>MyGenerationMDI.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Password.resx">
       <DependentUpon>Password.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -356,6 +369,10 @@
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MyGenerationMDI.resx">
+      <DependentUpon>MyGenerationMDI.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Settings\MyGeneration.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -382,7 +399,6 @@
       <DependentUpon>ZeusScintillaControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="MyGeneration.exe.config" />
     <None Include="Settings\CSharp.INI" />
     <None Include="Web References\com.mygenerationsoftware.www\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
@@ -505,40 +521,6 @@
       <UrlBehavior>Static</UrlBehavior>
     </WebReferenceUrl>
     <WebReferences Include="Web References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\mymeta\MyMeta_k3b.csproj">
-      <Project>{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}</Project>
-      <Name>MyMeta_k3b</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\plugins\ContextProcessor\ContextProcessor_k3b.csproj">
-      <Project>{B43C4B09-6813-4C8D-A422-85ECF41CB75B}</Project>
-      <Name>ContextProcessor_k3b</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\plugins\DotNetScriptingEngine\DotNetScriptingEngine_k3b.csproj">
-      <Project>{497C072A-648D-4EF9-B5EC-71895D182018}</Project>
-      <Name>DotNetScriptingEngine_k3b</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\plugins\MicrosoftScriptingEngine\MicrosoftScriptingEngine_k3b.csproj">
-      <Project>{5CFE661C-1C7D-4191-A6F7-D7891C448690}</Project>
-      <Name>MicrosoftScriptingEngine_k3b</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\scintilla\ScintillaNET\ScintillaNET_k3b.csproj">
-      <Project>{F9B6DABD-BBC1-4638-8CE6-A5C9506BFDCB}</Project>
-      <Name>ScintillaNET_k3b</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EngineInterface\PluginInterfaces_k3b.csproj">
-      <Project>{61B369D1-95DD-4158-9F30-2E051CEB9D50}</Project>
-      <Name>PluginInterfaces_k3b</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MyGenUtility\MyGenUtility_k3b.csproj">
-      <Project>{A1D6D035-420C-40A3-9598-9E34F11FB1AA}</Project>
-      <Name>MyGenUtility_k3b</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Zeus\Zeus_k3b.csproj">
-      <Project>{CE8A697D-D45C-4E60-838D-E36980227543}</Project>
-      <Name>Zeus_k3b</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

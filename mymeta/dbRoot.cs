@@ -1,6 +1,13 @@
 // #define IGNORE_VISTA // if defined in csproj compile without VISTADB
 // #define ENTERPRISE // if defined in csproj create com component
-// #define PLUGINS_FROM_SUBDIRS  if defined Plugins can also live in subdirectories of the MyMeta-bin-di
+
+// #define PLUGINS_FROM_SUBDIRS  // if defined Plugins can also live in subdirectories of the MyMeta-bin-dir
+/*
+ * PLUGINS_FROM_SUBDIRS disabled because k3b found no way to use dll-s in scrips
+ *  tried <%#REFERENCE subdir\myDll.dll  %> ==> script compiler error not found
+ *  csc.exe /lib:plugins  ==> script compiler error not found
+ */
+
 
 using System;
 using System.Text;
@@ -920,28 +927,28 @@ not fully implemented yet
             if (System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) != System.IO.Path.GetDirectoryName(filename))
                 AppDomain.CurrentDomain.AppendPrivatePath(System.IO.Path.GetDirectoryName(filename));
 #endif
+
             Assembly assembly = Assembly.LoadFile(filename);
 
-            assembly.ModuleResolve += new ModuleResolveEventHandler(assembly_ModuleResolve);
-			foreach (Type type in assembly.GetTypes())
-			{
-			    Type[] interfaces = type.GetInterfaces();
-			    foreach (Type iface in interfaces)
-			    {
-			        if (iface == typeof(IMyMetaPlugin))
-			        {
-			            try
-			            {
-			                ConstructorInfo[] constructors = type.GetConstructors();
-			                ConstructorInfo constructor = constructors[0];
-			
-			                IMyMetaPlugin plugin = constructor.Invoke(BindingFlags.CreateInstance, null, new object[] { }, null) as IMyMetaPlugin;
+            foreach (Type type in assembly.GetTypes())
+            {
+                Type[] interfaces = type.GetInterfaces();
+                foreach (Type iface in interfaces)
+                {
+                    if (iface == typeof(IMyMetaPlugin))
+                    {
+                        try
+                        {
+                            ConstructorInfo[] constructors = type.GetConstructors();
+                            ConstructorInfo constructor = constructors[0];
+
+                            IMyMetaPlugin plugin = constructor.Invoke(BindingFlags.CreateInstance, null, new object[] { }, null) as IMyMetaPlugin;
                             InternalDriver.Register(plugin.ProviderUniqueKey,
                                                     new PluginDriver(plugin));
 
                             plugins[plugin.ProviderUniqueKey] = plugin; // after register because if exception in register, donot remeber plugin
                         }
-			            catch (Exception ex) 
+                        catch (Exception ex)
                         {
                             System.Diagnostics.Trace.WriteLine("Cannot load plugin " + filename);
                             while (ex != null)
@@ -951,9 +958,9 @@ not fully implemented yet
                                 ex = ex.InnerException;
                             }
                         }
-			        }
-			    }
-			}
+                    }
+                }
+            }
 		}
 
         static Module assembly_ModuleResolve(object sender, ResolveEventArgs e)
@@ -961,7 +968,7 @@ not fully implemented yet
             // throw new Exception("The method or operation is not implemented.");
             return null;
         }
-        
+
         #endregion
         
         #region XML User Data

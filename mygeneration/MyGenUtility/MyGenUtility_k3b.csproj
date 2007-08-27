@@ -85,6 +85,11 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
+    <ProjectReference Include="..\EngineInterface\PluginInterfaces_k3b.csproj">
+      <Name>PluginInterfaces_k3b</Name>
+      <Project>{61B369D1-95DD-4158-9F30-2E051CEB9D50}</Project>
+    </ProjectReference>
+
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs">
@@ -93,12 +98,6 @@
     <Compile Include="DefaultSettings.cs">
       <SubType>Code</SubType>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\EngineInterface\PluginInterfaces_k3b.csproj">
-      <Project>{61B369D1-95DD-4158-9F30-2E051CEB9D50}</Project>
-      <Name>PluginInterfaces_k3b</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

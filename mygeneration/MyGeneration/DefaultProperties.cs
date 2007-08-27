@@ -1291,6 +1291,8 @@ namespace MyGeneration
 
         private bool SettingsModified()
         {
+            if (this.cboDbDriver.SelectedValue == null)
+                return false;
             return (settings.DbDriver != this.cboDbDriver.SelectedValue.ToString()) ||
                                 (settings.ConnectionString != this.txtConnectionString.Text) ||
                                 (settings.LanguageMappingFile != this.txtLanguageFile.Text) ||

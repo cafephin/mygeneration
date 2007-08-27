@@ -71,10 +71,10 @@
     <None Include="lib\MyGenXsd3b.wiki" />
     <None Include="lib\XSD3bHistory.wiki" />
     <None Include="templates\xsd3b\ToXsd.csgen">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="templates\xsd3b\ToXsd3b.csgen">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -99,11 +99,36 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IDocumentPlugin.cs" />
+    <Compile Include="IEditorManager.cs" />
     <Compile Include="IMyGenContent.cs" />
     <Compile Include="IMyGenDocument.cs" />
+    <Compile Include="IDocumentPlugin.cs" />
     <Compile Include="IMyGenerationMDI.cs" />
     <Compile Include="IScintillaEditControl.cs" />
+    <Compile Include="UserInterfaces\MyMetaBrowser.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserInterfaces\MyMetaBrowser.Designer.cs">
+      <DependentUpon>MyMetaBrowser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterfaces\MyMetaObjectProperties.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserInterfaces\MyMetaObjectProperties.Designer.cs">
+      <DependentUpon>MyMetaObjectProperties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterfaces\TemplateBrowser.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserInterfaces\TemplateBrowser.Designer.cs">
+      <DependentUpon>TemplateBrowser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterfaces\TemplateDetails.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserInterfaces\TemplateDetails.Designer.cs">
+      <DependentUpon>TemplateDetails.cs</DependentUpon>
+    </Compile>
     <Compile Include="ZeusConstants.cs">
       <SubType>Code</SubType>
     </Compile>

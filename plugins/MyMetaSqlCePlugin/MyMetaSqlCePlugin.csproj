@@ -46,6 +46,7 @@
       <Project>{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}</Project>
       <Name>MyMeta</Name>
     </ProjectReference>
+    <Content Include="ReadMe.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

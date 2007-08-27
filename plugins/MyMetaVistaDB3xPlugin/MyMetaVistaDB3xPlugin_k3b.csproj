@@ -42,8 +42,6 @@
       <Project>{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}</Project>
       <Name>MyMeta</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

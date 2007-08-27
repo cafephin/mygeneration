@@ -88,6 +88,15 @@
     <Reference Include="System.XML">
       <Name>System.XML</Name>
     </Reference>
+    <ProjectReference Include="..\..\mygeneration\EngineInterface\PluginInterfaces_k3b.csproj">
+      <Project>{61B369D1-95DD-4158-9F30-2E051CEB9D50}</Project>
+      <Name>PluginInterfaces_k3b</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\mymeta\MyMeta_k3b.csproj">
+      <Project>{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}</Project>
+      <Name>MyMeta_k3b</Name>
+    </ProjectReference>
+
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs">
@@ -111,16 +120,6 @@
     <Compile Include="MyMeta\MyMetaSerializer.cs">
       <SubType>Code</SubType>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\mygeneration\EngineInterface\PluginInterfaces_k3b.csproj">
-      <Project>{61B369D1-95DD-4158-9F30-2E051CEB9D50}</Project>
-      <Name>PluginInterfaces_k3b</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\mymeta\MyMeta_k3b.csproj">
-      <Project>{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}</Project>
-      <Name>MyMeta_k3b</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
