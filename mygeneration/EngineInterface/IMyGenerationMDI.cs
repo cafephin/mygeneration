@@ -18,6 +18,7 @@ namespace MyGeneration
         ReplaceForm ReplaceDialog { get; }
         ScintillaConfigureDelegate ConfigureDelegate { get; }
         DockPanel DockPanel { get; }
+        void SendAlert(IMyGenContent sender, string command, params object[] args);
 
         //void WriteConsole(string text, params object[] args);
         //void WriteOutput(string outputLanguage, string text);

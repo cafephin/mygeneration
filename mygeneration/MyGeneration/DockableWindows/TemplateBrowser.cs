@@ -70,23 +70,21 @@ namespace MyGeneration
 			treeBuilder.LoadTemplates();
 		}
 
-		public event EventHandler TemplateOpen;
-		public event EventHandler TemplateUpdate;
+		//public event EventHandler TemplateOpen;
+		//public event EventHandler TemplateUpdate;
 
 		protected void OnTemplateUpdate(string uniqueId) 
 		{
-			if (this.TemplateUpdate != null) 
-			{
-				this.TemplateUpdate(uniqueId, new EventArgs());
-			}
+			this.mdi.SendAlert(this, "UpdateTemplate", uniqueId);
 		}
 
 		protected void OnTemplateOpen(string path) 
 		{
-			if (this.TemplateOpen != null) 
+            this.mdi.OpenDocuments(path);
+            /*if (this.TemplateOpen != null) 
 			{
-				this.TemplateOpen(path, new EventArgs());
-			}
+                this.TemplateOpen(path, new EventArgs());
+			}*/
 		}
 
 		public event EventHandler TemplateDelete;
@@ -926,7 +924,7 @@ namespace MyGeneration
             get { throw new Exception("The method or operation is not implemented."); }
         }
 
-        public void Alert(IMyGenContent sender, string command, params object[] args)
+        public void ProcessAlert(IMyGenContent sender, string command, params object[] args)
         {
             DefaultSettings settings = DefaultSettings.Instance;
             if (command == "UpdateDefaultSettings")

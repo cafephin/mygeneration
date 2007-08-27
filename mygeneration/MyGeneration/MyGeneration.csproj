@@ -432,6 +432,7 @@
     <Content Include="Images\earth.bmp" />
     <Content Include="Images\folder1.bmp" />
     <Content Include="Images\folder2.bmp" />
+    <Content Include="Images\icon_Settings.bmp" />
     <Content Include="Images\icon_template.bmp" />
     <Content Include="Images\icon_zeus.bmp" />
     <Content Include="Images\jeg_csharp.bmp" />

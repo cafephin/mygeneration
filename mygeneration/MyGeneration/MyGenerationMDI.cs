@@ -660,6 +660,11 @@ namespace MyGeneration
         #endregion
 
         #region Toolstrip Button Events
+        private void toolStripButtonOpen_Click(object sender, EventArgs e)
+        {
+            PickFiles();
+        }
+
         private void toolStripButtonTemplateBrowser_Click(object sender, EventArgs e)
         {
             if (this.TemplateBrowserDockContent.IsHidden)
@@ -708,9 +713,52 @@ namespace MyGeneration
             }
         }
 
-        private void toolStripButtonOpen_Click(object sender, EventArgs e)
+        private void toolStripButtonLangMappings_Click(object sender, EventArgs e)
         {
-            PickFiles();
+            if (this.LanguageMappingsDockContent.IsHidden)
+            {
+                this.LanguageMappingsDockContent.Show(this.dockPanel);
+            }
+            else
+            {
+                this.LanguageMappingsDockContent.Hide();
+            }
+        }
+
+        private void toolStripButtonDbTargetMappings_Click(object sender, EventArgs e)
+        {
+            if (this.DbTargetMappingsDockContent.IsHidden)
+            {
+                this.DbTargetMappingsDockContent.Show(this.dockPanel);
+            }
+            else
+            {
+                this.DbTargetMappingsDockContent.Hide();
+            }
+        }
+
+        private void toolStripButtonLocalAliases_Click(object sender, EventArgs e)
+        {
+            if (this.UserMetaDataDockContent.IsHidden)
+            {
+                this.UserMetaDataDockContent.Show(this.dockPanel);
+            }
+            else
+            {
+                this.UserMetaDataDockContent.Hide();
+            }
+        }
+
+        private void toolStripButtonGlobalAliases_Click(object sender, EventArgs e)
+        {
+            if (this.GlobalUserMetaDataDockContent.IsHidden)
+            {
+                this.GlobalUserMetaDataDockContent.Show(this.dockPanel);
+            }
+            else
+            {
+                this.GlobalUserMetaDataDockContent.Hide();
+            }
         }
         #endregion
 
@@ -926,15 +974,23 @@ namespace MyGeneration
 
         }
 
-        private void dockPanel_Paint(object sender, PaintEventArgs e)
+        public void SendAlert(IMyGenContent sender, string command, params object[] args)
         {
+            IMyGenContent contentItem = null;
+            DockContentCollection contents = this.dockPanel.Contents;
 
+            DefaultSettings settings = DefaultSettings.Instance;
+
+            for (int i = 0; i < contents.Count; i++)
+            {
+                contentItem = contents[i] as IMyGenContent;
+
+                if (contentItem != null)
+                {
+                    contentItem.ProcessAlert(sender, command, args);
+                }
+            }
         }
-
-        /*public SciTEProperties Properties
-        {
-            get { return properties; }
-        }*/
 
         #endregion
     }

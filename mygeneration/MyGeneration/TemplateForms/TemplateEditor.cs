@@ -59,8 +59,7 @@ namespace MyGeneration
 		private System.ComponentModel.IContainer components;
 		private System.Windows.Forms.Button buttonSelectFile;
 		private System.Windows.Forms.Label labelUniqueID;
-		private System.Windows.Forms.TextBox textBoxUniqueID;
-        private System.Windows.Forms.ImageList imageListToolbar;
+        private System.Windows.Forms.TextBox textBoxUniqueID;
         private OpenFileDialog openFileDialog = new OpenFileDialog();
 		private System.Windows.Forms.Label labelShortcutTag;
 		private System.Windows.Forms.Label labelMode;
@@ -637,9 +636,7 @@ namespace MyGeneration
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TemplateEditor));
-            this.imageListToolbar = new System.Windows.Forms.ImageList(this.components);
             this.panelConsole = new System.Windows.Forms.Panel();
             this.textBoxConsole = new System.Windows.Forms.TextBox();
             this.splitterConsole = new NJFLib.Controls.CollapsibleSplitter();
@@ -734,19 +731,6 @@ namespace MyGeneration
             this.menuStripMain.SuspendLayout();
             this.SuspendLayout();
             // 
-            // imageListToolbar
-            // 
-            this.imageListToolbar.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListToolbar.ImageStream")));
-            this.imageListToolbar.TransparentColor = System.Drawing.Color.Fuchsia;
-            this.imageListToolbar.Images.SetKeyName(0, "");
-            this.imageListToolbar.Images.SetKeyName(1, "");
-            this.imageListToolbar.Images.SetKeyName(2, "");
-            this.imageListToolbar.Images.SetKeyName(3, "");
-            this.imageListToolbar.Images.SetKeyName(4, "");
-            this.imageListToolbar.Images.SetKeyName(5, "");
-            this.imageListToolbar.Images.SetKeyName(6, "");
-            this.imageListToolbar.Images.SetKeyName(7, "");
-            // 
             // panelConsole
             // 
             this.panelConsole.Controls.Add(this.textBoxConsole);
@@ -781,7 +765,7 @@ namespace MyGeneration
             this.splitterConsole.ControlToHide = this.panelConsole;
             this.splitterConsole.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.splitterConsole.ExpandParentForm = false;
-            this.splitterConsole.Location = new System.Drawing.Point(0, 593);
+            this.splitterConsole.Location = new System.Drawing.Point(0, 598);
             this.splitterConsole.Name = "splitterConsole";
             this.splitterConsole.TabIndex = 5;
             this.splitterConsole.TabStop = false;
@@ -821,12 +805,11 @@ namespace MyGeneration
             this.panelProperties.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelProperties.Location = new System.Drawing.Point(0, 0);
             this.panelProperties.Name = "panelProperties";
-            this.panelProperties.Size = new System.Drawing.Size(304, 593);
+            this.panelProperties.Size = new System.Drawing.Size(304, 598);
             this.panelProperties.TabIndex = 3;
             // 
             // buttonNewGuid
             // 
-            this.buttonNewGuid.ImageList = this.imageListToolbar;
             this.buttonNewGuid.Location = new System.Drawing.Point(216, 24);
             this.buttonNewGuid.Name = "buttonNewGuid";
             this.buttonNewGuid.Size = new System.Drawing.Size(64, 23);
@@ -1143,7 +1126,7 @@ namespace MyGeneration
             this.tabControlTemplate.Location = new System.Drawing.Point(312, 0);
             this.tabControlTemplate.Name = "tabControlTemplate";
             this.tabControlTemplate.SelectedIndex = 0;
-            this.tabControlTemplate.Size = new System.Drawing.Size(588, 593);
+            this.tabControlTemplate.Size = new System.Drawing.Size(588, 598);
             this.tabControlTemplate.TabIndex = 2;
             this.tabControlTemplate.SelectedIndexChanged += new System.EventHandler(this.tabControlTemplate_SelectedIndexChanged);
             // 
@@ -1152,7 +1135,7 @@ namespace MyGeneration
             this.tabTemplateCode.BackColor = System.Drawing.Color.Transparent;
             this.tabTemplateCode.Location = new System.Drawing.Point(4, 22);
             this.tabTemplateCode.Name = "tabTemplateCode";
-            this.tabTemplateCode.Size = new System.Drawing.Size(580, 567);
+            this.tabTemplateCode.Size = new System.Drawing.Size(580, 572);
             this.tabTemplateCode.TabIndex = 0;
             this.tabTemplateCode.Text = "Template Code";
             this.tabTemplateCode.UseVisualStyleBackColor = true;
@@ -1325,7 +1308,7 @@ namespace MyGeneration
             this.saveToolStripMenuItem.MergeIndex = 4;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.saveToolStripMenuItem.Text = "&Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
@@ -1334,7 +1317,7 @@ namespace MyGeneration
             this.saveAsToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
             this.saveAsToolStripMenuItem.MergeIndex = 5;
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.saveAsToolStripMenuItem.Text = "Save  &As";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
@@ -1343,7 +1326,7 @@ namespace MyGeneration
             this.closeToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
             this.closeToolStripMenuItem.MergeIndex = 6;
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.closeToolStripMenuItem.Text = "&Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
@@ -1352,7 +1335,7 @@ namespace MyGeneration
             this.toolStripMenuItem7.MergeAction = System.Windows.Forms.MergeAction.Insert;
             this.toolStripMenuItem7.MergeIndex = 7;
             this.toolStripMenuItem7.Name = "toolStripMenuItem7";
-            this.toolStripMenuItem7.Size = new System.Drawing.Size(149, 6);
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(144, 6);
             // 
             // editToolStripMenuItem
             // 
@@ -2547,7 +2530,7 @@ namespace MyGeneration
             get { return this.toolStripOptions; }
         }
 
-        public void Alert(IMyGenContent sender, string command, params object[] args)
+        public void ProcessAlert(IMyGenContent sender, string command, params object[] args)
         {
             if (command == "UpdateDefaultSettings")
             {
@@ -2557,6 +2540,23 @@ namespace MyGeneration
 
                 this.scintillaTemplateCode.TabWidth = settings.Tabs;
                 this.copyOutputToClipboardToolStripMenuItem.Checked = settings.EnableClipboard;
+            }
+            else if (command == "UpdateTemplate")
+            {
+                if (args.Length > 0)
+                {
+                    if (string.Equals(args[0].ToString(), this._template.UniqueID, StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        if (MessageBox.Show(this,
+                               "The file \r\n\"" + this._template.FileName + "\"\r\n has been updated outside of the editor.\r\nWould you like to refresh with the new contents?",
+                               "Refresh Updated File?",
+                               MessageBoxButtons.YesNo) == DialogResult.Yes)
+                        {
+                            this.Activate();
+                            this._Initialize(this.FileName);
+                        }
+                    }
+                }
             }
         }
 

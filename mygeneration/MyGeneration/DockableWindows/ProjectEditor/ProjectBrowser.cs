@@ -1042,7 +1042,7 @@ namespace MyGeneration
             get { return null; }
         }
 
-        public void Alert(IMyGenContent sender, string command, params object[] args)
+        public void ProcessAlert(IMyGenContent sender, string command, params object[] args)
         {
             //
         }

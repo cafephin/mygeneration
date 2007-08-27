@@ -628,7 +628,7 @@ namespace MyGeneration
             get { throw new Exception("The method or operation is not implemented."); }
         }
 
-        public void Alert(IMyGenContent sender, string command, params object[] args)
+        public void ProcessAlert(IMyGenContent sender, string command, params object[] args)
         {
             throw new Exception("The method or operation is not implemented.");
         }

@@ -48,11 +48,16 @@ namespace MyGeneration
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripDropDownButtonNew = new System.Windows.Forms.ToolStripDropDownButton();
             this.toolStripButtonOpen = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripButtonOptions = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonTemplateBrowser = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonMyMetaBrowser = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonMyMetaProperties = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonLangMappings = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonDbTargetMappings = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonLocalAliases = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonGlobalAliases = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButtonOptions = new System.Windows.Forms.ToolStripButton();
             this.menuStripMain.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -194,7 +199,6 @@ namespace MyGeneration
             this.dockPanel.TabIndex = 6;
             this.dockPanel.ActiveDocumentChanged += new System.EventHandler(this.dockPanel_ActiveDocumentChanged);
             this.dockPanel.ActiveContentChanged += new System.EventHandler(this.dockPanel_ActiveContentChanged);
-            this.dockPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.dockPanel_Paint);
             this.dockPanel.ActivePaneChanged += new System.EventHandler(this.dockPanel_ActivePaneChanged);
             // 
             // toolStrip1
@@ -202,11 +206,16 @@ namespace MyGeneration
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripDropDownButtonNew,
             this.toolStripButtonOpen,
-            this.toolStripSeparator1,
-            this.toolStripButtonOptions,
             this.toolStripButtonTemplateBrowser,
+            this.toolStripSeparator1,
             this.toolStripButtonMyMetaBrowser,
-            this.toolStripButtonMyMetaProperties});
+            this.toolStripButtonMyMetaProperties,
+            this.toolStripButtonLangMappings,
+            this.toolStripButtonDbTargetMappings,
+            this.toolStripButtonLocalAliases,
+            this.toolStripButtonGlobalAliases,
+            this.toolStripSeparator2,
+            this.toolStripButtonOptions});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(860, 25);
@@ -232,21 +241,6 @@ namespace MyGeneration
             this.toolStripButtonOpen.Text = "Open";
             this.toolStripButtonOpen.Click += new System.EventHandler(this.toolStripButtonOpen_Click);
             // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-            // 
-            // toolStripButtonOptions
-            // 
-            this.toolStripButtonOptions.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonOptions.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonOptions.Image")));
-            this.toolStripButtonOptions.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonOptions.Name = "toolStripButtonOptions";
-            this.toolStripButtonOptions.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButtonOptions.Text = "Default Settings";
-            this.toolStripButtonOptions.Click += new System.EventHandler(this.toolStripButtonOptions_Click);
-            // 
             // toolStripButtonTemplateBrowser
             // 
             this.toolStripButtonTemplateBrowser.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -256,6 +250,11 @@ namespace MyGeneration
             this.toolStripButtonTemplateBrowser.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonTemplateBrowser.Text = "Template Browser";
             this.toolStripButtonTemplateBrowser.Click += new System.EventHandler(this.toolStripButtonTemplateBrowser_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
             // toolStripButtonMyMetaBrowser
             // 
@@ -276,6 +275,61 @@ namespace MyGeneration
             this.toolStripButtonMyMetaProperties.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonMyMetaProperties.Text = "MyMeta Properties";
             this.toolStripButtonMyMetaProperties.Click += new System.EventHandler(this.toolStripButtonMyMetaProperties_Click);
+            // 
+            // toolStripButtonLangMappings
+            // 
+            this.toolStripButtonLangMappings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonLangMappings.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonLangMappings.Image")));
+            this.toolStripButtonLangMappings.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonLangMappings.Name = "toolStripButtonLangMappings";
+            this.toolStripButtonLangMappings.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonLangMappings.Text = "Language Mappings";
+            this.toolStripButtonLangMappings.Click += new System.EventHandler(this.toolStripButtonLangMappings_Click);
+            // 
+            // toolStripButtonDbTargetMappings
+            // 
+            this.toolStripButtonDbTargetMappings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonDbTargetMappings.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonDbTargetMappings.Image")));
+            this.toolStripButtonDbTargetMappings.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonDbTargetMappings.Name = "toolStripButtonDbTargetMappings";
+            this.toolStripButtonDbTargetMappings.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonDbTargetMappings.Text = "DB Target Mappings";
+            this.toolStripButtonDbTargetMappings.Click += new System.EventHandler(this.toolStripButtonDbTargetMappings_Click);
+            // 
+            // toolStripButtonLocalAliases
+            // 
+            this.toolStripButtonLocalAliases.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonLocalAliases.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonLocalAliases.Image")));
+            this.toolStripButtonLocalAliases.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonLocalAliases.Name = "toolStripButtonLocalAliases";
+            this.toolStripButtonLocalAliases.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonLocalAliases.Text = "Local MetaData Mappings";
+            this.toolStripButtonLocalAliases.Click += new System.EventHandler(this.toolStripButtonLocalAliases_Click);
+            // 
+            // toolStripButtonGlobalAliases
+            // 
+            this.toolStripButtonGlobalAliases.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonGlobalAliases.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonGlobalAliases.Image")));
+            this.toolStripButtonGlobalAliases.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonGlobalAliases.Name = "toolStripButtonGlobalAliases";
+            this.toolStripButtonGlobalAliases.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonGlobalAliases.Text = "Global MetaData Mappings";
+            this.toolStripButtonGlobalAliases.Click += new System.EventHandler(this.toolStripButtonGlobalAliases_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripButtonOptions
+            // 
+            this.toolStripButtonOptions.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonOptions.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonOptions.Image")));
+            this.toolStripButtonOptions.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonOptions.Name = "toolStripButtonOptions";
+            this.toolStripButtonOptions.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonOptions.Text = "Default Settings";
+            this.toolStripButtonOptions.Click += new System.EventHandler(this.toolStripButtonOptions_Click);
             // 
             // MyGenerationMDI
             // 
@@ -327,5 +381,10 @@ namespace MyGeneration
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButtonNew;
         private System.Windows.Forms.ToolStripMenuItem defaultSettingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripButton toolStripButtonLangMappings;
+        private System.Windows.Forms.ToolStripButton toolStripButtonDbTargetMappings;
+        private System.Windows.Forms.ToolStripButton toolStripButtonLocalAliases;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripButton toolStripButtonGlobalAliases;
     }
 }
