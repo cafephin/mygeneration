@@ -66,6 +66,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Xsd3bConnection.cs" />
     <Compile Include="Xsd3bProvider.cs" />
+    <None Include="lib\MogwaiERDesignerModelXdm.wiki" />
+    <None Include="lib\Xsd3bImportFromUml.wiki" />
+    <None Include="templates\xsd3b\DatabaseReport.xsd3b.htm.xsl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="templates\xsd3b\Mogwai_ERDesignerModel.xdm.xsd3b.xsl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="templates\xsd3b\xsd3b2htm.xsl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="lib\MyGenXsd3b.wiki" />
@@ -82,13 +93,5 @@
       <Project>{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}</Project>
       <Name>MyMeta</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="DatabaseReport.xsd3b.htm.xsl">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Mogwai_ERDesignerModel.xdm.xsd3b.xsl">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 </Project>

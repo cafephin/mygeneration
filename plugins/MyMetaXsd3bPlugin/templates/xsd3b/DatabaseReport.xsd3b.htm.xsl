@@ -1,5 +1,5 @@
 ﻿<!--
-    Document   : DatabaseReport.xsd3b.htm.xsl
+    Document   : templates\xsd3b\DatabaseReport.xsd3b.htm.xsl
     Created on : 2007-05-03
     Author     : dl3bak
 
@@ -11,7 +11,7 @@
 		Dl3bak.Xsd3b.dll
 		Dl3bak.Xsd3b.xsd.dll
 		Dl3bak.Xsd3b.xslt.dll
-		DatabaseReport.xsd3b.htm.xsl
+		templates\xsd3b\DatabaseReport.xsd3b.htm.xsl
 		
 		a host for Dl3bak.Xsd3b
 			either xsd3bGui.exe

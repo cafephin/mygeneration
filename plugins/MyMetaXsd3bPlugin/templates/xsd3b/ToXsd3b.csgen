@@ -5,7 +5,7 @@
 ##|SOURCE_TYPE Source
 ##|OUTPUT_LANGUAGE XML
 ##|COMMENTS_BEGIN
-Create xml for the xsd3b Provider
+Create *.xsd3b.xml for the xsd3b Provider. You can open the file with your html-browser or use it as Datasource for MyGeneration
 ##|COMMENTS_END
 ##|GUI_ENGINE .Net Script
 ##|GUI_LANGUAGE C#
@@ -190,11 +190,11 @@ public class GeneratedGui : DotNetScriptGui
 ##|BODY_TAG_START <%
 ##|BODY_TAG_END %>
 ##|BODY_BEGIN
-<%#NAMESPACE System, System.Text,System.Data , System.Collections, Zeus, Zeus.UserInterface, Zeus.DotNetScript, Dl3bak.Data.Xsd3b, MyMeta.Plugins.Xsd3b %><%#REFERENCE System.Windows.Forms.dll, System.Data.dll, System.Xml.dll, Dl3bak.Xsd3b.dll, MyMeta.Plugins.Xsd3b.dll %><%
+<%#NAMESPACE System, System.IO, System.Text,System.Data , System.Collections, Zeus, Zeus.UserInterface, Zeus.DotNetScript, Dl3bak.Data.Xsd3b, MyMeta.Plugins.Xsd3b %><%#REFERENCE System.Windows.Forms.dll, System.Data.dll, System.Xml.dll, Dl3bak.Xsd3b.dll, MyMeta.Plugins.Xsd3b.dll %><%
 
 /* -----------------------------------------------------------------------------
 ' ToXsd3b.csgen
-' Last Update: 14.04.2007
+' Last Update: 27.08.2007)
 ' Author: Klaus Evers (dl3bak)
 '
 ' Exports the schema of the selected database to xml-file (*.xsd3b).
@@ -203,6 +203,10 @@ public class GeneratedGui : DotNetScriptGui
 ' Download from 
 '
 ' v 0.1 (14.04.2007) - tables,views,relations,procedures
+' V 0.3 (27.08.2007) - The Fileextension for the extended schema is now "*.xsd3b.xml". 
+'		The XML includes <?xml-stylesheet type='text/xsl' href='xsd3b2htm.xsl'?>
+'		xsd3b2htm.xsl is saved together with "*.xsd3b.xml" file allowing to read 
+'			the "*.xsd3b.xml" file with your favorite html-browser
 '
 '----------------------------------------------------------------------------- */
 
@@ -233,7 +237,7 @@ public class GeneratedTemplate : DotNetScriptTemplate
 		if (!filepath.EndsWith("\\") ) filepath += "\\";
 		
 		// Build the filename
-		string filename = filepath + "dbschema_" + databaseName + ".xsd3b";
+		string filename = filepath + "dbschema_" + databaseName + ".xsd3b.xml";
 		
 		output.setPreserveSource(filename, "<!--::", "::-->");
 
@@ -290,7 +294,29 @@ databaseName " + databaseName ;
 		output.writeln(xsd3b.GetXml());
 		
 		output.save(filename, "o");		
+		WriteXslt(Path.GetDirectoryName(filename));
 	}
+
+	internal const string XSLT_FILENAME = "xsd3b2htm.xsl"; // xslt included with *.xsd3b.xml
+	
+	/// <summary>
+	/// copy {dlldir}\[templates\xsd3b\]xsd3b2htm.xsl to {destDirectory}
+	/// </summary>
+	/// <param name="fileName"></param>
+	private void WriteXslt(string destDirectory)
+	{
+	    string srcDir = Path.GetDirectoryName(typeof(SchemaXsd3bEx).Assembly.Location);
+	    if (!File.Exists(Path.Combine(srcDir, XSLT_FILENAME)))
+		srcDir = Path.Combine(srcDir, @"templates\xsd3b");
+	    string srcFilename = Path.Combine(srcDir, XSLT_FILENAME);
+	    string destFilename = Path.Combine(destDirectory, XSLT_FILENAME);
+	    if ((File.Exists(srcFilename)) && (!File.Exists(destFilename)))
+	    {
+		File.Copy(srcFilename, destFilename);
+	    }
+	}
+	
+
 }
 %>
 ##|BODY_END

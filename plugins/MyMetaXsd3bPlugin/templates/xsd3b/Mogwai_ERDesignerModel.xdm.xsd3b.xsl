@@ -1,8 +1,8 @@
 <!--
-    Document   : Mogwai_ERDesignerModel.xdm.xsd3b.xsl
+    Document   : templates\xsd3b\Mogwai_ERDesignerModel.xdm.xsd3b.xsl
     Created on : 2007-04-29
     Author     : dl3bak
-
+ 
    <a href="http://mogwai.sourceforge.net/erdesigner/erdesigner.html">Mogwai ERDesigner</a>
        is a tool for vizualizing the Database structure which uses an
        XML-based file format.
@@ -15,7 +15,7 @@
 		Dl3bak.Xsd3b.dll
 		Dl3bak.Xsd3b.xsd.dll
 		Dl3bak.Xsd3b.xslt.dll
-		Mogwai_ERDesignerModel.xdm.xsd3b.xsl
+		templates\xsd3b\Mogwai_ERDesignerModel.xdm.xsd3b.xsl
 		
 		a host for Dl3bak.Xsd3b
 			either xsd3bGui.exe
