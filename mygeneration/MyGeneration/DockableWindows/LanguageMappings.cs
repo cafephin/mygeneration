@@ -64,147 +64,151 @@ namespace MyGeneration
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.components = new System.ComponentModel.Container();
-			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(LanguageMappings));
-			this.cboxLanguage = new System.Windows.Forms.ComboBox();
-			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-			this.XmlEditor = new System.Windows.Forms.DataGrid();
-			this.MyXmlStyle = new System.Windows.Forms.DataGridTableStyle();
-			this.col_From = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.col_To = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.toolBar1 = new System.Windows.Forms.ToolBar();
-			this.toolBarButton_Save = new System.Windows.Forms.ToolBarButton();
-			this.toolBarButton_New = new System.Windows.Forms.ToolBarButton();
-			this.toolBarButton1 = new System.Windows.Forms.ToolBarButton();
-			this.toolBarButton_Delete = new System.Windows.Forms.ToolBarButton();
-			((System.ComponentModel.ISupportInitialize)(this.XmlEditor)).BeginInit();
-			this.SuspendLayout();
-			// 
-			// cboxLanguage
-			// 
-			this.cboxLanguage.Dock = System.Windows.Forms.DockStyle.Top;
-			this.cboxLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cboxLanguage.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.cboxLanguage.Location = new System.Drawing.Point(2, 2);
-			this.cboxLanguage.Name = "cboxLanguage";
-			this.cboxLanguage.Size = new System.Drawing.Size(494, 21);
-			this.cboxLanguage.TabIndex = 11;
-			this.cboxLanguage.SelectionChangeCommitted += new System.EventHandler(this.cboxLanguage_SelectionChangeCommitted);
-			// 
-			// imageList1
-			// 
-			this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
-			this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-			this.imageList1.TransparentColor = System.Drawing.Color.Magenta;
-			// 
-			// XmlEditor
-			// 
-			this.XmlEditor.AlternatingBackColor = System.Drawing.Color.Moccasin;
-			this.XmlEditor.BackColor = System.Drawing.Color.LightGray;
-			this.XmlEditor.BackgroundColor = System.Drawing.Color.LightGray;
-			this.XmlEditor.CaptionVisible = false;
-			this.XmlEditor.DataMember = "";
-			this.XmlEditor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.XmlEditor.Font = MetaDataBrowser.BoldFont;
-			this.XmlEditor.GridLineColor = System.Drawing.Color.BurlyWood;
-			this.XmlEditor.HeaderForeColor = System.Drawing.SystemColors.ControlText;
-			this.XmlEditor.Location = new System.Drawing.Point(2, 49);
-			this.XmlEditor.Name = "XmlEditor";
-			this.XmlEditor.Size = new System.Drawing.Size(494, 951);
-			this.XmlEditor.TabIndex = 7;
-			this.XmlEditor.TableStyles.AddRange(new System.Windows.Forms.DataGridTableStyle[] {
-																								  this.MyXmlStyle});
-			// 
-			// MyXmlStyle
-			// 
-			this.MyXmlStyle.AlternatingBackColor = System.Drawing.Color.LightGray;
-			this.MyXmlStyle.BackColor = System.Drawing.Color.LightSteelBlue;
-			this.MyXmlStyle.DataGrid = this.XmlEditor;
-			this.MyXmlStyle.GridColumnStyles.AddRange(new System.Windows.Forms.DataGridColumnStyle[] {
-																										 this.col_From,
-																										 this.col_To});
-			this.MyXmlStyle.GridLineColor = System.Drawing.Color.DarkGray;
-			this.MyXmlStyle.HeaderForeColor = System.Drawing.SystemColors.ControlText;
-			this.MyXmlStyle.MappingName = "Language";
-			// 
-			// col_From
-			// 
-			this.col_From.Format = "";
-			this.col_From.FormatInfo = null;
-			this.col_From.HeaderText = "From";
-			this.col_From.MappingName = "From";
-			this.col_From.NullText = "";
-			this.col_From.Width = 75;
-			// 
-			// col_To
-			// 
-			this.col_To.Format = "";
-			this.col_To.FormatInfo = null;
-			this.col_To.HeaderText = "To";
-			this.col_To.MappingName = "To";
-			this.col_To.NullText = "";
-			this.col_To.Width = 75;
-			// 
-			// toolBar1
-			// 
-			this.toolBar1.Appearance = System.Windows.Forms.ToolBarAppearance.Flat;
-			this.toolBar1.Buttons.AddRange(new System.Windows.Forms.ToolBarButton[] {
-																						this.toolBarButton_Save,
-																						this.toolBarButton_New,
-																						this.toolBarButton1,
-																						this.toolBarButton_Delete});
-			this.toolBar1.Divider = false;
-			this.toolBar1.DropDownArrows = true;
-			this.toolBar1.ImageList = this.imageList1;
-			this.toolBar1.Location = new System.Drawing.Point(2, 23);
-			this.toolBar1.Name = "toolBar1";
-			this.toolBar1.ShowToolTips = true;
-			this.toolBar1.Size = new System.Drawing.Size(494, 26);
-			this.toolBar1.TabIndex = 13;
-			this.toolBar1.ButtonClick += new System.Windows.Forms.ToolBarButtonClickEventHandler(this.toolBar1_ButtonClick);
-			// 
-			// toolBarButton_Save
-			// 
-			this.toolBarButton_Save.ImageIndex = 0;
-			this.toolBarButton_Save.Tag = "save";
-			this.toolBarButton_Save.ToolTipText = "Save Language Mappings";
-			// 
-			// toolBarButton_New
-			// 
-			this.toolBarButton_New.ImageIndex = 2;
-			this.toolBarButton_New.Tag = "new";
-			this.toolBarButton_New.ToolTipText = "Create New Language Mapping";
-			// 
-			// toolBarButton1
-			// 
-			this.toolBarButton1.Style = System.Windows.Forms.ToolBarButtonStyle.Separator;
-			// 
-			// toolBarButton_Delete
-			// 
-			this.toolBarButton_Delete.ImageIndex = 1;
-			this.toolBarButton_Delete.Tag = "delete";
-			this.toolBarButton_Delete.ToolTipText = "Delete Language Mappings";
-			// 
-			// LanguageMappings
-			// 
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.AutoScroll = true;
-			this.ClientSize = new System.Drawing.Size(498, 1002);
-			this.Controls.Add(this.XmlEditor);
-			this.Controls.Add(this.toolBar1);
-			this.Controls.Add(this.cboxLanguage);
-			this.DockAreas = ((DockAreas)(((((DockAreas.Float | DockAreas.DockLeft) 
-				| DockAreas.DockRight) 
-				| DockAreas.DockTop) 
-				| DockAreas.DockBottom)));
-			this.DockPadding.All = 2;
-			this.HideOnClose = true;
-			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.Name = "LanguageMappings";
-			this.Text = "Language Mappings";
-			this.Load += new System.EventHandler(this.LanguageMappings_Load);
-			((System.ComponentModel.ISupportInitialize)(this.XmlEditor)).EndInit();
-			this.ResumeLayout(false);
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LanguageMappings));
+            this.cboxLanguage = new System.Windows.Forms.ComboBox();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.XmlEditor = new System.Windows.Forms.DataGrid();
+            this.MyXmlStyle = new System.Windows.Forms.DataGridTableStyle();
+            this.col_From = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.col_To = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.toolBar1 = new System.Windows.Forms.ToolBar();
+            this.toolBarButton_Save = new System.Windows.Forms.ToolBarButton();
+            this.toolBarButton_New = new System.Windows.Forms.ToolBarButton();
+            this.toolBarButton1 = new System.Windows.Forms.ToolBarButton();
+            this.toolBarButton_Delete = new System.Windows.Forms.ToolBarButton();
+            ((System.ComponentModel.ISupportInitialize)(this.XmlEditor)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // cboxLanguage
+            // 
+            this.cboxLanguage.Dock = System.Windows.Forms.DockStyle.Top;
+            this.cboxLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboxLanguage.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cboxLanguage.Location = new System.Drawing.Point(2, 2);
+            this.cboxLanguage.Name = "cboxLanguage";
+            this.cboxLanguage.Size = new System.Drawing.Size(494, 21);
+            this.cboxLanguage.TabIndex = 11;
+            this.cboxLanguage.SelectionChangeCommitted += new System.EventHandler(this.cboxLanguage_SelectionChangeCommitted);
+            // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Magenta;
+            this.imageList1.Images.SetKeyName(0, "");
+            this.imageList1.Images.SetKeyName(1, "");
+            this.imageList1.Images.SetKeyName(2, "");
+            // 
+            // XmlEditor
+            // 
+            this.XmlEditor.AlternatingBackColor = System.Drawing.Color.Moccasin;
+            this.XmlEditor.BackColor = System.Drawing.Color.LightGray;
+            this.XmlEditor.BackgroundColor = System.Drawing.Color.LightGray;
+            this.XmlEditor.CaptionVisible = false;
+            this.XmlEditor.DataMember = "";
+            this.XmlEditor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.XmlEditor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
+            this.XmlEditor.GridLineColor = System.Drawing.Color.BurlyWood;
+            this.XmlEditor.HeaderForeColor = System.Drawing.SystemColors.ControlText;
+            this.XmlEditor.Location = new System.Drawing.Point(2, 49);
+            this.XmlEditor.Name = "XmlEditor";
+            this.XmlEditor.Size = new System.Drawing.Size(494, 951);
+            this.XmlEditor.TabIndex = 7;
+            this.XmlEditor.TableStyles.AddRange(new System.Windows.Forms.DataGridTableStyle[] {
+            this.MyXmlStyle});
+            // 
+            // MyXmlStyle
+            // 
+            this.MyXmlStyle.AlternatingBackColor = System.Drawing.Color.LightGray;
+            this.MyXmlStyle.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.MyXmlStyle.DataGrid = this.XmlEditor;
+            this.MyXmlStyle.GridColumnStyles.AddRange(new System.Windows.Forms.DataGridColumnStyle[] {
+            this.col_From,
+            this.col_To});
+            this.MyXmlStyle.GridLineColor = System.Drawing.Color.DarkGray;
+            this.MyXmlStyle.HeaderForeColor = System.Drawing.SystemColors.ControlText;
+            this.MyXmlStyle.MappingName = "Language";
+            // 
+            // col_From
+            // 
+            this.col_From.Format = "";
+            this.col_From.FormatInfo = null;
+            this.col_From.HeaderText = "From";
+            this.col_From.MappingName = "From";
+            this.col_From.NullText = "";
+            this.col_From.Width = 75;
+            // 
+            // col_To
+            // 
+            this.col_To.Format = "";
+            this.col_To.FormatInfo = null;
+            this.col_To.HeaderText = "To";
+            this.col_To.MappingName = "To";
+            this.col_To.NullText = "";
+            this.col_To.Width = 75;
+            // 
+            // toolBar1
+            // 
+            this.toolBar1.Appearance = System.Windows.Forms.ToolBarAppearance.Flat;
+            this.toolBar1.Buttons.AddRange(new System.Windows.Forms.ToolBarButton[] {
+            this.toolBarButton_Save,
+            this.toolBarButton_New,
+            this.toolBarButton1,
+            this.toolBarButton_Delete});
+            this.toolBar1.Divider = false;
+            this.toolBar1.DropDownArrows = true;
+            this.toolBar1.ImageList = this.imageList1;
+            this.toolBar1.Location = new System.Drawing.Point(2, 23);
+            this.toolBar1.Name = "toolBar1";
+            this.toolBar1.ShowToolTips = true;
+            this.toolBar1.Size = new System.Drawing.Size(494, 26);
+            this.toolBar1.TabIndex = 13;
+            this.toolBar1.ButtonClick += new System.Windows.Forms.ToolBarButtonClickEventHandler(this.toolBar1_ButtonClick);
+            // 
+            // toolBarButton_Save
+            // 
+            this.toolBarButton_Save.ImageIndex = 0;
+            this.toolBarButton_Save.Name = "toolBarButton_Save";
+            this.toolBarButton_Save.Tag = "save";
+            this.toolBarButton_Save.ToolTipText = "Save Language Mappings";
+            // 
+            // toolBarButton_New
+            // 
+            this.toolBarButton_New.ImageIndex = 2;
+            this.toolBarButton_New.Name = "toolBarButton_New";
+            this.toolBarButton_New.Tag = "new";
+            this.toolBarButton_New.ToolTipText = "Create New Language Mapping";
+            // 
+            // toolBarButton1
+            // 
+            this.toolBarButton1.Name = "toolBarButton1";
+            this.toolBarButton1.Style = System.Windows.Forms.ToolBarButtonStyle.Separator;
+            // 
+            // toolBarButton_Delete
+            // 
+            this.toolBarButton_Delete.ImageIndex = 1;
+            this.toolBarButton_Delete.Name = "toolBarButton_Delete";
+            this.toolBarButton_Delete.Tag = "delete";
+            this.toolBarButton_Delete.ToolTipText = "Delete Language Mappings";
+            // 
+            // LanguageMappings
+            // 
+            this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
+            this.AutoScroll = true;
+            this.ClientSize = new System.Drawing.Size(498, 1002);
+            this.Controls.Add(this.XmlEditor);
+            this.Controls.Add(this.toolBar1);
+            this.Controls.Add(this.cboxLanguage);
+            this.HideOnClose = true;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "LanguageMappings";
+            this.Padding = new System.Windows.Forms.Padding(2);
+            this.TabText = "Language Mappings";
+            this.Text = "Language Mappings";
+            this.Load += new System.EventHandler(this.LanguageMappings_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.XmlEditor)).EndInit();
+            this.ResumeLayout(false);
+            this.PerformLayout();
 
 		}
 		#endregion

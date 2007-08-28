@@ -69,107 +69,103 @@ namespace MyGeneration
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(MetaProperties));
-			this.Grid = new System.Windows.Forms.DataGrid();
-			this.MyStyle = new System.Windows.Forms.DataGridTableStyle();
-			this.col_Property = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.col_Value = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.lnkHELP = new System.Windows.Forms.LinkLabel();
-			((System.ComponentModel.ISupportInitialize)(this.Grid)).BeginInit();
-			this.SuspendLayout();
-			// 
-			// Grid
-			// 
-			this.Grid.AlternatingBackColor = System.Drawing.Color.Wheat;
-			this.Grid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.Grid.BackColor = System.Drawing.SystemColors.Control;
-			this.Grid.BackgroundColor = System.Drawing.Color.Wheat;
-			this.Grid.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.Grid.CaptionBackColor = System.Drawing.SystemColors.Control;
-			this.Grid.CaptionVisible = false;
-			this.Grid.DataMember = "";
-            this.Grid.Font = MetaDataBrowser.BoldFont;
-			this.Grid.HeaderForeColor = System.Drawing.SystemColors.ControlText;
-			this.Grid.Location = new System.Drawing.Point(0, 0);
-			this.Grid.Name = "Grid";
-			this.Grid.PreferredColumnWidth = 200;
-			this.Grid.ReadOnly = true;
-			this.Grid.RowHeadersVisible = false;
-			this.Grid.RowHeaderWidth = 0;
-			this.Grid.Size = new System.Drawing.Size(431, 516);
-			this.Grid.TabIndex = 9;
-			this.Grid.TableStyles.AddRange(new System.Windows.Forms.DataGridTableStyle[] {
-																							 this.MyStyle});
-			// 
-			// MyStyle
-			// 
-			this.MyStyle.AlternatingBackColor = System.Drawing.Color.PaleGoldenrod;
-			this.MyStyle.BackColor = System.Drawing.Color.Wheat;
-			this.MyStyle.DataGrid = this.Grid;
-			this.MyStyle.GridColumnStyles.AddRange(new System.Windows.Forms.DataGridColumnStyle[] {
-																									  this.col_Property,
-																									  this.col_Value});
-			this.MyStyle.GridLineColor = System.Drawing.Color.Goldenrod;
-			this.MyStyle.HeaderForeColor = System.Drawing.SystemColors.ControlText;
-			this.MyStyle.MappingName = "MyData";
-			this.MyStyle.ReadOnly = true;
-			this.MyStyle.RowHeadersVisible = false;
-			this.MyStyle.RowHeaderWidth = 0;
-			// 
-			// col_Property
-			// 
-			this.col_Property.Format = "";
-			this.col_Property.FormatInfo = null;
-			this.col_Property.HeaderText = "Property";
-			this.col_Property.MappingName = "Property";
-			this.col_Property.NullText = "";
-			this.col_Property.ReadOnly = true;
-			this.col_Property.Width = 75;
-			// 
-			// col_Value
-			// 
-			this.col_Value.Format = "";
-			this.col_Value.FormatInfo = null;
-			this.col_Value.HeaderText = "Value";
-			this.col_Value.MappingName = "Value";
-			this.col_Value.NullText = "";
-			this.col_Value.ReadOnly = true;
-			this.col_Value.Width = 75;
-			// 
-			// lnkHELP
-			// 
-			this.lnkHELP.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.lnkHELP.Location = new System.Drawing.Point(8, 520);
-			this.lnkHELP.Name = "lnkHELP";
-			this.lnkHELP.Size = new System.Drawing.Size(416, 23);
-			this.lnkHELP.TabIndex = 10;
-			this.lnkHELP.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkHELP_LinkClicked);
-			// 
-			// MetaProperties
-			// 
-			this.DockAreas = ((DockAreas)(((((DockAreas.Float | DockAreas.DockLeft) 
-				| DockAreas.DockRight) 
-				| DockAreas.DockTop) 
-				| DockAreas.DockBottom)));
-			this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
-			this.AutoScroll = true;
-			this.BackColor = System.Drawing.Color.Wheat;
-			this.ClientSize = new System.Drawing.Size(431, 550);
-			this.Controls.Add(this.lnkHELP);
-			this.Controls.Add(this.Grid);
-            this.Font = MetaDataBrowser.NormalFont;
-			this.HideOnClose = true;
-			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.Name = "MetaProperties";
-			this.ShowHint = DockState.DockRight;
-			this.Text = "MyMeta Properties";
-			this.ToolTipText = "MyMeta Properties";
-			this.Load += new System.EventHandler(this.MetaProperties_Load);
-			((System.ComponentModel.ISupportInitialize)(this.Grid)).EndInit();
-			this.ResumeLayout(false);
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MetaProperties));
+            this.Grid = new System.Windows.Forms.DataGrid();
+            this.MyStyle = new System.Windows.Forms.DataGridTableStyle();
+            this.col_Property = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.col_Value = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.lnkHELP = new System.Windows.Forms.LinkLabel();
+            ((System.ComponentModel.ISupportInitialize)(this.Grid)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // Grid
+            // 
+            this.Grid.AlternatingBackColor = System.Drawing.Color.Wheat;
+            this.Grid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.Grid.BackColor = System.Drawing.SystemColors.Control;
+            this.Grid.BackgroundColor = System.Drawing.Color.Wheat;
+            this.Grid.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.Grid.CaptionBackColor = System.Drawing.SystemColors.Control;
+            this.Grid.CaptionVisible = false;
+            this.Grid.DataMember = "";
+            this.Grid.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
+            this.Grid.HeaderForeColor = System.Drawing.SystemColors.ControlText;
+            this.Grid.Location = new System.Drawing.Point(0, 0);
+            this.Grid.Name = "Grid";
+            this.Grid.PreferredColumnWidth = 200;
+            this.Grid.ReadOnly = true;
+            this.Grid.RowHeadersVisible = false;
+            this.Grid.RowHeaderWidth = 0;
+            this.Grid.Size = new System.Drawing.Size(431, 518);
+            this.Grid.TabIndex = 9;
+            this.Grid.TableStyles.AddRange(new System.Windows.Forms.DataGridTableStyle[] {
+            this.MyStyle});
+            // 
+            // MyStyle
+            // 
+            this.MyStyle.AlternatingBackColor = System.Drawing.Color.PaleGoldenrod;
+            this.MyStyle.BackColor = System.Drawing.Color.Wheat;
+            this.MyStyle.DataGrid = this.Grid;
+            this.MyStyle.GridColumnStyles.AddRange(new System.Windows.Forms.DataGridColumnStyle[] {
+            this.col_Property,
+            this.col_Value});
+            this.MyStyle.GridLineColor = System.Drawing.Color.Goldenrod;
+            this.MyStyle.HeaderForeColor = System.Drawing.SystemColors.ControlText;
+            this.MyStyle.MappingName = "MyData";
+            this.MyStyle.ReadOnly = true;
+            this.MyStyle.RowHeadersVisible = false;
+            this.MyStyle.RowHeaderWidth = 0;
+            // 
+            // col_Property
+            // 
+            this.col_Property.Format = "";
+            this.col_Property.FormatInfo = null;
+            this.col_Property.HeaderText = "Property";
+            this.col_Property.MappingName = "Property";
+            this.col_Property.NullText = "";
+            this.col_Property.ReadOnly = true;
+            this.col_Property.Width = 75;
+            // 
+            // col_Value
+            // 
+            this.col_Value.Format = "";
+            this.col_Value.FormatInfo = null;
+            this.col_Value.HeaderText = "Value";
+            this.col_Value.MappingName = "Value";
+            this.col_Value.NullText = "";
+            this.col_Value.ReadOnly = true;
+            this.col_Value.Width = 75;
+            // 
+            // lnkHELP
+            // 
+            this.lnkHELP.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lnkHELP.Location = new System.Drawing.Point(8, 522);
+            this.lnkHELP.Name = "lnkHELP";
+            this.lnkHELP.Size = new System.Drawing.Size(416, 21);
+            this.lnkHELP.TabIndex = 10;
+            this.lnkHELP.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkHELP_LinkClicked);
+            // 
+            // MetaProperties
+            // 
+            this.AutoScaleBaseSize = new System.Drawing.Size(6, 13);
+            this.AutoScroll = true;
+            this.BackColor = System.Drawing.Color.Wheat;
+            this.ClientSize = new System.Drawing.Size(431, 550);
+            this.Controls.Add(this.lnkHELP);
+            this.Controls.Add(this.Grid);
+            this.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold);
+            this.HideOnClose = true;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "MetaProperties";
+            this.TabText = "MyMeta Properties";
+            this.Text = "MyMeta Properties";
+            this.ToolTipText = "MyMeta Properties";
+            this.Load += new System.EventHandler(this.MetaProperties_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.Grid)).EndInit();
+            this.ResumeLayout(false);
 
 		}
 		#endregion

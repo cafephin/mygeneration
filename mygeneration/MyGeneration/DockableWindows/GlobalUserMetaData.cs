@@ -171,110 +171,110 @@ namespace MyGeneration
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.components = new System.ComponentModel.Container();
-			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(GlobalUserMetaData));
-			this.toolBarButton_Save = new System.Windows.Forms.ToolBarButton();
-			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-			this.toolBar1 = new System.Windows.Forms.ToolBar();
-			this.Grid = new System.Windows.Forms.DataGrid();
-			this.MyStyle = new System.Windows.Forms.DataGridTableStyle();
-			this.colKey = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.colValue = new System.Windows.Forms.DataGridTextBoxColumn();
-			((System.ComponentModel.ISupportInitialize)(this.Grid)).BeginInit();
-			this.SuspendLayout();
-			// 
-			// toolBarButton_Save
-			// 
-			this.toolBarButton_Save.ImageIndex = 0;
-			this.toolBarButton_Save.Tag = "save";
-			this.toolBarButton_Save.ToolTipText = "Save Language Mappings";
-			// 
-			// imageList1
-			// 
-			this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
-			this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-			this.imageList1.TransparentColor = System.Drawing.Color.Magenta;
-			// 
-			// toolBar1
-			// 
-			this.toolBar1.Appearance = System.Windows.Forms.ToolBarAppearance.Flat;
-			this.toolBar1.AutoSize = false;
-			this.toolBar1.Buttons.AddRange(new System.Windows.Forms.ToolBarButton[] {
-																						this.toolBarButton_Save});
-			this.toolBar1.Divider = false;
-			this.toolBar1.DropDownArrows = true;
-			this.toolBar1.ImageList = this.imageList1;
-			this.toolBar1.Location = new System.Drawing.Point(0, 0);
-			this.toolBar1.Name = "toolBar1";
-			this.toolBar1.ShowToolTips = true;
-			this.toolBar1.Size = new System.Drawing.Size(776, 26);
-			this.toolBar1.TabIndex = 10;
-			this.toolBar1.ButtonClick += new System.Windows.Forms.ToolBarButtonClickEventHandler(this.toolBar1_ButtonClick);
-			// 
-			// Grid
-			// 
-			this.Grid.BackColor = System.Drawing.Color.LightGreen;
-			this.Grid.BackgroundColor = System.Drawing.Color.LightGreen;
-			this.Grid.CaptionVisible = false;
-			this.Grid.DataMember = "";
-			this.Grid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Grid.Font = MetaDataBrowser.BoldFont;
-			this.Grid.HeaderFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.Grid.HeaderForeColor = System.Drawing.SystemColors.ControlText;
-			this.Grid.Location = new System.Drawing.Point(0, 26);
-			this.Grid.Name = "Grid";
-			this.Grid.Size = new System.Drawing.Size(776, 976);
-			this.Grid.TabIndex = 20;
-			this.Grid.TableStyles.AddRange(new System.Windows.Forms.DataGridTableStyle[] {
-																							 this.MyStyle});
-			// 
-			// MyStyle
-			// 
-			this.MyStyle.AlternatingBackColor = System.Drawing.Color.LightGreen;
-			this.MyStyle.BackColor = System.Drawing.Color.PaleGreen;
-			this.MyStyle.DataGrid = this.Grid;
-			this.MyStyle.GridColumnStyles.AddRange(new System.Windows.Forms.DataGridColumnStyle[] {
-																									  this.colKey,
-																									  this.colValue});
-			this.MyStyle.GridLineColor = System.Drawing.Color.OliveDrab;
-			this.MyStyle.HeaderForeColor = System.Drawing.SystemColors.ControlText;
-			this.MyStyle.MappingName = "MyData";
-			// 
-			// colKey
-			// 
-			this.colKey.Format = "";
-			this.colKey.FormatInfo = null;
-			this.colKey.HeaderText = "Key";
-			this.colKey.MappingName = "Key";
-			this.colKey.NullText = "";
-			this.colKey.Width = 75;
-			// 
-			// colValue
-			// 
-			this.colValue.Format = "";
-			this.colValue.FormatInfo = null;
-			this.colValue.HeaderText = "Value";
-			this.colValue.MappingName = "Value";
-			this.colValue.NullText = "";
-			this.colValue.Width = 75;
-			// 
-			// GlobalUserMetaData
-			// 
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(776, 1002);
-			this.Controls.Add(this.Grid);
-			this.Controls.Add(this.toolBar1);
-			this.DockAreas = ((DockAreas)(((((DockAreas.Float | DockAreas.DockLeft) 
-				| DockAreas.DockRight) 
-				| DockAreas.DockTop) 
-				| DockAreas.DockBottom)));
-			this.HideOnClose = true;
-			this.Name = "GlobalUserMetaData";
-			this.ShowHint = DockState.DockRight;
-			this.Text = "Global User Meta Data";
-			this.Load += new System.EventHandler(this.GlobalUserMetaData_Load);
-			((System.ComponentModel.ISupportInitialize)(this.Grid)).EndInit();
-			this.ResumeLayout(false);
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GlobalUserMetaData));
+            this.toolBarButton_Save = new System.Windows.Forms.ToolBarButton();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.toolBar1 = new System.Windows.Forms.ToolBar();
+            this.Grid = new System.Windows.Forms.DataGrid();
+            this.MyStyle = new System.Windows.Forms.DataGridTableStyle();
+            this.colKey = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.colValue = new System.Windows.Forms.DataGridTextBoxColumn();
+            ((System.ComponentModel.ISupportInitialize)(this.Grid)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // toolBarButton_Save
+            // 
+            this.toolBarButton_Save.ImageIndex = 0;
+            this.toolBarButton_Save.Name = "toolBarButton_Save";
+            this.toolBarButton_Save.Tag = "save";
+            this.toolBarButton_Save.ToolTipText = "Save Language Mappings";
+            // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Magenta;
+            this.imageList1.Images.SetKeyName(0, "");
+            this.imageList1.Images.SetKeyName(1, "");
+            this.imageList1.Images.SetKeyName(2, "");
+            // 
+            // toolBar1
+            // 
+            this.toolBar1.Appearance = System.Windows.Forms.ToolBarAppearance.Flat;
+            this.toolBar1.AutoSize = false;
+            this.toolBar1.Buttons.AddRange(new System.Windows.Forms.ToolBarButton[] {
+            this.toolBarButton_Save});
+            this.toolBar1.Divider = false;
+            this.toolBar1.DropDownArrows = true;
+            this.toolBar1.ImageList = this.imageList1;
+            this.toolBar1.Location = new System.Drawing.Point(0, 0);
+            this.toolBar1.Name = "toolBar1";
+            this.toolBar1.ShowToolTips = true;
+            this.toolBar1.Size = new System.Drawing.Size(776, 26);
+            this.toolBar1.TabIndex = 10;
+            this.toolBar1.ButtonClick += new System.Windows.Forms.ToolBarButtonClickEventHandler(this.toolBar1_ButtonClick);
+            // 
+            // Grid
+            // 
+            this.Grid.BackColor = System.Drawing.Color.LightGreen;
+            this.Grid.BackgroundColor = System.Drawing.Color.LightGreen;
+            this.Grid.CaptionVisible = false;
+            this.Grid.DataMember = "";
+            this.Grid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Grid.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
+            this.Grid.HeaderFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Grid.HeaderForeColor = System.Drawing.SystemColors.ControlText;
+            this.Grid.Location = new System.Drawing.Point(0, 26);
+            this.Grid.Name = "Grid";
+            this.Grid.Size = new System.Drawing.Size(776, 976);
+            this.Grid.TabIndex = 20;
+            this.Grid.TableStyles.AddRange(new System.Windows.Forms.DataGridTableStyle[] {
+            this.MyStyle});
+            // 
+            // MyStyle
+            // 
+            this.MyStyle.AlternatingBackColor = System.Drawing.Color.LightGreen;
+            this.MyStyle.BackColor = System.Drawing.Color.PaleGreen;
+            this.MyStyle.DataGrid = this.Grid;
+            this.MyStyle.GridColumnStyles.AddRange(new System.Windows.Forms.DataGridColumnStyle[] {
+            this.colKey,
+            this.colValue});
+            this.MyStyle.GridLineColor = System.Drawing.Color.OliveDrab;
+            this.MyStyle.HeaderForeColor = System.Drawing.SystemColors.ControlText;
+            this.MyStyle.MappingName = "MyData";
+            // 
+            // colKey
+            // 
+            this.colKey.Format = "";
+            this.colKey.FormatInfo = null;
+            this.colKey.HeaderText = "Key";
+            this.colKey.MappingName = "Key";
+            this.colKey.NullText = "";
+            this.colKey.Width = 75;
+            // 
+            // colValue
+            // 
+            this.colValue.Format = "";
+            this.colValue.FormatInfo = null;
+            this.colValue.HeaderText = "Value";
+            this.colValue.MappingName = "Value";
+            this.colValue.NullText = "";
+            this.colValue.Width = 75;
+            // 
+            // GlobalUserMetaData
+            // 
+            this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
+            this.ClientSize = new System.Drawing.Size(776, 1002);
+            this.Controls.Add(this.Grid);
+            this.Controls.Add(this.toolBar1);
+            this.HideOnClose = true;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "GlobalUserMetaData";
+            this.TabText = "Global User Meta Data";
+            this.Text = "Global User Meta Data";
+            this.Load += new System.EventHandler(this.GlobalUserMetaData_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.Grid)).EndInit();
+            this.ResumeLayout(false);
 
 		}
 		#endregion

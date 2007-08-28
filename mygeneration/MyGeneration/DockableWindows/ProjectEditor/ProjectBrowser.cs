@@ -442,10 +442,6 @@ namespace MyGeneration
             this.ClientSize = new System.Drawing.Size(384, 542);
             this.Controls.Add(this.treeViewProject);
             this.Controls.Add(this.toolBarToolbar);
-            this.DockAreas = ((DockAreas)(((((DockAreas.Float | DockAreas.DockLeft)
-                        | DockAreas.DockRight)
-                        | DockAreas.DockTop)
-                        | DockAreas.DockBottom)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Menu = this.mainMenuProject;
             this.Name = "ProjectBrowser";

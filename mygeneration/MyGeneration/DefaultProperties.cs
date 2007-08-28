@@ -106,14 +106,14 @@ namespace MyGeneration
         private ToolStrip toolStripOptions;
         private ToolStripButton toolStripButtonSave;
         private ToolStripSeparator toolStripSeparator1;
-        private IMyGenerationMDI parent;
+        private IMyGenerationMDI mdi;
         private dbRoot myMeta = new dbRoot();
 
-		public DefaultProperties(IMyGenerationMDI parent)
+        public DefaultProperties(IMyGenerationMDI mdi)
 		{
 			InitializeComponent();
 
-            this.parent = parent;
+            this.mdi = mdi;
 			this.defaultOleDbButtonColor = this.btnOleDb.BackColor;
 
 			DataTable dt = new DataTable();
@@ -782,7 +782,7 @@ namespace MyGeneration
             this.tabScript.Controls.Add(this.txtDefaultTemplatePath);
             this.tabScript.Location = new System.Drawing.Point(4, 22);
             this.tabScript.Name = "tabScript";
-            this.tabScript.Size = new System.Drawing.Size(604, 494);
+            this.tabScript.Size = new System.Drawing.Size(698, 535);
             this.tabScript.TabIndex = 1;
             this.tabScript.Text = "Templates";
             // 
@@ -1078,7 +1078,7 @@ namespace MyGeneration
             this.tabMisc.Controls.Add(this.chkForUpdates);
             this.tabMisc.Location = new System.Drawing.Point(4, 22);
             this.tabMisc.Name = "tabMisc";
-            this.tabMisc.Size = new System.Drawing.Size(604, 494);
+            this.tabMisc.Size = new System.Drawing.Size(698, 535);
             this.tabMisc.TabIndex = 2;
             this.tabMisc.Text = "Misc";
             // 
@@ -1134,6 +1134,7 @@ namespace MyGeneration
             this.ClientSize = new System.Drawing.Size(706, 560);
             this.Controls.Add(this.toolStripOptions);
             this.Controls.Add(this.tabControl);
+            this.DockAreas = WeifenLuo.WinFormsUI.Docking.DockAreas.Document;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -1141,7 +1142,6 @@ namespace MyGeneration
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.TabText = "Default Settings";
             this.Text = "Default Settings";
-            this.Shown += new System.EventHandler(this.DefaultProperties_Shown);
             this.Closing += new System.ComponentModel.CancelEventHandler(this.DefaultProperties_Closing);
             this.Load += new System.EventHandler(this.DefaultProperties_Load);
             this.tabControl.ResumeLayout(false);
@@ -1264,7 +1264,8 @@ namespace MyGeneration
 			{
 				BindControlsToSettings();
 
-				settings.Save();
+                settings.Save();
+                mdi.SendAlert(this, "UpdateDefaultSettings");
 
 				this.DialogResult = DialogResult.OK;
 			}
@@ -1737,11 +1738,8 @@ namespace MyGeneration
                 BindControlsToSettings();
 
                 settings.Save();
+                mdi.SendAlert(this, "UpdateDefaultSettings");
             }
-        }
-
-        private void DefaultProperties_Shown(object sender, EventArgs e)
-        {
         }
 
         #region IMyGenDocument Members

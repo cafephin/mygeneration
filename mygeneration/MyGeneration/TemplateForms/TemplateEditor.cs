@@ -765,7 +765,7 @@ namespace MyGeneration
             this.splitterConsole.ControlToHide = this.panelConsole;
             this.splitterConsole.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.splitterConsole.ExpandParentForm = false;
-            this.splitterConsole.Location = new System.Drawing.Point(0, 598);
+            this.splitterConsole.Location = new System.Drawing.Point(0, 593);
             this.splitterConsole.Name = "splitterConsole";
             this.splitterConsole.TabIndex = 5;
             this.splitterConsole.TabStop = false;
@@ -805,7 +805,7 @@ namespace MyGeneration
             this.panelProperties.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelProperties.Location = new System.Drawing.Point(0, 0);
             this.panelProperties.Name = "panelProperties";
-            this.panelProperties.Size = new System.Drawing.Size(304, 598);
+            this.panelProperties.Size = new System.Drawing.Size(304, 593);
             this.panelProperties.TabIndex = 3;
             // 
             // buttonNewGuid
@@ -1126,7 +1126,7 @@ namespace MyGeneration
             this.tabControlTemplate.Location = new System.Drawing.Point(312, 0);
             this.tabControlTemplate.Name = "tabControlTemplate";
             this.tabControlTemplate.SelectedIndex = 0;
-            this.tabControlTemplate.Size = new System.Drawing.Size(588, 598);
+            this.tabControlTemplate.Size = new System.Drawing.Size(588, 593);
             this.tabControlTemplate.TabIndex = 2;
             this.tabControlTemplate.SelectedIndexChanged += new System.EventHandler(this.tabControlTemplate_SelectedIndexChanged);
             // 
@@ -1135,7 +1135,7 @@ namespace MyGeneration
             this.tabTemplateCode.BackColor = System.Drawing.Color.Transparent;
             this.tabTemplateCode.Location = new System.Drawing.Point(4, 22);
             this.tabTemplateCode.Name = "tabTemplateCode";
-            this.tabTemplateCode.Size = new System.Drawing.Size(580, 572);
+            this.tabTemplateCode.Size = new System.Drawing.Size(580, 567);
             this.tabTemplateCode.TabIndex = 0;
             this.tabTemplateCode.Text = "Template Code";
             this.tabTemplateCode.UseVisualStyleBackColor = true;
@@ -1145,7 +1145,7 @@ namespace MyGeneration
             this.tabInterfaceCode.BackColor = System.Drawing.Color.Transparent;
             this.tabInterfaceCode.Location = new System.Drawing.Point(4, 22);
             this.tabInterfaceCode.Name = "tabInterfaceCode";
-            this.tabInterfaceCode.Size = new System.Drawing.Size(580, 567);
+            this.tabInterfaceCode.Size = new System.Drawing.Size(580, 572);
             this.tabInterfaceCode.TabIndex = 1;
             this.tabInterfaceCode.Text = "Interface Code";
             this.tabInterfaceCode.UseVisualStyleBackColor = true;
@@ -1154,7 +1154,7 @@ namespace MyGeneration
             // 
             this.tabTemplateSource.Location = new System.Drawing.Point(4, 22);
             this.tabTemplateSource.Name = "tabTemplateSource";
-            this.tabTemplateSource.Size = new System.Drawing.Size(580, 567);
+            this.tabTemplateSource.Size = new System.Drawing.Size(580, 572);
             this.tabTemplateSource.TabIndex = 2;
             this.tabTemplateSource.Text = "Template Source";
             this.tabTemplateSource.UseVisualStyleBackColor = true;
@@ -1163,7 +1163,7 @@ namespace MyGeneration
             // 
             this.tabInterfaceSource.Location = new System.Drawing.Point(4, 22);
             this.tabInterfaceSource.Name = "tabInterfaceSource";
-            this.tabInterfaceSource.Size = new System.Drawing.Size(580, 567);
+            this.tabInterfaceSource.Size = new System.Drawing.Size(580, 572);
             this.tabInterfaceSource.TabIndex = 4;
             this.tabInterfaceSource.Text = "Interface Source";
             this.tabInterfaceSource.UseVisualStyleBackColor = true;
@@ -1172,7 +1172,7 @@ namespace MyGeneration
             // 
             this.tabOutput.Location = new System.Drawing.Point(4, 22);
             this.tabOutput.Name = "tabOutput";
-            this.tabOutput.Size = new System.Drawing.Size(580, 567);
+            this.tabOutput.Size = new System.Drawing.Size(580, 572);
             this.tabOutput.TabIndex = 3;
             this.tabOutput.Text = "Output";
             this.tabOutput.UseVisualStyleBackColor = true;
@@ -1563,6 +1563,7 @@ namespace MyGeneration
             this.Controls.Add(this.panelProperties);
             this.Controls.Add(this.splitterConsole);
             this.Controls.Add(this.panelConsole);
+            this.DockAreas = WeifenLuo.WinFormsUI.Docking.DockAreas.Document;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "TemplateEditor";
             this.TabText = "Template Editor";

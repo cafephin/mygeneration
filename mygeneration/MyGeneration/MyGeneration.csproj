@@ -263,12 +263,6 @@
     <Compile Include="TestConnectionForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TroubleShooting.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TroubleShooting.Designer.cs">
-      <DependentUpon>TroubleShooting.cs</DependentUpon>
-    </Compile>
     <Compile Include="UpdatesForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -395,10 +389,6 @@
       <DependentUpon>TestConnectionForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="TroubleShooting.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>TroubleShooting.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UpdatesForm.resx">
       <DependentUpon>UpdatesForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -418,7 +408,11 @@
     <Content Include="DockManager\WeifenLuo.WinFormsUI.Docking.dll" />
     <Content Include="Icons\App.ico" />
     <Content Include="Icons\DbTargetMappings.ico" />
+    <Content Include="Icons\DbTargets16x16.ico" />
+    <Content Include="Icons\GlobalMeta16x16.ico" />
+    <Content Include="Icons\LangMappings16x16.ico" />
     <Content Include="Icons\LanguageMappings.ico" />
+    <Content Include="Icons\LocalMeta16x16.ico" />
     <Content Include="Icons\MainWindow.ico" />
     <Content Include="Icons\MainWindow16x16.ico" />
     <Content Include="Icons\MetaDataBrowser.ico" />

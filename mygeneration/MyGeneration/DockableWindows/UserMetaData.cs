@@ -72,142 +72,142 @@ namespace MyGeneration
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.components = new System.ComponentModel.Container();
-			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(UserMetaData));
-			this.toolBar1 = new System.Windows.Forms.ToolBar();
-			this.toolBarButton_Save = new System.Windows.Forms.ToolBarButton();
-			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-			this.Grid = new System.Windows.Forms.DataGrid();
-			this.MyStyle = new System.Windows.Forms.DataGridTableStyle();
-			this.col_0 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.col_1 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.panel1 = new System.Windows.Forms.Panel();
-			this.txtNiceName = new System.Windows.Forms.TextBox();
-			this.label1 = new System.Windows.Forms.Label();
-			((System.ComponentModel.ISupportInitialize)(this.Grid)).BeginInit();
-			this.SuspendLayout();
-			// 
-			// toolBar1
-			// 
-			this.toolBar1.Appearance = System.Windows.Forms.ToolBarAppearance.Flat;
-			this.toolBar1.AutoSize = false;
-			this.toolBar1.Buttons.AddRange(new System.Windows.Forms.ToolBarButton[] {
-																						this.toolBarButton_Save});
-			this.toolBar1.Divider = false;
-			this.toolBar1.DropDownArrows = true;
-			this.toolBar1.ImageList = this.imageList1;
-			this.toolBar1.Location = new System.Drawing.Point(0, 0);
-			this.toolBar1.Name = "toolBar1";
-			this.toolBar1.ShowToolTips = true;
-			this.toolBar1.Size = new System.Drawing.Size(832, 26);
-			this.toolBar1.TabIndex = 1;
-			this.toolBar1.ButtonClick += new System.Windows.Forms.ToolBarButtonClickEventHandler(this.toolBar1_ButtonClick);
-			// 
-			// toolBarButton_Save
-			// 
-			this.toolBarButton_Save.ImageIndex = 0;
-			this.toolBarButton_Save.Tag = "save";
-			this.toolBarButton_Save.ToolTipText = "Save Language Mappings";
-			// 
-			// imageList1
-			// 
-			this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
-			this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-			this.imageList1.TransparentColor = System.Drawing.Color.Magenta;
-			// 
-			// Grid
-			// 
-			this.Grid.BackColor = System.Drawing.Color.Thistle;
-			this.Grid.BackgroundColor = System.Drawing.Color.Thistle;
-			this.Grid.CaptionVisible = false;
-			this.Grid.DataMember = "";
-			this.Grid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Grid.Font = MetaDataBrowser.BoldFont;
-			this.Grid.HeaderFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.Grid.HeaderForeColor = System.Drawing.SystemColors.ControlText;
-			this.Grid.Location = new System.Drawing.Point(0, 74);
-			this.Grid.Name = "Grid";
-			this.Grid.Size = new System.Drawing.Size(832, 939);
-			this.Grid.TabIndex = 9;
-			this.Grid.TableStyles.AddRange(new System.Windows.Forms.DataGridTableStyle[] {
-																							 this.MyStyle});
-			// 
-			// MyStyle
-			// 
-			this.MyStyle.AlternatingBackColor = System.Drawing.Color.Thistle;
-			this.MyStyle.BackColor = System.Drawing.Color.Plum;
-			this.MyStyle.DataGrid = this.Grid;
-			this.MyStyle.GridColumnStyles.AddRange(new System.Windows.Forms.DataGridColumnStyle[] {
-																									  this.col_0,
-																									  this.col_1});
-			this.MyStyle.GridLineColor = System.Drawing.Color.Orchid;
-			this.MyStyle.HeaderForeColor = System.Drawing.SystemColors.ControlText;
-			this.MyStyle.MappingName = "MyData";
-			// 
-			// col_0
-			// 
-			this.col_0.Format = "";
-			this.col_0.FormatInfo = null;
-			this.col_0.MappingName = "Key";
-			this.col_0.NullText = "";
-			this.col_0.Width = 75;
-			// 
-			// col_1
-			// 
-			this.col_1.Format = "";
-			this.col_1.FormatInfo = null;
-			this.col_1.MappingName = "Value";
-			this.col_1.NullText = "";
-			this.col_1.Width = 75;
-			// 
-			// panel1
-			// 
-			this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-			this.panel1.Location = new System.Drawing.Point(0, 62);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(832, 12);
-			this.panel1.TabIndex = 8;
-			// 
-			// txtNiceName
-			// 
-			this.txtNiceName.Dock = System.Windows.Forms.DockStyle.Top;
-			this.txtNiceName.Location = new System.Drawing.Point(0, 42);
-			this.txtNiceName.Name = "txtNiceName";
-			this.txtNiceName.Size = new System.Drawing.Size(832, 20);
-			this.txtNiceName.TabIndex = 7;
-			this.txtNiceName.Text = "";
-			this.txtNiceName.Leave += new System.EventHandler(this.PropertyNiceNameLeave);
-			// 
-			// label1
-			// 
-			this.label1.Dock = System.Windows.Forms.DockStyle.Top;
-			this.label1.Location = new System.Drawing.Point(0, 26);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(832, 16);
-			this.label1.TabIndex = 6;
-			this.label1.Text = "Alias:";
-			// 
-			// UserMetaData
-			// 
-			this.DockAreas = ((DockAreas)(((((DockAreas.Float | DockAreas.DockLeft) 
-				| DockAreas.DockRight) 
-				| DockAreas.DockTop) 
-				| DockAreas.DockBottom)));
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.AutoScroll = true;
-			this.ClientSize = new System.Drawing.Size(832, 1013);
-			this.Controls.Add(this.Grid);
-			this.Controls.Add(this.panel1);
-			this.Controls.Add(this.txtNiceName);
-			this.Controls.Add(this.label1);
-			this.Controls.Add(this.toolBar1);
-			this.HideOnClose = true;
-			this.Name = "UserMetaData";
-			this.ShowHint = DockState.DockRight;
-			this.Text = "User Meta Data";
-			this.Load += new System.EventHandler(this.UserMetaData_Load);
-			((System.ComponentModel.ISupportInitialize)(this.Grid)).EndInit();
-			this.ResumeLayout(false);
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserMetaData));
+            this.toolBar1 = new System.Windows.Forms.ToolBar();
+            this.toolBarButton_Save = new System.Windows.Forms.ToolBarButton();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.Grid = new System.Windows.Forms.DataGrid();
+            this.MyStyle = new System.Windows.Forms.DataGridTableStyle();
+            this.col_0 = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.col_1 = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.txtNiceName = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.Grid)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // toolBar1
+            // 
+            this.toolBar1.Appearance = System.Windows.Forms.ToolBarAppearance.Flat;
+            this.toolBar1.AutoSize = false;
+            this.toolBar1.Buttons.AddRange(new System.Windows.Forms.ToolBarButton[] {
+            this.toolBarButton_Save});
+            this.toolBar1.Divider = false;
+            this.toolBar1.DropDownArrows = true;
+            this.toolBar1.ImageList = this.imageList1;
+            this.toolBar1.Location = new System.Drawing.Point(0, 0);
+            this.toolBar1.Name = "toolBar1";
+            this.toolBar1.ShowToolTips = true;
+            this.toolBar1.Size = new System.Drawing.Size(832, 26);
+            this.toolBar1.TabIndex = 1;
+            this.toolBar1.ButtonClick += new System.Windows.Forms.ToolBarButtonClickEventHandler(this.toolBar1_ButtonClick);
+            // 
+            // toolBarButton_Save
+            // 
+            this.toolBarButton_Save.ImageIndex = 0;
+            this.toolBarButton_Save.Name = "toolBarButton_Save";
+            this.toolBarButton_Save.Tag = "save";
+            this.toolBarButton_Save.ToolTipText = "Save Language Mappings";
+            // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Magenta;
+            this.imageList1.Images.SetKeyName(0, "");
+            this.imageList1.Images.SetKeyName(1, "");
+            this.imageList1.Images.SetKeyName(2, "");
+            // 
+            // Grid
+            // 
+            this.Grid.BackColor = System.Drawing.Color.Thistle;
+            this.Grid.BackgroundColor = System.Drawing.Color.Thistle;
+            this.Grid.CaptionVisible = false;
+            this.Grid.DataMember = "";
+            this.Grid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Grid.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
+            this.Grid.HeaderFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Grid.HeaderForeColor = System.Drawing.SystemColors.ControlText;
+            this.Grid.Location = new System.Drawing.Point(0, 74);
+            this.Grid.Name = "Grid";
+            this.Grid.Size = new System.Drawing.Size(832, 939);
+            this.Grid.TabIndex = 9;
+            this.Grid.TableStyles.AddRange(new System.Windows.Forms.DataGridTableStyle[] {
+            this.MyStyle});
+            // 
+            // MyStyle
+            // 
+            this.MyStyle.AlternatingBackColor = System.Drawing.Color.Thistle;
+            this.MyStyle.BackColor = System.Drawing.Color.Plum;
+            this.MyStyle.DataGrid = this.Grid;
+            this.MyStyle.GridColumnStyles.AddRange(new System.Windows.Forms.DataGridColumnStyle[] {
+            this.col_0,
+            this.col_1});
+            this.MyStyle.GridLineColor = System.Drawing.Color.Orchid;
+            this.MyStyle.HeaderForeColor = System.Drawing.SystemColors.ControlText;
+            this.MyStyle.MappingName = "MyData";
+            // 
+            // col_0
+            // 
+            this.col_0.Format = "";
+            this.col_0.FormatInfo = null;
+            this.col_0.MappingName = "Key";
+            this.col_0.NullText = "";
+            this.col_0.Width = 75;
+            // 
+            // col_1
+            // 
+            this.col_1.Format = "";
+            this.col_1.FormatInfo = null;
+            this.col_1.MappingName = "Value";
+            this.col_1.NullText = "";
+            this.col_1.Width = 75;
+            // 
+            // panel1
+            // 
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 62);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(832, 12);
+            this.panel1.TabIndex = 8;
+            // 
+            // txtNiceName
+            // 
+            this.txtNiceName.Dock = System.Windows.Forms.DockStyle.Top;
+            this.txtNiceName.Location = new System.Drawing.Point(0, 42);
+            this.txtNiceName.Name = "txtNiceName";
+            this.txtNiceName.Size = new System.Drawing.Size(832, 20);
+            this.txtNiceName.TabIndex = 7;
+            this.txtNiceName.Leave += new System.EventHandler(this.PropertyNiceNameLeave);
+            // 
+            // label1
+            // 
+            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label1.Location = new System.Drawing.Point(0, 26);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(832, 16);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Alias:";
+            // 
+            // UserMetaData
+            // 
+            this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
+            this.AutoScroll = true;
+            this.ClientSize = new System.Drawing.Size(832, 1013);
+            this.Controls.Add(this.Grid);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.txtNiceName);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.toolBar1);
+            this.HideOnClose = true;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "UserMetaData";
+            this.TabText = "User Meta Data";
+            this.Text = "User Meta Data";
+            this.Load += new System.EventHandler(this.UserMetaData_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.Grid)).EndInit();
+            this.ResumeLayout(false);
+            this.PerformLayout();
 
 		}
 		#endregion

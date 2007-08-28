@@ -217,185 +217,209 @@ namespace MyGeneration
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.components = new System.ComponentModel.Container();
-			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(TemplateBrowser));
-			this.toolBarToolbar = new System.Windows.Forms.ToolBar();
-			this.toolBarButtonRefresh = new System.Windows.Forms.ToolBarButton();
-			this.toolBarButtonMode = new System.Windows.Forms.ToolBarButton();
-			this.toolBarButtonWeb = new System.Windows.Forms.ToolBarButton();
-			this.toolBarSeparator2 = new System.Windows.Forms.ToolBarButton();
-			this.toolBarButtonOpen = new System.Windows.Forms.ToolBarButton();
-			this.toolBarSeparator1 = new System.Windows.Forms.ToolBarButton();
-			this.toolBarButtonSaveInput = new System.Windows.Forms.ToolBarButton();
-			this.toolBarButtonExecuteSavedInput = new System.Windows.Forms.ToolBarButton();
-			this.toolBarSeparator3 = new System.Windows.Forms.ToolBarButton();
-			this.toolBarButtonExecute = new System.Windows.Forms.ToolBarButton();
-			this.imageListFormIcons = new System.Windows.Forms.ImageList(this.components);
-			this.treeViewTemplates = new System.Windows.Forms.TreeView();
-			this.contextMenuTree = new System.Windows.Forms.ContextMenu();
-			this.menuItemExecute = new System.Windows.Forms.MenuItem();
-			this.menuItemOpen = new System.Windows.Forms.MenuItem();
-			this.menuItemWebUpdate = new System.Windows.Forms.MenuItem();
-			this.menuItemEncryptAs = new System.Windows.Forms.MenuItem();
-			this.menuItemCompileAs = new System.Windows.Forms.MenuItem();
-			this.menuItemDelete = new System.Windows.Forms.MenuItem();
-			this.toolTipTemplateBrowser = new System.Windows.Forms.ToolTip(this.components);
-			this.SuspendLayout();
-			// 
-			// toolBarToolbar
-			// 
-			this.toolBarToolbar.Appearance = System.Windows.Forms.ToolBarAppearance.Flat;
-			this.toolBarToolbar.Buttons.AddRange(new System.Windows.Forms.ToolBarButton[] {
-																							  this.toolBarButtonRefresh,
-																							  this.toolBarButtonMode,
-																							  this.toolBarButtonWeb,
-																							  this.toolBarSeparator2,
-																							  this.toolBarButtonOpen,
-																							  this.toolBarSeparator1,
-																							  this.toolBarButtonSaveInput,
-																							  this.toolBarButtonExecuteSavedInput,
-																							  this.toolBarSeparator3,
-																							  this.toolBarButtonExecute});
-			this.toolBarToolbar.DropDownArrows = true;
-			this.toolBarToolbar.ImageList = this.imageListFormIcons;
-			this.toolBarToolbar.Location = new System.Drawing.Point(0, 0);
-			this.toolBarToolbar.Name = "toolBarToolbar";
-			this.toolBarToolbar.ShowToolTips = true;
-			this.toolBarToolbar.Size = new System.Drawing.Size(384, 28);
-			this.toolBarToolbar.TabIndex = 0;
-			this.toolBarToolbar.ButtonClick += new System.Windows.Forms.ToolBarButtonClickEventHandler(this.toolBarToolbar_ButtonClick);
-			// 
-			// toolBarButtonRefresh
-			// 
-			this.toolBarButtonRefresh.ImageIndex = 2;
-			this.toolBarButtonRefresh.ToolTipText = "Refresh Template Browser";
-			// 
-			// toolBarButtonMode
-			// 
-			this.toolBarButtonMode.ImageIndex = 7;
-			this.toolBarButtonMode.Style = System.Windows.Forms.ToolBarButtonStyle.ToggleButton;
-			this.toolBarButtonMode.ToolTipText = "Browse Mode";
-			// 
-			// toolBarButtonWeb
-			// 
-			this.toolBarButtonWeb.ImageIndex = 10;
-			this.toolBarButtonWeb.ToolTipText = "Online Template Library";
-			// 
-			// toolBarSeparator2
-			// 
-			this.toolBarSeparator2.Style = System.Windows.Forms.ToolBarButtonStyle.Separator;
-			// 
-			// toolBarButtonOpen
-			// 
-			this.toolBarButtonOpen.ImageIndex = 0;
-			this.toolBarButtonOpen.ToolTipText = "Open Template";
-			// 
-			// toolBarSeparator1
-			// 
-			this.toolBarSeparator1.Style = System.Windows.Forms.ToolBarButtonStyle.Separator;
-			// 
-			// toolBarButtonSaveInput
-			// 
-			this.toolBarButtonSaveInput.ImageIndex = 8;
-			this.toolBarButtonSaveInput.ToolTipText = "Record a Template";
-			// 
-			// toolBarButtonExecuteSavedInput
-			// 
-			this.toolBarButtonExecuteSavedInput.ImageIndex = 9;
-			this.toolBarButtonExecuteSavedInput.ToolTipText = "Replay a Template";
-			// 
-			// toolBarSeparator3
-			// 
-			this.toolBarSeparator3.Style = System.Windows.Forms.ToolBarButtonStyle.Separator;
-			// 
-			// toolBarButtonExecute
-			// 
-			this.toolBarButtonExecute.ImageIndex = 1;
-			this.toolBarButtonExecute.ToolTipText = "Execute Template";
-			// 
-			// imageListFormIcons
-			// 
-			this.imageListFormIcons.ImageSize = new System.Drawing.Size(16, 16);
-			this.imageListFormIcons.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListFormIcons.ImageStream")));
-			this.imageListFormIcons.TransparentColor = System.Drawing.Color.Fuchsia;
-			// 
-			// treeViewTemplates
-			// 
-			this.treeViewTemplates.ContextMenu = this.contextMenuTree;
-			this.treeViewTemplates.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.treeViewTemplates.ImageList = this.imageListFormIcons;
-			this.treeViewTemplates.Location = new System.Drawing.Point(0, 28);
-			this.treeViewTemplates.Name = "treeViewTemplates";
-			this.treeViewTemplates.Size = new System.Drawing.Size(384, 514);
-			this.treeViewTemplates.TabIndex = 1;
-			// 
-			// contextMenuTree
-			// 
-			this.contextMenuTree.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																							this.menuItemExecute,
-																							this.menuItemOpen,
-																							this.menuItemWebUpdate,
-																							this.menuItemEncryptAs,
-																							this.menuItemCompileAs,
-																							this.menuItemDelete});
-			this.contextMenuTree.Popup += new System.EventHandler(this.contextMenuTree_Popup);
-			// 
-			// menuItemExecute
-			// 
-			this.menuItemExecute.Index = 0;
-			this.menuItemExecute.Text = "E&xecute";
-			this.menuItemExecute.Click += new System.EventHandler(this.menuItemExecute_Click);
-			// 
-			// menuItemOpen
-			// 
-			this.menuItemOpen.Index = 1;
-			this.menuItemOpen.Text = "&Open";
-			this.menuItemOpen.Click += new System.EventHandler(this.menuItemOpen_Click);
-			// 
-			// menuItemWebUpdate
-			// 
-			this.menuItemWebUpdate.Index = 2;
-			this.menuItemWebUpdate.Text = "&Web Update";
-			this.menuItemWebUpdate.Click += new System.EventHandler(this.menuItemWebUpdate_Click);
-			// 
-			// menuItemEncryptAs
-			// 
-			this.menuItemEncryptAs.Index = 3;
-			this.menuItemEncryptAs.Text = "Ecr&ypt As...";
-			this.menuItemEncryptAs.Visible = false;
-			this.menuItemEncryptAs.Click += new System.EventHandler(this.menuItemEncryptAs_Click);
-			// 
-			// menuItemCompileAs
-			// 
-			this.menuItemCompileAs.Index = 4;
-			this.menuItemCompileAs.Text = "&Compile As...";
-			this.menuItemCompileAs.Visible = false;
-			this.menuItemCompileAs.Click += new System.EventHandler(this.menuItemCompileAs_Click);
-			// 
-			// menuItemDelete
-			// 
-			this.menuItemDelete.Index = 5;
-			this.menuItemDelete.Text = "&Delete";
-			this.menuItemDelete.Click += new System.EventHandler(this.menuItemDelete_Click);
-			// 
-			// TemplateBrowser
-			// 
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(384, 542);
-			this.ControlBox = false;
-			this.Controls.Add(this.treeViewTemplates);
-			this.Controls.Add(this.toolBarToolbar);
-			this.DockAreas = ((DockAreas)(((((DockAreas.Float | DockAreas.DockLeft) 
-				| DockAreas.DockRight) 
-				| DockAreas.DockTop) 
-				| DockAreas.DockBottom)));
-			this.HideOnClose = true;
-			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.Name = "TemplateBrowser";
-			this.ShowHint = DockState.DockLeft;
-			this.Text = "Template Browser";
-			this.MouseLeave += new System.EventHandler(this.TemplateBrowser_MouseLeave);
-			this.ResumeLayout(false);
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TemplateBrowser));
+            this.toolBarToolbar = new System.Windows.Forms.ToolBar();
+            this.toolBarButtonRefresh = new System.Windows.Forms.ToolBarButton();
+            this.toolBarButtonMode = new System.Windows.Forms.ToolBarButton();
+            this.toolBarButtonWeb = new System.Windows.Forms.ToolBarButton();
+            this.toolBarSeparator2 = new System.Windows.Forms.ToolBarButton();
+            this.toolBarButtonOpen = new System.Windows.Forms.ToolBarButton();
+            this.toolBarSeparator1 = new System.Windows.Forms.ToolBarButton();
+            this.toolBarButtonSaveInput = new System.Windows.Forms.ToolBarButton();
+            this.toolBarButtonExecuteSavedInput = new System.Windows.Forms.ToolBarButton();
+            this.toolBarSeparator3 = new System.Windows.Forms.ToolBarButton();
+            this.toolBarButtonExecute = new System.Windows.Forms.ToolBarButton();
+            this.imageListFormIcons = new System.Windows.Forms.ImageList(this.components);
+            this.treeViewTemplates = new System.Windows.Forms.TreeView();
+            this.contextMenuTree = new System.Windows.Forms.ContextMenu();
+            this.menuItemExecute = new System.Windows.Forms.MenuItem();
+            this.menuItemOpen = new System.Windows.Forms.MenuItem();
+            this.menuItemWebUpdate = new System.Windows.Forms.MenuItem();
+            this.menuItemEncryptAs = new System.Windows.Forms.MenuItem();
+            this.menuItemCompileAs = new System.Windows.Forms.MenuItem();
+            this.menuItemDelete = new System.Windows.Forms.MenuItem();
+            this.toolTipTemplateBrowser = new System.Windows.Forms.ToolTip(this.components);
+            this.SuspendLayout();
+            // 
+            // toolBarToolbar
+            // 
+            this.toolBarToolbar.Appearance = System.Windows.Forms.ToolBarAppearance.Flat;
+            this.toolBarToolbar.Buttons.AddRange(new System.Windows.Forms.ToolBarButton[] {
+            this.toolBarButtonRefresh,
+            this.toolBarButtonMode,
+            this.toolBarButtonWeb,
+            this.toolBarSeparator2,
+            this.toolBarButtonOpen,
+            this.toolBarSeparator1,
+            this.toolBarButtonSaveInput,
+            this.toolBarButtonExecuteSavedInput,
+            this.toolBarSeparator3,
+            this.toolBarButtonExecute});
+            this.toolBarToolbar.DropDownArrows = true;
+            this.toolBarToolbar.ImageList = this.imageListFormIcons;
+            this.toolBarToolbar.Location = new System.Drawing.Point(0, 0);
+            this.toolBarToolbar.Name = "toolBarToolbar";
+            this.toolBarToolbar.ShowToolTips = true;
+            this.toolBarToolbar.Size = new System.Drawing.Size(384, 28);
+            this.toolBarToolbar.TabIndex = 0;
+            this.toolBarToolbar.ButtonClick += new System.Windows.Forms.ToolBarButtonClickEventHandler(this.toolBarToolbar_ButtonClick);
+            // 
+            // toolBarButtonRefresh
+            // 
+            this.toolBarButtonRefresh.ImageIndex = 2;
+            this.toolBarButtonRefresh.Name = "toolBarButtonRefresh";
+            this.toolBarButtonRefresh.ToolTipText = "Refresh Template Browser";
+            // 
+            // toolBarButtonMode
+            // 
+            this.toolBarButtonMode.ImageIndex = 7;
+            this.toolBarButtonMode.Name = "toolBarButtonMode";
+            this.toolBarButtonMode.Style = System.Windows.Forms.ToolBarButtonStyle.ToggleButton;
+            this.toolBarButtonMode.ToolTipText = "Browse Mode";
+            // 
+            // toolBarButtonWeb
+            // 
+            this.toolBarButtonWeb.ImageIndex = 10;
+            this.toolBarButtonWeb.Name = "toolBarButtonWeb";
+            this.toolBarButtonWeb.ToolTipText = "Online Template Library";
+            // 
+            // toolBarSeparator2
+            // 
+            this.toolBarSeparator2.Name = "toolBarSeparator2";
+            this.toolBarSeparator2.Style = System.Windows.Forms.ToolBarButtonStyle.Separator;
+            // 
+            // toolBarButtonOpen
+            // 
+            this.toolBarButtonOpen.ImageIndex = 0;
+            this.toolBarButtonOpen.Name = "toolBarButtonOpen";
+            this.toolBarButtonOpen.ToolTipText = "Open Template";
+            // 
+            // toolBarSeparator1
+            // 
+            this.toolBarSeparator1.Name = "toolBarSeparator1";
+            this.toolBarSeparator1.Style = System.Windows.Forms.ToolBarButtonStyle.Separator;
+            // 
+            // toolBarButtonSaveInput
+            // 
+            this.toolBarButtonSaveInput.ImageIndex = 8;
+            this.toolBarButtonSaveInput.Name = "toolBarButtonSaveInput";
+            this.toolBarButtonSaveInput.ToolTipText = "Record a Template";
+            // 
+            // toolBarButtonExecuteSavedInput
+            // 
+            this.toolBarButtonExecuteSavedInput.ImageIndex = 9;
+            this.toolBarButtonExecuteSavedInput.Name = "toolBarButtonExecuteSavedInput";
+            this.toolBarButtonExecuteSavedInput.ToolTipText = "Replay a Template";
+            // 
+            // toolBarSeparator3
+            // 
+            this.toolBarSeparator3.Name = "toolBarSeparator3";
+            this.toolBarSeparator3.Style = System.Windows.Forms.ToolBarButtonStyle.Separator;
+            // 
+            // toolBarButtonExecute
+            // 
+            this.toolBarButtonExecute.ImageIndex = 1;
+            this.toolBarButtonExecute.Name = "toolBarButtonExecute";
+            this.toolBarButtonExecute.ToolTipText = "Execute Template";
+            // 
+            // imageListFormIcons
+            // 
+            this.imageListFormIcons.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListFormIcons.ImageStream")));
+            this.imageListFormIcons.TransparentColor = System.Drawing.Color.Fuchsia;
+            this.imageListFormIcons.Images.SetKeyName(0, "");
+            this.imageListFormIcons.Images.SetKeyName(1, "");
+            this.imageListFormIcons.Images.SetKeyName(2, "");
+            this.imageListFormIcons.Images.SetKeyName(3, "");
+            this.imageListFormIcons.Images.SetKeyName(4, "");
+            this.imageListFormIcons.Images.SetKeyName(5, "");
+            this.imageListFormIcons.Images.SetKeyName(6, "");
+            this.imageListFormIcons.Images.SetKeyName(7, "");
+            this.imageListFormIcons.Images.SetKeyName(8, "");
+            this.imageListFormIcons.Images.SetKeyName(9, "");
+            this.imageListFormIcons.Images.SetKeyName(10, "");
+            this.imageListFormIcons.Images.SetKeyName(11, "");
+            // 
+            // treeViewTemplates
+            // 
+            this.treeViewTemplates.ContextMenu = this.contextMenuTree;
+            this.treeViewTemplates.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeViewTemplates.ImageIndex = 0;
+            this.treeViewTemplates.ImageList = this.imageListFormIcons;
+            this.treeViewTemplates.Location = new System.Drawing.Point(0, 28);
+            this.treeViewTemplates.Name = "treeViewTemplates";
+            this.treeViewTemplates.SelectedImageIndex = 0;
+            this.treeViewTemplates.Size = new System.Drawing.Size(384, 514);
+            this.treeViewTemplates.TabIndex = 1;
+            // 
+            // contextMenuTree
+            // 
+            this.contextMenuTree.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.menuItemExecute,
+            this.menuItemOpen,
+            this.menuItemWebUpdate,
+            this.menuItemEncryptAs,
+            this.menuItemCompileAs,
+            this.menuItemDelete});
+            this.contextMenuTree.Popup += new System.EventHandler(this.contextMenuTree_Popup);
+            // 
+            // menuItemExecute
+            // 
+            this.menuItemExecute.Index = 0;
+            this.menuItemExecute.Text = "E&xecute";
+            this.menuItemExecute.Click += new System.EventHandler(this.menuItemExecute_Click);
+            // 
+            // menuItemOpen
+            // 
+            this.menuItemOpen.Index = 1;
+            this.menuItemOpen.Text = "&Open";
+            this.menuItemOpen.Click += new System.EventHandler(this.menuItemOpen_Click);
+            // 
+            // menuItemWebUpdate
+            // 
+            this.menuItemWebUpdate.Index = 2;
+            this.menuItemWebUpdate.Text = "&Web Update";
+            this.menuItemWebUpdate.Click += new System.EventHandler(this.menuItemWebUpdate_Click);
+            // 
+            // menuItemEncryptAs
+            // 
+            this.menuItemEncryptAs.Index = 3;
+            this.menuItemEncryptAs.Text = "Ecr&ypt As...";
+            this.menuItemEncryptAs.Visible = false;
+            this.menuItemEncryptAs.Click += new System.EventHandler(this.menuItemEncryptAs_Click);
+            // 
+            // menuItemCompileAs
+            // 
+            this.menuItemCompileAs.Index = 4;
+            this.menuItemCompileAs.Text = "&Compile As...";
+            this.menuItemCompileAs.Visible = false;
+            this.menuItemCompileAs.Click += new System.EventHandler(this.menuItemCompileAs_Click);
+            // 
+            // menuItemDelete
+            // 
+            this.menuItemDelete.Index = 5;
+            this.menuItemDelete.Text = "&Delete";
+            this.menuItemDelete.Click += new System.EventHandler(this.menuItemDelete_Click);
+            // 
+            // TemplateBrowser
+            // 
+            this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
+            this.ClientSize = new System.Drawing.Size(384, 542);
+            this.ControlBox = false;
+            this.Controls.Add(this.treeViewTemplates);
+            this.Controls.Add(this.toolBarToolbar);
+            this.DockAreas = ((WeifenLuo.WinFormsUI.Docking.DockAreas)((((WeifenLuo.WinFormsUI.Docking.DockAreas.DockLeft | WeifenLuo.WinFormsUI.Docking.DockAreas.DockRight)
+                        | WeifenLuo.WinFormsUI.Docking.DockAreas.DockTop)
+                        | WeifenLuo.WinFormsUI.Docking.DockAreas.DockBottom)));
+            this.HideOnClose = true;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "TemplateBrowser";
+            this.ShowHint = WeifenLuo.WinFormsUI.Docking.DockState.DockLeft;
+            this.TabText = "Template Browser";
+            this.Text = "Template Browser";
+            this.MouseLeave += new System.EventHandler(this.TemplateBrowser_MouseLeave);
+            this.ResumeLayout(false);
+            this.PerformLayout();
 
 		}
 		#endregion
