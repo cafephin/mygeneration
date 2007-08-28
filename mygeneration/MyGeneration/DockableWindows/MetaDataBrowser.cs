@@ -1165,7 +1165,10 @@ namespace MyGeneration
 
         public void ProcessAlert(IMyGenContent sender, string command, params object[] args)
         {
-            //
+            if (command == "UpdateDefaultSettings")
+            {
+                this.DefaultSettingsChanged(DefaultSettings.Instance);
+            }
         }
 
         public bool CanClose(bool allowPrevent)

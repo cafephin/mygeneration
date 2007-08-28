@@ -330,6 +330,10 @@ namespace MyGeneration
                     ToolStripManager.Merge(mgd.ToolStrip, this.toolStrip1);
                 }
             }
+            else if (fe == null)
+            {
+                ToolStripManager.RevertMerge(toolStrip1);
+            }
         }
 
         private void dockPanel_ActiveDocumentChanged(object sender, EventArgs e)
@@ -447,146 +451,6 @@ namespace MyGeneration
         }
         #endregion
 
-        /*
-        #region Template Editor members
-        public enum TemplateKeyType 
-        {
-            FileName = 0,
-            UniqueID
-        }
-
-        private TemplateEditor OpenTemplateEditor(string engine, string language)
-        {
-            TemplateEditor template = new TemplateEditor(this);
-            template.FileNew("ENGINE", engine, "LANGUAGE", language);
-            template.Show(dockPanel);
-            return template;
-        }
-
-        private TemplateEditor OpenTemplateEditor()
-        {
-            TemplateEditor edit = new TemplateEditor(this);
-            edit.FileNew("ENGINE", ZeusConstants.Engines.DOT_NET_SCRIPT, "LANGUAGE", ZeusConstants.Languages.CSHARP);
-            edit.Show(dockPanel);
-            return edit;
-        }
-
-        private TemplateEditor OpenTemplateEditor(string filename)
-        {
-            TemplateEditor edit = null;
-
-            if (File.Exists(filename))
-            {
-                bool isopen = IsTemplateOpen(filename);
-
-                if (!isopen)
-                {
-                    edit = new TemplateEditor(this);
-                    edit.FileOpen(filename);
-                    edit.Show(dockPanel);
-                }
-                else
-                {
-                    edit = GetTemplateEditor(filename);
-                    edit.Activate();
-                }
-            }
-            else
-            {
-                edit = OpenTemplateEditor();
-            }
-
-            return edit;
-        }
-
-        private void CloseTemplateEditor(string filename)
-        {
-            TemplateEditor editor = this.GetTemplateEditor(TemplateKeyType.FileName, filename, null);
-            if (editor != null) editor.Close();
-        }
-
-        private void RefreshTemplateEditor(string uniqueId)
-        {
-            TemplateEditor editor = this.GetTemplateEditor(TemplateKeyType.UniqueID, uniqueId, null);
-            if (editor != null)
-            {
-                if (MessageBox.Show(this,
-                    "Template [" + editor.Title + "] has been updated outside of the Template Editor.\r\nWould you like to refresh it?",
-                    "Refresh Updated Template?",
-                    MessageBoxButtons.YesNo) == DialogResult.Yes)
-                {
-                    string filename = editor.CompleteFilePath;
-                    editor.Close();
-
-                    if (File.Exists(filename))
-                    {
-                        editor = new TemplateEditor(this);
-                        editor.FileOpen(filename);
-                        editor.Show(dockPanel);
-                    }
-                }
-            }
-        }
-
-        public bool IsTemplateOpen(string filename)
-        {
-            return IsTemplateOpen(filename, null);
-        }
-
-        public bool IsTemplateOpen(string filename, TemplateEditor exclude)
-        {
-            TemplateEditor editor = GetTemplateEditor(TemplateKeyType.FileName, filename, exclude);
-            return (editor != null);
-        }
-
-        public TemplateEditor GetTemplateEditor(string filename)
-        {
-            return GetTemplateEditor(TemplateKeyType.FileName, filename, null);
-        }
-
-        public TemplateEditor GetTemplateEditor(TemplateKeyType keyType, string varkey, TemplateEditor exclude)
-        {
-            string matchingKey, key = varkey;
-            FileInfo inf = null;
-            if (keyType == TemplateKeyType.FileName)
-            {
-                inf = new FileInfo(filename);
-                key = inf.FullName;
-            }
-
-            TemplateEditor editor = null;
-
-            if (dockPanel.DocumentStyle == DocumentStyle.SystemMdi)
-            {
-                foreach (Form form in MdiChildren)
-                {
-                    if ((form is TemplateEditor) && (form != exclude))
-                    {
-                        editor = form as TemplateEditor;
-                        matchingKey = (keyType == TemplateKeyType.FileName) ? editor.CompleteFilePath : editor.UniqueID;
-                        if (key.Equals(matchingKey, StringComparison.CurrentCultureIgnoreCase)) break;
-                        else editor = null;
-                    }
-                }
-            }
-            else
-            {
-                foreach (IDockContent content in dockPanel.Documents)
-                {
-                    if ((content is TemplateEditor) && (content != exclude))
-                    {
-                        editor = content as TemplateEditor;
-                        matchingKey = (keyType == TemplateKeyType.FileName) ? editor.CompleteFilePath : editor.UniqueID;
-                        if (key.Equals(matchingKey, StringComparison.CurrentCultureIgnoreCase)) break;
-                        else editor = null;
-                    }
-                }
-            }
-
-            return editor;
-        }
-        #endregion
-*/
         #region Menu Events
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -832,7 +696,11 @@ namespace MyGeneration
             get
             {
                 if ((userMetaData != null) && userMetaData.IsDisposed) userMetaData = null;
-                if (userMetaData == null) userMetaData = new UserMetaData(this);
+                if (userMetaData == null)
+                {
+                    userMetaData = new UserMetaData(this);
+                    userMetaData.MetaDataBrowser = this.MetaDataBrowserDockContent;
+                }
                 return userMetaData;
             }
         }
@@ -842,7 +710,11 @@ namespace MyGeneration
             get
             {
                 if ((globalUserMetaData != null) && globalUserMetaData.IsDisposed) globalUserMetaData = null;
-                if (globalUserMetaData == null) globalUserMetaData = new GlobalUserMetaData(this);
+                if (globalUserMetaData == null)
+                {
+                    globalUserMetaData = new GlobalUserMetaData(this);
+                    globalUserMetaData.MetaDataBrowser = this.MetaDataBrowserDockContent;
+                }
                 return globalUserMetaData;
             }
         }
