@@ -107,6 +107,11 @@ namespace MyGeneration
         private ToolStripButton toolStripButtonSave;
         private ToolStripSeparator toolStripSeparator1;
         private IMyGenerationMDI mdi;
+        private MenuStrip menuStripMain;
+        private ToolStripMenuItem fileToolStripMenuItem;
+        private ToolStripMenuItem saveToolStripMenuItem;
+        private ToolStripMenuItem closeToolStripMenuItem;
+        private ToolStripSeparator toolStripMenuItem7;
         private dbRoot myMeta = new dbRoot();
 
         public DefaultProperties(IMyGenerationMDI mdi)
@@ -388,6 +393,11 @@ namespace MyGeneration
             this.toolStripButtonSave = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
+            this.menuStripMain = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripSeparator();
             this.tabControl.SuspendLayout();
             this.tabConnection.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -401,6 +411,7 @@ namespace MyGeneration
             this.groupBoxTimout.SuspendLayout();
             this.tabMisc.SuspendLayout();
             this.toolStripOptions.SuspendLayout();
+            this.menuStripMain.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -1128,10 +1139,61 @@ namespace MyGeneration
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
+            // menuStripMain
+            // 
+            this.menuStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem});
+            this.menuStripMain.Location = new System.Drawing.Point(0, 0);
+            this.menuStripMain.Name = "menuStripMain";
+            this.menuStripMain.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
+            this.menuStripMain.Size = new System.Drawing.Size(706, 24);
+            this.menuStripMain.TabIndex = 39;
+            this.menuStripMain.Text = "menuStrip1";
+            this.menuStripMain.Visible = false;
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveToolStripMenuItem,
+            this.closeToolStripMenuItem,
+            this.toolStripMenuItem7});
+            this.fileToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.MatchOnly;
+            this.fileToolStripMenuItem.MergeIndex = 0;
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(35, 20);
+            this.fileToolStripMenuItem.Text = "&File";
+            // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.saveToolStripMenuItem.MergeIndex = 4;
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveToolStripMenuItem.Text = "&Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            // 
+            // closeToolStripMenuItem
+            // 
+            this.closeToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.closeToolStripMenuItem.MergeIndex = 6;
+            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.closeToolStripMenuItem.Text = "&Close";
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem7
+            // 
+            this.toolStripMenuItem7.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.toolStripMenuItem7.MergeIndex = 7;
+            this.toolStripMenuItem7.Name = "toolStripMenuItem7";
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(149, 6);
+            // 
             // DefaultProperties
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.ClientSize = new System.Drawing.Size(706, 560);
+            this.Controls.Add(this.menuStripMain);
             this.Controls.Add(this.toolStripOptions);
             this.Controls.Add(this.tabControl);
             this.DockAreas = WeifenLuo.WinFormsUI.Docking.DockAreas.Document;
@@ -1166,6 +1228,8 @@ namespace MyGeneration
             this.tabMisc.ResumeLayout(false);
             this.toolStripOptions.ResumeLayout(false);
             this.toolStripOptions.PerformLayout();
+            this.menuStripMain.ResumeLayout(false);
+            this.menuStripMain.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1253,12 +1317,7 @@ namespace MyGeneration
 			}		
 		}
 
-		private void btnCancel_Click(object sender, System.EventArgs e)
-		{
-			this.DialogResult = DialogResult.Cancel;
-		}
-
-		private void btnOK_Click(object sender, System.EventArgs e)
+		/*private void btnOK_Click(object sender, System.EventArgs e)
 		{
 			if(this.TestConnection(true))
 			{
@@ -1269,7 +1328,7 @@ namespace MyGeneration
 
 				this.DialogResult = DialogResult.OK;
 			}
-		}
+		}*/
 
         private bool ConnectionInfoModified()
         {
@@ -1671,41 +1730,44 @@ namespace MyGeneration
 			}
 		}
 
-		private void DefaultProperties_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-		{
-			if (this.DialogResult == DialogResult.Cancel) 
-			{
-                if (SettingsModified())
-				{
-					// Something's Changed since the load...
-					DialogResult r = MessageBox.Show("Default settings have changed.\r\n Exit without saving anyway?", "Default Settings Changed", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
-					if (r == DialogResult.No) 
-					{                        
-						e.Cancel = true;
-					}
-				}
-				else if (ConnectionInfoModified()) 
-				{
-					// Something's Changed since the load...
-					DialogResult r = MessageBox.Show("The loaded connection profile has changed.\r\n Exit without saving anyway?", "Connection Profile Changed", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
-					if (r == DialogResult.No) 
-					{
-						e.Cancel = true;
-					}
-				}
-			} // if cancel
-            if (!e.Cancel)
-                settings.DiscardChanges();
-		}
+        private void DefaultProperties_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            DialogResult r = DialogResult.None;
 
-        // not used
-        //public bool HaveSettingsChanged 
-        //{
-        //    get 
-        //    {
-        //        return this.haveSettingsChanged;
-        //    }
-        //}
+            // Something's Changed since the load...
+            if (SettingsModified())
+            {
+                r = MessageBox.Show("Default settings have changed.\r\n Would you like to save before exiting?", "Default Settings Changed", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
+            }
+            else if (ConnectionInfoModified())
+            {
+                r = MessageBox.Show("The loaded connection profile has changed.\r\n Would you like to save before exiting?", "Connection Profile Changed", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
+            }
+
+            if (r != DialogResult.None)
+            {
+                if (r == DialogResult.Cancel)
+                {
+                    e.Cancel = true;
+                }
+                else if (r == DialogResult.Yes)
+                {
+                    if (this.TestConnection(true))
+                    {
+                        BindControlsToSettings();
+
+                        settings.Save();
+                        mdi.SendAlert(this, "UpdateDefaultSettings");
+
+                        this.DialogResult = DialogResult.OK;
+                    }
+                }
+                else
+                {
+                    settings.DiscardChanges();
+                }
+            }
+        }
 
         private void buttonFont_Click(object sender, EventArgs e)
         {
@@ -1742,6 +1804,22 @@ namespace MyGeneration
             }
         }
 
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.TestConnection(true))
+            {
+                BindControlsToSettings();
+
+                settings.Save();
+                mdi.SendAlert(this, "UpdateDefaultSettings");
+            }
+        }
+
+        private void closeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
         #region IMyGenDocument Members
 
         public ToolStrip ToolStrip
@@ -1770,5 +1848,6 @@ namespace MyGeneration
         }
 
         #endregion
+
     }
 }

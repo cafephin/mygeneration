@@ -75,41 +75,52 @@ namespace MyGeneration
 
             // Open File Dialog Setup
             StringBuilder dialogString = new StringBuilder();
-            IEditorManager editorManager = new TemplateEditorManager();
-            if (editorManager.FileExtensions.Count > 0)
-            {
-                dialogString.Append("All MyGeneration Files (");
-                StringBuilder exts = new StringBuilder();
-                foreach (string ext in editorManager.FileExtensions.Keys)
-                {
-                    if (exts.Length == 0)
-                        exts.AppendFormat("*.{0}", ext);
-                    else
-                        exts.AppendFormat(";*.{0}", ext);
-                }
-                dialogString.Append(exts).Append(")|").Append(exts).Append("|");
+            
+            IEditorManager em = new ProjectEditorManager();
+            editorManagers[em.Name] = em;
+            em = new TemplateEditorManager();
+            editorManagers[em.Name] = em;
 
-                foreach (string ext in editorManager.FileExtensions.Keys)
-                    dialogString.AppendFormat("{0} (*.{1})|*.{1}|", editorManager.FileExtensions[ext], ext);
+            dialogString.Append("All MyGeneration Files (");
+            StringBuilder exts = new StringBuilder();
+            foreach (IEditorManager editorManager in editorManagers.Values)
+            {
+                if (editorManager.FileExtensions.Count > 0)
+                {
+                    foreach (string ext in editorManager.FileExtensions.Keys)
+                    {
+                        if (exts.Length == 0)
+                            exts.AppendFormat("*.{0}", ext);
+                        else
+                            exts.AppendFormat(";*.{0}", ext);
+                    }
+                }
+            }
+            dialogString.Append(exts).Append(")|").Append(exts).Append("|");
+            foreach (IEditorManager editorManager in editorManagers.Values)
+            {
+                if (editorManager.FileExtensions.Count > 0)
+                {
+                    foreach (string ext in editorManager.FileExtensions.Keys)
+                        dialogString.AppendFormat("{0} (*.{1})|*.{1}|", editorManager.FileExtensions[ext], ext);
+                }
             }
             dialogString.Append("All files (*.*)|*.*");
 
             openFileDialogString = dialogString.ToString();
-            editorManagers[editorManager.Name] = editorManager;
 
             // New File Menu Setup
-            foreach (string ftype in editorManager.FileTypes)
+            foreach (IEditorManager editorManager in editorManagers.Values)
             {
-                ToolStripMenuItem i = new ToolStripMenuItem(ftype, null, newFileDynamicToolStripMenuItem_Click);
-                this.newToolStripMenuItem.DropDownItems.Add(i);
+                foreach (string ftype in editorManager.FileTypes)
+                {
+                    ToolStripMenuItem i = new ToolStripMenuItem(ftype, null, newFileDynamicToolStripMenuItem_Click);
+                    this.newToolStripMenuItem.DropDownItems.Add(i);
 
-                ToolStripMenuItem ti = new ToolStripMenuItem(ftype, null, newFileDynamicToolStripMenuItem_Click);
-                toolStripDropDownButtonNew.DropDownItems.Add(ti);
+                    ToolStripMenuItem ti = new ToolStripMenuItem(ftype, null, newFileDynamicToolStripMenuItem_Click);
+                    toolStripDropDownButtonNew.DropDownItems.Add(ti);
+                }
             }
-
-            //editorManager = new ProjectBrowser();
-            //openFileDialogString = editorManager.OpenFileDialogString + openFileDialogString;
-            //editorManagers[editorManager.Name] = editorManager;
 
             this.RefreshRecentFiles();
         }
@@ -196,7 +207,10 @@ namespace MyGeneration
             // Show Default Properties if this is the first load.
             if (settings.FirstLoad)
             {
-                OptionsDockContent.ShowDialog(this);
+                if (this.OptionsDockContent.IsHidden)
+                    this.OptionsDockContent.Show(this.dockPanel);
+
+                this.OptionsDockContent.Activate();
             }
         }
 

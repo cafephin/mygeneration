@@ -25,25 +25,10 @@ namespace MyGeneration
 		private const int INDEX_OPEN_FOLDER = 1;
 
         private IMyGenerationMDI mdi;
-		private System.Windows.Forms.ToolBar toolBarToolbar;
-		private System.Windows.Forms.ImageList imageListFormIcons;
 		private System.Windows.Forms.ContextMenu contextMenuTree;
 		private System.Windows.Forms.TreeView treeViewProject;
 		private System.Windows.Forms.ToolTip toolTipProjectBrowser;
-		private System.ComponentModel.IContainer components;
-		private System.Windows.Forms.ToolBarButton toolBarButtonSep1;
-		private System.Windows.Forms.ToolBarButton toolBarButtonView;
-		private System.Windows.Forms.ToolBarButton toolBarButtonExecute;
-		private System.Windows.Forms.ToolBarButton toolBarButtonSave;
-		private System.Windows.Forms.ToolBarButton toolBarButtonSep2;
-		private System.Windows.Forms.ToolBarButton toolBarButtonSaveAs;
-		private System.Windows.Forms.MainMenu mainMenuProject;
-		private System.Windows.Forms.MenuItem menuItemProject;
-		private System.Windows.Forms.MenuItem menuItemExecute;
-		private System.Windows.Forms.MenuItem menuItemFile;
-		private System.Windows.Forms.MenuItem menuItemSave;
-		private System.Windows.Forms.MenuItem menuItemSaveAs;
-		private System.Windows.Forms.MenuItem menuItemClose;
+        private System.ComponentModel.IContainer components;
 		private System.Windows.Forms.MenuItem contextItemEdit;
 		private System.Windows.Forms.MenuItem contextItemAddModule;
 		private System.Windows.Forms.MenuItem contextItemAddSavedObject;
@@ -60,6 +45,22 @@ namespace MyGeneration
 		private System.Windows.Forms.MenuItem menuItemSep03;
 		private System.Windows.Forms.MenuItem contextItemCopy;
 		private System.Windows.Forms.MenuItem contextItemCacheSettings;
+        private MenuStrip menuStripMain;
+        private ToolStripMenuItem fileToolStripMenuItem;
+        private ToolStripMenuItem saveToolStripMenuItem;
+        private ToolStripMenuItem saveAsToolStripMenuItem;
+        private ToolStripMenuItem closeToolStripMenuItem;
+        private ToolStripSeparator toolStripMenuItem7;
+        private ToolStrip toolStripOptions;
+        private ToolStripButton toolStripButtonSave;
+        private ToolStripButton toolStripButtonSaveAs;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripButton toolStripButtonExecute;
+        private ToolStripSeparator toolStripSeparator3;
+        private ToolStripMenuItem projectToolStripMenuItem;
+        private ToolStripMenuItem executeToolStripMenuItem;
+        private ToolStripButton toolStripButtonEdit;
+        private ToolStripSeparator toolStripSeparator2;
 		
 		private bool _isDirty = false;
 
@@ -163,7 +164,7 @@ namespace MyGeneration
 				switch(result)
 				{
 					case DialogResult.Yes:
-						this.menuItemSave_Click(this, new EventArgs());
+                        this.Save();
 						break;
 					case DialogResult.Cancel:
 						canClose = false;
@@ -183,14 +184,6 @@ namespace MyGeneration
 		{
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProjectBrowser));
-            this.toolBarToolbar = new System.Windows.Forms.ToolBar();
-            this.toolBarButtonSave = new System.Windows.Forms.ToolBarButton();
-            this.toolBarButtonSaveAs = new System.Windows.Forms.ToolBarButton();
-            this.toolBarButtonSep1 = new System.Windows.Forms.ToolBarButton();
-            this.toolBarButtonView = new System.Windows.Forms.ToolBarButton();
-            this.toolBarButtonSep2 = new System.Windows.Forms.ToolBarButton();
-            this.toolBarButtonExecute = new System.Windows.Forms.ToolBarButton();
-            this.imageListFormIcons = new System.Windows.Forms.ImageList(this.components);
             this.treeViewProject = new System.Windows.Forms.TreeView();
             this.contextMenuTree = new System.Windows.Forms.ContextMenu();
             this.contextItemExecute = new System.Windows.Forms.MenuItem();
@@ -206,87 +199,33 @@ namespace MyGeneration
             this.contextItemSave = new System.Windows.Forms.MenuItem();
             this.contextItemSaveAs = new System.Windows.Forms.MenuItem();
             this.toolTipProjectBrowser = new System.Windows.Forms.ToolTip(this.components);
-            this.mainMenuProject = new System.Windows.Forms.MainMenu(this.components);
-            this.menuItemFile = new System.Windows.Forms.MenuItem();
-            this.menuItemSave = new System.Windows.Forms.MenuItem();
-            this.menuItemSaveAs = new System.Windows.Forms.MenuItem();
-            this.menuItemClose = new System.Windows.Forms.MenuItem();
-            this.menuItemProject = new System.Windows.Forms.MenuItem();
-            this.menuItemExecute = new System.Windows.Forms.MenuItem();
+            this.menuStripMain = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripSeparator();
+            this.projectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.executeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripOptions = new System.Windows.Forms.ToolStrip();
+            this.toolStripButtonSave = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonSaveAs = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButtonEdit = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButtonExecute = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuStripMain.SuspendLayout();
+            this.toolStripOptions.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // toolBarToolbar
-            // 
-            this.toolBarToolbar.Appearance = System.Windows.Forms.ToolBarAppearance.Flat;
-            this.toolBarToolbar.Buttons.AddRange(new System.Windows.Forms.ToolBarButton[] {
-            this.toolBarButtonSave,
-            this.toolBarButtonSaveAs,
-            this.toolBarButtonSep1,
-            this.toolBarButtonView,
-            this.toolBarButtonSep2,
-            this.toolBarButtonExecute});
-            this.toolBarToolbar.DropDownArrows = true;
-            this.toolBarToolbar.ImageList = this.imageListFormIcons;
-            this.toolBarToolbar.Location = new System.Drawing.Point(0, 0);
-            this.toolBarToolbar.Name = "toolBarToolbar";
-            this.toolBarToolbar.ShowToolTips = true;
-            this.toolBarToolbar.Size = new System.Drawing.Size(384, 28);
-            this.toolBarToolbar.TabIndex = 0;
-            this.toolBarToolbar.ButtonClick += new System.Windows.Forms.ToolBarButtonClickEventHandler(this.toolBarToolbar_ButtonClick);
-            // 
-            // toolBarButtonSave
-            // 
-            this.toolBarButtonSave.ImageIndex = 6;
-            this.toolBarButtonSave.Name = "toolBarButtonSave";
-            // 
-            // toolBarButtonSaveAs
-            // 
-            this.toolBarButtonSaveAs.ImageIndex = 7;
-            this.toolBarButtonSaveAs.Name = "toolBarButtonSaveAs";
-            // 
-            // toolBarButtonSep1
-            // 
-            this.toolBarButtonSep1.Name = "toolBarButtonSep1";
-            this.toolBarButtonSep1.Style = System.Windows.Forms.ToolBarButtonStyle.Separator;
-            // 
-            // toolBarButtonView
-            // 
-            this.toolBarButtonView.ImageIndex = 4;
-            this.toolBarButtonView.Name = "toolBarButtonView";
-            // 
-            // toolBarButtonSep2
-            // 
-            this.toolBarButtonSep2.Name = "toolBarButtonSep2";
-            this.toolBarButtonSep2.Style = System.Windows.Forms.ToolBarButtonStyle.Separator;
-            // 
-            // toolBarButtonExecute
-            // 
-            this.toolBarButtonExecute.ImageIndex = 5;
-            this.toolBarButtonExecute.Name = "toolBarButtonExecute";
-            // 
-            // imageListFormIcons
-            // 
-            this.imageListFormIcons.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListFormIcons.ImageStream")));
-            this.imageListFormIcons.TransparentColor = System.Drawing.Color.Fuchsia;
-            this.imageListFormIcons.Images.SetKeyName(0, "");
-            this.imageListFormIcons.Images.SetKeyName(1, "");
-            this.imageListFormIcons.Images.SetKeyName(2, "");
-            this.imageListFormIcons.Images.SetKeyName(3, "");
-            this.imageListFormIcons.Images.SetKeyName(4, "");
-            this.imageListFormIcons.Images.SetKeyName(5, "");
-            this.imageListFormIcons.Images.SetKeyName(6, "");
-            this.imageListFormIcons.Images.SetKeyName(7, "");
             // 
             // treeViewProject
             // 
             this.treeViewProject.ContextMenu = this.contextMenuTree;
             this.treeViewProject.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeViewProject.ImageIndex = 0;
-            this.treeViewProject.ImageList = this.imageListFormIcons;
-            this.treeViewProject.Location = new System.Drawing.Point(0, 28);
+            this.treeViewProject.Location = new System.Drawing.Point(0, 0);
             this.treeViewProject.Name = "treeViewProject";
-            this.treeViewProject.SelectedImageIndex = 0;
-            this.treeViewProject.Size = new System.Drawing.Size(384, 514);
+            this.treeViewProject.Size = new System.Drawing.Size(384, 542);
             this.treeViewProject.TabIndex = 1;
             this.treeViewProject.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.treeViewProject_AfterCollapse);
             this.treeViewProject.DoubleClick += new System.EventHandler(this.treeViewProject_OnDoubleClick);
@@ -387,69 +326,187 @@ namespace MyGeneration
             this.toolTipProjectBrowser.InitialDelay = 500;
             this.toolTipProjectBrowser.ReshowDelay = 100;
             // 
-            // mainMenuProject
+            // menuStripMain
             // 
-            this.mainMenuProject.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.menuItemFile,
-            this.menuItemProject});
+            this.menuStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.projectToolStripMenuItem});
+            this.menuStripMain.Location = new System.Drawing.Point(0, 0);
+            this.menuStripMain.Name = "menuStripMain";
+            this.menuStripMain.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
+            this.menuStripMain.Size = new System.Drawing.Size(384, 24);
+            this.menuStripMain.TabIndex = 38;
+            this.menuStripMain.Text = "menuStrip1";
+            this.menuStripMain.Visible = false;
             // 
-            // menuItemFile
+            // fileToolStripMenuItem
             // 
-            this.menuItemFile.Index = 0;
-            this.menuItemFile.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.menuItemSave,
-            this.menuItemSaveAs,
-            this.menuItemClose});
-            this.menuItemFile.MergeType = System.Windows.Forms.MenuMerge.MergeItems;
-            this.menuItemFile.Text = "&File";
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveToolStripMenuItem,
+            this.saveAsToolStripMenuItem,
+            this.closeToolStripMenuItem,
+            this.toolStripMenuItem7});
+            this.fileToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.MatchOnly;
+            this.fileToolStripMenuItem.MergeIndex = 0;
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(35, 20);
+            this.fileToolStripMenuItem.Text = "&File";
             // 
-            // menuItemSave
+            // saveToolStripMenuItem
             // 
-            this.menuItemSave.Index = 0;
-            this.menuItemSave.Text = "Save";
-            this.menuItemSave.Click += new System.EventHandler(this.menuItemSave_Click);
+            this.saveToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.saveToolStripMenuItem.MergeIndex = 4;
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.saveToolStripMenuItem.Text = "&Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
-            // menuItemSaveAs
+            // saveAsToolStripMenuItem
             // 
-            this.menuItemSaveAs.Index = 1;
-            this.menuItemSaveAs.Text = "Save As ...";
-            this.menuItemSaveAs.Click += new System.EventHandler(this.menuItemSaveAs_Click);
+            this.saveAsToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.saveAsToolStripMenuItem.MergeIndex = 5;
+            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.saveAsToolStripMenuItem.Text = "Save  &As";
+            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
-            // menuItemClose
+            // closeToolStripMenuItem
             // 
-            this.menuItemClose.Index = 2;
-            this.menuItemClose.Text = "&Close";
-            this.menuItemClose.Click += new System.EventHandler(this.menuItemClose_Click);
+            this.closeToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.closeToolStripMenuItem.MergeIndex = 6;
+            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.closeToolStripMenuItem.Text = "&Close";
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
-            // menuItemProject
+            // toolStripMenuItem7
             // 
-            this.menuItemProject.Index = 1;
-            this.menuItemProject.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.menuItemExecute});
-            this.menuItemProject.MergeOrder = 3;
-            this.menuItemProject.MergeType = System.Windows.Forms.MenuMerge.MergeItems;
-            this.menuItemProject.Text = "&Project";
+            this.toolStripMenuItem7.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.toolStripMenuItem7.MergeIndex = 7;
+            this.toolStripMenuItem7.Name = "toolStripMenuItem7";
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(144, 6);
             // 
-            // menuItemExecute
+            // projectToolStripMenuItem
             // 
-            this.menuItemExecute.Index = 0;
-            this.menuItemExecute.Text = "E&xecute";
-            this.menuItemExecute.Click += new System.EventHandler(this.menuItemExecute_Click);
+            this.projectToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.executeToolStripMenuItem});
+            this.projectToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.projectToolStripMenuItem.MergeIndex = 1;
+            this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
+            this.projectToolStripMenuItem.Size = new System.Drawing.Size(53, 20);
+            this.projectToolStripMenuItem.Text = "&Project";
+            // 
+            // executeToolStripMenuItem
+            // 
+            this.executeToolStripMenuItem.Name = "executeToolStripMenuItem";
+            this.executeToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.executeToolStripMenuItem.Text = "E&xecute";
+            this.executeToolStripMenuItem.Click += new System.EventHandler(this.executeToolStripMenuItem_Click);
+            // 
+            // toolStripOptions
+            // 
+            this.toolStripOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButtonSave,
+            this.toolStripButtonSaveAs,
+            this.toolStripSeparator1,
+            this.toolStripButtonEdit,
+            this.toolStripSeparator2,
+            this.toolStripButtonExecute,
+            this.toolStripSeparator3});
+            this.toolStripOptions.Location = new System.Drawing.Point(0, 0);
+            this.toolStripOptions.Name = "toolStripOptions";
+            this.toolStripOptions.Size = new System.Drawing.Size(384, 25);
+            this.toolStripOptions.TabIndex = 37;
+            this.toolStripOptions.Visible = false;
+            // 
+            // toolStripButtonSave
+            // 
+            this.toolStripButtonSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonSave.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonSave.Image")));
+            this.toolStripButtonSave.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonSave.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.toolStripButtonSave.MergeIndex = 0;
+            this.toolStripButtonSave.Name = "toolStripButtonSave";
+            this.toolStripButtonSave.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonSave.Text = "Save Settings";
+            this.toolStripButtonSave.Click += new System.EventHandler(this.toolStripButtonSave_Click);
+            // 
+            // toolStripButtonSaveAs
+            // 
+            this.toolStripButtonSaveAs.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonSaveAs.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonSaveAs.Image")));
+            this.toolStripButtonSaveAs.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonSaveAs.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.toolStripButtonSaveAs.MergeIndex = 1;
+            this.toolStripButtonSaveAs.Name = "toolStripButtonSaveAs";
+            this.toolStripButtonSaveAs.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonSaveAs.Text = "Save As";
+            this.toolStripButtonSaveAs.Click += new System.EventHandler(this.toolStripButtonSaveAs_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.toolStripSeparator1.MergeIndex = 2;
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripButtonEdit
+            // 
+            this.toolStripButtonEdit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonEdit.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonEdit.Image")));
+            this.toolStripButtonEdit.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonEdit.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.toolStripButtonEdit.MergeIndex = 3;
+            this.toolStripButtonEdit.Name = "toolStripButtonEdit";
+            this.toolStripButtonEdit.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonEdit.Text = "Template Properties";
+            this.toolStripButtonEdit.Click += new System.EventHandler(this.toolStripButtonEdit_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.toolStripSeparator2.MergeIndex = 4;
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripButtonExecute
+            // 
+            this.toolStripButtonExecute.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonExecute.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonExecute.Image")));
+            this.toolStripButtonExecute.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonExecute.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.toolStripButtonExecute.MergeIndex = 5;
+            this.toolStripButtonExecute.Name = "toolStripButtonExecute";
+            this.toolStripButtonExecute.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonExecute.Text = "Execute";
+            this.toolStripButtonExecute.Click += new System.EventHandler(this.toolStripButtonExecute_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.toolStripSeparator3.MergeIndex = 6;
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
             // 
             // ProjectBrowser
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.ClientSize = new System.Drawing.Size(384, 542);
+            this.Controls.Add(this.toolStripOptions);
+            this.Controls.Add(this.menuStripMain);
             this.Controls.Add(this.treeViewProject);
-            this.Controls.Add(this.toolBarToolbar);
+            this.DockAreas = WeifenLuo.WinFormsUI.Docking.DockAreas.Document;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Menu = this.mainMenuProject;
             this.Name = "ProjectBrowser";
-            this.ShowHint = DockState.DockLeft;
             this.TabText = "Project Browser";
             this.Text = "Project Browser";
             this.Closing += new System.ComponentModel.CancelEventHandler(this.ProjectBrowser_Closing);
             this.MouseLeave += new System.EventHandler(this.ProjectBrowser_MouseLeave);
+            this.menuStripMain.ResumeLayout(false);
+            this.menuStripMain.PerformLayout();
+            this.toolStripOptions.ResumeLayout(false);
+            this.toolStripOptions.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -548,84 +605,69 @@ namespace MyGeneration
                 lastObject = obj;
             }
 		}
-
-		private void toolBarToolbar_ButtonClick(object sender, System.Windows.Forms.ToolBarButtonClickEventArgs e)
-		{
-			TreeNode node = this.treeViewProject.SelectedNode;
-			
-			if (e.Button == toolBarButtonSave)
-			{
-				this.Save();
-			}
-			else if (e.Button == toolBarButtonSaveAs)
-			{
-				SaveAs();
-			}
-			else if (e.Button == toolBarButtonExecute)
-			{
-				Execute();
-			}
-			else if (e.Button == toolBarButtonView) 
-			{
-				if ( (node is ProjectTreeNode) || (node is ModuleTreeNode) )
-				{
-					formEditModule.Module = node.Tag as ZeusModule;
-					if (formEditModule.ShowDialog() == DialogResult.OK) 
-					{
-						this._isDirty = true;
-						node.Text = formEditModule.Module.Name;
-					}
-
-					if (node is ProjectTreeNode) 
-					{
-						this.Text = "Project: " + formEditModule.Module.Name;
-						this.TabText = formEditModule.Module.Name;
-					}
-				}
-				else if (node is SavedObjectTreeNode)
-				{
-					SavedTemplateInput input = node.Tag as SavedTemplateInput;
-					ZeusModule parentMod = node.Parent.Tag as ZeusModule;
-					this.formEditSavedObject.Module = parentMod;
-					this.formEditSavedObject.SavedObject = input;
-					if (this.formEditSavedObject.ShowDialog() == DialogResult.OK) 
-					{
-						this._isDirty = true;
-						node.Text = input.SavedObjectName;
-						SortedProjectTreeNode parentnode = node.Parent as SortedProjectTreeNode;
-						if (parentnode != null) 
-						{
-							node.Remove();
-							parentnode.AddSorted(node);
-						}
-					}
-				}
-			}
-		}
 		#endregion
 
-		#region Main Menu Event Handlers
-		private void menuItemExecute_Click(object sender, System.EventArgs e)
-		{
-			this.Execute();
-		}
+        #region Main Menu Event Handlers
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Save();
+        }
 
-		private void menuItemSave_Click(object sender, System.EventArgs e)
-		{
-			Save();
-		}
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.SaveAs();
+        }
 
-		private void menuItemSaveAs_Click(object sender, System.EventArgs e)
-		{
-			this.SaveAs();
-		}
+        private void closeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
 
-		private void menuItemClose_Click(object sender, System.EventArgs e)
-		{
-			this.Close();
-		}
-		#endregion
+        private void executeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Execute();
+        }
+        #endregion
 
+        #region ToolStrip Event Handlers
+        private void toolStripButtonSave_Click(object sender, EventArgs e)
+        {
+            this.Save();
+        }
+
+        private void toolStripButtonSaveAs_Click(object sender, EventArgs e)
+        {
+
+            this.SaveAs();
+        }
+
+        private void toolStripButtonEdit_Click(object sender, EventArgs e)
+        {
+            TreeNode node = this.treeViewProject.SelectedNode;
+
+            SavedTemplateInput input = node.Tag as SavedTemplateInput;
+            ZeusModule parentMod = node.Parent.Tag as ZeusModule;
+            this.formEditSavedObject.Module = parentMod;
+            this.formEditSavedObject.SavedObject = input;
+            if (this.formEditSavedObject.ShowDialog() == DialogResult.OK)
+            {
+                this._isDirty = true;
+                node.Text = input.SavedObjectName;
+                SortedProjectTreeNode parentnode = node.Parent as SortedProjectTreeNode;
+                if (parentnode != null)
+                {
+                    node.Remove();
+                    parentnode.AddSorted(node);
+                }
+            }
+        }
+
+        private void toolStripButtonExecute_Click(object sender, EventArgs e)
+        {
+            Execute();
+        }
+        #endregion
+		
 		#region ProjectBrowser Event Handlers
 		private void ProjectBrowser_MouseLeave(object sender, System.EventArgs e)
 		{
@@ -1030,12 +1072,12 @@ namespace MyGeneration
 
         public string DocumentIndentity
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { return (this.FileName == string.Empty) ? this.rootNode.Project.Name : this.FileName; }
         }
 
         public ToolStrip ToolStrip
         {
-            get { return null; }
+            get { return this.toolStripOptions; }
         }
 
         public void ProcessAlert(IMyGenContent sender, string command, params object[] args)
@@ -1049,7 +1091,7 @@ namespace MyGeneration
         }
 
         #endregion
-	}
+    }
 
 	#region Project Browser Tree Node Classes
 	public abstract class SortedProjectTreeNode : TreeNode 

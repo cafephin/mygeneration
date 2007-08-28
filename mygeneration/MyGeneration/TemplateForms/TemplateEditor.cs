@@ -1145,7 +1145,7 @@ namespace MyGeneration
             this.tabInterfaceCode.BackColor = System.Drawing.Color.Transparent;
             this.tabInterfaceCode.Location = new System.Drawing.Point(4, 22);
             this.tabInterfaceCode.Name = "tabInterfaceCode";
-            this.tabInterfaceCode.Size = new System.Drawing.Size(580, 572);
+            this.tabInterfaceCode.Size = new System.Drawing.Size(580, 567);
             this.tabInterfaceCode.TabIndex = 1;
             this.tabInterfaceCode.Text = "Interface Code";
             this.tabInterfaceCode.UseVisualStyleBackColor = true;
@@ -1154,7 +1154,7 @@ namespace MyGeneration
             // 
             this.tabTemplateSource.Location = new System.Drawing.Point(4, 22);
             this.tabTemplateSource.Name = "tabTemplateSource";
-            this.tabTemplateSource.Size = new System.Drawing.Size(580, 572);
+            this.tabTemplateSource.Size = new System.Drawing.Size(580, 567);
             this.tabTemplateSource.TabIndex = 2;
             this.tabTemplateSource.Text = "Template Source";
             this.tabTemplateSource.UseVisualStyleBackColor = true;
@@ -1163,7 +1163,7 @@ namespace MyGeneration
             // 
             this.tabInterfaceSource.Location = new System.Drawing.Point(4, 22);
             this.tabInterfaceSource.Name = "tabInterfaceSource";
-            this.tabInterfaceSource.Size = new System.Drawing.Size(580, 572);
+            this.tabInterfaceSource.Size = new System.Drawing.Size(580, 567);
             this.tabInterfaceSource.TabIndex = 4;
             this.tabInterfaceSource.Text = "Interface Source";
             this.tabInterfaceSource.UseVisualStyleBackColor = true;
@@ -1172,7 +1172,7 @@ namespace MyGeneration
             // 
             this.tabOutput.Location = new System.Drawing.Point(4, 22);
             this.tabOutput.Name = "tabOutput";
-            this.tabOutput.Size = new System.Drawing.Size(580, 572);
+            this.tabOutput.Size = new System.Drawing.Size(580, 567);
             this.tabOutput.TabIndex = 3;
             this.tabOutput.Text = "Output";
             this.tabOutput.UseVisualStyleBackColor = true;
@@ -1281,7 +1281,7 @@ namespace MyGeneration
             this.fileToolStripMenuItem,
             this.editToolStripMenuItem,
             this.templateToolStripMenuItem});
-            this.menuStripMain.Location = new System.Drawing.Point(312, 0);
+            this.menuStripMain.Location = new System.Drawing.Point(312, 25);
             this.menuStripMain.Name = "menuStripMain";
             this.menuStripMain.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
             this.menuStripMain.Size = new System.Drawing.Size(588, 24);

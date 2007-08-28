@@ -55,12 +55,43 @@ namespace MyGeneration
 
         public IMyGenDocument Open(IMyGenerationMDI mdi, FileInfo file, params string[] args)
         {
-            throw new Exception("The method or operation is not implemented.");
+            ProjectBrowser edit = null;
+
+            if (file.Exists)
+            {
+                bool isopen = mdi.IsDocumentOpen(file.FullName);
+
+                if (!isopen)
+                {
+                    edit = new ProjectBrowser(mdi);
+                    edit.LoadProject(file.FullName);
+                }
+                else
+                {
+                    edit = mdi.FindDocument(file.FullName) as ProjectBrowser;
+                    if (edit != null)
+                    {
+                        edit.Activate();
+                    }
+                }
+            }
+
+            return edit;
         }
 
         public IMyGenDocument Create(IMyGenerationMDI mdi, params string[] args)
         {
-            throw new Exception("The method or operation is not implemented.");
+            ProjectBrowser edit = new ProjectBrowser(mdi);
+
+            switch (args[0])
+            {
+                case "MyGeneration Project":
+                default:
+                    edit.CreateNewProject();
+                    break;
+            }
+
+            return edit;
         }
     }
 }
