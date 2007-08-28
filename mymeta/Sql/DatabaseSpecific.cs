@@ -17,7 +17,14 @@ namespace MyMeta.Sql
 	
 		public KeyValueCollection ExtendedProperties(IColumn column) 
 		{
-			return ExtendedProperties(column.Table.Database, column.Table.Schema, "table", column.Table.Name, column.Name);
+            if (column.Table != null)
+            {
+                return ExtendedProperties(column.Table.Database, column.Table.Schema, "table", column.Table.Name, column.Name);
+            }
+            else
+            {
+                return ExtendedProperties(column.View.Database, column.View.Schema, "view", column.View.Name, column.Name);
+            }
 		}
 	
 		public KeyValueCollection ExtendedProperties(ITable table) 
