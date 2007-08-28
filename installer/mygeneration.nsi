@@ -109,8 +109,8 @@ Section "-Install Mygeneration and Register Shell Extensions"
   File /oname=adodb.dll .\adodb.dll
   File /oname=System.Data.SQLite.DLL ..\mymeta\ThirdParty\System.Data.SQLite.DLL
   File /oname=CollapsibleSplitter.dll ..\mygeneration\MyGeneration\bin\Release\CollapsibleSplitter.dll
-  File /oname=ScintillaNET.dll ..\mygeneration\MyGeneration\ScintillaNET\ScintillaNET.dll
-  File /oname=SciLexer.dll ..\mygeneration\MyGeneration\ScintillaNET\SciLexer.dll
+  File /oname=ScintillaNET.dll ..\scintilla\ScintillaNET\bin\release\ScintillaNET.dll
+  File /oname=SciLexer.dll ..\scintilla\ScintillaNET\SciLexer.dll
   File /oname=Npgsql.dll ..\mymeta\ThirdParty\Npgsql.dll
   File /oname=Mono.Security.dll ..\mymeta\ThirdParty\Mono.Security.dll
   File /oname=FirebirdSql.Data.Firebird.dll ..\mymeta\ThirdParty\FirebirdSql.Data.Firebird.dll
