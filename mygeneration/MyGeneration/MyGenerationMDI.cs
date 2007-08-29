@@ -306,11 +306,6 @@ namespace MyGeneration
             return document;
         }
 
-
-        private void dockPanel_ActivePaneChanged(object sender, EventArgs e)
-        {
-        }
-
         private void dockPanel_ActiveContentChanged(object sender, EventArgs e)
         {
             
@@ -334,10 +329,6 @@ namespace MyGeneration
             {
                 ToolStripManager.RevertMerge(toolStrip1);
             }
-        }
-
-        private void dockPanel_ActiveDocumentChanged(object sender, EventArgs e)
-        {
         }
 
         private void MyGenerationMDI_FormClosing(object sender, FormClosingEventArgs e)
@@ -551,7 +542,7 @@ namespace MyGeneration
             }
             else
             {
-                this.TemplateBrowserDockContent.Hide();
+                this.TemplateBrowserDockContent.Activate();
             }
         }
 
@@ -575,7 +566,7 @@ namespace MyGeneration
             }
             else
             {
-                this.MetaDataBrowserDockContent.Hide();
+                this.MetaDataBrowserDockContent.Activate();
             }
         }
 
@@ -587,7 +578,7 @@ namespace MyGeneration
             }
             else
             {
-                this.MetaPropertiesDockContent.Hide();
+                this.MetaPropertiesDockContent.Activate();
             }
         }
 
@@ -599,7 +590,7 @@ namespace MyGeneration
             }
             else
             {
-                this.LanguageMappingsDockContent.Hide();
+                this.LanguageMappingsDockContent.Activate();
             }
         }
 
@@ -611,7 +602,7 @@ namespace MyGeneration
             }
             else
             {
-                this.DbTargetMappingsDockContent.Hide();
+                this.DbTargetMappingsDockContent.Activate();
             }
         }
 
@@ -623,7 +614,7 @@ namespace MyGeneration
             }
             else
             {
-                this.UserMetaDataDockContent.Hide();
+                this.UserMetaDataDockContent.Activate();
             }
         }
 
@@ -635,7 +626,7 @@ namespace MyGeneration
             }
             else
             {
-                this.GlobalUserMetaDataDockContent.Hide();
+                this.GlobalUserMetaDataDockContent.Activate();
             }
         }
         #endregion

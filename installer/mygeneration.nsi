@@ -120,7 +120,7 @@ Section "-Install Mygeneration and Register Shell Extensions"
   File /nonfatal /oname=MyMeta.Plugins.DelimitedText.dll ..\plugins\MyMetaTextFilePlugin\bin\Release\MyMeta.Plugins.DelimitedText.dll
   File /nonfatal /oname=MyMeta.Plugins.VistaDB3x.dll ..\plugins\MyMetaVistaDB3xPlugin\bin\Release\MyMeta.Plugins.VistaDB3x.dll
   File /nonfatal /oname=MyMeta.Plugins.SqlCe.dll ..\plugins\MyMetaSqlCePlugin\bin\Release\MyMeta.Plugins.SqlCe.dll
-  
+
   Delete $INSTDIR\WeifenLuo.WinFormsUI.dll
   Delete $INSTDIR\VistaDBHelper.dll
  
@@ -143,11 +143,10 @@ Section "-Install Mygeneration and Register Shell Extensions"
 
   File /oname=MyGeneration.ico ..\mygeneration\MyGeneration\Icons\MainWindow.ico
   File /oname=ZeusProject.ico ..\mygeneration\MyGeneration\Icons\NewZeus.ico
-
+  
   ;Install DnpUtils
   File /oname=Dnp.Utils.chm ..\plugins\Dnp.Utils\Dnp.Utils.chm
   File /oname=Dnp.Utils.dll ..\plugins\Dnp.Utils\bin\Release\Dnp.Utils.dll
-  
   ExecWait `"$INSTDIR\ZeusCmd.exe" -aio "%ZEUSHOME%\Dnp.Utils.dll" "Dnp.Utils.Utils" "DnpUtils"`
   
   ; Create Folders
@@ -462,12 +461,12 @@ Section "-Install Mygeneration and Register Shell Extensions"
 
 SectionEnd ; end the section
 
+
 Section "Install Xsd3b Provider for xml (xsd, uml, entityrelationship)"
   ; Set output path to the installation directory.
   SetOutPath $INSTDIR
     
-  File /nonfatal /oname=MyMeta.Plugins.Xsd3b.dll ..\build\Release\MyMeta.Plugins.Xsd3b.dll
-  File /nonfatal ..\plugins\MyMetaXsd3bPlugin\lib\*.dll
+  File /nonfatal /oname=MyMeta.Plugins.Xsd3b.dll ..\plugins\MyMetaVistaDB3xPlugin\bin\Release\MyMeta.Plugins.Xsd3b.dll
 
   SetOutPath "$INSTDIR\Templates\Xsd3b"
   ; CreateDirectory "$INSTDIR\Templates\Xsd3b"
@@ -475,8 +474,8 @@ Section "Install Xsd3b Provider for xml (xsd, uml, entityrelationship)"
   ; File /oname=Templates\Xsd3b\ToXsd3b.csgen ..\Templates\Xsd3b\ToXsd3b.csgen
   ; File /oname=Templates\Xsd3b\ToXsd.csgen ..\Templates\Xsd3b\ToXsd.csgen
   ; File ..\Templates\Xsd3b\*.*
-  File ..\plugins\MyMetaXsd3bPlugin\templates\xsd3b\*.*
-
+  File ..\plugins\MyMetaXsd3bPlugin\templates\xsd3b\*.xsl
+  File ..\plugins\MyMetaXsd3bPlugin\templates\xsd3b\*.csgen
 
   SetOutPath $INSTDIR
 

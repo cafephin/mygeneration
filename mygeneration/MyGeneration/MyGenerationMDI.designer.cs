@@ -64,10 +64,10 @@ namespace MyGeneration
             // 
             // statusStripMain
             // 
-            this.statusStripMain.Location = new System.Drawing.Point(0, 525);
+            this.statusStripMain.Location = new System.Drawing.Point(0, 544);
             this.statusStripMain.Name = "statusStripMain";
             this.statusStripMain.Padding = new System.Windows.Forms.Padding(1, 0, 10, 0);
-            this.statusStripMain.Size = new System.Drawing.Size(860, 22);
+            this.statusStripMain.Size = new System.Drawing.Size(792, 22);
             this.statusStripMain.TabIndex = 2;
             // 
             // menuStripMain
@@ -79,7 +79,7 @@ namespace MyGeneration
             this.menuStripMain.Location = new System.Drawing.Point(0, 0);
             this.menuStripMain.Name = "menuStripMain";
             this.menuStripMain.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
-            this.menuStripMain.Size = new System.Drawing.Size(860, 24);
+            this.menuStripMain.Size = new System.Drawing.Size(792, 24);
             this.menuStripMain.TabIndex = 3;
             this.menuStripMain.Text = "menuStrip1";
             // 
@@ -195,11 +195,9 @@ namespace MyGeneration
             this.dockPanel.Location = new System.Drawing.Point(0, 49);
             this.dockPanel.Margin = new System.Windows.Forms.Padding(2);
             this.dockPanel.Name = "dockPanel";
-            this.dockPanel.Size = new System.Drawing.Size(860, 476);
+            this.dockPanel.Size = new System.Drawing.Size(792, 495);
             this.dockPanel.TabIndex = 6;
-            this.dockPanel.ActiveDocumentChanged += new System.EventHandler(this.dockPanel_ActiveDocumentChanged);
             this.dockPanel.ActiveContentChanged += new System.EventHandler(this.dockPanel_ActiveContentChanged);
-            this.dockPanel.ActivePaneChanged += new System.EventHandler(this.dockPanel_ActivePaneChanged);
             // 
             // toolStrip1
             // 
@@ -218,7 +216,7 @@ namespace MyGeneration
             this.toolStripButtonOptions});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(860, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(792, 25);
             this.toolStrip1.TabIndex = 9;
             this.toolStrip1.Text = "toolStripNew";
             // 
@@ -335,7 +333,7 @@ namespace MyGeneration
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(860, 547);
+            this.ClientSize = new System.Drawing.Size(792, 566);
             this.Controls.Add(this.dockPanel);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.statusStripMain);

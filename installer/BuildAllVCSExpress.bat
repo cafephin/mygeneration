@@ -1,6 +1,9 @@
 del ".\build.log"
+del ".\installbuild_mygen.log"
+del ".\installbuild_mymeta.log"
+del ".\installbuild_doodads.log"
 
-if "%DEVENV%"=="" set DEVENV="%PROGRAMFILES%\Microsoft Visual Studio 8\Common7\IDE\devenv.exe"  /out ".\build.log" /rebuild release
+if "%DEVENV%"=="" set DEVENV="%PROGRAMFILES%\Microsoft Visual Studio 8\Common7\IDE\VCSExpress.exe"  /out ".\build.log" /rebuild release
 
 %DEVENV% "..\mygeneration\Zeus.sln"
 %DEVENV% "..\plugins\MyMetaPlugins.sln"

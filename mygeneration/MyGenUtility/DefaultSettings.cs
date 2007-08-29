@@ -556,25 +556,25 @@ namespace MyGeneration
 
 		public string WindowPosTop
 		{
-            get { return this.GetSetting("WindowPosTop", "43"); }
+            get { return this.GetSetting("WindowPosTop", "50"); }
 			set	{ this.SetSetting("WindowPosTop", value); }
 		}
 
 		public string WindowPosLeft
 		{
-            get { return this.GetSetting("WindowPosLeft", "150"); }
+            get { return this.GetSetting("WindowPosLeft", "50"); }
 			set	{ this.SetSetting("WindowPosLeft", value); }
 		}
 
 		public string WindowPosWidth
 		{
-            get { return this.GetSetting("WindowPosWidth", "502"); }
+            get { return this.GetSetting("WindowPosWidth", "800"); }
 			set	{ this.SetSetting("WindowPosWidth", value); }
 		}
 
 		public string WindowPosHeight
 		{
-            get { return this.GetSetting("WindowPosHeight", "743"); }
+            get { return this.GetSetting("WindowPosHeight", "600"); }
 			set	{ this.SetSetting("WindowPosHeight", value); }
 		}
 

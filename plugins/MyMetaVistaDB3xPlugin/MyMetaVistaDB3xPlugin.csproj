@@ -31,7 +31,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="VistaDB.NET20, Version=3.20.1.30, Culture=neutral, PublicKeyToken=dfc935afe2125461, processorArchitecture=MSIL" />
+    <Reference Include="VistaDB.NET20, Version=3.20.1.33, Culture=neutral, PublicKeyToken=dfc935afe2125461, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
