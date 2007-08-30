@@ -41,7 +41,12 @@ namespace MyGeneration
             InitializeComponent();
             this.mdi = mdi;
 			this.ShowHint = DockState.DockLeft;
-		}
+        }
+
+        protected override string GetPersistString()
+        {
+            return this.GetType().FullName;
+        }
 
 
 		/// <summary>

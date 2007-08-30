@@ -31,6 +31,11 @@ namespace MyGeneration
 
 		private Type stringType = Type.GetType("System.String");
 
+        protected override string GetPersistString()
+        {
+            return this.GetType().FullName;
+        }
+
         public UserMetaData(IMyGenerationMDI mdi)
 		{
             InitializeComponent();

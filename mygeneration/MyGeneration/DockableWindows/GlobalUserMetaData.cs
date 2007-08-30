@@ -39,7 +39,12 @@ namespace MyGeneration
 
 			DefaultSettings settings = DefaultSettings.Instance;
 			this.UserMetaDataFileName = settings.UserMetaDataFileName;
-		}
+        }
+
+        protected override string GetPersistString()
+        {
+            return this.GetType().FullName;
+        }
 
 		public MetaDataBrowser MetaDataBrowser
 		{

@@ -349,6 +349,7 @@ namespace MyGeneration
             this.MainMenuStrip = this.menuStripMain;
             this.Name = "MyGenerationMDI";
             this.Text = "MyGeneration";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MyGenerationMDI_FormClosing);
             this.Load += new System.EventHandler(this.MyGenerationMDI_Load);
             this.menuStripMain.ResumeLayout(false);
             this.menuStripMain.PerformLayout();

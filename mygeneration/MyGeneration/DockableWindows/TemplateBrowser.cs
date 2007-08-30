@@ -68,7 +68,12 @@ namespace MyGeneration
 			treeBuilder = new TemplateTreeBuilder(treeViewTemplates);
 
 			treeBuilder.LoadTemplates();
-		}
+        }
+
+        protected override string GetPersistString()
+        {
+            return this.GetType().FullName;
+        }
 
 		//public event EventHandler TemplateOpen;
 		//public event EventHandler TemplateUpdate;
