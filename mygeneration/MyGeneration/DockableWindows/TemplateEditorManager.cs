@@ -2,21 +2,22 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Drawing;
 using Zeus;
 
 namespace MyGeneration
 {
-    public class TemplateEditorManager : IEditorManager
+    public class TemplateEditorManager : EditorManager
     {
-        //public const string FILE_TYPES = "JScript Templates (*.jgen)|*.jgen|VBScript Templates (*.vbgen)|*.vbgen|C# Templates (*.csgen)|*.csgen|Zeus Templates (*.zeus)|*.zeus|";
-        //public const string FILE_EXTS = ".jgen.vbgen.csgen.zeus";
-        //public const string NAME = "Zeus Template Editor";
-        //public const string NAME = "Zeus Template Editor";
-
+        public const string CSHARP_TEMPLATE = "C# Zeus Template";
+        public const string VBNET_TEMPLATE = "VB.Net Zeus Template";
+        public const string VBSCRIPT_TEMPLATE = "VBScript Zeus Template";
+        public const string JSCRIPT_TEMPLATE = "JScript Zeus Template";
+                
         private SortedList<string, string> fileExtensions;
         private List<string> fileTypes;
 
-        public string Name
+        public override string Name
         {
             get
             {
@@ -24,7 +25,7 @@ namespace MyGeneration
             }
         }
 
-        public SortedList<string, string> FileExtensions
+        public override SortedList<string, string> FileExtensions
         {
             get
             {
@@ -40,28 +41,23 @@ namespace MyGeneration
             }
         }
 
-        public List<string> FileTypes
+        public override List<string> FileTypes
         {
             get
             {
                 if (fileTypes == null)
                 {
                     fileTypes = new List<string>();
-                    fileTypes.Add("JScript Zeus Template");
-                    fileTypes.Add("VBScript Zeus Template");
-                    fileTypes.Add("C# Zeus Template");
-                    fileTypes.Add("VB.Net Template");
+                    fileTypes.Add(TemplateEditorManager.CSHARP_TEMPLATE);
+                    fileTypes.Add(TemplateEditorManager.VBNET_TEMPLATE);
+                    fileTypes.Add(TemplateEditorManager.VBSCRIPT_TEMPLATE);
+                    fileTypes.Add(TemplateEditorManager.JSCRIPT_TEMPLATE);
                 }
                 return fileTypes;
             }
         }
 
-        public bool CanOpenFile(FileInfo file)
-        {
-            return FileExtensions.ContainsKey(file.Extension.Trim('.'));
-        }
-
-        public IMyGenDocument Open(IMyGenerationMDI mdi, FileInfo file, params string[] args)
+        public override IMyGenDocument Open(IMyGenerationMDI mdi, FileInfo file, params string[] args)
         {
             TemplateEditor edit = null;
 
@@ -87,28 +83,52 @@ namespace MyGeneration
             return edit;
         }
 
-        public IMyGenDocument Create(IMyGenerationMDI mdi, params string[] args)
+        public override IMyGenDocument Create(IMyGenerationMDI mdi, params string[] args)
         {
             TemplateEditor edit = new TemplateEditor(mdi);
 
             switch (args[0])
             {
-                case "C# Zeus Template":
+                case TemplateEditorManager.CSHARP_TEMPLATE:
                     edit.FileNew("ENGINE", ZeusConstants.Engines.DOT_NET_SCRIPT, "LANGUAGE", ZeusConstants.Languages.CSHARP);
                     break;
-                case "VB.Net Template":
+                case TemplateEditorManager.VBNET_TEMPLATE:
                     edit.FileNew("ENGINE", ZeusConstants.Engines.DOT_NET_SCRIPT, "LANGUAGE", ZeusConstants.Languages.VBNET);
                     break;
-                case "VBScript Zeus Template":
+                case TemplateEditorManager.VBSCRIPT_TEMPLATE:
                     edit.FileNew("ENGINE", ZeusConstants.Engines.MICROSOFT_SCRIPT, "LANGUAGE", ZeusConstants.Languages.VBSCRIPT);
                     break;
-                case "JScript Zeus Template":
+                case TemplateEditorManager.JSCRIPT_TEMPLATE:
                 default:
                     edit.FileNew("ENGINE", ZeusConstants.Engines.MICROSOFT_SCRIPT, "LANGUAGE", ZeusConstants.Languages.JSCRIPT);
                     break;
             }
 
             return edit;
+        }
+
+        public override Image GetMenuImage(string fileType)
+        {
+            Image image = null;
+
+            switch (fileType)
+            {
+                case TemplateEditorManager.CSHARP_TEMPLATE:
+                    image = Properties.Resources.newcsharp;
+                    break;
+                case TemplateEditorManager.VBNET_TEMPLATE:
+                    image = Properties.Resources.newvbnet;
+                    break;
+                case TemplateEditorManager.VBSCRIPT_TEMPLATE:
+                    image = Properties.Resources.newvbscript;
+                    break;
+                case TemplateEditorManager.JSCRIPT_TEMPLATE:
+                default:
+                    image = Properties.Resources.newjscript;
+                    break;
+            }
+
+            return image;
         }
     }
 }

@@ -2,19 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Drawing;
 
 namespace MyGeneration 
 {
-    public class ProjectEditorManager : IEditorManager
+    public class ProjectEditorManager : EditorManager
     {
-       // private const string FILE_TYPES = "MyGeneration Project Files (*.zprj)|*.zprj|";
-       // private const string FILE_EXTS = ".zprj";
-        //private const string NAME = "MyGeneration Project";
-
+        public const string MYGEN_PROJECT = "MyGeneration Project";
+        
         private SortedList<string, string> fileExtensions;
         private List<string> fileTypes;
 
-        public string Name
+        public override string Name
         {
             get
             {
@@ -22,7 +21,12 @@ namespace MyGeneration
             }
         }
 
-        public SortedList<string, string> FileExtensions
+        public override Image GetMenuImage(string fileType)
+        {
+            return Properties.Resources.newproject;
+        }
+
+        public override SortedList<string, string> FileExtensions
         {
             get
             {
@@ -35,25 +39,20 @@ namespace MyGeneration
             }
         }
 
-        public List<string> FileTypes
+        public override List<string> FileTypes
         {
             get
             {
                 if (fileTypes == null)
                 {
                     fileTypes = new List<string>();
-                    fileTypes.Add("MyGeneration Project");;
+                    fileTypes.Add(ProjectEditorManager.MYGEN_PROJECT); ;
                 }
                 return fileTypes;
             }
         }
 
-        public bool CanOpenFile(FileInfo file)
-        {
-            return FileExtensions.ContainsKey(file.Extension.Trim('.'));
-        }
-
-        public IMyGenDocument Open(IMyGenerationMDI mdi, FileInfo file, params string[] args)
+        public override IMyGenDocument Open(IMyGenerationMDI mdi, FileInfo file, params string[] args)
         {
             ProjectBrowser edit = null;
 
@@ -79,13 +78,13 @@ namespace MyGeneration
             return edit;
         }
 
-        public IMyGenDocument Create(IMyGenerationMDI mdi, params string[] args)
+        public override IMyGenDocument Create(IMyGenerationMDI mdi, params string[] args)
         {
             ProjectBrowser edit = new ProjectBrowser(mdi);
 
             switch (args[0])
             {
-                case "MyGeneration Project":
+                case ProjectEditorManager.MYGEN_PROJECT:
                 default:
                     edit.CreateNewProject();
                     break;

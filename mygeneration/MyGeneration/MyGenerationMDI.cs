@@ -50,10 +50,7 @@ namespace MyGeneration
         private MetaProperties metaProperties;
         private DefaultProperties options;
         private TemplateBrowser templateBrowser;
-
-        private Dictionary<string, IEditorManager> editorManagers = new Dictionary<string,IEditorManager>();
-
-        private string openFileDialogString = "All files (*.*)|*.*";
+        
         private string startupPath;
         private string[] startupFiles;
 
@@ -68,59 +65,11 @@ namespace MyGeneration
 
             InitializeComponent();
 
-            //this.IsMdiContainer = true;
-            //this.MdiChildActivate += new EventHandler(this.MDIChildActivated);
-
             startupFiles = args;
 
-            // Open File Dialog Setup
-            StringBuilder dialogString = new StringBuilder();
-            
-            IEditorManager em = new ProjectEditorManager();
-            editorManagers[em.Name] = em;
-            em = new TemplateEditorManager();
-            editorManagers[em.Name] = em;
-
-            dialogString.Append("All MyGeneration Files (");
-            StringBuilder exts = new StringBuilder();
-            foreach (IEditorManager editorManager in editorManagers.Values)
-            {
-                if (editorManager.FileExtensions.Count > 0)
-                {
-                    foreach (string ext in editorManager.FileExtensions.Keys)
-                    {
-                        if (exts.Length == 0)
-                            exts.AppendFormat("*.{0}", ext);
-                        else
-                            exts.AppendFormat(";*.{0}", ext);
-                    }
-                }
-            }
-            dialogString.Append(exts).Append(")|").Append(exts).Append("|");
-            foreach (IEditorManager editorManager in editorManagers.Values)
-            {
-                if (editorManager.FileExtensions.Count > 0)
-                {
-                    foreach (string ext in editorManager.FileExtensions.Keys)
-                        dialogString.AppendFormat("{0} (*.{1})|*.{1}|", editorManager.FileExtensions[ext], ext);
-                }
-            }
-            dialogString.Append("All files (*.*)|*.*");
-
-            openFileDialogString = dialogString.ToString();
-
-            // New File Menu Setup
-            foreach (IEditorManager editorManager in editorManagers.Values)
-            {
-                foreach (string ftype in editorManager.FileTypes)
-                {
-                    ToolStripMenuItem i = new ToolStripMenuItem(ftype, null, newFileDynamicToolStripMenuItem_Click);
-                    this.newToolStripMenuItem.DropDownItems.Add(i);
-
-                    ToolStripMenuItem ti = new ToolStripMenuItem(ftype, null, newFileDynamicToolStripMenuItem_Click);
-                    toolStripDropDownButtonNew.DropDownItems.Add(ti);
-                }
-            }
+            EditorManager.AddNewDocumentMenuItems(newFileDynamicToolStripMenuItem_Click,
+                newToolStripMenuItem.DropDownItems,
+                toolStripDropDownButtonNew.DropDownItems);
 
             this.RefreshRecentFiles();
         }
@@ -195,7 +144,7 @@ namespace MyGeneration
 
             if (File.Exists(dockConfigFileName))
             {
-                //dockPanel.LoadFromXml(dockConfigFileName, deserializeDockContent);
+                dockPanel.LoadFromXml(dockConfigFileName, deserializeDockContent);
             }
 
             // Startup files from the command line
@@ -221,7 +170,7 @@ namespace MyGeneration
             Stream myStream;
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.InitialDirectory = Directory.GetCurrentDirectory();
-            openFileDialog.Filter = this.openFileDialogString;
+            openFileDialog.Filter = EditorManager.OpenFileDialogString;
             openFileDialog.RestoreDirectory = true;
             openFileDialog.Multiselect = true;
 
@@ -231,21 +180,14 @@ namespace MyGeneration
             }
         }
 
-        public void CreateDocument(params string[] args)
+        public void CreateDocument(params string[] fileTypes)
         {
-            if (args.Length == 1)
+            foreach (string fileType in fileTypes)
             {
-                foreach (IEditorManager manager in this.editorManagers.Values)
+                IMyGenDocument mygenDoc = EditorManager.CreateDocument(this, fileType);
+                if (mygenDoc != null)
                 {
-                    if (manager.FileTypes.Contains(args[0]))
-                    {
-                        IMyGenDocument mygenDoc = manager.Create(this, args);
-                        if (mygenDoc != null)
-                        {
-                            mygenDoc.DockContent.Show(dockPanel);
-                        }
-                        break;
-                    }
+                    mygenDoc.DockContent.Show(dockPanel);
                 }
             }
         }
@@ -265,19 +207,12 @@ namespace MyGeneration
                     else
                     {
                         bool isOpened = false;
-                        foreach (IEditorManager manager in this.editorManagers.Values)
+                        IMyGenDocument mygenDoc = EditorManager.OpenDocument(this, info.FullName);
+                        if (mygenDoc != null)
                         {
-                            if (manager.CanOpenFile(info))
-                            {
-                                IMyGenDocument mygenDoc = manager.Open(this, info);
-                                if (mygenDoc != null)
-                                {
-                                    isOpened = true;
-                                    mygenDoc.DockContent.Show(dockPanel);
-                                    this.AddRecentFile(info.FullName);
-                                }
-                                break;
-                            }
+                            isOpened = true;
+                            mygenDoc.DockContent.Show(dockPanel);
+                            this.AddRecentFile(info.FullName);
                         }
 
                         if (!isOpened)
@@ -291,19 +226,64 @@ namespace MyGeneration
 
         private IDockContent GetContentFromPersistString(string persistString)
         {
-            IDockContent document = null;
+            IDockContent content = null;
             string[] parsedStrings = persistString.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
-            /*if (parsedStrings.Length != 3)
+            if (parsedStrings.Length == 1)
             {
-                document = null;
+                string type = parsedStrings[0];
+                if (type == typeof(LanguageMappings).ToString())
+                {
+                    this.LanguageMappingsDockContent.Activate();
+                }
+                else if (type == typeof(DbTargetMappings).ToString())
+                {
+                    this.DbTargetMappingsDockContent.Activate();
+                }
+                else if (type == typeof(MetaProperties).ToString())
+                {
+                    this.MetaPropertiesDockContent.Activate();
+                }
+                else if (type == typeof(MetaDataBrowser).ToString())
+                {
+                    this.MetaDataBrowserDockContent.Activate();
+                }
+                else if (type == typeof(UserMetaData).ToString())
+                {
+                    this.UserMetaDataDockContent.Activate();
+                }
+                else if (type == typeof(GlobalUserMetaData).ToString())
+                {
+                    this.GlobalUserMetaDataDockContent.Activate();
+                }
+                else if (type == typeof(TemplateBrowser).ToString())
+                {
+                    this.TemplateBrowserDockContent.Activate();
+                }
+                else if (type == typeof(DefaultProperties).ToString())
+                {
+                    this.OptionsDockContent.Activate();
+                }
             }
-            else if (parsedStrings[0] == typeof(TemplateEditor).ToString())
+            else if (parsedStrings.Length >= 2)
             {
-                document = OpenTemplateEditor(parsedStrings[1]);
-            }*/
+                string type = parsedStrings[0];
+                string arg = parsedStrings[1];
 
-            return document;
+                IMyGenDocument doc;
+                if (string.Equals(type, "file", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    doc = EditorManager.OpenDocument(this, arg);
+                    if (doc != null) content = doc.DockContent;
+                }
+                if (string.Equals(type, "type", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    doc = EditorManager.CreateDocument(this, arg);
+                    if (doc != null) content = doc.DockContent;
+                }
+            }
+
+            return content;
         }
 
         private void dockPanel_ActiveContentChanged(object sender, EventArgs e)
@@ -313,8 +293,6 @@ namespace MyGeneration
             if (fe is IEditControl)
             {
                 ToolStripManager.RevertMerge(toolStrip1);
-                //this.FindDialog.Close();
-                //this.ReplaceDialog.Close();
             }
             else if (fe is IMyGenDocument)
             {
@@ -327,60 +305,68 @@ namespace MyGeneration
             }
             else if (fe == null)
             {
-                ToolStripManager.RevertMerge(toolStrip1);
+                bool foundDoc = false;
+                foreach (DockContent c in dockPanel.Contents) {
+                    if ((c is IMyGenDocument) && (!c.IsHidden))
+                    {
+                        foundDoc = true;
+                        break;
+                    }
+                }
+                if (!foundDoc) ToolStripManager.RevertMerge(toolStrip1);
             }
+        }
+
+
+        private bool Shutdown(bool allowPrevent)
+        {
+            bool shutdown = true;
+            string dockConfigFileName = startupPath + DOCK_CONFIG_FILE;
+
+            IMyGenContent bw = null;
+            DockContentCollection coll = this.dockPanel.Contents;
+            bool canClose = true;
+
+            for (int i = 0; i < coll.Count; i++)
+            {
+                bw = coll[i] as IMyGenContent;
+
+                // We need the MetaDataBrowser window to be closed last because it houses the UserMetaData.
+                if (!(bw is MetaDataBrowser))
+                {
+                    canClose = bw.CanClose(allowPrevent);
+
+                    if (allowPrevent && !canClose)
+                    {
+                        shutdown = false;
+                        break;
+                    }
+                }
+
+                // Close hidden windows.
+                if (coll[i].DockHandler.IsHidden)
+                {
+                    coll[i].DockHandler.Close();
+                }
+            }
+
+            if (shutdown)
+            {
+                dockPanel.SaveAsXml(dockConfigFileName);
+            }
+
+            return shutdown;
         }
 
         private void MyGenerationMDI_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //TemplateEditor editor;
-            if (dockPanel.DocumentStyle == DocumentStyle.SystemMdi)
+            if (!this.Shutdown(true))
             {
-                foreach (Form form in MdiChildren)
-                {
-                    /*if (form is TemplateEditor)
-                    {
-                        editor = form as TemplateEditor;
-                        if (!editor.SaveBeforeCloseCheck)
-                        {
-                            e.Cancel = true;
-                            return;
-                        }
-                    }
-                
-                    // Close and hidden windows.
-                    if (form.Visible == false)
-                    {
-                        form.Close();
-                    }*/
-                }
-            }
-            else
-            {
-                foreach (IDockContent content in dockPanel.Documents)
-                {
-                    /*if (content is TemplateEditor)
-                    {
-                        editor = content as TemplateEditor;
-                        if (!editor.SaveBeforeCloseCheck)
-                        {
-                            e.Cancel = true;
-                            return;
-                        }
-
-                    }
-                
-                    // Close and hidden windows.
-                    if (content.DockHandler.IsHidden)
-                    {
-                        content.DockHandler.VisibleState = DockState.Hidden;
-                        content.DockHandler.Close();
-                    }*/
-                }
+                e.Cancel = true;
+                return;
             }
 
-            string configFile = startupPath + DOCK_CONFIG_FILE;
-            dockPanel.SaveAsXml(configFile);
+            Application.Exit();
         }
 
         #region DockManager Helper Methods
@@ -457,7 +443,6 @@ namespace MyGeneration
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
-            Application.Exit();
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)

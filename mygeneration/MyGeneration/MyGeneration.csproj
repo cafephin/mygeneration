@@ -224,6 +224,7 @@
     <Compile Include="DockableWindows\WebTemplateLibrary.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="EditorManager.cs" />
     <Compile Include="ExceptionDialog.cs">
       <SubType>Form</SubType>
     </Compile>

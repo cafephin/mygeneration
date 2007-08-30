@@ -99,12 +99,16 @@ namespace MyGeneration
             // 
             // newToolStripMenuItem
             // 
+            this.newToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("newToolStripMenuItem.Image")));
+            this.newToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
             this.newToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
             this.newToolStripMenuItem.Text = "&New";
             // 
             // openToolStripMenuItem
             // 
+            this.openToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("openToolStripMenuItem.Image")));
+            this.openToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.openToolStripMenuItem.MergeIndex = 0;
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
@@ -127,6 +131,8 @@ namespace MyGeneration
             // 
             // defaultSettingsToolStripMenuItem
             // 
+            this.defaultSettingsToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("defaultSettingsToolStripMenuItem.Image")));
+            this.defaultSettingsToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.defaultSettingsToolStripMenuItem.MergeIndex = 13;
             this.defaultSettingsToolStripMenuItem.Name = "defaultSettingsToolStripMenuItem";
             this.defaultSettingsToolStripMenuItem.Size = new System.Drawing.Size(162, 22);

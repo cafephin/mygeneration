@@ -193,7 +193,32 @@ namespace MyGeneration
 
 		protected override string GetPersistString()
 		{
-			return GetType().ToString() + "," + this.FileName;
+            if (this.IsNew)
+            {
+                string langType = string.Empty;
+                switch (this._template.BodySegment.Language)
+                {
+                    case ZeusConstants.Languages.CSHARP:
+                        langType = TemplateEditorManager.CSHARP_TEMPLATE;
+                        break;
+                    case ZeusConstants.Languages.VBNET:
+                        langType = TemplateEditorManager.VBNET_TEMPLATE;
+                        break;
+                    case ZeusConstants.Languages.VBSCRIPT:
+                        langType = TemplateEditorManager.VBSCRIPT_TEMPLATE;
+                        break;
+                    case ZeusConstants.Languages.JSCRIPT:
+                    default:
+                        langType = TemplateEditorManager.JSCRIPT_TEMPLATE;
+                        break;
+                }
+
+                return "type," + langType;
+            }
+            else
+            {
+                return "file," + this.FileName;
+            }
 		}
 
 		public IEditControl CurrentEditControl 

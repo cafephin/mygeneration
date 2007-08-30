@@ -80,7 +80,7 @@ namespace MyGeneration
 			}
 			else
 			{
-				return GetType().ToString();
+                return "type," + ProjectEditorManager.MYGEN_PROJECT;
 			}
 		}
 

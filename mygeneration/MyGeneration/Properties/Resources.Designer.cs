@@ -80,5 +80,40 @@ namespace MyGeneration.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        internal static System.Drawing.Bitmap newcsharp {
+            get {
+                object obj = ResourceManager.GetObject("newcsharp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap newjscript {
+            get {
+                object obj = ResourceManager.GetObject("newjscript", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap newproject {
+            get {
+                object obj = ResourceManager.GetObject("newproject", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap newvbnet {
+            get {
+                object obj = ResourceManager.GetObject("newvbnet", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap newvbscript {
+            get {
+                object obj = ResourceManager.GetObject("newvbscript", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }
