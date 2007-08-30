@@ -234,35 +234,35 @@ namespace MyGeneration
                 string type = parsedStrings[0];
                 if (type == typeof(LanguageMappings).ToString())
                 {
-                    this.LanguageMappingsDockContent.Activate();
+                    content = this.LanguageMappingsDockContent;
                 }
                 else if (type == typeof(DbTargetMappings).ToString())
                 {
-                    this.DbTargetMappingsDockContent.Activate();
+                    content = this.DbTargetMappingsDockContent;
                 }
                 else if (type == typeof(MetaProperties).ToString())
                 {
-                    this.MetaPropertiesDockContent.Activate();
+                    content = this.MetaPropertiesDockContent;
                 }
                 else if (type == typeof(MetaDataBrowser).ToString())
                 {
-                    this.MetaDataBrowserDockContent.Activate();
+                    content = this.MetaDataBrowserDockContent;
                 }
                 else if (type == typeof(UserMetaData).ToString())
                 {
-                    this.UserMetaDataDockContent.Activate();
+                    content = this.UserMetaDataDockContent;
                 }
                 else if (type == typeof(GlobalUserMetaData).ToString())
                 {
-                    this.GlobalUserMetaDataDockContent.Activate();
+                    content = this.GlobalUserMetaDataDockContent;
                 }
                 else if (type == typeof(TemplateBrowser).ToString())
                 {
-                    this.TemplateBrowserDockContent.Activate();
+                    content = this.TemplateBrowserDockContent;
                 }
                 else if (type == typeof(DefaultProperties).ToString())
                 {
-                    this.OptionsDockContent.Activate();
+                    content = this.OptionsDockContent;
                 }
             }
             else if (parsedStrings.Length >= 2)

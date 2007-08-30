@@ -793,7 +793,7 @@ namespace MyGeneration
             this.tabScript.Controls.Add(this.txtDefaultTemplatePath);
             this.tabScript.Location = new System.Drawing.Point(4, 22);
             this.tabScript.Name = "tabScript";
-            this.tabScript.Size = new System.Drawing.Size(698, 535);
+            this.tabScript.Size = new System.Drawing.Size(698, 475);
             this.tabScript.TabIndex = 1;
             this.tabScript.Text = "Templates";
             // 
@@ -1089,7 +1089,7 @@ namespace MyGeneration
             this.tabMisc.Controls.Add(this.chkForUpdates);
             this.tabMisc.Location = new System.Drawing.Point(4, 22);
             this.tabMisc.Name = "tabMisc";
-            this.tabMisc.Size = new System.Drawing.Size(698, 535);
+            this.tabMisc.Size = new System.Drawing.Size(698, 475);
             this.tabMisc.TabIndex = 2;
             this.tabMisc.Text = "Misc";
             // 
@@ -1198,6 +1198,7 @@ namespace MyGeneration
             this.Controls.Add(this.tabControl);
             this.DockAreas = WeifenLuo.WinFormsUI.Docking.DockAreas.Document;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "DefaultProperties";
