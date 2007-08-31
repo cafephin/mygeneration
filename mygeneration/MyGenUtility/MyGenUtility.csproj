@@ -104,6 +104,14 @@
       <Project>{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}</Project>
       <Name>MyMeta</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\plugins\DotNetScriptingEngine\DotNetScriptingEngine.csproj">
+      <Project>{497C072A-648D-4EF9-B5EC-71895D182018}</Project>
+      <Name>DotNetScriptingEngine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\plugins\MicrosoftScriptingEngine\MicrosoftScriptingEngine.csproj">
+      <Project>{5CFE661C-1C7D-4191-A6F7-D7891C448690}</Project>
+      <Name>MicrosoftScriptingEngine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\scintilla\ScintillaNET\ScintillaNET.csproj">
       <Project>{F9B6DABD-BBC1-4638-8CE6-A5C9506BFDCB}</Project>
       <Name>ScintillaNET</Name>

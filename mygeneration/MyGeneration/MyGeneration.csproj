@@ -79,14 +79,6 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="adodb, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\installer\adodb.dll</HintPath>
-    </Reference>
-    <Reference Include="CollapsibleSplitter">
-      <Name>CollapsibleSplitter</Name>
-      <HintPath>CollapsableSplitter\CollapsibleSplitter.dll</HintPath>
-    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -112,16 +104,6 @@
       <Name>WeifenLuo.WinFormsUI.Docking</Name>
       <HintPath>DockManager\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
-    <ProjectReference Include="..\..\plugins\ContextProcessor\ContextProcessor.csproj">
-      <Name>ContextProcessor</Name>
-      <Project>{B43C4B09-6813-4C8D-A422-85ECF41CB75B}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
-    <ProjectReference Include="..\..\plugins\DotNetScriptingEngine\DotNetScriptingEngine.csproj">
-      <Name>DotNetScriptingEngine</Name>
-      <Project>{497C072A-648D-4EF9-B5EC-71895D182018}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
     <ProjectReference Include="..\..\scintilla\ScintillaNET\ScintillaNET.csproj">
       <Project>{F9B6DABD-BBC1-4638-8CE6-A5C9506BFDCB}</Project>
       <Name>ScintillaNET</Name>
@@ -131,34 +113,11 @@
       <Project>{61B369D1-95DD-4158-9F30-2E051CEB9D50}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
-    <ProjectReference Include="..\..\plugins\MicrosoftScriptingEngine\MicrosoftScriptingEngine.csproj">
-      <Name>MicrosoftScriptingEngine</Name>
-      <Project>{5CFE661C-1C7D-4191-A6F7-D7891C448690}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
     <ProjectReference Include="..\MyGenUtility\MyGenUtility.csproj">
       <Name>MyGenUtility</Name>
       <Project>{A1D6D035-420C-40A3-9598-9E34F11FB1AA}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
-    <ProjectReference Include="..\Zeus\Zeus.csproj">
-      <Name>Zeus</Name>
-      <Project>{CE8A697D-D45C-4E60-838D-E36980227543}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
-    <ProjectReference Include="..\..\mymeta\MyMeta.csproj">
-      <Name>MyMeta</Name>
-      <Project>{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
-    <COMReference Include="MSDASC">
-      <Guid>{2206CEB0-19C1-11D1-89E0-00C04FD7A829}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-    </COMReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs">
@@ -228,11 +187,6 @@
     </None>
     <None Include="Web References\com.mygenerationsoftware.www\VersionInfo.disco" />
     <None Include="Web References\com.mygenerationsoftware.www\VersionInfo.wsdl" />
-    <Content Include="CollapsableSplitter\CollapsibleSplitter.dll" />
-    <Content Include="DockManager\WeifenLuo.WinFormsUI.Docking.dll" />
-    <None Include="Resources\dev01tiny.png" />
-    <None Include="Resources\dev02tiny.png" />
-    <Content Include="Resources\mygenlogo.gif" />
     <Content Include="Settings\DbTargets.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

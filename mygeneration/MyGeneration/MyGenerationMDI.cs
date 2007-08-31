@@ -18,7 +18,7 @@ using Scintilla.Configuration.Legacy;
 using Scintilla.Configuration;
 using Scintilla.Configuration.SciTE;
 
-using Zeus.Projects;
+//using Zeus.Projects;
 using Zeus;
 
 namespace MyGeneration

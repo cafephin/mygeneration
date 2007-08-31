@@ -6,9 +6,6 @@ using System.Windows.Forms;
 using System.Reflection;
 using System.Text;
 
-using Zeus.Templates;
-using MyMeta;
-
 namespace MyGeneration
 {
 	/// <summary>
