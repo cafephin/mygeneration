@@ -34,6 +34,7 @@ namespace MyGeneration
         private ToolStripMenuItem saveToolStripMenuItem;
         private ToolStripMenuItem closeToolStripMenuItem;
         private DefaultSettingsControl defaultSettingsControl;
+        private ToolStripSeparator toolStripMenuItem1;
         private IMyGenerationMDI mdi;
 
         public DefaultProperties(IMyGenerationMDI mdi)
@@ -75,6 +76,7 @@ namespace MyGeneration
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.defaultSettingsControl = new MyGeneration.DefaultSettingsControl();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripOptions.SuspendLayout();
             this.menuStripMain.SuspendLayout();
             this.SuspendLayout();
@@ -116,7 +118,7 @@ namespace MyGeneration
             this.menuStripMain.Location = new System.Drawing.Point(0, 0);
             this.menuStripMain.Name = "menuStripMain";
             this.menuStripMain.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
-            this.menuStripMain.Size = new System.Drawing.Size(706, 24);
+            this.menuStripMain.Size = new System.Drawing.Size(896, 24);
             this.menuStripMain.TabIndex = 39;
             this.menuStripMain.Text = "menuStrip1";
             this.menuStripMain.Visible = false;
@@ -125,7 +127,8 @@ namespace MyGeneration
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.saveToolStripMenuItem,
-            this.closeToolStripMenuItem});
+            this.closeToolStripMenuItem,
+            this.toolStripMenuItem1});
             this.fileToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.MatchOnly;
             this.fileToolStripMenuItem.MergeIndex = 0;
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
@@ -138,16 +141,16 @@ namespace MyGeneration
             this.saveToolStripMenuItem.MergeIndex = 4;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.saveToolStripMenuItem.Text = "&Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // closeToolStripMenuItem
             // 
             this.closeToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.closeToolStripMenuItem.MergeIndex = 6;
+            this.closeToolStripMenuItem.MergeIndex = 5;
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.closeToolStripMenuItem.Text = "&Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
@@ -158,17 +161,24 @@ namespace MyGeneration
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.defaultSettingsControl.Location = new System.Drawing.Point(-2, 1);
             this.defaultSettingsControl.Name = "defaultSettingsControl";
-            this.defaultSettingsControl.Size = new System.Drawing.Size(954, 586);
+            this.defaultSettingsControl.Size = new System.Drawing.Size(901, 606);
             this.defaultSettingsControl.TabIndex = 40;
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.toolStripMenuItem1.MergeIndex = 6;
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(149, 6);
             // 
             // DefaultProperties
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.AutoScroll = true;
             this.AutoScrollMinSize = new System.Drawing.Size(590, 531);
-            this.ClientSize = new System.Drawing.Size(949, 583);
-            this.Controls.Add(this.defaultSettingsControl);
+            this.ClientSize = new System.Drawing.Size(896, 603);
             this.Controls.Add(this.menuStripMain);
+            this.Controls.Add(this.defaultSettingsControl);
             this.Controls.Add(this.toolStripOptions);
             this.DockAreas = WeifenLuo.WinFormsUI.Docking.DockAreas.Document;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;

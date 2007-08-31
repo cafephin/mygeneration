@@ -221,14 +221,6 @@ namespace MyGeneration
 
 		public void DefaultSettingsChanged(DefaultSettings settings)
 		{
-			PromptForSave(false);
-
-			this.dbDriver = settings.DbDriver;
-
-			PopulateComboBox(settings);
-			PopulateGrid(this.dbDriver);
-
-			MarkAsDirty(false);
 		}
 
 		public bool CanClose(bool allowPrevent)
@@ -634,12 +626,23 @@ namespace MyGeneration
 
         public ToolStrip ToolStrip
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { return null; }
         }
 
         public void ProcessAlert(IMyGenContent sender, string command, params object[] args)
         {
-            throw new Exception("The method or operation is not implemented.");
+            if (command == "UpdateDefaultSettings")
+            {
+                PromptForSave(false);
+
+                DefaultSettings settings = DefaultSettings.Instance;
+                this.dbDriver = settings.DbDriver;
+
+                PopulateComboBox(settings);
+                PopulateGrid(this.dbDriver);
+
+                MarkAsDirty(false);
+            }
         }
 
         public DockContent DockContent
