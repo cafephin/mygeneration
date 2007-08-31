@@ -662,7 +662,8 @@ namespace MyGeneration
             get
             {
                 if ((metaDataBrowser != null) && metaDataBrowser.IsDisposed) metaDataBrowser = null;
-                if (metaDataBrowser == null) metaDataBrowser = new MetaDataBrowser(this);
+                if (metaDataBrowser == null) metaDataBrowser = new MetaDataBrowser(this, 
+                    MetaPropertiesDockContent, UserMetaDataDockContent, GlobalUserMetaDataDockContent);
                 return metaDataBrowser;
             }
         }

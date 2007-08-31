@@ -76,19 +76,46 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="adodb, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\installer\adodb.dll</HintPath>
+    </Reference>
+    <Reference Include="CollapsibleSplitter, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\MyGeneration\CollapsableSplitter\CollapsibleSplitter.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
     <Reference Include="System.Data">
       <Name>System.Data</Name>
     </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.1.2706.19617, Culture=neutral, PublicKeyToken=d481317c817cec47, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\MyGeneration\DockManager\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    </Reference>
+    <ProjectReference Include="..\..\mymeta\MyMeta.csproj">
+      <Project>{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}</Project>
+      <Name>MyMeta</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\scintilla\ScintillaNET\ScintillaNET.csproj">
+      <Project>{F9B6DABD-BBC1-4638-8CE6-A5C9506BFDCB}</Project>
+      <Name>ScintillaNET</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EngineInterface\PluginInterfaces.csproj">
       <Name>PluginInterfaces</Name>
       <Project>{61B369D1-95DD-4158-9F30-2E051CEB9D50}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\Zeus\Zeus.csproj">
+      <Project>{CE8A697D-D45C-4E60-838D-E36980227543}</Project>
+      <Name>Zeus</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -98,6 +125,232 @@
     <Compile Include="DefaultSettings.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Forms\AboutBox\AboutBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AboutBox\AboutBoxLogo.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Forms\AboutBox\AboutBoxLogo.Designer.cs">
+      <DependentUpon>AboutBoxLogo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DefaultSettings\DefaultProperties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DefaultSettings\DefaultSettingsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\DefaultSettings\DefaultSettingsControl.Designer.cs">
+      <DependentUpon>DefaultSettingsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\EditorManager.cs" />
+    <Compile Include="Forms\MyMeta\AddDbTargetMappingDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MyMeta\AddLanguageMappingDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MyMeta\DbTargetMappings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MyMeta\GlobalUserMetaData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MyMeta\GridLayoutHelper.cs" />
+    <Compile Include="Forms\MyMeta\LanguageMappings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MyMeta\MetaDataBrowser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MyMeta\MetaProperties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MyMeta\TestConnectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MyMeta\UserMetaData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ProjectEditor\AddEditModule.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ProjectEditor\AddEditSavedObject.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ProjectEditor\AddEditSavedObjectEx.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ProjectEditor\ProjectBrowser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ProjectEditor\ProjectEditorManager.cs" />
+    <Compile Include="Forms\ProjectEditor\ProjectExecuteStatus.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ProjectEditor\ViewSavedInput.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TemplateBrowser\TemplateBrowser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TemplateBrowser\TemplateTreeBuilder.cs" />
+    <Compile Include="Forms\TemplateBrowser\TemplateWebUpdateHelper.cs" />
+    <Compile Include="Forms\TemplateBrowser\WebTemplateLibrary.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TemplateEditor\Goto.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TemplateEditor\TemplateEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TemplateEditor\TemplateEditorManager.cs" />
+    <Compile Include="Forms\TemplateEditor\ZeusScintillaControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Forms\AboutBox\AboutBox.resx">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AboutBox\AboutBoxLogo.resx">
+      <DependentUpon>AboutBoxLogo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DefaultSettings\DefaultProperties.resx">
+      <DependentUpon>DefaultProperties.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DefaultSettings\DefaultSettingsControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DefaultSettingsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MyMeta\AddDbTargetMappingDialog.resx">
+      <DependentUpon>AddDbTargetMappingDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MyMeta\AddLanguageMappingDialog.resx">
+      <DependentUpon>AddLanguageMappingDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MyMeta\DbTargetMappings.resx">
+      <DependentUpon>DbTargetMappings.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MyMeta\GlobalUserMetaData.resx">
+      <DependentUpon>GlobalUserMetaData.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MyMeta\LanguageMappings.resx">
+      <DependentUpon>LanguageMappings.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MyMeta\MetaDataBrowser.resx">
+      <DependentUpon>MetaDataBrowser.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MyMeta\MetaProperties.resx">
+      <DependentUpon>MetaProperties.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MyMeta\TestConnectionForm.resx">
+      <DependentUpon>TestConnectionForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MyMeta\UserMetaData.resx">
+      <DependentUpon>UserMetaData.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ProjectEditor\AddEditModule.resx">
+      <DependentUpon>AddEditModule.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ProjectEditor\AddEditSavedObject.resx">
+      <DependentUpon>AddEditSavedObject.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ProjectEditor\AddEditSavedObjectEx.resx">
+      <DependentUpon>AddEditSavedObjectEx.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ProjectEditor\ProjectBrowser.resx">
+      <DependentUpon>ProjectBrowser.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ProjectEditor\ProjectExecuteStatus.resx">
+      <DependentUpon>ProjectExecuteStatus.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ProjectEditor\ViewSavedInput.resx">
+      <DependentUpon>ViewSavedInput.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TemplateBrowser\TemplateBrowser.resx">
+      <DependentUpon>TemplateBrowser.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TemplateBrowser\WebTemplateLibrary.resx">
+      <DependentUpon>WebTemplateLibrary.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TemplateEditor\Goto.resx">
+      <DependentUpon>Goto.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TemplateEditor\TemplateEditor.resx">
+      <DependentUpon>TemplateEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TemplateEditor\ZeusScintillaControl.resx">
+      <DependentUpon>ZeusScintillaControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="MSDASC">
+      <Guid>{2206CEB0-19C1-11D1-89E0-00C04FD7A829}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dev01tiny.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dev02tiny.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mygenlogo.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\jeg_csharp.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\jeg_jscript.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\jeg_newproject.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\jeg_vbnet.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\jeg_vbscript.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
