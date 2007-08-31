@@ -90,16 +90,6 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
-    <ProjectReference Include="..\..\plugins\ContextProcessor\ContextProcessor.csproj">
-      <Name>ContextProcessor</Name>
-      <Project>{B43C4B09-6813-4C8D-A422-85ECF41CB75B}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
-    <ProjectReference Include="..\..\plugins\DotNetScriptingEngine\DotNetScriptingEngine.csproj">
-      <Name>DotNetScriptingEngine</Name>
-      <Project>{497C072A-648D-4EF9-B5EC-71895D182018}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
     <ProjectReference Include="..\EngineInterface\PluginInterfaces.csproj">
       <Name>PluginInterfaces</Name>
       <Project>{61B369D1-95DD-4158-9F30-2E051CEB9D50}</Project>
@@ -108,11 +98,6 @@
     <ProjectReference Include="..\..\mymeta\MyMeta.csproj">
       <Name>MyMeta</Name>
       <Project>{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
-    <ProjectReference Include="..\..\plugins\MicrosoftScriptingEngine\MicrosoftScriptingEngine.csproj">
-      <Name>MicrosoftScriptingEngine</Name>
-      <Project>{5CFE661C-1C7D-4191-A6F7-D7891C448690}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
     <ProjectReference Include="..\MyGenUtility\MyGenUtility.csproj">
@@ -145,7 +130,9 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>xcopy "$(SolutionDir)..\plugins\ContextPreprocessor\bin\$(ConfigurationName)\ContextPreprocessor.*" "$(TargetDir)" /Y /C
+xcopy "$(SolutionDir)..\plugins\MicrosoftScriptingEngine\bin\$(ConfigurationName)\MicrosoftScriptingEngine.*" "$(TargetDir)" /Y /C
+xcopy "$(SolutionDir)..\plugins\DotNetScriptingEngine\bin\$(ConfigurationName)\DotNetScriptingEngine.*" "$(TargetDir)" /Y /C
+</PostBuildEvent>
   </PropertyGroup>
 </Project>

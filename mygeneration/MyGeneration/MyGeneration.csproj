@@ -206,7 +206,11 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>xcopy "$(SolutionDir)ZeusCmd\bin\$(ConfigurationName)\ZeusCmd.*" "$(TargetDir)" /Y /C
+    <PostBuildEvent>xcopy "$(SolutionDir)..\plugins\ContextPreprocessor\bin\$(ConfigurationName)\ContextPreprocessor.*" "$(TargetDir)" /Y /C
+xcopy "$(SolutionDir)..\plugins\MicrosoftScriptingEngine\bin\$(ConfigurationName)\MicrosoftScriptingEngine.*" "$(TargetDir)" /Y /C
+xcopy "$(SolutionDir)..\plugins\DotNetScriptingEngine\bin\$(ConfigurationName)\DotNetScriptingEngine.*" "$(TargetDir)" /Y /C
+xcopy "$(SolutionDir)MyMeta\bin\$(ConfigurationName)\MyMeta.*" "$(TargetDir)" /Y /C
+xcopy "$(SolutionDir)ZeusCmd\bin\$(ConfigurationName)\ZeusCmd.*" "$(TargetDir)" /Y /C
 rem md "$(TargetDir)Templates\"
 xcopy "$(SolutionDir)..\templates\*.*" "$(TargetDir)Templates\" /E /C /Y
 xcopy "$(SolutionDir)..\plugins\MyMetaVistaDB3xPlugin\bin\$(ConfigurationName)\MyMeta.Plugins.*.*" "$(TargetDir)" /C /Y

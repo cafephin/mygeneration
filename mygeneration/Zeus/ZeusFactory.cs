@@ -5,7 +5,9 @@ using System.Collections;
 using System.Reflection;
 
 //using Zeus.DotNetScript;
-using Zeus.ErrorHandling;using Zeus.Configuration;
+using Zeus.ErrorHandling;
+using Zeus.Configuration;
+
 namespace Zeus
 {
 	/// <summary>
