@@ -71,6 +71,9 @@ namespace MyGeneration
                 newToolStripMenuItem.DropDownItems,
                 toolStripDropDownButtonNew.DropDownItems);
 
+            ContentManager.AddNewContentMenuItems(openContentDynamicToolStripMenuItem_Click, this.pluginsToolStripMenuItem,
+                this.toolStrip1);
+
             this.RefreshRecentFiles();
         }
 
@@ -177,6 +180,18 @@ namespace MyGeneration
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 this.OpenDocuments(openFileDialog.FileNames);
+            }
+        }
+
+        public void OpenContent(params string[] keys)
+        {
+            foreach (string key in keys)
+            {
+                IMyGenContent mygenContent = ContentManager.CreateContent(this, key);
+                if (mygenContent != null)
+                {
+                    mygenContent.DockContent.Show(dockPanel);
+                }
             }
         }
 
@@ -438,6 +453,12 @@ namespace MyGeneration
         {
             ToolStripMenuItem i = sender as ToolStripMenuItem;
             this.CreateDocument(i.Text);
+        }
+
+        private void openContentDynamicToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripItem i = sender as ToolStripItem;
+            this.OpenContent(i.Text);
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)

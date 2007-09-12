@@ -1,0 +1,126 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Reflection;
+using System.IO;
+
+namespace MyGeneration
+{
+    public static class PluginManager
+    {
+        private static Dictionary<FileInfo, Exception> pluginLoadErrors = new Dictionary<FileInfo, Exception>();
+        private static Dictionary<string, IContentManager> contentManagers = null;
+        private static Dictionary<string, IEditorManager> editorManagers = null;
+        private static string openFileDialogString = null;
+
+        public static void LoadPlugins()
+        {
+            TemplateEditorManager tem = new TemplateEditorManager();
+            ProjectEditorManager pem = new ProjectEditorManager();
+
+            editorManagers = new Dictionary<string, IEditorManager>();
+            editorManagers.Add(tem.Name, tem);
+            editorManagers.Add(pem.Name, pem);
+
+            contentManagers = new Dictionary<string, IContentManager>();
+
+            FileInfo info = new FileInfo(Assembly.GetExecutingAssembly().Location);
+            if (info.Exists)
+            {
+                foreach (FileInfo dllFile in info.Directory.GetFiles("MyGeneration.UI.Plugins.*.dll"))
+                {
+                    try
+                    {
+                        Assembly assembly = Assembly.LoadFile(dllFile.FullName);
+                        foreach (Type type in assembly.GetTypes())
+                        {
+                            Type[] interfaces = type.GetInterfaces();
+                            foreach (Type iface in interfaces)
+                            {
+                                if (iface == typeof(IEditorManager) || iface == typeof(IContentManager))
+                                {
+                                    try
+                                    {
+                                        ConstructorInfo[] constructors = type.GetConstructors();
+                                        ConstructorInfo constructor = constructors[0];
+
+                                        object plugin = constructor.Invoke(BindingFlags.CreateInstance, null, new object[] { }, null);
+                                        if (plugin is IEditorManager)
+                                        {
+                                            IEditorManager em = plugin as IEditorManager;
+                                            if (!editorManagers.ContainsKey(em.Name))
+                                            {
+                                                editorManagers[em.Name] = em;
+                                            }
+                                        }
+                                        else if (plugin is IContentManager)
+                                        {
+                                            IContentManager cm = plugin as IContentManager;
+                                            if (!contentManagers.ContainsKey(cm.Name))
+                                            {
+                                                contentManagers[cm.Name] = cm;
+                                            }
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        pluginLoadErrors.Add(dllFile, ex);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        pluginLoadErrors.Add(dllFile, ex);
+                    }
+                }
+            }
+        }
+        public static Dictionary<string, IEditorManager> EditorManagers
+        {
+            get
+            {
+                if (editorManagers == null)
+                {
+                    LoadPlugins();
+                }
+                return editorManagers;
+            }
+        }
+        public static Dictionary<string, IContentManager> ContentManagers
+        {
+            get
+            {
+                if (contentManagers == null)
+                {
+                    LoadPlugins();
+                }
+                return contentManagers;
+            }
+        }
+
+        public static void Refresh()
+        {
+            contentManagers = null;
+            editorManagers = null;
+            pluginLoadErrors.Clear();
+        }
+
+        public static bool DoPluginErrorsExist
+        {
+            get
+            {
+                return (pluginLoadErrors.Count > 0);
+            }
+        }
+
+        public static Dictionary<FileInfo, Exception> PluginLoadErrors
+        {
+            get
+            {
+                return pluginLoadErrors;
+            }
+        }
+    }
+}

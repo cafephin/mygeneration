@@ -128,16 +128,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-    <PostBuildEvent>xcopy "$(SolutionDir)..\plugins\ContextPreprocessor\bin\$(ConfigurationName)\ContextPreprocessor.*" "$(TargetDir)" /Y /C
-xcopy "$(SolutionDir)..\plugins\MicrosoftScriptingEngine\bin\$(ConfigurationName)\MicrosoftScriptingEngine.*" "$(TargetDir)" /Y /C
-xcopy "$(SolutionDir)..\plugins\MicrosoftScriptingEngine\bin\$(ConfigurationName)\Interop.MSScriptControl.*" "$(TargetDir)" /Y /C
-xcopy "$(SolutionDir)..\plugins\MicrosoftScriptingEngine\bin\$(ConfigurationName)\Interop.Scripting.*" "$(TargetDir)" /Y /C
-xcopy "$(SolutionDir)..\plugins\DotNetScriptingEngine\bin\$(ConfigurationName)\DotNetScriptingEngine.*" "$(TargetDir)" /Y /C
-xcopy "$(SolutionDir)MyMeta\bin\$(ConfigurationName)\Interop.MSDASC.*" "$(TargetDir)" /Y /C
-xcopy "$(SolutionDir)MyMeta\bin\$(ConfigurationName)\Interop.ADOX.*" "$(TargetDir)" /Y /C
-xcopy "$(SolutionDir)MyMeta\bin\$(ConfigurationName)\MyMeta.*" "$(TargetDir)" /Y /C
-</PostBuildEvent>
+    <PreBuildEvent>copy "$(SolutionDir)MyGeneration\PluginResources\*.dll" "$(TargetDir)"</PreBuildEvent>
+    <PostBuildEvent>xcopy "$(SolutionDir)..\templates\*.*" "$(TargetDir)Templates\" /E /C /Y
+xcopy "$(SolutionDir)..\plugins\MyMetaXsd3bPlugin\templates\xsd3b\*.*" "$(TargetDir)Templates\" /C /Y</PostBuildEvent>
   </PropertyGroup>
 </Project>

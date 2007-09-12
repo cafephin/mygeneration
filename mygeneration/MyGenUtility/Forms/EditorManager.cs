@@ -4,39 +4,14 @@ using System.Text;
 using System.IO;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Reflection;
 
 namespace MyGeneration
 {
     public abstract class EditorManager : IEditorManager
     {
         #region Static factory type members 
-        private static Dictionary<string, IEditorManager> editorManagers = null;
         private static string openFileDialogString = null;
-
-       public static Dictionary<string, IEditorManager> EditorManagers
-        {
-            get
-            {
-                if (editorManagers == null)
-                {
-                    TemplateEditorManager tem = new TemplateEditorManager();
-                    ProjectEditorManager pem = new ProjectEditorManager();
-                    
-                    editorManagers = new Dictionary<string, IEditorManager>();
-                    editorManagers.Add(tem.Name, tem);
-                    editorManagers.Add(pem.Name, pem);
-
-                    // Add dynamic based on the config file.
-                }
-                return editorManagers;
-            }
-        }
-
-        public static void Refresh()
-        {
-            editorManagers = null;
-            openFileDialogString = null;
-        }
 
         public static string OpenFileDialogString
         {
@@ -48,7 +23,7 @@ namespace MyGeneration
                     StringBuilder exts = new StringBuilder();
 
                     dialogString.Append("All MyGeneration Files (");
-                    foreach (IEditorManager editorManager in EditorManagers.Values)
+                    foreach (IEditorManager editorManager in PluginManager.EditorManagers.Values)
                     {
                         if (editorManager.FileExtensions.Count > 0)
                         {
@@ -62,7 +37,7 @@ namespace MyGeneration
                         }
                     }
                     dialogString.Append(exts).Append(")|").Append(exts).Append("|");
-                    foreach (IEditorManager editorManager in EditorManagers.Values)
+                    foreach (IEditorManager editorManager in PluginManager.EditorManagers.Values)
                     {
                         if (editorManager.FileExtensions.Count > 0)
                         {
@@ -80,7 +55,7 @@ namespace MyGeneration
 
         public static void AddNewDocumentMenuItems(EventHandler onClickEvent, params ToolStripItemCollection[] tsics)
         {
-            foreach (IEditorManager editorManager in EditorManagers.Values)
+            foreach (IEditorManager editorManager in PluginManager.EditorManagers.Values)
             {
                 foreach (string ftype in editorManager.FileTypes)
                 {
@@ -97,7 +72,7 @@ namespace MyGeneration
         public static IMyGenDocument CreateDocument(IMyGenerationMDI mdi, string fileType)
         {
             IMyGenDocument mygenDoc = null;
-            foreach (IEditorManager manager in EditorManagers.Values)
+            foreach (IEditorManager manager in PluginManager.EditorManagers.Values)
             {
                 if (manager.FileTypes.Contains(fileType))
                 {
@@ -114,7 +89,7 @@ namespace MyGeneration
             FileInfo info = new FileInfo(filename);
             if (info.Exists)
             {
-                foreach (IEditorManager manager in EditorManagers.Values)
+                foreach (IEditorManager manager in PluginManager.EditorManagers.Values)
                 {
                     if (manager.CanOpenFile(info))
                     {

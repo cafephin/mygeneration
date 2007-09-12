@@ -1225,7 +1225,7 @@ namespace MyGeneration
             this.toolStripButtonSave.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonSave.Image")));
             this.toolStripButtonSave.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonSave.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.toolStripButtonSave.MergeIndex = 0;
+            this.toolStripButtonSave.MergeIndex = 2;
             this.toolStripButtonSave.Name = "toolStripButtonSave";
             this.toolStripButtonSave.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonSave.Text = "Save Settings";
@@ -1237,7 +1237,7 @@ namespace MyGeneration
             this.toolStripButtonSaveAs.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonSaveAs.Image")));
             this.toolStripButtonSaveAs.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonSaveAs.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.toolStripButtonSaveAs.MergeIndex = 1;
+            this.toolStripButtonSaveAs.MergeIndex = 3;
             this.toolStripButtonSaveAs.Name = "toolStripButtonSaveAs";
             this.toolStripButtonSaveAs.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonSaveAs.Text = "Save As";
@@ -1246,7 +1246,7 @@ namespace MyGeneration
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.toolStripSeparator1.MergeIndex = 2;
+            this.toolStripSeparator1.MergeIndex = 4;
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
@@ -1256,7 +1256,7 @@ namespace MyGeneration
             this.toolStripButtonProperties.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonProperties.Image")));
             this.toolStripButtonProperties.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonProperties.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.toolStripButtonProperties.MergeIndex = 3;
+            this.toolStripButtonProperties.MergeIndex = 5;
             this.toolStripButtonProperties.Name = "toolStripButtonProperties";
             this.toolStripButtonProperties.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonProperties.Text = "Template Properties";
@@ -1268,7 +1268,7 @@ namespace MyGeneration
             this.toolStripButtonConsole.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonConsole.Image")));
             this.toolStripButtonConsole.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonConsole.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.toolStripButtonConsole.MergeIndex = 4;
+            this.toolStripButtonConsole.MergeIndex = 6;
             this.toolStripButtonConsole.Name = "toolStripButtonConsole";
             this.toolStripButtonConsole.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonConsole.Text = "Console";
@@ -1277,7 +1277,7 @@ namespace MyGeneration
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.toolStripSeparator2.MergeIndex = 5;
+            this.toolStripSeparator2.MergeIndex = 7;
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
@@ -1287,7 +1287,7 @@ namespace MyGeneration
             this.toolStripButtonExecute.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonExecute.Image")));
             this.toolStripButtonExecute.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonExecute.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.toolStripButtonExecute.MergeIndex = 6;
+            this.toolStripButtonExecute.MergeIndex = 8;
             this.toolStripButtonExecute.Name = "toolStripButtonExecute";
             this.toolStripButtonExecute.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonExecute.Text = "Execute";
@@ -1296,7 +1296,7 @@ namespace MyGeneration
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.toolStripSeparator3.MergeIndex = 7;
+            this.toolStripSeparator3.MergeIndex = 9;
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
             // 
@@ -1581,8 +1581,8 @@ namespace MyGeneration
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.ClientSize = new System.Drawing.Size(900, 689);
-            this.Controls.Add(this.menuStripMain);
             this.Controls.Add(this.toolStripOptions);
+            this.Controls.Add(this.menuStripMain);
             this.Controls.Add(this.tabControlTemplate);
             this.Controls.Add(this.splitterProperties);
             this.Controls.Add(this.panelProperties);

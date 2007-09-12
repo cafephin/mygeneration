@@ -9,7 +9,6 @@ namespace MyGeneration
 {
     public interface IMyGenerationMDI
     {
-
         void OpenDocuments(params string[] filenames);
         void CreateDocument(params string[] args);
         bool IsDocumentOpen(string text, params IMyGenDocument[] docsToExclude);

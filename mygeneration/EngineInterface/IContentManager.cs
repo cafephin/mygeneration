@@ -1,0 +1,15 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.IO;
+using System.Drawing;
+
+namespace MyGeneration
+{
+    public interface IContentManager
+    {
+        string Name { get; }
+        Image MenuImage { get; }
+        IMyGenContent Create(IMyGenerationMDI mdi, params string[] args);
+    }
+}

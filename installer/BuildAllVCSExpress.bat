@@ -7,6 +7,7 @@ if "%DEVENV%"=="" set DEVENV="%PROGRAMFILES%\Microsoft Visual Studio 8\Common7\I
 
 %DEVENV% "..\mygeneration\Zeus.sln"
 %DEVENV% "..\plugins\MyMetaPlugins.sln"
+%DEVENV% "..\plugins\ZeusPlugins.sln"
 %DEVENV% "..\codesmith2mygen\CodeSmith2MyGeneration\CodeSmith2MyGeneration.sln"
 set DEVENV=
 

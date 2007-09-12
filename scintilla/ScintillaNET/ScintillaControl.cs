@@ -32,7 +32,8 @@ namespace Scintilla
 
     public delegate void ScintillaConfigureDelegate(ScintillaControl scintillaControl, string language);
 
-    public partial class ScintillaControl : Control
+    [DefaultBindingProperty("Text"), DefaultProperty("Text"), DefaultEvent("DocumentChanged")]
+    public partial class ScintillaControl : System.Windows.Forms.Control, ISupportInitialize
     {
         public const string DefaultDllName = "SciLexer.dll";
         
@@ -1551,5 +1552,37 @@ namespace Scintilla
 			return new Range(start, end, this);
 		}
 		#endregion
+
+        #region ISupportInitialize Members
+        private bool _isInitializing = false;
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        internal bool IsInitializing
+        {
+            get
+            {
+                return _isInitializing;
+            }
+            set
+            {
+                _isInitializing = value;
+            }
+        }
+
+        public void BeginInit()
+        {
+            _isInitializing = true;
+        }
+
+        public void EndInit()
+        {
+            _isInitializing = false;
+            //foreach (ScintillaHelperBase helper in _helpers)
+            //{
+            //    helper.Initialize();
+            //}
+        }
+
+        #endregion
+
     }
 }

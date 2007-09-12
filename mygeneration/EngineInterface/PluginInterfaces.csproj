@@ -100,10 +100,10 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="IContentManager.cs" />
     <Compile Include="IEditorManager.cs" />
     <Compile Include="IMyGenContent.cs" />
     <Compile Include="IMyGenDocument.cs" />
-    <Compile Include="IDocumentPlugin.cs" />
     <Compile Include="IMyGenerationMDI.cs" />
     <Compile Include="IScintillaEditControl.cs" />
     <Compile Include="UserInterfaces\MyMetaBrowser.cs">

@@ -142,6 +142,13 @@
     <Compile Include="Forms\AboutBox\AboutBoxLogo.Designer.cs">
       <DependentUpon>AboutBoxLogo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Console\Console.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Console\Console.Designer.cs">
+      <DependentUpon>Console.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ContentManager.cs" />
     <Compile Include="Forms\DefaultSettings\DefaultProperties.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -180,6 +187,7 @@
     <Compile Include="Forms\MyMeta\UserMetaData.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\PluginManager.cs" />
     <Compile Include="Forms\ProjectEditor\AddEditModule.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -231,6 +239,10 @@
     <EmbeddedResource Include="Forms\AboutBox\AboutBoxLogo.resx">
       <DependentUpon>AboutBoxLogo.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Console\Console.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Console.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\DefaultSettings\DefaultProperties.resx">
       <DependentUpon>DefaultProperties.cs</DependentUpon>
