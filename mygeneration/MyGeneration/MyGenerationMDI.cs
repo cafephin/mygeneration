@@ -170,7 +170,6 @@ namespace MyGeneration
         {
             DefaultSettings settings = DefaultSettings.Instance;
 
-            Stream myStream;
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.InitialDirectory = Directory.GetCurrentDirectory();
             openFileDialog.Filter = EditorManager.OpenFileDialogString;

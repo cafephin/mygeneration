@@ -13,6 +13,7 @@ COPY "..\..\..\plugins\MyMetaTextFilePlugin\bin\release\*.dll" .
 COPY "..\..\..\plugins\MyMetaVistaDB3xPlugin\bin\release\*.dll" .
 COPY "..\..\..\plugins\MyMetaXsd3bPlugin\bin\release\*.dll" .
 COPY "..\..\..\plugins\TypeSerializer\bin\release\*.dll" .
+COPY "..\..\..\plugins\SampleUIPlugin\bin\release\*.dll" .
 
 DEL Dnp.Utils.dll
 DEL MicrosoftScriptingEngine.dll

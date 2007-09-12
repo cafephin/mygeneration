@@ -1,5 +1,5 @@
 Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
+# Visual C# Express 2005
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginInterfaces", "..\mygeneration\EngineInterface\PluginInterfaces.csproj", "{61B369D1-95DD-4158-9F30-2E051CEB9D50}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContextProcessor", "ContextProcessor\ContextProcessor.csproj", "{B43C4B09-6813-4C8D-A422-85ECF41CB75B}"
@@ -15,6 +15,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyGenUtility", "..\mygeneration\MyGenUtility\MyGenUtility.csproj", "{A1D6D035-420C-40A3-9598-9E34F11FB1AA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMeta", "..\mymeta\MyMeta.csproj", "{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleUIPlugin", "SampleUIPlugin\SampleUIPlugin.csproj", "{1C2D540C-1E20-4499-9F52-3592FBCA556E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -54,6 +56,10 @@ Global
 		{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C2D540C-1E20-4499-9F52-3592FBCA556E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C2D540C-1E20-4499-9F52-3592FBCA556E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C2D540C-1E20-4499-9F52-3592FBCA556E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C2D540C-1E20-4499-9F52-3592FBCA556E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

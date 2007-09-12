@@ -223,7 +223,6 @@
     </Compile>
     <Compile Include="Forms\TemplateEditor\TemplateEditorManager.cs" />
     <Compile Include="Forms\TemplateEditor\ZeusScintillaControl.cs">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
