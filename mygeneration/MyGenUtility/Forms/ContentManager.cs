@@ -22,17 +22,19 @@ namespace MyGeneration
             {
                 pluginsMenuItem.Visible = true;
                 int i = 0;
-                foreach (ContentManager cm in PluginManager.ContentManagers.Values)
+                foreach (IContentManager cm in PluginManager.ContentManagers.Values)
                 {
                     string id = "ContentPlugin" + (++i).ToString();
                     ToolStripMenuItem item = new ToolStripMenuItem(cm.Name, cm.MenuImage, onClickEvent, "toolStripItem" + id);
+                    item.ToolTipText = cm.Name;
                     item.ImageTransparentColor = Color.Magenta;
                     pluginsMenuItem.DropDownItems.Add(item);
 
                     if (cm.MenuImage != null)
                     {
-                        ToolStripButton b = new ToolStripButton(cm.Name, cm.MenuImage, onClickEvent, "toolStripButton" + id);
+                        ToolStripButton b = new ToolStripButton(null, cm.MenuImage, onClickEvent, "toolStripButton" + id);
                         b.ImageTransparentColor = Color.Magenta;
+                        b.ToolTipText = cm.Name;
                         toolStrip.Items.Add(b);
                     }
                 }

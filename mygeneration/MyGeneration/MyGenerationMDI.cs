@@ -28,7 +28,6 @@ namespace MyGeneration
         private const string DOCK_CONFIG_FILE = @"\settings\dock.config";
         private const string SCINTILLA_CONFIG_FILE = @"\settings\scintillanet.xml";
         private const string REPLACEMENT_SUFFIX = "$REPLACEMENT$.dll";
-        private const string PROJECT_FILE_TYPES = "Zeus Project (*.zprj)|*.zprj|";
 
         private const string URL_HOMEPAGE = "http://www.mygenerationsoftware.com/home/";
         private const string URL_DOCUMENTATION = "http://www.mygenerationsoftware.com/Documentation.aspx";
@@ -40,7 +39,8 @@ namespace MyGeneration
         
         private FindForm findDialog = new FindForm();
         private ReplaceForm replaceDialog = new ReplaceForm();
-        
+
+        private Dictionary<string, IMyGenContent> dynamicContentWindows = new Dictionary<string, IMyGenContent>();
         private DefaultSettings settings;
         private LanguageMappings languageMappings;
         private DbTargetMappings dbTargetMappings;
@@ -186,10 +186,26 @@ namespace MyGeneration
         {
             foreach (string key in keys)
             {
-                IMyGenContent mygenContent = ContentManager.CreateContent(this, key);
-                if (mygenContent != null)
+                if (dynamicContentWindows.ContainsKey(key))
                 {
-                    mygenContent.DockContent.Show(dockPanel);
+                    IMyGenContent mygenContent = dynamicContentWindows[key];
+                    if (mygenContent.DockContent.Visible)
+                    {
+                        mygenContent.DockContent.Hide();
+                    }
+                    else
+                    {
+                        mygenContent.DockContent.Show(dockPanel);
+                    }
+                }
+                else
+                {
+                    IMyGenContent mygenContent = ContentManager.CreateContent(this, key);
+                    if (mygenContent != null)
+                    {
+                        dynamicContentWindows[key] = mygenContent;
+                        mygenContent.DockContent.Show(dockPanel);
+                    }
                 }
             }
         }
@@ -277,6 +293,22 @@ namespace MyGeneration
                 else if (type == typeof(DefaultProperties).ToString())
                 {
                     content = this.OptionsDockContent;
+                }
+                else
+                {
+                    // Preload all dynamicContentWindows here if needed
+                    foreach (IContentManager cm in PluginManager.ContentManagers.Values) 
+                    {
+                        dynamicContentWindows[cm.Name] = cm.Create(this);
+                    }
+                    foreach (IMyGenContent c in dynamicContentWindows.Values)
+                    {
+                        if (type == c.GetType().ToString())
+                        {
+                            content = c.DockContent;
+                            break;
+                        }
+                    }
                 }
             }
             else if (parsedStrings.Length >= 2)
@@ -380,7 +412,7 @@ namespace MyGeneration
                 return;
             }
 
-            Application.Exit();
+            //Application.Exit();
         }
 
         #region DockManager Helper Methods
@@ -457,7 +489,10 @@ namespace MyGeneration
         private void openContentDynamicToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ToolStripItem i = sender as ToolStripItem;
-            this.OpenContent(i.Text);
+            if (string.IsNullOrEmpty(i.Text)) 
+                this.OpenContent(i.ToolTipText);
+            else 
+                this.OpenContent(i.Text);
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)

@@ -60,6 +60,13 @@ namespace SampleUIPlugin.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap bgb {
+            get {
+                object obj = ResourceManager.GetObject("bgb", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap NewImage {
             get {
                 object obj = ResourceManager.GetObject("NewImage", resourceCulture);

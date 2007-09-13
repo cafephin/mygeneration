@@ -61,6 +61,18 @@ namespace SampleUIPlugin
             this.Close();
         }
 
+        protected override string GetPersistString()
+        {
+            if (!string.IsNullOrEmpty(this.filename))
+            {
+                return GetType().ToString() + "," + filename;
+            }
+            else
+            {
+                return "type," + SampleEditorManager.SAMPLE_IMAGE;
+            }
+        }
+
         #region IMyGenDocument Members
 
         public string DocumentIndentity
