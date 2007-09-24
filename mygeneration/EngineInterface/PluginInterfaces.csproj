@@ -100,6 +100,9 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="IMyGenError.cs" />
+    <Compile Include="IMyGenErrorList.cs" />
+    <Compile Include="IMyGenConsole.cs" />
     <Compile Include="IContentManager.cs" />
     <Compile Include="IEditorManager.cs" />
     <Compile Include="IMyGenContent.cs" />

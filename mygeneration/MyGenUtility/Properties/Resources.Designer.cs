@@ -60,6 +60,13 @@ namespace MyGeneration.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap console_network {
+            get {
+                object obj = ResourceManager.GetObject("console_network", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap dev01tiny {
             get {
                 object obj = ResourceManager.GetObject("dev01tiny", resourceCulture);
@@ -70,6 +77,13 @@ namespace MyGeneration.Properties {
         internal static System.Drawing.Bitmap dev02tiny {
             get {
                 object obj = ResourceManager.GetObject("dev02tiny", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap error {
+            get {
+                object obj = ResourceManager.GetObject("error", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

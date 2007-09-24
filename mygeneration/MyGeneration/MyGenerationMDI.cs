@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.Threading;
 
 using WeifenLuo.WinFormsUI;
 using WeifenLuo.WinFormsUI.Docking;
@@ -20,6 +21,7 @@ using Scintilla.Configuration.SciTE;
 
 //using Zeus.Projects;
 using Zeus;
+using MyGeneration.Forms;
 
 namespace MyGeneration
 {
@@ -50,6 +52,8 @@ namespace MyGeneration
         private MetaProperties metaProperties;
         private DefaultProperties options;
         private TemplateBrowser templateBrowser;
+        private ConsoleForm consoleForm;
+        private ErrorsForm errorsForm;
         
         private string startupPath;
         private string[] startupFiles;
@@ -293,6 +297,14 @@ namespace MyGeneration
                 else if (type == typeof(DefaultProperties).ToString())
                 {
                     content = this.OptionsDockContent;
+                }
+                else if (type == typeof(ErrorsForm).ToString())
+                {
+                    content = this.ErrorsDockContent;
+                }
+                else if (type == typeof(ConsoleForm).ToString())
+                {
+                    content = this.ConsoleDockContent;
                 }
                 else
                 {
@@ -669,9 +681,51 @@ namespace MyGeneration
                 this.GlobalUserMetaDataDockContent.Activate();
             }
         }
+
+        private void toolStripButtonConsole_Click(object sender, EventArgs e)
+        {
+            if (this.ConsoleDockContent.IsHidden)
+            {
+                this.ConsoleDockContent.Show(this.dockPanel);
+            }
+            else
+            {
+                this.ConsoleDockContent.Activate();
+            }
+        }
+
+        private void toolStripButtonErrors_Click(object sender, EventArgs e)
+        {
+            if (this.ErrorsDockContent.IsHidden)
+            {
+                this.ErrorsDockContent.Show(this.dockPanel);
+            }
+            else
+            {
+                this.ErrorsDockContent.Activate();
+            }
+        }
         #endregion
 
         #region Lazy Load Windows
+        public ConsoleForm ConsoleDockContent
+        {
+            get
+            {
+                if ((consoleForm != null) && consoleForm.IsDisposed) consoleForm = null;
+                if (consoleForm == null) consoleForm = new ConsoleForm(this);
+                return consoleForm;
+            }
+        }
+        public ErrorsForm ErrorsDockContent
+        {
+            get
+            {
+                if ((errorsForm != null) && errorsForm.IsDisposed) errorsForm = null;
+                if (errorsForm == null) errorsForm = new ErrorsForm(this);
+                return errorsForm;
+            }
+        }
         public DefaultProperties OptionsDockContent
         {
             get
@@ -910,6 +964,68 @@ namespace MyGeneration
             }
         }
 
+        public IMyGenConsole Console
+        {
+            get { return this.ConsoleDockContent; }
+        }
+
+        public IMyGenErrorList ErrorList
+        {
+            get { return this.ErrorsDockContent; }
+        }
+
+        public void WriteConsole(string text, params object[] args)
+        {
+            ConsoleDockContent.Write(text, args);
+        }
+
+        public void ErrorsOccurred(params Exception[] exs)
+        {
+            ErrorsDockContent.AddErrors(exs);
+            foreach (Exception ex in exs) ConsoleDockContent.Write(ex);
+        }
+
         #endregion
+
+        #region Error Handling
+
+        public void UnhandledExceptions(object sender, UnhandledExceptionEventArgs args)
+        {
+            try
+            {
+                // Most likey the application is terminating on this method
+                Exception ex = (Exception)args.ExceptionObject;
+                HandleError(ex);
+            }
+            catch { }
+        }
+
+        public void OnThreadException(object sender, ThreadExceptionEventArgs t)
+        {
+            try
+            {
+                Exception ex = (Exception)t.Exception;
+                HandleError(ex);
+            }
+            catch { }
+        }
+
+        private void HandleError(Exception ex)
+        {
+            try
+            {
+                if (this.ErrorsDockContent != null)
+                {
+                    this.ErrorsDockContent.AddErrors(ex);
+                }
+                if (this.ConsoleDockContent != null)
+                {
+                    this.ConsoleDockContent.Write(ex);
+                }
+            }
+            catch { }
+        }
+        #endregion
+
     }
 }

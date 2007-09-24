@@ -22,7 +22,7 @@ namespace Zeus
 			_exceptions.Add(ex);
 		}
 
-		public void Write(string format, params string[] args)
+		public void Write(string format, params object[] args)
 		{
 			string x = string.Format(format, args);
 			OnLogEntryAdded(x);

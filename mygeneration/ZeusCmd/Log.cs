@@ -85,7 +85,7 @@ namespace Zeus
 			}			
 		}
 	
-		public void Write(string format, params string[] args)
+		public void Write(string format, params object[] args)
 		{
 			Write(string.Format(format, args));
 		}

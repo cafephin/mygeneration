@@ -19,9 +19,9 @@ namespace MyGeneration
         DockPanel DockPanel { get; }
         void SendAlert(IMyGenContent sender, string command, params object[] args);
 
-        //void WriteConsole(string text, params object[] args);
-        //void WriteOutput(string outputLanguage, string text);
-        //void ExceptionOccurred(Exception ex);
-        //SciTEProperties Properties { get; }
+        IMyGenConsole Console { get; }
+        IMyGenErrorList ErrorList { get; }
+        void WriteConsole(string text, params object[] args);
+        void ErrorsOccurred(params Exception[] ex);
     }
 }

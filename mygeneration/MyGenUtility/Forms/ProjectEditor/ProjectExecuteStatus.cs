@@ -124,7 +124,7 @@ namespace MyGeneration
 			Write("**ERROR*** [{0}] {1}", ex.GetType().Name, ex.Message);
 		}
 
-		public void Write(string format, params string[] args)
+		public void Write(string format, params object[] args)
 		{
 			string item = string.Format(format, args);
 			Write(item);

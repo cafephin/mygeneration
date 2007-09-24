@@ -126,9 +126,6 @@
     <Compile Include="ExceptionDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ExceptionHandler.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Password.cs">
       <SubType>Form</SubType>
     </Compile>

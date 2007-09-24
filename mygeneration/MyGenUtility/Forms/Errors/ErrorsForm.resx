@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,35 +117,50 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="console_network" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\console_network.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <metadata name="toolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="toolStripButtonViewDetail.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAJNJREFUOE+dUwkO
+        wCAI4+k+zZ+51FgPBNSZkHnR9JgiIuVPpZTQV0fxRs7ZPdsARIA4Cp0E0GdYXzPQ8kjpyICNWgP3Qwa4
+        hAte0bvFxFWnb2xjUM03U4hSgZy5kfMqczAAMtZ7hQA065nBbNSI7I0BvZi/7h9omWgCXHjQU7AAGNPG
+        xHh4Xn/f16+1x68iPQKZUj/v7NKijTxHowAAAABJRU5ErkJggg==
+</value>
   </data>
-  <data name="dev01tiny" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\dev01tiny.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="toolStripButtonSave.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABoAAAAWCAYAAADeiIy1AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAH9JREFUSEtjYBgI
+        wCEl9h+GWfX+/ycHI5uB0w8gRSBJEE2OJSA9yGbgtQjmone/vv4nBxPto1GL0IN3NOjISnGgYBy8QYfs
+        MnLZRGVYcg0nOejoalFPT89/YjE2hxEddDBLYIbgs3TUIpQMR7Ogg1V6xMQJenyRFEcD0Xygup0AHZ9g
+        LdBMnG0AAAAASUVORK5CYII=
+</value>
   </data>
-  <data name="dev02tiny" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\dev02tiny.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="error" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\error.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="mygenlogo1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\mygenlogo.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="newcsharp" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\jeg_csharp.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="newjscript" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\jeg_jscript.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="newproject" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\jeg_newproject.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="newvbnet" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\jeg_vbnet.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="newvbscript" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\jeg_vbscript.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH//AAB//wAAf/8AAH//AAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAf/8AAH//SDrA/0o8w/9LQMH/R0Wy/wAAf/8AAH//AAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAf/9ONNT/UjXc/1Ew3P9QLtz/Ti7Y/0030P9NQMb/SUa2/wAA
+        f/8AAH//AAAAAAAAAAAAAAAAAAAAAAAAf/9bSt3/YVHj/1RQxv9eTt//WkXh/1U63v9PLdr/R0C4/008
+        yv9KRbr/AAB//wAAAAAAAAAAAAAAAAAAf/9gWNf/bGTj/11kt//Gyd//a3K3/2hf4v9iU+P/YGCz/83S
+        4f9VV7D/TT/H/0hGtf8AAH//AAAAAAAAAAAAAH//dG3n/2lqz/+8wNf//////+7v9P9qcrf/Y2m1/+Tn
+        8P//////zdLh/0dEtP9MQsL/AAB//wAAAAAQEIf/PT2e/4WC6P+Njev/cHq8/9vf6v//////8fL2/+3v
+        9P//////5Ofw/15dsv9OLtj/TT7I/0VIqv8AAH//AAB//3Fy1f+Njev/n6Dv/6qs8v92gbz/4uTu////
+        ////////7e70/2Jntf9aReH/Tyzb/006zf9JRrX/AAB//wAAf/92edH/mpvu/6+y8P/Exfj/gIi//+zu
+        9P////////////Hy9v9pcLb/XUzf/1Ew3P9NNtH/SUS5/wAAf/8QEIf/ZmvD/6Ol8P+6vPj/gIu5/+Tn
+        8P//////7O7z/+Tm7///////7u/0/2hutv9RMtr/TTTT/0ZFsf8AAH//AAAAAAAAf/+hovD/kZbV/7i+
+        1P//////5Ofv/3V+vP9ueLv/29/q///////IzN7/STrB/00z0/8AAH//AAAAAAAAAAAAAH//h4ng/6qs
+        8v+Eisb/ub/U/3N9vP+cne//jY3r/2lyu/+/w9f/VFK7/1Au3P9KNsr/AAB//wAAAAAAAAAAAAAAABcL
+        i/+Gh97/n6Dv/4aK1P+Yme7/jY3r/4F+6f90bef/WlXL/1lC4P9NLdX/NRab/wAAAAAAAAAAAAAAAAAA
+        AAAAAAAAFwuL/3l72P+Mi+v/iIfq/4F+6f92b+f/aV7l/15N4v9OM9P/NRWb/wAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAiA5D/DQuG/19iwv9jYc//XVjQ/1RQxP8eEJH/FASJ/wAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAsLJb/AAB//wAAf/8oKJP/AAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAA/D+cQfAPnEHgA5xBwAOcQYABnEGAAZxBAACcQQAAnEEAAJxBAACcQYABnEGAAZxBwAOcQeAH
+        nEHwD5xB/D+cQQ==
+</value>
   </data>
 </root>

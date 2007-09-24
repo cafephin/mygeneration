@@ -40,6 +40,7 @@ namespace MyGeneration
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pluginsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
@@ -58,7 +59,8 @@ namespace MyGeneration
             this.toolStripButtonGlobalAliases = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonOptions = new System.Windows.Forms.ToolStripButton();
-            this.pluginsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripButtonErrors = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonConsole = new System.Windows.Forms.ToolStripButton();
             this.menuStripMain.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -162,6 +164,14 @@ namespace MyGeneration
             this.windowToolStripMenuItem.Text = "&Window";
             this.windowToolStripMenuItem.DropDownOpening += new System.EventHandler(this.windowToolStripMenuItem_DropDownOpening);
             // 
+            // pluginsToolStripMenuItem
+            // 
+            this.pluginsToolStripMenuItem.MergeIndex = 7;
+            this.pluginsToolStripMenuItem.Name = "pluginsToolStripMenuItem";
+            this.pluginsToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
+            this.pluginsToolStripMenuItem.Text = "&Plugins";
+            this.pluginsToolStripMenuItem.Visible = false;
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -177,19 +187,19 @@ namespace MyGeneration
             // 
             this.contentsToolStripMenuItem.Name = "contentsToolStripMenuItem";
             this.contentsToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
-            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.contentsToolStripMenuItem.Text = "&Contents";
             this.contentsToolStripMenuItem.Click += new System.EventHandler(this.contentsToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(149, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(145, 6);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.aboutToolStripMenuItem.Text = "&About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -221,7 +231,9 @@ namespace MyGeneration
             this.toolStripButtonLocalAliases,
             this.toolStripButtonGlobalAliases,
             this.toolStripSeparator2,
-            this.toolStripButtonOptions});
+            this.toolStripButtonOptions,
+            this.toolStripButtonErrors,
+            this.toolStripButtonConsole});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(792, 25);
@@ -337,13 +349,25 @@ namespace MyGeneration
             this.toolStripButtonOptions.Text = "Default Settings";
             this.toolStripButtonOptions.Click += new System.EventHandler(this.toolStripButtonOptions_Click);
             // 
-            // pluginsToolStripMenuItem
+            // toolStripButtonErrors
             // 
-            this.pluginsToolStripMenuItem.MergeIndex = 7;
-            this.pluginsToolStripMenuItem.Name = "pluginsToolStripMenuItem";
-            this.pluginsToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
-            this.pluginsToolStripMenuItem.Text = "&Plugins";
-            this.pluginsToolStripMenuItem.Visible = false;
+            this.toolStripButtonErrors.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonErrors.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonErrors.Image")));
+            this.toolStripButtonErrors.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonErrors.Name = "toolStripButtonErrors";
+            this.toolStripButtonErrors.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonErrors.Text = "Errors";
+            this.toolStripButtonErrors.Click += new System.EventHandler(this.toolStripButtonErrors_Click);
+            // 
+            // toolStripButtonConsole
+            // 
+            this.toolStripButtonConsole.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonConsole.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonConsole.Image")));
+            this.toolStripButtonConsole.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonConsole.Name = "toolStripButtonConsole";
+            this.toolStripButtonConsole.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonConsole.Text = "Console";
+            this.toolStripButtonConsole.Click += new System.EventHandler(this.toolStripButtonConsole_Click);
             // 
             // MyGenerationMDI
             // 
@@ -402,5 +426,7 @@ namespace MyGeneration
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripButton toolStripButtonGlobalAliases;
         private System.Windows.Forms.ToolStripMenuItem pluginsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripButton toolStripButtonErrors;
+        private System.Windows.Forms.ToolStripButton toolStripButtonConsole;
     }
 }

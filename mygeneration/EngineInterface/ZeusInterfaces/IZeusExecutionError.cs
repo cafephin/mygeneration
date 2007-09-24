@@ -6,6 +6,12 @@ namespace Zeus
 	{
 		string FileName { get; }
 		string Number { get; }
-		string Source { get; }		int Line { get; }		int Column { get; }		string Message { get; }		string Description { get; }		string StackTrace { get; }		bool IsWarning { get; }
+		string Source { get; }
+		int Line { get; }
+		int Column { get; }
+		string Message { get; }
+		string Description { get; }
+		string StackTrace { get; }
+		bool IsWarning { get; }
 	}
 }

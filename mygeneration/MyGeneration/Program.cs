@@ -16,20 +16,31 @@ namespace MyGeneration
         [STAThread]
         static void Main(string[] args)
         {
-            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(ExceptionHandler.UnhandledExceptions);
-            Application.ThreadException += new ThreadExceptionEventHandler(ExceptionHandler.OnThreadException);
 
-            //DialogResult dr = MessageBox.Show("Would you like to try the new UI?", "UI?", MessageBoxButtons.YesNo);
-            Form form;
-            //if (dr == DialogResult.No)
-            //{
-            //    form = new MDIParent(Application.StartupPath, args);
-            //}
-            //else
-            //{
-                form = new MyGenerationMDI(Application.StartupPath, args);
-            //}
-            Application.Run(form);
+            MyGenerationMDI mdi;
+            try
+            {
+                mdi = new MyGenerationMDI(Application.StartupPath, args);
+
+                AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(mdi.UnhandledExceptions);
+                Application.ThreadException += new ThreadExceptionEventHandler(mdi.OnThreadException);
+            }
+            catch (Exception ex)
+            {
+                ExceptionDialog ed = new ExceptionDialog(ex);
+                ed.ShowDialog();
+
+                mdi = null;
+            }
+
+            if (mdi != null)
+            {
+                Application.Run(mdi);
+            }
+            else
+            {
+                Application.Exit();
+            }
         }
 
     }
