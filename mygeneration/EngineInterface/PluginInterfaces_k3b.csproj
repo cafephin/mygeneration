@@ -102,7 +102,10 @@
     <Compile Include="IEditorManager.cs" />
     <Compile Include="IMyGenContent.cs" />
     <Compile Include="IMyGenDocument.cs" />
-    <Compile Include="IDocumentPlugin.cs" />
+    <Compile Include="IMyGenError.cs" />
+    <Compile Include="IMyGenErrorList.cs" />
+    <Compile Include="IMyGenConsole.cs" />
+    <Compile Include="IContentManager.cs" />
     <Compile Include="IMyGenerationMDI.cs" />
     <Compile Include="IScintillaEditControl.cs" />
     <Compile Include="UserInterfaces\MyMetaBrowser.cs">

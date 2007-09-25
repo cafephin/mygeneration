@@ -90,14 +90,6 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
-    <ProjectReference Include="..\..\plugins\ContextProcessor\ContextProcessor_k3b.csproj">
-      <Name>ContextProcessor_k3b</Name>
-      <Project>{B43C4B09-6813-4C8D-A422-85ECF41CB75B}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\plugins\DotNetScriptingEngine\DotNetScriptingEngine_k3b.csproj">
-      <Name>DotNetScriptingEngine_k3b</Name>
-      <Project>{497C072A-648D-4EF9-B5EC-71895D182018}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\EngineInterface\PluginInterfaces_k3b.csproj">
       <Name>PluginInterfaces_k3b</Name>
       <Project>{61B369D1-95DD-4158-9F30-2E051CEB9D50}</Project>
@@ -105,10 +97,6 @@
     <ProjectReference Include="..\..\mymeta\MyMeta_k3b.csproj">
       <Name>MyMeta_k3b</Name>
       <Project>{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\plugins\MicrosoftScriptingEngine\MicrosoftScriptingEngine_k3b.csproj">
-      <Name>MicrosoftScriptingEngine_k3b</Name>
-      <Project>{5CFE661C-1C7D-4191-A6F7-D7891C448690}</Project>
     </ProjectReference>
     <ProjectReference Include="..\MyGenUtility\MyGenUtility_k3b.csproj">
       <Name>MyGenUtility_k3b</Name>

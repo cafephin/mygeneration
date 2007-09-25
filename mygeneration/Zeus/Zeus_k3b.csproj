@@ -278,6 +278,7 @@
     <Compile Include="Utilities\FileTools.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Utilities\WindowsTools.cs" />
     <Compile Include="ZeusCodeParser.cs">
       <SubType>Code</SubType>
     </Compile>
