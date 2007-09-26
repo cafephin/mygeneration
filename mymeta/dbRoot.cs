@@ -32,8 +32,6 @@ namespace MyMeta
 	using System.Runtime.InteropServices;
 	using System.EnterpriseServices;
 
-
-
 	/// <summary>
 	/// MyMeta is the root of the MyMeta meta-data. MyMeta is an intrinsic object available to your script and configured based on the settings
 	/// you have entered in the Default Settings dialog. It is already connected before you script execution begins.
@@ -223,26 +221,26 @@ namespace MyMeta
 			IDbConnection conn = null;
 			switch(driver.ToUpper())
 			{
-				case "MYSQL2":
+                case MyMetaDrivers.MySql2:
 					MyMeta.MySql5.MySql5Databases.LoadAssembly();
 					conn = MyMeta.MySql5.MySql5Databases.CreateConnection(connectionString);
 					break;
 
-				case "POSTGRESQL":
-				case "POSTGRESQL8":
+                case MyMetaDrivers.PostgreSQL:
+                case MyMetaDrivers.PostgreSQL8:
 					conn = new Npgsql.NpgsqlConnection(connectionString);
 					break;
 
-				case "FIREBIRD":
-				case "INTERBASE":
+                case MyMetaDrivers.Firebird:
+                case MyMetaDrivers.Interbase:
 					conn = new FirebirdSql.Data.Firebird.FbConnection(connectionString);
                     break;
 
-                case "SQLITE":
+                case MyMetaDrivers.SQLite:
                     conn = new SQLiteConnection(connectionString);
                     break;
 #if !IGNORE_VISTA
-				case "VISTADB":	
+                case MyMetaDrivers.VistaDB:	
 					try
 					{
 						MyMeta.VistaDB.MetaHelper mh = new MyMeta.VistaDB.MetaHelper();
@@ -312,59 +310,34 @@ namespace MyMeta
         ///		<item><term>"ISERIES"</term><description>PROVIDER=IBMDA400; DATA SOURCE=MY_SYSTEM_NAME;USER ID=myUserName;PASSWORD=myPwd;DEFAULT COLLECTION=MY_LIBRARY;</description></item>		
 		///	</list>
 		///	</remarks>
-		public bool Connect(string driver, string connectionString)
+		public bool Connect(string driverIn, string connectionString)
 		{
-			switch(driver.ToUpper())
-			{
-				case "SQL":
-					return this.Connect(dbDriver.SQL, connectionString);
-
-				case "ORACLE":
-					return this.Connect(dbDriver.Oracle, connectionString);
-
-				case "ACCESS":
-					return this.Connect(dbDriver.Access, connectionString);
-
-				case "MYSQL":
-					return this.Connect(dbDriver.MySql, connectionString);
-
-				case "MYSQL2":
-					return this.Connect(dbDriver.MySql2, connectionString);
-
-				case "DB2":
-					return this.Connect(dbDriver.DB2, connectionString);
-
-				case "ISERIES":
-					return this.Connect(dbDriver.ISeries, connectionString);
-
-				case "PERVASIVE":
-					return this.Connect(dbDriver.Pervasive, connectionString);
-
-				case "POSTGRESQL":
-					return this.Connect(dbDriver.PostgreSQL, connectionString);
-
-				case "POSTGRESQL8":
-					return this.Connect(dbDriver.PostgreSQL8, connectionString);
-
-				case "FIREBIRD":
-					return this.Connect(dbDriver.Firebird, connectionString);
-
-				case "INTERBASE":
-					return this.Connect(dbDriver.Interbase, connectionString);
-
-				case "SQLITE":
-					return this.Connect(dbDriver.SQLite, connectionString);
-
+            string driver = driverIn.ToUpper();
+            switch (driver)
+            {
+                case MyMetaDrivers.None:
+                    return true;
 #if !IGNORE_VISTA
-				case "VISTADB":
-                    return this.Connect(dbDriver.VistaDB, connectionString);
+                case MyMetaDrivers.VistaDB:
 #endif
-                case "ADVANTAGE":
-                    return this.Connect(dbDriver.Advantage, connectionString);
-                    
-				case "NONE":
-					return true;
-
+                case MyMetaDrivers.SQL:
+                case MyMetaDrivers.Oracle:
+				case MyMetaDrivers.Access:
+                case MyMetaDrivers.MySql:
+                case MyMetaDrivers.MySql2:
+                case MyMetaDrivers.DB2:
+                case MyMetaDrivers.ISeries:
+                case MyMetaDrivers.Pervasive:
+                case MyMetaDrivers.PostgreSQL:
+                case MyMetaDrivers.PostgreSQL8:
+                case MyMetaDrivers.Firebird:
+                case MyMetaDrivers.Interbase:
+                case MyMetaDrivers.SQLite:
+                case MyMetaDrivers.Advantage:
+                    return this.Connect(
+                        MyMetaDrivers.GetDbDriverFromName(driver),
+                        driver,
+                        connectionString);
 				default:
                     if (Plugins.ContainsKey(driver))
                     {
@@ -375,9 +348,14 @@ namespace MyMeta
                         return false;
                     }
 			}
-
 		}
 
+        /// <summary>
+		/// Same as <see cref="Connect(string, string)"/>(string, string) only this uses an enumeration.  
+		/// </summary>
+		/// <param name="driver">The driver enumeration for you DBMS system</param>
+		/// <param name="connectionString">A valid connection string for you DBMS</param>
+		/// <returns></returns>
         public bool Connect(dbDriver driver, string connectionString)
         {
             return Connect(driver, string.Empty, connectionString);
@@ -385,8 +363,9 @@ namespace MyMeta
 
 		/// <summary>
 		/// Same as <see cref="Connect(string, string)"/>(string, string) only this uses an enumeration.  
-		/// </summary>
-		/// <param name="driver">The driver enumeration for you DBMS system</param>
+        /// </summary>
+        /// <param name="driver">The driver enumeration for you DBMS system</param>
+        /// <param name="pluginName">The name of the plugin</param>
 		/// <param name="connectionString">A valid connection string for you DBMS</param>
 		/// <returns></returns>
 		public bool Connect(dbDriver driver, string pluginName, string connectionString)
@@ -399,9 +378,8 @@ namespace MyMeta
 			this._connectionString = connectionString.Replace("\"", "");
 			this._driver = driver;
 
+#region not fully implemented yet
 /*
-not fully implemented yet
-            
             InternalDriver drv = InternalDriver.Get(settings.DbDriver);
             if (drv != null)
             {
@@ -443,17 +421,16 @@ not fully implemented yet
             else
             {
                 // Error
-            }
-not fully implemented yet
-            
+            }           
 */
+#endregion not fully implemented yet
 
 			switch(_driver)
 			{
 				case dbDriver.SQL:
 
 					ConnectUsingOleDb(_driver, _connectionString);
-					this._driverString = "SQL";
+                    this._driverString = MyMetaDrivers.SQL;
 					this.StripTrailingNulls = false;
 					this.requiredDatabaseName = true;
 					ClassFactory = new MyMeta.Sql.ClassFactory();
@@ -462,7 +439,7 @@ not fully implemented yet
 				case dbDriver.Oracle:
 
 					ConnectUsingOleDb(_driver, _connectionString);
-					this._driverString = "ORACLE";
+                    this._driverString = MyMetaDrivers.Oracle;
 					this.StripTrailingNulls = false;
 					this.requiredDatabaseName = true;
 					ClassFactory = new MyMeta.Oracle.ClassFactory();
@@ -471,7 +448,7 @@ not fully implemented yet
 				case dbDriver.Access:
 
 					ConnectUsingOleDb(_driver, _connectionString);
-					this._driverString = "ACCESS";
+                    this._driverString = MyMetaDrivers.Access;
 					this.StripTrailingNulls = false;
 					this.requiredDatabaseName = false;
 					ClassFactory = new MyMeta.Access.ClassFactory();
@@ -480,7 +457,7 @@ not fully implemented yet
 				case dbDriver.MySql:
 
 					ConnectUsingOleDb(_driver, _connectionString);
-					this._driverString = "MYSQL";
+                    this._driverString = MyMetaDrivers.MySql;
 					this.StripTrailingNulls = true;
 					this.requiredDatabaseName = true;
 					ClassFactory = new MyMeta.MySql.ClassFactory();
@@ -497,7 +474,7 @@ not fully implemented yet
 						conn.Close();
 						conn.Dispose();
 
-						this._driverString = "MYSQL2";
+                        this._driverString = MyMetaDrivers.MySql2;
 						this.StripTrailingNulls = true;
 						this.requiredDatabaseName = true;
 						ClassFactory = new MyMeta.MySql5.ClassFactory();
@@ -511,7 +488,7 @@ not fully implemented yet
 				case dbDriver.DB2:
 
 					ConnectUsingOleDb(_driver, _connectionString);
-					this._driverString = "DB2";
+                    this._driverString = MyMetaDrivers.DB2;
 					this.StripTrailingNulls = false;
 					this.requiredDatabaseName = false;
 					ClassFactory = new MyMeta.DB2.ClassFactory();
@@ -520,7 +497,7 @@ not fully implemented yet
 				case dbDriver.ISeries:
 
 					ConnectUsingOleDb(_driver, _connectionString);
-					this._driverString = "ISERIES";
+                    this._driverString = MyMetaDrivers.ISeries;
 					this.StripTrailingNulls = false;
 					this.requiredDatabaseName = false;
 					ClassFactory = new MyMeta.ISeries.ClassFactory();
@@ -529,7 +506,7 @@ not fully implemented yet
 				case dbDriver.Pervasive:
 
 					ConnectUsingOleDb(_driver, _connectionString);
-					this._driverString = "PERVASIVE";
+                    this._driverString = MyMetaDrivers.Pervasive;
 					this.StripTrailingNulls = false;
 					this.requiredDatabaseName = false;
 					ClassFactory = new MyMeta.Pervasive.ClassFactory();
@@ -541,8 +518,8 @@ not fully implemented yet
 					cn.Open();
 					this._defaultDatabase = cn.Database;
 					cn.Close();
-					
-					this._driverString = "POSTGRESQL";
+
+                    this._driverString = MyMetaDrivers.PostgreSQL;
 					this.StripTrailingNulls = false;
 					this.requiredDatabaseName = false;
 					ClassFactory = new MyMeta.PostgreSQL.ClassFactory();
@@ -554,8 +531,8 @@ not fully implemented yet
 					cn8.Open();
 					this._defaultDatabase = cn8.Database;
 					cn8.Close();
-					
-					this._driverString = "POSTGRESQL8";
+
+                    this._driverString = MyMetaDrivers.PostgreSQL8;
 					this.StripTrailingNulls = false;
 					this.requiredDatabaseName = false;
 					ClassFactory = new MyMeta.PostgreSQL8.ClassFactory();
@@ -577,8 +554,8 @@ not fully implemented yet
 						}
 					}
 					catch {}
-					
-					this._driverString = "FIREBIRD";
+
+                    this._driverString = MyMetaDrivers.Firebird;
 					this.StripTrailingNulls = false;
 					this.requiredDatabaseName = false;
 					ClassFactory = new MyMeta.Firebird.ClassFactory();
@@ -590,8 +567,8 @@ not fully implemented yet
 					cn2.Open();
 					this._defaultDatabase = cn2.Database;
 					cn2.Close();
-					
-					this._driverString = "INTERBASE";
+
+                    this._driverString = MyMetaDrivers.Interbase;
 					this.StripTrailingNulls = false;
 					this.requiredDatabaseName = false;
 					ClassFactory = new MyMeta.Firebird.ClassFactory();
@@ -603,7 +580,7 @@ not fully implemented yet
 					sqliteConn.Open();
 					dbName = sqliteConn.Database;
 					sqliteConn.Close();
-					this._driverString = "SQLITE";
+                    this._driverString = MyMetaDrivers.SQLite;
 					this.StripTrailingNulls = false;
 					this.requiredDatabaseName = false;
 					ClassFactory = new MyMeta.SQLite.ClassFactory();
@@ -620,7 +597,7 @@ not fully implemented yet
 
 						this._defaultDatabase = dbName;
 
-						this._driverString = "VISTADB";
+                        this._driverString = MyMetaDrivers.VistaDB;
 						this.StripTrailingNulls = false;
 						this.requiredDatabaseName = false;
 						ClassFactory = new MyMeta.VistaDB.ClassFactory();
@@ -635,7 +612,7 @@ not fully implemented yet
 				case dbDriver.Advantage:
 
 					ConnectUsingOleDb(_driver, _connectionString);
-					this._driverString = "ADVANTAGE";
+                    this._driverString = MyMetaDrivers.Advantage;
 					this.StripTrailingNulls = false;
 					this.requiredDatabaseName = false;
 					ClassFactory = new MyMeta.Advantage.ClassFactory();
@@ -660,7 +637,7 @@ not fully implemented yet
 
 				case dbDriver.None:
 
-					this._driverString = "NONE";
+                    this._driverString = MyMetaDrivers.None;
 					break;
 			}
 
@@ -1361,6 +1338,69 @@ not fully implemented yet
 		/// Use this if you want know connection at all
 		/// </summary>
 		None
-	}
+    }
+
+    #region MyMetaDrivers string Constants
+    public static class MyMetaDrivers
+    {
+        public const string Access = "ACCESS";
+        public const string Advantage = "ADVANTAGE";
+        public const string DB2 = "DB2";
+        public const string Firebird = "FIREBIRD";
+        public const string Interbase = "INTERBASE";
+        public const string ISeries = "ISERIES";
+        public const string MySql = "MYSQL";
+        public const string MySql2 = "MYSQL2";
+        public const string None = "NONE";
+        public const string Oracle = "ORACLE";
+        public const string Pervasive = "PERVASIVE";
+        public const string PostgreSQL = "POSTGRESQL";
+        public const string PostgreSQL8 = "POSTGRESQL8";
+        public const string SQLite = "SQLITE";
+        public const string SQL = "SQL";
+        public const string VistaDB = "VISTADB";
+
+        public static dbDriver GetDbDriverFromName(string name)
+        {
+            switch (name)
+            {
+                case MyMetaDrivers.SQL:
+                    return dbDriver.SQL;
+                case MyMetaDrivers.Oracle:
+                    return dbDriver.Oracle;
+                case MyMetaDrivers.Access:
+                    return dbDriver.Access;
+                case MyMetaDrivers.MySql:
+                    return dbDriver.MySql;
+                case MyMetaDrivers.MySql2:
+                    return dbDriver.MySql2;
+                case MyMetaDrivers.DB2:
+                    return dbDriver.DB2;
+                case MyMetaDrivers.ISeries:
+                    return dbDriver.ISeries;
+                case MyMetaDrivers.Pervasive:
+                    return dbDriver.Pervasive;
+                case MyMetaDrivers.PostgreSQL:
+                    return dbDriver.PostgreSQL;
+                case MyMetaDrivers.PostgreSQL8:
+                    return dbDriver.PostgreSQL8;
+                case MyMetaDrivers.Firebird:
+                    return dbDriver.Firebird;
+                case MyMetaDrivers.Interbase:
+                    return dbDriver.Interbase;
+                case MyMetaDrivers.SQLite:
+                    return dbDriver.SQLite;
+                case MyMetaDrivers.VistaDB:
+                    return dbDriver.VistaDB;
+                case MyMetaDrivers.Advantage:
+                    return dbDriver.Advantage;
+                case MyMetaDrivers.None:
+                    return dbDriver.None;
+                default:
+                    return dbDriver.Plugin;
+            }
+        }
+    }
+    #endregion
 }
 

@@ -87,7 +87,6 @@ namespace MyGeneration
         private System.Windows.Forms.Button buttonNewGuid;
         private ToolStrip toolStripOptions;
         private ToolStripButton toolStripButtonSave;
-        private ToolStripButton toolStripButtonSaveAs;
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripButton toolStripButtonProperties;
         private ToolStripButton toolStripButtonConsole;
@@ -348,19 +347,31 @@ namespace MyGeneration
 
 		public void Log(string input) 
 		{
-			if (input != null)
-				this.textBoxConsole.AppendText(input);
+            if (input != null)
+                this.mdi.WriteConsole(input);
 
-			this.textBoxConsole.Refresh();
+			//this.textBoxConsole.Refresh();
 		}
 
-		public void LogLn(string input) 
-		{
-			if (input != null)
-				this.textBoxConsole.AppendText(DateTime.Now.ToString() + " - " + input + System.Environment.NewLine);
+		public void LogLn(string input)
+        {
+            if (input != null)
+                this.mdi.WriteConsole(input);
+			//if (input != null)
+			//	this.textBoxConsole.AppendText(DateTime.Now.ToString() + " - " + input + System.Environment.NewLine);
 
-			this.textBoxConsole.Refresh();
-		}
+			//this.textBoxConsole.Refresh();
+        }
+
+        public void LogException(Exception ex)
+        {
+            if (ex != null)
+                this.mdi.ErrorsOccurred(ex);
+            //if (input != null)
+            //	this.textBoxConsole.AppendText(DateTime.Now.ToString() + " - " + input + System.Environment.NewLine);
+
+            //this.textBoxConsole.Refresh();
+        }
 
 		private void Log_EntryAdded(object sender, EventArgs args) 
 		{
@@ -397,6 +408,8 @@ namespace MyGeneration
 
 		public void HandleExecuteException(Exception ex) 
 		{
+            LogException(ex);
+
 			this.scintillaOutput.IsReadOnly = false;
 			this.scintillaOutput.Text = string.Empty;
 			this.scintillaOutput.IsReadOnly = true;
@@ -405,10 +418,10 @@ namespace MyGeneration
 			formError.ErrorIndexChange += new EventHandler(ZeusDisplayError_ErrorIndexChanged);
 			formError.ShowDialog(this);
 			
-			foreach (string message in formError.LastErrorMessages) 
-			{
-				LogLn(message);
-			}
+			//foreach (string message in formError.LastErrorMessages) 
+			//{
+			//	LogLn(message);
+			//}
 		}
 
 		public void FileNew(params object[] options) 
@@ -708,7 +721,6 @@ namespace MyGeneration
             this.tabOutput = new System.Windows.Forms.TabPage();
             this.toolStripOptions = new System.Windows.Forms.ToolStrip();
             this.toolStripButtonSave = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButtonSaveAs = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonProperties = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonConsole = new System.Windows.Forms.ToolStripButton();
@@ -790,7 +802,7 @@ namespace MyGeneration
             this.splitterConsole.ControlToHide = this.panelConsole;
             this.splitterConsole.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.splitterConsole.ExpandParentForm = false;
-            this.splitterConsole.Location = new System.Drawing.Point(0, 593);
+            this.splitterConsole.Location = new System.Drawing.Point(0, 598);
             this.splitterConsole.Name = "splitterConsole";
             this.splitterConsole.TabIndex = 5;
             this.splitterConsole.TabStop = false;
@@ -830,7 +842,7 @@ namespace MyGeneration
             this.panelProperties.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelProperties.Location = new System.Drawing.Point(0, 0);
             this.panelProperties.Name = "panelProperties";
-            this.panelProperties.Size = new System.Drawing.Size(304, 593);
+            this.panelProperties.Size = new System.Drawing.Size(304, 598);
             this.panelProperties.TabIndex = 3;
             // 
             // buttonNewGuid
@@ -1151,7 +1163,7 @@ namespace MyGeneration
             this.tabControlTemplate.Location = new System.Drawing.Point(312, 0);
             this.tabControlTemplate.Name = "tabControlTemplate";
             this.tabControlTemplate.SelectedIndex = 0;
-            this.tabControlTemplate.Size = new System.Drawing.Size(588, 593);
+            this.tabControlTemplate.Size = new System.Drawing.Size(588, 598);
             this.tabControlTemplate.TabIndex = 2;
             this.tabControlTemplate.SelectedIndexChanged += new System.EventHandler(this.tabControlTemplate_SelectedIndexChanged);
             // 
@@ -1160,7 +1172,7 @@ namespace MyGeneration
             this.tabTemplateCode.BackColor = System.Drawing.Color.Transparent;
             this.tabTemplateCode.Location = new System.Drawing.Point(4, 22);
             this.tabTemplateCode.Name = "tabTemplateCode";
-            this.tabTemplateCode.Size = new System.Drawing.Size(580, 567);
+            this.tabTemplateCode.Size = new System.Drawing.Size(580, 572);
             this.tabTemplateCode.TabIndex = 0;
             this.tabTemplateCode.Text = "Template Code";
             this.tabTemplateCode.UseVisualStyleBackColor = true;
@@ -1206,7 +1218,6 @@ namespace MyGeneration
             // 
             this.toolStripOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButtonSave,
-            this.toolStripButtonSaveAs,
             this.toolStripSeparator1,
             this.toolStripButtonProperties,
             this.toolStripButtonConsole,
@@ -1231,22 +1242,10 @@ namespace MyGeneration
             this.toolStripButtonSave.Text = "Save Settings";
             this.toolStripButtonSave.Click += new System.EventHandler(this.toolStripButtonSave_Click);
             // 
-            // toolStripButtonSaveAs
-            // 
-            this.toolStripButtonSaveAs.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonSaveAs.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonSaveAs.Image")));
-            this.toolStripButtonSaveAs.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonSaveAs.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.toolStripButtonSaveAs.MergeIndex = 3;
-            this.toolStripButtonSaveAs.Name = "toolStripButtonSaveAs";
-            this.toolStripButtonSaveAs.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButtonSaveAs.Text = "Save As";
-            this.toolStripButtonSaveAs.Click += new System.EventHandler(this.toolStripButtonSaveAs_Click);
-            // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.toolStripSeparator1.MergeIndex = 4;
+            this.toolStripSeparator1.MergeIndex = 3;
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
@@ -1256,7 +1255,7 @@ namespace MyGeneration
             this.toolStripButtonProperties.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonProperties.Image")));
             this.toolStripButtonProperties.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonProperties.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.toolStripButtonProperties.MergeIndex = 5;
+            this.toolStripButtonProperties.MergeIndex = 4;
             this.toolStripButtonProperties.Name = "toolStripButtonProperties";
             this.toolStripButtonProperties.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonProperties.Text = "Template Properties";
@@ -1268,7 +1267,7 @@ namespace MyGeneration
             this.toolStripButtonConsole.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonConsole.Image")));
             this.toolStripButtonConsole.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonConsole.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.toolStripButtonConsole.MergeIndex = 6;
+            this.toolStripButtonConsole.MergeIndex = 5;
             this.toolStripButtonConsole.Name = "toolStripButtonConsole";
             this.toolStripButtonConsole.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonConsole.Text = "Console";
@@ -1277,7 +1276,7 @@ namespace MyGeneration
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.toolStripSeparator2.MergeIndex = 7;
+            this.toolStripSeparator2.MergeIndex = 6;
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
@@ -1287,7 +1286,7 @@ namespace MyGeneration
             this.toolStripButtonExecute.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonExecute.Image")));
             this.toolStripButtonExecute.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonExecute.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.toolStripButtonExecute.MergeIndex = 8;
+            this.toolStripButtonExecute.MergeIndex = 7;
             this.toolStripButtonExecute.Name = "toolStripButtonExecute";
             this.toolStripButtonExecute.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonExecute.Text = "Execute";
@@ -1296,7 +1295,7 @@ namespace MyGeneration
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.toolStripSeparator3.MergeIndex = 9;
+            this.toolStripSeparator3.MergeIndex = 8;
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
             // 
@@ -1306,7 +1305,7 @@ namespace MyGeneration
             this.fileToolStripMenuItem,
             this.editToolStripMenuItem,
             this.templateToolStripMenuItem});
-            this.menuStripMain.Location = new System.Drawing.Point(312, 25);
+            this.menuStripMain.Location = new System.Drawing.Point(312, 0);
             this.menuStripMain.Name = "menuStripMain";
             this.menuStripMain.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
             this.menuStripMain.Size = new System.Drawing.Size(588, 24);
@@ -1333,7 +1332,7 @@ namespace MyGeneration
             this.saveToolStripMenuItem.MergeIndex = 4;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.saveToolStripMenuItem.Text = "&Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
@@ -1342,7 +1341,9 @@ namespace MyGeneration
             this.saveAsToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
             this.saveAsToolStripMenuItem.MergeIndex = 5;
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.saveAsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt)
+                        | System.Windows.Forms.Keys.S)));
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.saveAsToolStripMenuItem.Text = "Save  &As";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
@@ -1351,7 +1352,8 @@ namespace MyGeneration
             this.closeToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
             this.closeToolStripMenuItem.MergeIndex = 6;
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.closeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.closeToolStripMenuItem.Text = "&Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
@@ -1360,7 +1362,7 @@ namespace MyGeneration
             this.toolStripMenuItem7.MergeAction = System.Windows.Forms.MergeAction.Insert;
             this.toolStripMenuItem7.MergeIndex = 7;
             this.toolStripMenuItem7.Name = "toolStripMenuItem7";
-            this.toolStripMenuItem7.Size = new System.Drawing.Size(144, 6);
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(183, 6);
             // 
             // editToolStripMenuItem
             // 
@@ -1490,6 +1492,7 @@ namespace MyGeneration
             // executeToolStripMenuItem
             // 
             this.executeToolStripMenuItem.Name = "executeToolStripMenuItem";
+            this.executeToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
             this.executeToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
             this.executeToolStripMenuItem.Text = "E&xecute";
             this.executeToolStripMenuItem.Click += new System.EventHandler(this.executeToolStripMenuItem_Click);
@@ -1581,8 +1584,8 @@ namespace MyGeneration
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.ClientSize = new System.Drawing.Size(900, 689);
-            this.Controls.Add(this.toolStripOptions);
             this.Controls.Add(this.menuStripMain);
+            this.Controls.Add(this.toolStripOptions);
             this.Controls.Add(this.tabControlTemplate);
             this.Controls.Add(this.splitterProperties);
             this.Controls.Add(this.panelProperties);
@@ -1776,10 +1779,11 @@ namespace MyGeneration
                 formError.ErrorIndexChange += new EventHandler(ZeusDisplayError_ErrorIndexChanged);
                 formError.ShowDialog(this);
 
-                foreach (string message in formError.LastErrorMessages)
+                this.LogException(x);
+                /*foreach (string message in formError.LastErrorMessages)
                 {
                     LogLn(message);
-                }
+                }*/
             }
         }
         #endregion
@@ -1905,15 +1909,16 @@ namespace MyGeneration
                 }
                 catch (Exception x)
                 {
-                    this.LogLn("Error loading template with path: " + path);
+                    this.LogException(x);
+                    //this.LogLn("Error loading template with path: " + path);
 
                     ZeusDisplayError formError = new ZeusDisplayError(x);
                     formError.ShowDialog(this);
 
-                    foreach (string message in formError.LastErrorMessages)
-                    {
-                        LogLn(message);
-                    }
+                    //foreach (string message in formError.LastErrorMessages)
+                   // {
+                   //     LogLn(message);
+                   // }
 
                     // Make sure it's treated as a new template
                     isNew = true;

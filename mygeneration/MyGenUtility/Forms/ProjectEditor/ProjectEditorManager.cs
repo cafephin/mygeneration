@@ -21,6 +21,22 @@ namespace MyGeneration
             }
         }
 
+        public override string Description
+        {
+            get
+            {
+                return "The MyGeneration Project editor.";
+            }
+        }
+
+        public override Uri AuthorUri
+        {
+            get
+            {
+                return new Uri("http://sourceforge.net/projects/mygeneration/");
+            }
+        }
+
         public override Image GetMenuImage(string fileType)
         {
             return Properties.Resources.newproject;

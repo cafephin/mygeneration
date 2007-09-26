@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Dnp.Utils")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("MyGeneration Software")]
+[assembly: AssemblyCompany("MyGeneration Development Community")]
 [assembly: AssemblyProduct("Dnp.Utils")]
 [assembly: AssemblyCopyright("Copyright © David Parsons")]
 [assembly: AssemblyTrademark("")]

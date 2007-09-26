@@ -22,6 +22,19 @@ namespace SampleUIPlugin
             }
         }
 
+        public string Description
+        {
+            get { return "This is a sample document plugin. It basically shows how to add document windows into MyGeneration. - komma8.komma1"; }
+        }
+
+        public Uri AuthorUri
+        {
+            get
+            {
+                return new Uri("http://sourceforge.net/projects/mygeneration/");
+            }
+        }
+
         public Image GetMenuImage(string fileType)
         {
             return Properties.Resources.NewImage;

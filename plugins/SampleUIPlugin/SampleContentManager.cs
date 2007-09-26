@@ -14,6 +14,19 @@ namespace SampleUIPlugin
             get { return "Sample Content"; }
         }
 
+        public string Description
+        {
+            get { return "This is a sample content plugin. It basically shows how to add dockable content windows into MyGeneration. - komma8.komma1"; }
+        }
+
+        public Uri AuthorUri
+        {
+            get
+            {
+                return new Uri("http://sourceforge.net/projects/mygeneration/");
+            }
+        }
+
         public Image MenuImage
         {
             get { return Properties.Resources.bgb; }

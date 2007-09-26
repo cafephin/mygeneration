@@ -9,9 +9,9 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTitle("MyGenUtility")]
 [assembly: AssemblyDescription("Library that is used between executing assemblies.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("MyGeneration Software")]
+[assembly: AssemblyCompany("MyGeneration Development Community")]
 [assembly: AssemblyProduct("MyGeneration")]
-[assembly: AssemblyCopyright("Copyright (c) 2004-2005 MyGeneration Software. All Rights Reserved")]
+[assembly: AssemblyCopyright("Copyright © 2004-2007 MyGeneration Development Community. All Rights Reserved")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
 
@@ -26,7 +26,7 @@ using System.Runtime.CompilerServices;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("1.2.0.0")]
+[assembly: AssemblyVersion("1.3.0.0")]
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 
 // Microsoft .NET Framework documentation for more information on assembly signing.

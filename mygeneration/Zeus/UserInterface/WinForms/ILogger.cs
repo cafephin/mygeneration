@@ -7,7 +7,7 @@ namespace Zeus.UserInterface
 	/// </summary>
 	public interface ILogger
 	{
-		void Log(string input);
+		void LogException(Exception ex);
 		void LogLn(string input);
 	}
 }

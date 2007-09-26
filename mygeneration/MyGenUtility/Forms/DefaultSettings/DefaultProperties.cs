@@ -75,8 +75,8 @@ namespace MyGeneration
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.defaultSettingsControl = new MyGeneration.DefaultSettingsControl();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.defaultSettingsControl = new MyGeneration.DefaultSettingsControl();
             this.toolStripOptions.SuspendLayout();
             this.menuStripMain.SuspendLayout();
             this.SuspendLayout();
@@ -88,7 +88,7 @@ namespace MyGeneration
             this.toolStripSeparator1});
             this.toolStripOptions.Location = new System.Drawing.Point(0, 0);
             this.toolStripOptions.Name = "toolStripOptions";
-            this.toolStripOptions.Size = new System.Drawing.Size(706, 25);
+            this.toolStripOptions.Size = new System.Drawing.Size(896, 25);
             this.toolStripOptions.TabIndex = 34;
             this.toolStripOptions.Visible = false;
             // 
@@ -141,7 +141,7 @@ namespace MyGeneration
             this.saveToolStripMenuItem.MergeIndex = 4;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             this.saveToolStripMenuItem.Text = "&Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
@@ -150,9 +150,17 @@ namespace MyGeneration
             this.closeToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
             this.closeToolStripMenuItem.MergeIndex = 5;
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.closeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             this.closeToolStripMenuItem.Text = "&Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.toolStripMenuItem1.MergeIndex = 6;
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(150, 6);
             // 
             // defaultSettingsControl
             // 
@@ -163,13 +171,6 @@ namespace MyGeneration
             this.defaultSettingsControl.Name = "defaultSettingsControl";
             this.defaultSettingsControl.Size = new System.Drawing.Size(901, 606);
             this.defaultSettingsControl.TabIndex = 40;
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.toolStripMenuItem1.MergeIndex = 6;
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(149, 6);
             // 
             // DefaultProperties
             // 

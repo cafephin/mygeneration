@@ -57,6 +57,8 @@ namespace MyGeneration
         #endregion
 
         public abstract string Name { get; }
+        public abstract Uri AuthorUri { get; }
+        public abstract string Description { get; }
         public abstract IMyGenContent Create(IMyGenerationMDI mdi, params string[] args);
 
         public virtual Image MenuImage

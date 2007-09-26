@@ -103,6 +103,8 @@ namespace MyGeneration
 #endregion
 
         public abstract string Name { get; }
+        public abstract string Description { get; }
+        public abstract Uri AuthorUri { get; }
         public abstract SortedList<string, string> FileExtensions { get; }
         public abstract List<string> FileTypes { get; }
         public abstract IMyGenDocument Open(IMyGenerationMDI mdi, System.IO.FileInfo file, params string[] args);

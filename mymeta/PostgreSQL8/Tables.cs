@@ -18,9 +18,12 @@ namespace MyMeta.PostgreSQL8
 		override internal void LoadAll()
 		{
 			try
-			{
-				string query = "select * from information_schema.tables where table_type = 'BASE TABLE' " +
-					" and table_schema = '" + this.Database.SchemaName + "'";
+            {
+                // New PostgreSQL sorted query from Michael McKean
+                string query = "select * from information_schema.tables where table_type = 'BASE TABLE' " +
+                                      " and table_schema = '" + this.Database.SchemaName + "' ORDER BY table_name;";
+				/*string query = "select * from information_schema.tables where table_type = 'BASE TABLE' " +
+					" and table_schema = '" + this.Database.SchemaName + "'";*/
 
 				NpgsqlConnection cn = ConnectionHelper.CreateConnection(this.dbRoot, this.Database.Name);
 

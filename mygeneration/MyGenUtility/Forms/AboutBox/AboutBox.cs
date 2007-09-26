@@ -22,6 +22,9 @@ namespace MyGeneration
 		private System.Windows.Forms.LinkLabel lnkURL;
         private System.Windows.Forms.LinkLabel linkLabel1;
         private AboutBoxLogo fun1;
+        private System.Collections.Generic.Dictionary<int, IMyMetaPlugin> plugins = new System.Collections.Generic.Dictionary<int, IMyMetaPlugin>();
+        private System.Collections.Generic.Dictionary<int, IEditorManager> emPlugins = new System.Collections.Generic.Dictionary<int, IEditorManager>();
+        private System.Collections.Generic.Dictionary<int, IContentManager> cmPlugins = new System.Collections.Generic.Dictionary<int, IContentManager>();
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -169,10 +172,22 @@ namespace MyGeneration
                 plugins[index] = plugin;
             }
 
+            foreach (string pluginName in PluginManager.ContentManagers.Keys)
+            {
+                IContentManager plugin = PluginManager.ContentManagers[pluginName] as IContentManager;
+                int index = lstBoxProducts.Items.Add(plugin.Name.PadRight(29) + plugin.GetType().Assembly.GetName().Version.ToString());
+                cmPlugins[index] = plugin;
+            }
+
+            foreach (string pluginName in PluginManager.EditorManagers.Keys)
+            {
+                IEditorManager plugin = PluginManager.EditorManagers[pluginName] as IEditorManager;
+                int index = lstBoxProducts.Items.Add(plugin.Name.PadRight(29) + plugin.GetType().Assembly.GetName().Version.ToString());
+                emPlugins[index] = plugin;
+            }
+
 			lstBoxProducts.SelectedIndex = 0;
 		}
-        
-        private System.Collections.Generic.Dictionary<int, IMyMetaPlugin> plugins = new System.Collections.Generic.Dictionary<int, IMyMetaPlugin>();
 
 		private string GetAssemblyVersion(string dllName, string revertToVersion) 
 		{
@@ -321,6 +336,30 @@ The C# provider, the very minor C code modifications to SQLite, documentation an
                         if (this.plugins[product].ProviderAuthorUri != null)
                         {
                             lnkURL.Text = plugins[product].ProviderAuthorUri.ToString();
+                        }
+                        else
+                        {
+                            lnkURL.Text = "http://www.mygenerationsoftware.com/";
+                        }
+                    }
+                    else if (cmPlugins.ContainsKey(product))
+                    {
+                        txtProductInfo.Text = this.cmPlugins[product].Description;
+                        if (this.cmPlugins[product].AuthorUri != null)
+                        {
+                            lnkURL.Text = cmPlugins[product].AuthorUri.ToString();
+                        }
+                        else
+                        {
+                            lnkURL.Text = "http://www.mygenerationsoftware.com/";
+                        }
+                    }
+                    else if (emPlugins.ContainsKey(product))
+                    {
+                        txtProductInfo.Text = this.emPlugins[product].Description;
+                        if (this.emPlugins[product].AuthorUri != null)
+                        {
+                            lnkURL.Text = emPlugins[product].AuthorUri.ToString();
                         }
                         else
                         {

@@ -9,6 +9,8 @@ namespace MyGeneration
     public interface IContentManager
     {
         string Name { get; }
+        string Description { get; }
+        Uri AuthorUri { get; }
         Image MenuImage { get; }
         IMyGenContent Create(IMyGenerationMDI mdi, params string[] args);
     }

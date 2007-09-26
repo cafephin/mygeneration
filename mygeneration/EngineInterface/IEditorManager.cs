@@ -9,6 +9,8 @@ namespace MyGeneration
     public interface IEditorManager
     {
         string Name { get; }
+        string Description { get; }
+        Uri AuthorUri { get; }
         SortedList<string, string> FileExtensions { get; }
         List<string> FileTypes { get; }
         bool CanOpenFile(FileInfo file);

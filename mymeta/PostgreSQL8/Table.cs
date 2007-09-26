@@ -22,9 +22,17 @@ namespace MyMeta.PostgreSQL8
 			{
 				if(null == _primaryKeys)
 				{
-					string query = "select c.column_name from information_schema.table_constraints t, information_schema.constraint_column_usage c " +
+                    // New PostgreSQL primary key query from Michael McKean
+                    string query = "SELECT  c.column_name " +
+                                   "FROM   information_schema.key_column_usage c " +
+                                   "INNER JOIN  information_schema.table_constraints t " +
+                                   "ON  c.constraint_name = t.constraint_name " +
+                                   "WHERE  c.table_name = '" + this.Name + "' " +
+                                   " AND c.table_schema = '" + this.Schema + "' " +
+                                   " AND  t.constraint_type = 'PRIMARY KEY' ";
+					/*string query = "select c.column_name from information_schema.table_constraints t, information_schema.constraint_column_usage c " +
 						"where t.table_name = '" + this.Name + "' and t.table_schema = '" + this.Schema +  
-						"' and c.constraint_name = t.constraint_name and t.constraint_type = 'PRIMARY KEY'";
+						"' and c.constraint_name = t.constraint_name and t.constraint_type = 'PRIMARY KEY'";*/
 
 					NpgsqlConnection cn = ConnectionHelper.CreateConnection(this.dbRoot, this.Database.Name);
 

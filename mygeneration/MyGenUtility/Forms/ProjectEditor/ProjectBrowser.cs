@@ -53,7 +53,6 @@ namespace MyGeneration
         private ToolStripSeparator toolStripMenuItem7;
         private ToolStrip toolStripOptions;
         private ToolStripButton toolStripButtonSave;
-        private ToolStripButton toolStripButtonSaveAs;
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripButton toolStripButtonExecute;
         private ToolStripSeparator toolStripSeparator3;
@@ -209,7 +208,6 @@ namespace MyGeneration
             this.executeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripOptions = new System.Windows.Forms.ToolStrip();
             this.toolStripButtonSave = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButtonSaveAs = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonEdit = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -358,7 +356,7 @@ namespace MyGeneration
             this.saveToolStripMenuItem.MergeIndex = 4;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.saveToolStripMenuItem.Text = "&Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
@@ -367,7 +365,9 @@ namespace MyGeneration
             this.saveAsToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
             this.saveAsToolStripMenuItem.MergeIndex = 5;
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.saveAsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt)
+                        | System.Windows.Forms.Keys.S)));
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.saveAsToolStripMenuItem.Text = "Save  &As";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
@@ -376,7 +376,8 @@ namespace MyGeneration
             this.closeToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
             this.closeToolStripMenuItem.MergeIndex = 6;
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.closeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.closeToolStripMenuItem.Text = "&Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
@@ -385,7 +386,7 @@ namespace MyGeneration
             this.toolStripMenuItem7.MergeAction = System.Windows.Forms.MergeAction.Insert;
             this.toolStripMenuItem7.MergeIndex = 7;
             this.toolStripMenuItem7.Name = "toolStripMenuItem7";
-            this.toolStripMenuItem7.Size = new System.Drawing.Size(144, 6);
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(183, 6);
             // 
             // projectToolStripMenuItem
             // 
@@ -408,7 +409,6 @@ namespace MyGeneration
             // 
             this.toolStripOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButtonSave,
-            this.toolStripButtonSaveAs,
             this.toolStripSeparator1,
             this.toolStripButtonEdit,
             this.toolStripSeparator2,
@@ -432,22 +432,10 @@ namespace MyGeneration
             this.toolStripButtonSave.Text = "Save Settings";
             this.toolStripButtonSave.Click += new System.EventHandler(this.toolStripButtonSave_Click);
             // 
-            // toolStripButtonSaveAs
-            // 
-            this.toolStripButtonSaveAs.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonSaveAs.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonSaveAs.Image")));
-            this.toolStripButtonSaveAs.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonSaveAs.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.toolStripButtonSaveAs.MergeIndex = 3;
-            this.toolStripButtonSaveAs.Name = "toolStripButtonSaveAs";
-            this.toolStripButtonSaveAs.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButtonSaveAs.Text = "Save As";
-            this.toolStripButtonSaveAs.Click += new System.EventHandler(this.toolStripButtonSaveAs_Click);
-            // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.toolStripSeparator1.MergeIndex = 4;
+            this.toolStripSeparator1.MergeIndex = 3;
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
@@ -457,7 +445,7 @@ namespace MyGeneration
             this.toolStripButtonEdit.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonEdit.Image")));
             this.toolStripButtonEdit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonEdit.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.toolStripButtonEdit.MergeIndex = 5;
+            this.toolStripButtonEdit.MergeIndex = 4;
             this.toolStripButtonEdit.Name = "toolStripButtonEdit";
             this.toolStripButtonEdit.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonEdit.Text = "Template Properties";
@@ -466,7 +454,7 @@ namespace MyGeneration
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.toolStripSeparator2.MergeIndex = 6;
+            this.toolStripSeparator2.MergeIndex = 5;
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
@@ -476,7 +464,7 @@ namespace MyGeneration
             this.toolStripButtonExecute.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonExecute.Image")));
             this.toolStripButtonExecute.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonExecute.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.toolStripButtonExecute.MergeIndex = 7;
+            this.toolStripButtonExecute.MergeIndex = 6;
             this.toolStripButtonExecute.Name = "toolStripButtonExecute";
             this.toolStripButtonExecute.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonExecute.Text = "Execute";
@@ -485,7 +473,7 @@ namespace MyGeneration
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.toolStripSeparator3.MergeIndex = 8;
+            this.toolStripSeparator3.MergeIndex = 7;
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
             // 
@@ -493,8 +481,8 @@ namespace MyGeneration
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.ClientSize = new System.Drawing.Size(384, 542);
-            this.Controls.Add(this.toolStripOptions);
             this.Controls.Add(this.menuStripMain);
+            this.Controls.Add(this.toolStripOptions);
             this.Controls.Add(this.treeViewProject);
             this.DockAreas = WeifenLuo.WinFormsUI.Docking.DockAreas.Document;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

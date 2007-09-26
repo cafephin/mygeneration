@@ -79,11 +79,10 @@ namespace Zeus
 			}
 		}
 
-
 		public static IZeusScriptingEngine GetEngine(string name)
 		{
 			if (_engines == null) LoadEngines();
-				
+			
 			if (_engines.ContainsKey(name))
 			{
 				return _engines[name] as IZeusScriptingEngine;

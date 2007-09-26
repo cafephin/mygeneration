@@ -25,6 +25,22 @@ namespace MyGeneration
             }
         }
 
+        public override string Description
+        {
+            get
+            {
+                return "The MyGeneration Zeus Template editor.";
+            }
+        }
+
+        public override Uri AuthorUri
+        {
+            get
+            {
+                return new Uri("http://sourceforge.net/projects/mygeneration/");
+            }
+        }
+
         public override SortedList<string, string> FileExtensions
         {
             get
