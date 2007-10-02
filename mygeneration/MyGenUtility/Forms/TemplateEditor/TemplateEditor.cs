@@ -381,6 +381,7 @@ namespace MyGeneration
 
 		private void ZeusDisplayError_ErrorIndexChanged(object source, EventArgs args) 
 		{
+            /*
 			ZeusDisplayError formError = source as ZeusDisplayError;
 
 			ZeusScintillaControl ctrl = (formError.LastErrorIsTemplate ? scintillaTemplateSource : scintillaGuiSource);
@@ -404,6 +405,7 @@ namespace MyGeneration
 				}
 				catch {}
 			}
+            */
 		}
 
 		public void HandleExecuteException(Exception ex) 
@@ -414,9 +416,9 @@ namespace MyGeneration
 			this.scintillaOutput.Text = string.Empty;
 			this.scintillaOutput.IsReadOnly = true;
 
-			ZeusDisplayError formError = new ZeusDisplayError(ex);
-			formError.ErrorIndexChange += new EventHandler(ZeusDisplayError_ErrorIndexChanged);
-			formError.ShowDialog(this);
+			//ZeusDisplayError formError = new ZeusDisplayError(ex);
+			//formError.ErrorIndexChange += new EventHandler(ZeusDisplayError_ErrorIndexChanged);
+			//formError.ShowDialog(this);
 			
 			//foreach (string message in formError.LastErrorMessages) 
 			//{
@@ -1775,9 +1777,10 @@ namespace MyGeneration
             }
             catch (Exception x)
             {
-                ZeusDisplayError formError = new ZeusDisplayError(x);
-                formError.ErrorIndexChange += new EventHandler(ZeusDisplayError_ErrorIndexChanged);
-                formError.ShowDialog(this);
+                //this.mdi.ErrorsOccurred(ex);
+                //ZeusDisplayError formError = new ZeusDisplayError(x);
+                //formError.ErrorIndexChange += new EventHandler(ZeusDisplayError_ErrorIndexChanged);
+                //formError.ShowDialog(this);
 
                 this.LogException(x);
                 /*foreach (string message in formError.LastErrorMessages)
@@ -1912,8 +1915,8 @@ namespace MyGeneration
                     this.LogException(x);
                     //this.LogLn("Error loading template with path: " + path);
 
-                    ZeusDisplayError formError = new ZeusDisplayError(x);
-                    formError.ShowDialog(this);
+                    //ZeusDisplayError formError = new ZeusDisplayError(x);
+                    //formError.ShowDialog(this);
 
                     //foreach (string message in formError.LastErrorMessages)
                    // {
@@ -2596,8 +2599,13 @@ namespace MyGeneration
             get { return this; }
         }
 
+        public string TextContent
+        {
+            get { return this.CurrentScintilla.Text; }
+        }
+
         #endregion
-	}
+    }
 
 	/// <summary>
 	/// An item for a listbox that holds a filename

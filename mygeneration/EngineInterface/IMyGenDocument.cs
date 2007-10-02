@@ -12,5 +12,6 @@ namespace MyGeneration
     public interface IMyGenDocument : IMyGenContent
     {
         string DocumentIndentity { get; }
+        string TextContent { get; }
     }
 }

@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using System.Reflection;
 using System.Text;
 
-namespace MyGeneration
+namespace MyGeneration.CrazyErrors
 {
 	/// <summary>
 	/// Summary description for ExceptionDialog.

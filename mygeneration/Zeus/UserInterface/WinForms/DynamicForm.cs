@@ -210,8 +210,8 @@ namespace Zeus.UserInterface.WinForms
             }
             catch (Exception x)
             {
-                ZeusDisplayError formError = new ZeusDisplayError(x);
-                formError.ShowDialog(this);
+                //ZeusDisplayError formError = new ZeusDisplayError(x);
+                //formError.ShowDialog(this);
                 if (logger != null)
                     logger.LogException(x);
             }
@@ -235,8 +235,8 @@ namespace Zeus.UserInterface.WinForms
             }
             catch (Exception x)
             {
-                ZeusDisplayError formError = new ZeusDisplayError(x);
-                formError.ShowDialog(this);
+                //ZeusDisplayError formError = new ZeusDisplayError(x);
+                //formError.ShowDialog(this);
                 if (logger != null)
                     logger.LogException(x);
             }
@@ -260,8 +260,8 @@ namespace Zeus.UserInterface.WinForms
             }
             catch (Exception x)
             {
-                ZeusDisplayError formError = new ZeusDisplayError(x);
-                formError.ShowDialog(this);
+                //ZeusDisplayError formError = new ZeusDisplayError(x);
+                //formError.ShowDialog(this);
                 if (logger != null)
                     logger.LogException(x);
             }
@@ -285,8 +285,8 @@ namespace Zeus.UserInterface.WinForms
 			}
 			catch (Exception x)
 			{
-				ZeusDisplayError formError = new ZeusDisplayError(x);
-				formError.ShowDialog(this);
+				//ZeusDisplayError formError = new ZeusDisplayError(x);
+				//formError.ShowDialog(this);
                 if (logger != null)
                     logger.LogException(x);
 			}
@@ -310,8 +310,8 @@ namespace Zeus.UserInterface.WinForms
 			}
 			catch (Exception x)
 			{
-				ZeusDisplayError formError = new ZeusDisplayError(x);
-				formError.ShowDialog(this);
+				//ZeusDisplayError formError = new ZeusDisplayError(x);
+				//formError.ShowDialog(this);
                 if (logger != null)
                     logger.LogException(x);
 			}
@@ -335,8 +335,8 @@ namespace Zeus.UserInterface.WinForms
 			}
 			catch (Exception x)
 			{
-				ZeusDisplayError formError = new ZeusDisplayError(x);
-				formError.ShowDialog(this);
+				//ZeusDisplayError formError = new ZeusDisplayError(x);
+				//formError.ShowDialog(this);
                 if (logger != null)
                     logger.LogException(x);
 			}
@@ -359,8 +359,8 @@ namespace Zeus.UserInterface.WinForms
 			}
 			catch (Exception x)
 			{
-				ZeusDisplayError formError = new ZeusDisplayError(x);
-				formError.ShowDialog(this);
+				//ZeusDisplayError formError = new ZeusDisplayError(x);
+				//formError.ShowDialog(this);
                 if (logger != null)
                     logger.LogException(x);
 			}
@@ -383,8 +383,8 @@ namespace Zeus.UserInterface.WinForms
 			}
 			catch (Exception x)
 			{
-				ZeusDisplayError formError = new ZeusDisplayError(x);
-				formError.ShowDialog(this);
+				//ZeusDisplayError formError = new ZeusDisplayError(x);
+				//formError.ShowDialog(this);
                 if (logger != null)
                     logger.LogException(x);
 			}
@@ -406,8 +406,8 @@ namespace Zeus.UserInterface.WinForms
 			}
 			catch (Exception x)
 			{
-				ZeusDisplayError formError = new ZeusDisplayError(x);
-				formError.ShowDialog(this);
+				//ZeusDisplayError formError = new ZeusDisplayError(x);
+				//formError.ShowDialog(this);
                 if (logger != null)
                     logger.LogException(x);
 			}
@@ -424,8 +424,8 @@ namespace Zeus.UserInterface.WinForms
 			}
 			catch (Exception x)
 			{
-				ZeusDisplayError formError = new ZeusDisplayError(x);
-				formError.ShowDialog(this);
+				//ZeusDisplayError formError = new ZeusDisplayError(x);
+				//formError.ShowDialog(this);
                 if (logger != null)
                     logger.LogException(x);
 			}

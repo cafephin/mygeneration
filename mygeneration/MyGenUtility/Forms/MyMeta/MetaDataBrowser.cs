@@ -37,6 +37,7 @@ namespace MyGeneration
 		private System.Windows.Forms.TreeView MyTree;
 		public System.Windows.Forms.ImageList TreeImageList;
 		private System.Windows.Forms.CheckBox chkSystem;
+        private ToolBarButton toolBarButtonExecute;
 		private System.Windows.Forms.ToolBarButton toolBarButton2;
 
 
@@ -87,13 +88,15 @@ namespace MyGeneration
             this.MyTree = new System.Windows.Forms.TreeView();
             this.TreeImageList = new System.Windows.Forms.ImageList(this.components);
             this.chkSystem = new System.Windows.Forms.CheckBox();
+            this.toolBarButtonExecute = new System.Windows.Forms.ToolBarButton();
             this.SuspendLayout();
             // 
             // toolBar1
             // 
             this.toolBar1.Appearance = System.Windows.Forms.ToolBarAppearance.Flat;
             this.toolBar1.Buttons.AddRange(new System.Windows.Forms.ToolBarButton[] {
-            this.toolBarButton2});
+            this.toolBarButton2,
+            this.toolBarButtonExecute});
             this.toolBar1.Divider = false;
             this.toolBar1.DropDownArrows = true;
             this.toolBar1.ImageList = this.imageList1;
@@ -115,6 +118,7 @@ namespace MyGeneration
             this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
             this.imageList1.TransparentColor = System.Drawing.Color.Magenta;
             this.imageList1.Images.SetKeyName(0, "");
+            this.imageList1.Images.SetKeyName(1, "toolbar_execute_16x16.bmp");
             // 
             // ToolbarImageList
             // 
@@ -181,12 +185,20 @@ namespace MyGeneration
             // 
             // chkSystem
             // 
-            this.chkSystem.Location = new System.Drawing.Point(32, 4);
+            this.chkSystem.Location = new System.Drawing.Point(56, 4);
             this.chkSystem.Name = "chkSystem";
             this.chkSystem.Size = new System.Drawing.Size(120, 16);
             this.chkSystem.TabIndex = 5;
             this.chkSystem.Text = "Show System Data";
             this.chkSystem.CheckedChanged += new System.EventHandler(this.chkSystem_CheckedChanged);
+            // 
+            // toolBarButtonExecute
+            // 
+            this.toolBarButtonExecute.Enabled = false;
+            this.toolBarButtonExecute.ImageIndex = 1;
+            this.toolBarButtonExecute.Name = "toolBarButtonExecute";
+            this.toolBarButtonExecute.Tag = "execute";
+            this.toolBarButtonExecute.ToolTipText = "Execute SQL in active document";
             // 
             // MetaDataBrowser
             // 
@@ -202,6 +214,8 @@ namespace MyGeneration
             this.Name = "MetaDataBrowser";
             this.TabText = "MyMeta  Browser";
             this.Text = "MyMeta  Browser";
+            this.Enter += new System.EventHandler(this.MetaDataBrowser_Enter);
+            this.Leave += new System.EventHandler(this.MetaDataBrowser_Leave);
             this.Load += new System.EventHandler(this.MetaDataBrowser_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -376,6 +390,18 @@ namespace MyGeneration
 					this.GlobalUserData.MetaBrowserRefresh();
 					this.MetaData.MetaBrowserRefresh();
 					break;
+                case "execute":
+                    if (this.mdi.DockPanel.ActiveDocument != null)
+                    {
+                        if ((this.mdi.DockPanel.ActiveDocument is IMyGenDocument) && (this.myMeta.IsConnected))
+                        {
+                            IMyGenDocument doc = this.mdi.DockPanel.ActiveDocument as IMyGenDocument;
+                            
+                            Recordset rs = this.myMeta.DefaultDatabase.ExecuteSql(doc.TextContent);
+                            if ((rs != null) && (rs.State != (int)ADODB.ObjectStateEnum.adStateClosed)) rs.Close();
+                        }
+                    }
+                    break;
 			}
 		}
 
@@ -1176,5 +1202,29 @@ namespace MyGeneration
         }
 
         #endregion
+
+        private void MetaDataBrowser_Enter(object sender, EventArgs e)
+        {
+            this.toolBar1.Visible = true;
+            this.chkSystem.Visible = true;
+            if (this.mdi.DockPanel.ActiveDocument != null)
+            {
+                if ((this.mdi.DockPanel.ActiveDocument is IMyGenDocument) && (this.myMeta.IsConnected))
+                {
+                    IMyGenDocument doc = this.mdi.DockPanel.ActiveDocument as IMyGenDocument;
+                    this.toolBarButtonExecute.Enabled = true;
+                }
+                else
+                {
+                    this.toolBarButtonExecute.Enabled = false;
+                }
+            }
+        }
+
+        private void MetaDataBrowser_Leave(object sender, EventArgs e)
+        {
+            this.toolBar1.Visible = false;
+            this.chkSystem.Visible = false;
+        }
 	}
 }

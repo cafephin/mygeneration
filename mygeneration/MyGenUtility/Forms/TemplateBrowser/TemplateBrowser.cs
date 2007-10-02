@@ -268,6 +268,7 @@ namespace MyGeneration
             this.toolBarToolbar.ShowToolTips = true;
             this.toolBarToolbar.Size = new System.Drawing.Size(384, 28);
             this.toolBarToolbar.TabIndex = 0;
+            this.toolBarToolbar.Visible = false;
             this.toolBarToolbar.ButtonClick += new System.Windows.Forms.ToolBarButtonClickEventHandler(this.toolBarToolbar_ButtonClick);
             // 
             // toolBarButtonRefresh
@@ -422,7 +423,9 @@ namespace MyGeneration
             this.ShowHint = WeifenLuo.WinFormsUI.Docking.DockState.DockLeft;
             this.TabText = "Template Browser";
             this.Text = "Template Browser";
+            this.Enter += new System.EventHandler(this.TemplateBrowser_Enter);
             this.MouseLeave += new System.EventHandler(this.TemplateBrowser_MouseLeave);
+            this.Leave += new System.EventHandler(this.TemplateBrowser_Leave);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -725,9 +728,10 @@ namespace MyGeneration
 			}
 			catch (Exception ex)
 			{
-				ZeusDisplayError formError = new ZeusDisplayError(ex);
-				formError.SetControlsFromException();			
-				formError.ShowDialog(this);
+                mdi.ErrorsOccurred(ex);
+				//ZeusDisplayError formError = new ZeusDisplayError(ex);
+				//formError.SetControlsFromException();			
+				//formError.ShowDialog(this);
 
 				exceptionOccurred = true;
 			}
@@ -792,9 +796,10 @@ namespace MyGeneration
 			}
 			catch (Exception ex)
 			{
-				ZeusDisplayError formError = new ZeusDisplayError(ex);
-				formError.SetControlsFromException();			
-				formError.ShowDialog(this);
+                mdi.ErrorsOccurred(ex);
+                //ZeusDisplayError formError = new ZeusDisplayError(ex);
+				//formError.SetControlsFromException();			
+				//formError.ShowDialog(this);
 			}
 
 			Cursor.Current = Cursors.Default;
@@ -841,9 +846,10 @@ namespace MyGeneration
 			}
 			catch (Exception ex)
 			{
-				ZeusDisplayError formError = new ZeusDisplayError(ex);
-				formError.SetControlsFromException();			
-				formError.ShowDialog(this);
+                mdi.ErrorsOccurred(ex);
+                //ZeusDisplayError formError = new ZeusDisplayError(ex);
+				//formError.SetControlsFromException();			
+				//formError.ShowDialog(this);
 			}
 
 			Cursor.Current = Cursors.Default;
@@ -865,9 +871,10 @@ namespace MyGeneration
 			}
 			catch (Exception ex)
 			{
-				ZeusDisplayError formError = new ZeusDisplayError(ex);
-				formError.SetControlsFromException();			
-				formError.ShowDialog(this);
+                mdi.ErrorsOccurred(ex);
+                //ZeusDisplayError formError = new ZeusDisplayError(ex);
+				//formError.SetControlsFromException();			
+				//formError.ShowDialog(this);
 			}
 
 			Cursor.Current = Cursors.Default;
@@ -988,6 +995,16 @@ namespace MyGeneration
         }
 
         #endregion
+
+        private void TemplateBrowser_Enter(object sender, EventArgs e)
+        {
+            this.toolBarToolbar.Visible = true;
+        }
+
+        private void TemplateBrowser_Leave(object sender, EventArgs e)
+        {
+            this.toolBarToolbar.Visible = false;
+        }
 	}
 
 }

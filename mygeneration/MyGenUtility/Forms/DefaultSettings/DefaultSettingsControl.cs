@@ -306,6 +306,11 @@ namespace MyGeneration
             }
         }
 
+        public string TextContent
+        {
+            get { return settings.ConnectionString; }
+        }
+
         private bool TestConnection(bool silent)
         {
             string driver = string.Empty;

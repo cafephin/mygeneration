@@ -12,7 +12,7 @@ using System.CodeDom.Compiler;
 
 using Zeus.ErrorHandling;
 
-namespace Zeus.UserInterface.WinForms
+namespace Zeus.UserInterface.WinForms.CrazyErrors
 {
 	/// <summary>
 	/// Summary description for ZeusDisplayError.

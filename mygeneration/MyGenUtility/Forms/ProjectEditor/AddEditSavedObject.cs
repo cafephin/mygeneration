@@ -40,17 +40,17 @@ namespace MyGeneration
 		private System.Windows.Forms.TreeView treeViewTemplates;
 		private TemplateTreeBuilder treeBuilder = null;
 		private System.Windows.Forms.Label labelTemplate;
+        private IMyGenerationMDI mdi;
 
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
 
-		public FormAddEditSavedObject()
+		public FormAddEditSavedObject(IMyGenerationMDI mdi)
 		{
-			//
-			// Required for Windows Form Designer support
-			//
+            this.mdi = mdi;
+
 			InitializeComponent();
 			treeBuilder = new TemplateTreeBuilder(this.treeViewTemplates);
 
@@ -410,9 +410,10 @@ namespace MyGeneration
 			}
 			catch (Exception ex)
 			{
-				ZeusDisplayError formError = new ZeusDisplayError(ex);
-				formError.SetControlsFromException();			
-				formError.ShowDialog(this);
+                mdi.ErrorsOccurred(ex);
+                //ZeusDisplayError formError = new ZeusDisplayError(ex);
+				//formError.SetControlsFromException();			
+				//formError.ShowDialog(this);
 			}
 
 			Cursor.Current = Cursors.Default;
@@ -443,9 +444,10 @@ namespace MyGeneration
 			}
 			catch (Exception ex)
 			{
-				ZeusDisplayError formError = new ZeusDisplayError(ex);
-				formError.SetControlsFromException();			
-				formError.ShowDialog(this);
+                mdi.ErrorsOccurred(ex);
+                //ZeusDisplayError formError = new ZeusDisplayError(ex);
+				//formError.SetControlsFromException();			
+				//formError.ShowDialog(this);
 			}
 
 			Cursor.Current = Cursors.Default;

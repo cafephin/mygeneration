@@ -12,6 +12,7 @@ namespace Zeus
 		string Message { get; }
 		string Description { get; }
 		string StackTrace { get; }
-		bool IsWarning { get; }
+        bool IsWarning { get; }
+        Exception Exception { get; }
 	}
 }

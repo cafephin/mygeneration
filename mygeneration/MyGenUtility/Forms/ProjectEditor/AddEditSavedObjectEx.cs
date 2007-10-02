@@ -381,9 +381,10 @@ throw log.Exceptions[0];
 }
 catch (Exception ex)
 {
-ZeusDisplayError formError = new ZeusDisplayError(ex);
-formError.SetControlsFromException();			
-formError.ShowDialog(this);
+    mdi.ErrorsOccurred(ex);
+    //ZeusDisplayError formError = new ZeusDisplayError(ex);
+//formError.SetControlsFromException();			
+//formError.ShowDialog(this);
 }
 
 Cursor.Current = Cursors.Default;
@@ -414,9 +415,10 @@ gui.IsCanceled = true;
 }
 catch (Exception ex)
 {
-ZeusDisplayError formError = new ZeusDisplayError(ex);
-formError.SetControlsFromException();			
-formError.ShowDialog(this);
+    mdi.ErrorsOccurred(ex);
+    //ZeusDisplayError formError = new ZeusDisplayError(ex);
+//formError.SetControlsFromException();			
+//formError.ShowDialog(this);
 }
 
 Cursor.Current = Cursors.Default;

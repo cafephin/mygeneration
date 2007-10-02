@@ -39,7 +39,7 @@ namespace MyGeneration
 
 		private ProjectTreeNode rootNode;
 		private FormAddEditModule formEditModule = new FormAddEditModule();
-		private FormAddEditSavedObject formEditSavedObject = new FormAddEditSavedObject();
+        private FormAddEditSavedObject formEditSavedObject;
 		private System.Windows.Forms.MenuItem menuItemSep01;
 		private System.Windows.Forms.MenuItem menuItemSep02;
 		private System.Windows.Forms.MenuItem menuItemSep03;
@@ -64,7 +64,9 @@ namespace MyGeneration
 		private bool _isDirty = false;
 
         public ProjectBrowser(IMyGenerationMDI mdi)
-		{
+        {
+            formEditSavedObject = new FormAddEditSavedObject(mdi);
+
             InitializeComponent();
             this.mdi = mdi;
 		}
@@ -1076,6 +1078,11 @@ namespace MyGeneration
         public DockContent DockContent
         {
             get { return this; }
+        }
+
+        public string TextContent
+        {
+            get { return this.CompleteFilePath; }
         }
 
         #endregion

@@ -34,6 +34,7 @@ namespace MyGeneration
         private const string URL_HOMEPAGE = "http://www.mygenerationsoftware.com/home/";
         private const string URL_DOCUMENTATION = "http://www.mygenerationsoftware.com/Documentation.aspx";
         private const string URL_LATESTVERSION = "http://www.mygenerationsoftware.com/LatestVersion";
+        private const string URL_SOURCEFORGE_DOWNLOAD = "http://sourceforge.net/projects/mygeneration";
 
         private static ConfigFile configFile;
         private ScintillaConfigureDelegate configureDelegate;
@@ -578,6 +579,11 @@ namespace MyGeneration
                 }
             }
         }
+
+        private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
         #endregion
 
         #region Toolstrip Button Events
@@ -891,6 +897,63 @@ namespace MyGeneration
         }
         #endregion
 
+        #region Check Application Version on Server
+
+        private void StartVersionCheck()
+        {
+            if (DefaultSettings.Instance.CheckForNewBuild)
+            {
+                MyGeneration.com.mygenerationsoftware.www.VersionInfo versionInfo = new MyGeneration.com.mygenerationsoftware.www.VersionInfo();
+
+                try
+                {
+                    string newVersion = versionInfo.GetVersion();
+                    System.Reflection.Assembly asmblyMyGen = System.Reflection.Assembly.GetAssembly(typeof(NewAbout));
+                    string currentVersion = asmblyMyGen.GetName().Version.ToString();
+
+                    System.Version currentVersionObject = asmblyMyGen.GetName().Version;
+                    System.Version newVersionObject = new System.Version(newVersion);
+
+                    if (newVersionObject > currentVersionObject)
+                    {
+                        this.Update();
+
+                        UpdatesForm form = new UpdatesForm();
+                        form.NewVersion = newVersion;
+                        form.ThisVersion = currentVersion;
+                        form.UpgradeText = versionInfo.GetUpdateText();
+                        DialogResult result = form.ShowDialog();
+
+                        if (result == DialogResult.OK)
+                        {
+                            DownloadLatestVersion();
+                        }
+                    }
+                    else if (newVersionObject > currentVersionObject)
+                    {
+                        DialogResult result = MessageBox.Show(this, 
+                            @"You are running an currently unreleased build. Do you want to check the SourceForge page for updates now?", 
+                            "Version Information", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                        
+                        if (result == DialogResult.Yes)
+                        {
+                            Zeus.WindowsTools.LaunchBrowser(URL_SOURCEFORGE_DOWNLOAD);
+                        }
+                    }
+                }
+                catch (Exception wsex)
+                {
+                    this.ErrorsOccurred(wsex);
+                }
+            }
+        }
+
+        private void DownloadLatestVersion()
+        {
+            Zeus.WindowsTools.LaunchBrowser(URL_LATESTVERSION, ProcessWindowStyle.Minimized, true);
+        }
+        #endregion
+
         #region IMyGenerationMDI Members
 
         public FindForm FindDialog
@@ -1026,6 +1089,5 @@ namespace MyGeneration
             catch { }
         }
         #endregion
-
     }
 }

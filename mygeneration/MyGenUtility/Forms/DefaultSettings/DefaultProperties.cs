@@ -291,6 +291,11 @@ namespace MyGeneration
             get { return this; }
         }
 
+        public string TextContent
+        {
+            get { return this.defaultSettingsControl.TextContent; }
+        }
+
         #endregion
     }
 }

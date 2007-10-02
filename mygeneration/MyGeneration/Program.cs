@@ -27,7 +27,7 @@ namespace MyGeneration
             }
             catch (Exception ex)
             {
-                ExceptionDialog ed = new ExceptionDialog(ex);
+                MyGeneration.CrazyErrors.ExceptionDialog ed = new MyGeneration.CrazyErrors.ExceptionDialog(ex);
                 ed.ShowDialog();
 
                 mdi = null;

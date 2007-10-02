@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.Diagnostics;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace MyGeneration.Forms
@@ -43,6 +44,9 @@ namespace MyGeneration.Forms
 
         public void AddErrors(params Exception[] exceptions)
         {
+            foreach (Exception ex in exceptions)
+            {
+            }
             //throw new Exception("The method or operation is not implemented.");
         }
 

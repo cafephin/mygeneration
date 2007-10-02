@@ -100,6 +100,10 @@ namespace SampleUIPlugin
             get { return this; }
         }
 
+        public string TextContent
+        {
+            get { return this.GetPersistString(); }
+        }
         #endregion
 
         private void SampleEditor_MouseDown(object sender, MouseEventArgs e)

@@ -118,6 +118,10 @@
       <Project>{A1D6D035-420C-40A3-9598-9E34F11FB1AA}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
+    <ProjectReference Include="..\Zeus\Zeus.csproj">
+      <Project>{CE8A697D-D45C-4E60-838D-E36980227543}</Project>
+      <Name>Zeus</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs">
