@@ -16,8 +16,9 @@ namespace Zeus.DotNetScript
 		private int _column;
 		private string _message;
 		private string _description;
-		private string _stackTrace;
-		private bool _isWarning = false;
+        private string _stackTrace;
+        private bool _isWarning = false;
+        private bool _isRuntime = false;
 
 		public DotNetScriptError(CompilerError error, IZeusContext context)
 		{
@@ -40,8 +41,9 @@ namespace Zeus.DotNetScript
 		public int Column { get { return _column; } }
 		public string Message { get { return _message; } }
 		public string Description { get { return _description; } }
-		public string StackTrace { get { return _stackTrace; } }
+        public string StackTrace { get { return _stackTrace; } }
         public bool IsWarning { get { return _isWarning; } }
+        public bool IsRuntime { get { return _isRuntime; } }
         public Exception Exception { get { return null; } }
 	}
 }

@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("MyGeneration Development Community")]
 [assembly: AssemblyProduct("MyGeneration")]
-[assembly: AssemblyCopyright("Copyright © 2004-2007 MyGeneration Development Community. All Rights Reserved")]
+[assembly: AssemblyCopyright("Copyright © 2004-2007 Mike Griffin and Justin Greenwood. All Rights Reserved")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
 

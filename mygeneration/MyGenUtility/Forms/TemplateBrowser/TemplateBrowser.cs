@@ -792,7 +792,7 @@ namespace MyGeneration
 					}
 				}
 
-				MessageBox.Show(this, "Input collected and saved to file:" + "\r\n" + collectedInput.FilePath);
+				MessageBox.Show(this, "Input collected and saved to file: \r\n" + collectedInput.FilePath);
 			}
 			catch (Exception ex)
 			{

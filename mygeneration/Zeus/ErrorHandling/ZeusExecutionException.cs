@@ -12,7 +12,8 @@ namespace Zeus.ErrorHandling
 		protected IZeusExecutionError[] _errors;
 		private bool _isTemplateScript = true;
 
-		public ZeusExecutionException(IZeusExecutionError[] errors, bool isTemplateScript) : base("Template Execution Error")
+        public ZeusExecutionException(IZeusTemplate template, IZeusExecutionError[] errors, bool isTemplateScript)
+            : base(template, "Template Execution Error")
 		{
 			this._errors = errors;
 			this._isTemplateScript = isTemplateScript;

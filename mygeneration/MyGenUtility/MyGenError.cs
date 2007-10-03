@@ -3,19 +3,23 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 using Zeus;
+using Zeus.ErrorHandling;
 
 namespace MyGeneration
 {
     public class MyGenError : IMyGenError
     {
-        private DateTime dateTimeOccurred;
+        private string templateFileName;
+        private string templateIdentifier;
+        private DateTime dateTimeOccurred = DateTime.Now;
         private string uniqueIdentifier;
         private MyGenErrorClass errorClass = MyGenErrorClass.Application;
         private bool isWarning = false;
         private bool isRuntime = true;
+        private bool isTemplateCodeSegment = true;
         private Guid errorGuid = Guid.NewGuid();
         private string errorNumber;
-        private string type;
+        private string errorType;
         private string sourceFile;
         private string sourceLine;
         private int lineNumber = 0;
@@ -23,111 +27,192 @@ namespace MyGeneration
         private string message;
         private string detail;
 
-        public MyGenError(Exception tex)
+        public static List<IMyGenError> CreateErrors(params Exception[] exceptions)
         {
-            if (tex is Zeus.ErrorHandling.ZeusExecutionException)
+            MyGenError error;
+            List<IMyGenError> myGenErrors = new List<IMyGenError>();
+            foreach (Exception ex in exceptions)
             {
-                Zeus.ErrorHandling.ZeusExecutionException zex = tex as Zeus.ErrorHandling.ZeusExecutionException;
-                Zeus.IZeusExecutionError zee = zex.Errors[0];
+                if (ex is ZeusRuntimeException)
+                {
+                    ZeusRuntimeException zrex = ex as ZeusRuntimeException;
+                    Exception bex = zrex.GetBaseException();
+                    if (bex == null) bex = zrex;
+
+                    error = new MyGenError();
+                    error.errorClass = MyGenErrorClass.Template;
+                    error.templateFileName = zrex.Template.FilePath + zrex.Template.FileName;
+                    error.TemplateIdentifier = zrex.Template.UniqueID;
+                    error.IsTemplateCodeSegment = zrex.IsTemplateScript;
+                    error.isRuntime = true;
+                    PopulateErrorFromException(error, bex);
+                    myGenErrors.Add(error);
+                }
+                else if (ex is ZeusExecutionException)
+                {
+                    
+                    ZeusExecutionException zeex = ex as ZeusExecutionException;
+
+                    foreach (IZeusExecutionError zee in zeex.Errors)
+                    {
+                        error = new MyGenError();
+                        error.errorClass = MyGenErrorClass.Template;
+                        error.templateFileName = zeex.Template.FilePath + zeex.Template.FileName;
+                        error.TemplateIdentifier = zeex.Template.UniqueID;
+                        error.IsTemplateCodeSegment = zeex.IsTemplateScript;
+
+                        error.columnNumber = zee.Column;
+                        error.SourceFile = zee.FileName;
+                        error.isRuntime = zee.IsRuntime;
+                        error.IsWarning = zee.IsWarning;
+                        error.lineNumber = zee.Line;
+                        error.message = zee.Message;
+                        error.ErrorNumber = zee.Number;
+                        error.SourceLine = zee.Source;
+                        error.detail = zee.StackTrace;
+
+                        myGenErrors.Add(error);
+                    }
+                }
+                else
+                {
+                    Exception bex = ex.GetBaseException();
+                    if (bex == null) bex = ex;
+
+                    error = new MyGenError();
+                    error.errorClass = MyGenErrorClass.Application;
+                    PopulateErrorFromException(error, bex);
+                    myGenErrors.Add(error);
+                }
             }
+            return myGenErrors;
+        }
+
+        public static void PopulateErrorFromException(MyGenError error, Exception ex)
+        {
             StringBuilder sb = new StringBuilder();
 
-            StackTrace st = new StackTrace(tex.GetBaseException());
+            error.errorType = ex.GetType().Name;
+            error.message = ex.Message;
+            error.detail = ex.StackTrace;
+            error.SourceFile = ex.Source;
+            
+            StackTrace st = new StackTrace(ex);
             StackFrame[] sfs = st.GetFrames();
             foreach (StackFrame sf in sfs)
             {
-                sb.AppendLine(sf.ToString());
+                error.lineNumber = sf.GetFileLineNumber();
+                error.ColumnNumber = sf.GetFileColumnNumber();
+                error.SourceFile = sf.GetFileName();
+                error.SourceLine = sf.GetMethod().Name;
+                break;
             }
-            string tmp = sb.ToString();
-            tmp = tmp.Trim();
-            Exception ex = tex.GetBaseException();
-            if (ex == null) ex = tex;
-
-            //StackTrace st = new StackTrace(ex);
-            //StackFrame[] sfs = st.GetFrames();
-            //foreach (StackFrame sf in sfs)
-           // {
-                //sb.AppendLine(sf.ToString());
-           // }
-
-            dateTimeOccurred = DateTime.Now;
-            //errorNumber = 0;
-            type = ex.GetType().Name;
-            sourceFile = ex.Source;
-            //sourceLine = ex.li;
-            //lineNumber;
-            //columnNumber;
-            message = ex.Message;
-            detail = ex.StackTrace;
         }
 
-        public MyGenError(IZeusExecutionError ex)
+        public MyGenError()
         {
+        }
+
+        public string TemplateFileName
+        {
+            get { return templateFileName; }
+            set { templateFileName = value; }
+        }
+
+        public string TemplateIdentifier
+        {
+            get { return templateIdentifier; }
+            set { templateIdentifier = value; }
         }
 
         public DateTime DateTimeOccurred
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { return dateTimeOccurred; }
+            set { dateTimeOccurred = value; }
         }
 
         public string UniqueIdentifier
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { return uniqueIdentifier; }
+            set { uniqueIdentifier = value; }
         }
 
         public MyGenErrorClass Class
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { return this.errorClass; }
+            set { errorClass = value; }
         }
 
         public bool IsWarning
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { return isWarning; }
+            set { isWarning = value; }
+        }
+
+        public bool IsRuntime
+        {
+            get { return isRuntime; }
+            set { isRuntime = value; }
+        }
+
+        public bool IsTemplateCodeSegment
+        {
+            get { return isTemplateCodeSegment; }
+            set { isTemplateCodeSegment = value; }
         }
 
         public Guid ErrorGuid
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { return errorGuid; }
+            set { errorGuid = value; }
         }
 
         public string ErrorNumber
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { return errorNumber; }
+            set { errorNumber = value; }
         }
 
-        public string Type
+        public string ErrorType
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { return errorType; }
+            set { errorType = value; }
         }
 
         public string SourceFile
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { return sourceFile; }
+            set { sourceFile = value; }
         }
 
         public string SourceLine
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { return sourceLine; }
+            set { sourceLine = value; }
         }
 
         public int LineNumber
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { return lineNumber; }
+            set { lineNumber = value; }
         }
 
         public int ColumnNumber
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { return columnNumber; }
+            set { columnNumber = value; }
         }
 
         public string Message
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { return message; }
+            set { message = value; }
         }
 
         public string Detail
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { return detail; }
+            set { detail = value; }
         }
     }
 }

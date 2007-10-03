@@ -165,7 +165,7 @@ namespace Zeus
 			line = reader.ReadLine();
 			if (!line.StartsWith(ZeusConstants.START_DIRECTIVE + ZeusConstants.Directives.TYPE)) 
 			{
-				throw new ZeusParseException(ZeusParseError.OutdatedTemplateStructure, "OutdatedTemplateStructure");
+                throw new ZeusParseException(template, ZeusParseError.OutdatedTemplateStructure, "OutdatedTemplateStructure");
 			}
 			while (line != null)
 			{

@@ -173,41 +173,40 @@ namespace Zeus
 		}
 
 		#region Static Methods
-		static internal bool ExecuteCodeSegment(IZeusCodeSegment segment, IZeusContext context) 
-		{
-			bool returnValue = true;
+        static internal bool ExecuteCodeSegment(IZeusCodeSegment segment, IZeusContext context)
+        {
+            bool returnValue = true;
 
-			if (context == null) context = new ZeusContext();
-			PopulateContextObjects(context as ZeusContext);
+            if (context == null) context = new ZeusContext();
+            PopulateContextObjects(context as ZeusContext);
 
-			//Push this template onto the template stack
-			if (context is ZeusContext)
-			{
-				((ZeusContext)context).TemplateStack.Push(segment.ITemplate);
-			}
+            //Push this template onto the template stack
+            if (context is ZeusContext)
+            {
+                ((ZeusContext)context).TemplateStack.Push(segment.ITemplate);
+            }
 
-			if (segment.SegmentType == ZeusConstants.CodeSegmentTypes.GUI_SEGMENT) 
-			{
-				foreach (IZeusContextProcessor processor in ZeusFactory.Preprocessors) 
-				{
-					processor.Process(context);
-				}
+            if (segment.SegmentType == ZeusConstants.CodeSegmentTypes.GUI_SEGMENT)
+            {
+                foreach (IZeusContextProcessor processor in ZeusFactory.Preprocessors)
+                {
+                    processor.Process(context);
+                }
 
-				returnValue = ZeusExecutioner.ExecuteGuiCode(segment, context);
-			}
-			else 
-			{
-				ZeusExecutioner.ExecuteCode(segment, context);
-			}
+                returnValue = ZeusExecutioner.ExecuteGuiCode(segment, context);
+            }
+            else
+            {
+                ZeusExecutioner.ExecuteCode(segment, context);
+            }
 
-			//Pop the template from the template stack
-			if (context is ZeusContext)
-			{
-				((ZeusContext)context).TemplateStack.Pop();
-			}
-
-			return returnValue;
-		}
+            //Pop the template from the template stack
+            if (context is ZeusContext)
+            {
+                ((ZeusContext)context).TemplateStack.Pop();
+            }
+            return returnValue;
+        }
 
 		static protected bool ExecuteGuiCode(IZeusCodeSegment segment, IZeusContext context) 
 		{
@@ -220,13 +219,21 @@ namespace Zeus
 
 				if (!context.Input.Contains(reqVars)) 
 				{
-					helper.EngineExecuteGuiCode(segment, context);
-					if (helper.HasErrors) 
-					{
-						IZeusExecutionError[] errors = helper.Errors;
-						helper.ClearErrors();
-						throw new ZeusExecutionException(errors, false);
-					}
+                    try
+                    {
+                        helper.EngineExecuteGuiCode(segment, context);
+
+                        if (helper.HasErrors)
+                        {
+                            IZeusExecutionError[] errors = helper.Errors;
+                            helper.ClearErrors();
+                            throw new ZeusExecutionException(segment.ITemplate, errors, false);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new ZeusRuntimeException(segment.ITemplate, ex, false);
+                    }
 				}
 
 				context.Input.AddItems(context.Gui);
@@ -243,18 +250,25 @@ namespace Zeus
 		
 		static protected void ExecuteCode(IZeusExecutionHelper helper, IZeusTemplate template, IZeusContext context, ArrayList templateGroupIds) 
 		{
-			if (!template.BodySegment.IsEmpty)
-			{
-				// Execute Template Body
-				helper.EngineExecuteCode(template.BodySegment, context);
+            if (!template.BodySegment.IsEmpty)
+            {
+                try
+                {
+                    // Execute Template Body
+                    helper.EngineExecuteCode(template.BodySegment, context);
 
-				if (helper.HasErrors) 
-				{
-					IZeusExecutionError[] errors = helper.Errors;
-					helper.ClearErrors();
-					throw new ZeusExecutionException(errors, true);
-				}
-			}
+                    if (helper.HasErrors)
+                    {
+                        IZeusExecutionError[] errors = helper.Errors;
+                        helper.ClearErrors();
+                        throw new ZeusExecutionException(template, errors, true);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new ZeusRuntimeException(template, ex, true);
+                }
+            }
 			
 			if (template.Type == ZeusConstants.Types.GROUP) 
 			{
@@ -292,7 +306,7 @@ namespace Zeus
 								}
 							}
 						}
-					}			
+					}
 				}
 			}
 		}

@@ -40,11 +40,9 @@ namespace MyGeneration
 		private System.Windows.Forms.TabPage tabInterfaceCode;
 		private System.Windows.Forms.TabPage tabTemplateSource;
         private System.Windows.Forms.TabPage tabOutput;
-		private System.Windows.Forms.Panel panelConsole;
 		private System.Windows.Forms.Panel panelProperties;
 		private NJFLib.Controls.CollapsibleSplitter splitterProperties;
-		private System.Windows.Forms.TabControl tabControlTemplate;
-		private System.Windows.Forms.TextBox textBoxConsole;
+        private System.Windows.Forms.TabControl tabControlTemplate;
 		private System.Windows.Forms.Label labelComments;
 		private System.Windows.Forms.TextBox textBoxComments;
 		private System.Windows.Forms.GroupBox groupBoxScripting;
@@ -54,8 +52,7 @@ namespace MyGeneration
 		private System.Windows.Forms.TextBox textBoxShortcutTag;
 		private System.Windows.Forms.TextBox textBoxEndTag;
 		private System.Windows.Forms.ComboBox comboBoxLanguage;
-		private System.Windows.Forms.Label labelLanguage;
-        private NJFLib.Controls.CollapsibleSplitter splitterConsole;
+        private System.Windows.Forms.Label labelLanguage;
 		private System.ComponentModel.IContainer components;
 		private System.Windows.Forms.Button buttonSelectFile;
 		private System.Windows.Forms.Label labelUniqueID;
@@ -89,7 +86,6 @@ namespace MyGeneration
         private ToolStripButton toolStripButtonSave;
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripButton toolStripButtonProperties;
-        private ToolStripButton toolStripButtonConsole;
         private ToolStripSeparator toolStripSeparator2;
         private ToolStripButton toolStripButtonExecute;
         private ToolStripSeparator toolStripSeparator3;
@@ -677,9 +673,6 @@ namespace MyGeneration
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TemplateEditor));
-            this.panelConsole = new System.Windows.Forms.Panel();
-            this.textBoxConsole = new System.Windows.Forms.TextBox();
-            this.splitterConsole = new NJFLib.Controls.CollapsibleSplitter();
             this.panelProperties = new System.Windows.Forms.Panel();
             this.buttonNewGuid = new System.Windows.Forms.Button();
             this.comboBoxType = new System.Windows.Forms.ComboBox();
@@ -725,7 +718,6 @@ namespace MyGeneration
             this.toolStripButtonSave = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonProperties = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButtonConsole = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonExecute = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
@@ -762,54 +754,12 @@ namespace MyGeneration
             this.reduceFontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
             this.copyOutputToClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.panelConsole.SuspendLayout();
             this.panelProperties.SuspendLayout();
             this.groupBoxScripting.SuspendLayout();
             this.tabControlTemplate.SuspendLayout();
             this.toolStripOptions.SuspendLayout();
             this.menuStripMain.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // panelConsole
-            // 
-            this.panelConsole.Controls.Add(this.textBoxConsole);
-            this.panelConsole.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelConsole.Location = new System.Drawing.Point(0, 601);
-            this.panelConsole.Name = "panelConsole";
-            this.panelConsole.Size = new System.Drawing.Size(900, 88);
-            this.panelConsole.TabIndex = 0;
-            this.panelConsole.Visible = false;
-            // 
-            // textBoxConsole
-            // 
-            this.textBoxConsole.BackColor = System.Drawing.Color.Black;
-            this.textBoxConsole.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxConsole.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxConsole.ForeColor = System.Drawing.Color.Lime;
-            this.textBoxConsole.Location = new System.Drawing.Point(0, 0);
-            this.textBoxConsole.MaxLength = 9999999;
-            this.textBoxConsole.Multiline = true;
-            this.textBoxConsole.Name = "textBoxConsole";
-            this.textBoxConsole.ReadOnly = true;
-            this.textBoxConsole.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxConsole.Size = new System.Drawing.Size(900, 88);
-            this.textBoxConsole.TabIndex = 0;
-            this.textBoxConsole.WordWrap = false;
-            // 
-            // splitterConsole
-            // 
-            this.splitterConsole.AnimationDelay = 20;
-            this.splitterConsole.AnimationStep = 20;
-            this.splitterConsole.BorderStyle3D = System.Windows.Forms.Border3DStyle.Flat;
-            this.splitterConsole.ControlToHide = this.panelConsole;
-            this.splitterConsole.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitterConsole.ExpandParentForm = false;
-            this.splitterConsole.Location = new System.Drawing.Point(0, 598);
-            this.splitterConsole.Name = "splitterConsole";
-            this.splitterConsole.TabIndex = 5;
-            this.splitterConsole.TabStop = false;
-            this.splitterConsole.UseAnimations = false;
-            this.splitterConsole.VisualStyle = NJFLib.Controls.VisualStyles.Mozilla;
             // 
             // panelProperties
             // 
@@ -844,7 +794,7 @@ namespace MyGeneration
             this.panelProperties.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelProperties.Location = new System.Drawing.Point(0, 0);
             this.panelProperties.Name = "panelProperties";
-            this.panelProperties.Size = new System.Drawing.Size(304, 598);
+            this.panelProperties.Size = new System.Drawing.Size(304, 689);
             this.panelProperties.TabIndex = 3;
             // 
             // buttonNewGuid
@@ -1165,7 +1115,7 @@ namespace MyGeneration
             this.tabControlTemplate.Location = new System.Drawing.Point(312, 0);
             this.tabControlTemplate.Name = "tabControlTemplate";
             this.tabControlTemplate.SelectedIndex = 0;
-            this.tabControlTemplate.Size = new System.Drawing.Size(588, 598);
+            this.tabControlTemplate.Size = new System.Drawing.Size(588, 689);
             this.tabControlTemplate.TabIndex = 2;
             this.tabControlTemplate.SelectedIndexChanged += new System.EventHandler(this.tabControlTemplate_SelectedIndexChanged);
             // 
@@ -1174,7 +1124,7 @@ namespace MyGeneration
             this.tabTemplateCode.BackColor = System.Drawing.Color.Transparent;
             this.tabTemplateCode.Location = new System.Drawing.Point(4, 22);
             this.tabTemplateCode.Name = "tabTemplateCode";
-            this.tabTemplateCode.Size = new System.Drawing.Size(580, 572);
+            this.tabTemplateCode.Size = new System.Drawing.Size(580, 663);
             this.tabTemplateCode.TabIndex = 0;
             this.tabTemplateCode.Text = "Template Code";
             this.tabTemplateCode.UseVisualStyleBackColor = true;
@@ -1184,7 +1134,7 @@ namespace MyGeneration
             this.tabInterfaceCode.BackColor = System.Drawing.Color.Transparent;
             this.tabInterfaceCode.Location = new System.Drawing.Point(4, 22);
             this.tabInterfaceCode.Name = "tabInterfaceCode";
-            this.tabInterfaceCode.Size = new System.Drawing.Size(580, 567);
+            this.tabInterfaceCode.Size = new System.Drawing.Size(580, 572);
             this.tabInterfaceCode.TabIndex = 1;
             this.tabInterfaceCode.Text = "Interface Code";
             this.tabInterfaceCode.UseVisualStyleBackColor = true;
@@ -1193,7 +1143,7 @@ namespace MyGeneration
             // 
             this.tabTemplateSource.Location = new System.Drawing.Point(4, 22);
             this.tabTemplateSource.Name = "tabTemplateSource";
-            this.tabTemplateSource.Size = new System.Drawing.Size(580, 567);
+            this.tabTemplateSource.Size = new System.Drawing.Size(580, 572);
             this.tabTemplateSource.TabIndex = 2;
             this.tabTemplateSource.Text = "Template Source";
             this.tabTemplateSource.UseVisualStyleBackColor = true;
@@ -1202,7 +1152,7 @@ namespace MyGeneration
             // 
             this.tabInterfaceSource.Location = new System.Drawing.Point(4, 22);
             this.tabInterfaceSource.Name = "tabInterfaceSource";
-            this.tabInterfaceSource.Size = new System.Drawing.Size(580, 567);
+            this.tabInterfaceSource.Size = new System.Drawing.Size(580, 572);
             this.tabInterfaceSource.TabIndex = 4;
             this.tabInterfaceSource.Text = "Interface Source";
             this.tabInterfaceSource.UseVisualStyleBackColor = true;
@@ -1211,7 +1161,7 @@ namespace MyGeneration
             // 
             this.tabOutput.Location = new System.Drawing.Point(4, 22);
             this.tabOutput.Name = "tabOutput";
-            this.tabOutput.Size = new System.Drawing.Size(580, 567);
+            this.tabOutput.Size = new System.Drawing.Size(580, 572);
             this.tabOutput.TabIndex = 3;
             this.tabOutput.Text = "Output";
             this.tabOutput.UseVisualStyleBackColor = true;
@@ -1222,7 +1172,6 @@ namespace MyGeneration
             this.toolStripButtonSave,
             this.toolStripSeparator1,
             this.toolStripButtonProperties,
-            this.toolStripButtonConsole,
             this.toolStripSeparator2,
             this.toolStripButtonExecute,
             this.toolStripSeparator3});
@@ -1263,22 +1212,10 @@ namespace MyGeneration
             this.toolStripButtonProperties.Text = "Template Properties";
             this.toolStripButtonProperties.Click += new System.EventHandler(this.toolStripButtonProperties_Click);
             // 
-            // toolStripButtonConsole
-            // 
-            this.toolStripButtonConsole.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonConsole.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonConsole.Image")));
-            this.toolStripButtonConsole.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonConsole.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.toolStripButtonConsole.MergeIndex = 5;
-            this.toolStripButtonConsole.Name = "toolStripButtonConsole";
-            this.toolStripButtonConsole.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButtonConsole.Text = "Console";
-            this.toolStripButtonConsole.Click += new System.EventHandler(this.toolStripButtonConsole_Click);
-            // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.toolStripSeparator2.MergeIndex = 6;
+            this.toolStripSeparator2.MergeIndex = 5;
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
@@ -1288,7 +1225,7 @@ namespace MyGeneration
             this.toolStripButtonExecute.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonExecute.Image")));
             this.toolStripButtonExecute.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonExecute.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.toolStripButtonExecute.MergeIndex = 7;
+            this.toolStripButtonExecute.MergeIndex = 6;
             this.toolStripButtonExecute.Name = "toolStripButtonExecute";
             this.toolStripButtonExecute.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonExecute.Text = "Execute";
@@ -1591,8 +1528,6 @@ namespace MyGeneration
             this.Controls.Add(this.tabControlTemplate);
             this.Controls.Add(this.splitterProperties);
             this.Controls.Add(this.panelProperties);
-            this.Controls.Add(this.splitterConsole);
-            this.Controls.Add(this.panelConsole);
             this.DockAreas = WeifenLuo.WinFormsUI.Docking.DockAreas.Document;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "TemplateEditor";
@@ -1602,8 +1537,6 @@ namespace MyGeneration
             this.Closing += new System.ComponentModel.CancelEventHandler(this.TemplateEditor_Closing);
             this.DockStateChanged += new System.EventHandler(this.TemplateEditor_DockStateChanged);
             this.Load += new System.EventHandler(this.TemplateEditor_Load);
-            this.panelConsole.ResumeLayout(false);
-            this.panelConsole.PerformLayout();
             this.panelProperties.ResumeLayout(false);
             this.panelProperties.PerformLayout();
             this.groupBoxScripting.ResumeLayout(false);
@@ -2369,11 +2302,6 @@ namespace MyGeneration
         private void toolStripButtonProperties_Click(object sender, EventArgs e)
         {
             this.splitterProperties.ToggleState();
-        }
-
-        private void toolStripButtonConsole_Click(object sender, EventArgs e)
-        {
-            this.splitterConsole.ToggleState();
         }
 
         private void toolStripButtonExecute_Click(object sender, EventArgs e)

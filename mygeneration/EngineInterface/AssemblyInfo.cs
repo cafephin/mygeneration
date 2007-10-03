@@ -11,7 +11,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("MyGeneration Development Community")]
 [assembly: AssemblyProduct("Zeus")]
-[assembly: AssemblyCopyright("Copyright © 2004-2007 MyGeneration Development Community. All Rights Reserved")]
+[assembly: AssemblyCopyright("Copyright © 2004-2007 Mike Griffin and Justin Greenwood. All Rights Reserved")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
 

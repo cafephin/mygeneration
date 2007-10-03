@@ -226,10 +226,10 @@ namespace MyGeneration
 			switch(product)
 			{
 				case 0:
-					txtProductInfo.Text = 
-						@"MyGeneration is written in C# and is a tool that combines database meta-data with the power of scripting to generate stored procedures, data objects, business objects, user interfaces, and more.
+					txtProductInfo.Text =
+                        @"MyGeneration is written in C# and is a tool that combines database meta-data with the power of scripting to generate stored procedures, data objects, business objects, user interfaces, and more.
 
-Copyright © 2004-2006 by Mike Griffin and Justin Greenwood
+Copyright © 2004-2007 by Mike Griffin and Justin Greenwood
 All Rights Reserved";
 					lnkURL.Text = @"http://www.mygenerationsoftware.com";
 					break;
@@ -238,7 +238,7 @@ All Rights Reserved";
 					txtProductInfo.Text =
                         @"MyMeta is C# COM object that serves up database meta-data with plug-in support.
 
-Copyright © 2004-2006 by Mike Griffin and Justin Greenwood
+Copyright © 2004-2007 by Mike Griffin and Justin Greenwood
 All Rights Reserved";
 					lnkURL.Text = @"http://www.mygenerationsoftware.com";
 					break;
@@ -247,7 +247,7 @@ All Rights Reserved";
 					txtProductInfo.Text =
                         @"The Zeus Parser contains the template parser and interpreter for MyGeneration.
 
-Copyright © 2004-2006 by Mike Griffin and Justin Greenwood
+Copyright © 2004-2007 by Mike Griffin and Justin Greenwood
 All Rights Reserved";
 					lnkURL.Text = @"http://www.mygenerationsoftware.com";
 					break;
@@ -256,7 +256,7 @@ All Rights Reserved";
 					txtProductInfo.Text =
                         @"The plug-in Interface contains interfaces allowing third parties to develop MyGeneration plug-ins.
 
-Copyright © 2004-2005 by Mike Griffin and Justin Greenwood
+Copyright © 2004-2007 by Mike Griffin and Justin Greenwood
 All Rights Reserved";
 					lnkURL.Text = @"http://www.mygenerationsoftware.com";
 					break;
@@ -266,7 +266,7 @@ All Rights Reserved";
 					txtProductInfo.Text = 
 						@"ScintillaNET is an encapsulation of Scintilla for use within the .NET framework
 
-The ScintillaNET bindings are Copyright © 2002-2003 by Garrett Serack";
+The ScintillaNET bindings are Copyright © 2002-2007 by Garrett Serack";
 					lnkURL.Text = @"http://sourceforge.net/projects/scide/";
 					break;
 
@@ -274,7 +274,7 @@ The ScintillaNET bindings are Copyright © 2002-2003 by Garrett Serack";
 					txtProductInfo.Text = 
 						@"Scintilla is a free source code editing component. It comes with complete source code and a license that permits use in any free project or commercial product.
 
-Copyright 1998-2002 by Neil Hodgson <neilh@scintilla.org>
+Copyright 1998-2007 by Neil Hodgson <neilh@scintilla.org>
 All Rights Reserved";
 					lnkURL.Text = @"http://www.scintilla.org";
 					break;
@@ -284,7 +284,7 @@ All Rights Reserved";
 						@"DockPanel suite is designed to achieve docking capability for MDI forms. It can be used to develop applications with Visual Studio .Net style user interface. DockPanel suite is a 100%-native .Net windows forms control, written in C#.
 
 
-Copyright © 2004 Weifen Luo, All Rights Reserved.";
+Copyright © 2007 Weifen Luo, All Rights Reserved.";
 
 					lnkURL.Text = @"http://sourceforge.net/projects/dockpanelsuite/";
 					break;
@@ -293,7 +293,7 @@ Copyright © 2004 Weifen Luo, All Rights Reserved.";
 					txtProductInfo.Text =
 						@"Npgsql is a .Net data provider for Postgresql. It allows any program developed for the .Net framework to access the Postgresql versions 7.x and 8.x. It is implemented in 100% C# code.
 
-Copyright © 2002-2004  The Npgsql Development Team";
+Copyright © 2002-2007  The Npgsql Development Team";
 
 
 					lnkURL.Text = @"http://pgfoundry.org/projects/npgsql";
@@ -318,7 +318,7 @@ The C# provider, the very minor C code modifications to SQLite, documentation an
 					txtProductInfo.Text = 
 						@"VistaDB is a true RDBMS specifically designed for .NET to give developers a robust, high-speed embedded database solution with minimal overhead.
 
-©1999-2004 Vista Software. All rights reserved.";
+©1999-2007 Vista Software. All rights reserved.";
 
 					lnkURL.Text = @"http://www.vistadb.net/";
 					break;

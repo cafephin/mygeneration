@@ -7,7 +7,8 @@ namespace Zeus
 	public interface IZeusCodeSegment
 	{
 		IZeusTemplate ITemplate { get; }
-		IZeusScriptingEngine ZeusScriptingEngine { get; }		bool IsEmpty { get; }
+		IZeusScriptingEngine ZeusScriptingEngine { get; }
+		bool IsEmpty { get; }
 		string SegmentType { get; }
 		string Engine { get; set; }
 		string Language { get; set; }

@@ -136,6 +136,7 @@
     <Compile Include="Data\SimpleTableTools.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ErrorHandling\ZeusRuntimeException.cs" />
     <Compile Include="ErrorHandling\ZeusDynamicException.cs">
       <SubType>Code</SubType>
     </Compile>

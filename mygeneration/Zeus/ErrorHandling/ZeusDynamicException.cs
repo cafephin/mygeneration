@@ -16,7 +16,8 @@ namespace Zeus.ErrorHandling
 	{
 		protected ZeusDynamicExceptionType _exceptionType = ZeusDynamicExceptionType.ScriptingEnginePluginInvalid;
 
-		public ZeusDynamicException(ZeusDynamicExceptionType type, string message) : base(message)
+        public ZeusDynamicException(ZeusDynamicExceptionType type, string message)
+            : base(null, message)
 		{
 			this._exceptionType = type;
 		}

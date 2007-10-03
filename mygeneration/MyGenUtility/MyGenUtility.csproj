@@ -159,6 +159,12 @@
       <DependentUpon>DefaultSettingsControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\EditorManager.cs" />
+    <Compile Include="Forms\Errors\ErrorDetailControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Errors\ErrorDetailControl.Designer.cs">
+      <DependentUpon>ErrorDetailControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Errors\ErrorsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -255,6 +261,10 @@
     <EmbeddedResource Include="Forms\DefaultSettings\DefaultSettingsControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>DefaultSettingsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Errors\ErrorDetailControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ErrorDetailControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Errors\ErrorsForm.resx">
       <DependentUpon>ErrorsForm.cs</DependentUpon>

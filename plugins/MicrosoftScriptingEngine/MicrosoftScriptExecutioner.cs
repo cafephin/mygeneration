@@ -81,6 +81,7 @@ namespace Zeus.MicrosoftScript
 			{
 				if (!HasErrors) 
 				{
+                    int step = 0;
                     try
                     {
                         MicrosoftScriptControl.Timeout = (_timeout == -1 ? MSScriptControl.ScriptControlConstants.NoTimeout : (_timeout * 1000));
@@ -97,7 +98,11 @@ namespace Zeus.MicrosoftScript
                                 MicrosoftScriptControl.AddObject(key, context.Objects[key], true);
                         }
 
+                        step = 1;
+
                         MicrosoftScriptControl.AddCode(segment.Code);
+                        
+                        step = 2;
 
                         object[] paramList = new object[0];
 
@@ -111,6 +116,7 @@ namespace Zeus.MicrosoftScript
                     catch (System.Runtime.InteropServices.COMException)
                     {
                         MicrosoftScriptError error = new MicrosoftScriptError(MicrosoftScriptControl.Error, context);
+                        if (step < 2) error.IsRuntime = false;
                         this.AddError(error);
                     }
                     catch (Exception ex)
@@ -122,6 +128,7 @@ namespace Zeus.MicrosoftScript
                         else
                         {
                             MicrosoftScriptError error = new MicrosoftScriptError(MicrosoftScriptControl.Error, context);
+                            if (step < 2) error.IsRuntime = false;
                             this.AddError(error);
                         }
                     }
@@ -136,8 +143,9 @@ namespace Zeus.MicrosoftScript
 			// If the segment isn't empty, execute it
 			if (!segment.IsEmpty) 
 			{
-				if (!HasErrors) 
-				{
+				if (!HasErrors)
+                {
+                    int step = 0;
 					try 
 					{
 						if (context.ExecutionDepth > 1) 
@@ -163,8 +171,10 @@ namespace Zeus.MicrosoftScript
 						string entryCode = this.ScriptingEntryCall(segment.Language) as String;
 						string entryCall = BODY_ENTRY_NAME;
 
+                        step = 1;
 						MicrosoftScriptControl.AddCode(segment.Code);
 						MicrosoftScriptControl.AddCode(entryCode);
+                        step = 2;
 
 						object[] paramList = new object[0];
 			
@@ -173,6 +183,7 @@ namespace Zeus.MicrosoftScript
 					catch (System.Runtime.InteropServices.COMException)
 					{
 						MicrosoftScriptError error = new MicrosoftScriptError(MicrosoftScriptControl.Error, context);
+                        if (step < 2) error.IsRuntime = false;
 						this.AddError(error);
 					}
                     catch (Exception ex)
@@ -184,6 +195,7 @@ namespace Zeus.MicrosoftScript
                         else
                         {
                             MicrosoftScriptError error = new MicrosoftScriptError(MicrosoftScriptControl.Error, context);
+                            if (step < 2) error.IsRuntime = false;
                             this.AddError(error);
                         }
                     }

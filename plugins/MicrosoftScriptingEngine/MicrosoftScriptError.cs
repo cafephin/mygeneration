@@ -15,8 +15,9 @@ namespace Zeus.MicrosoftScript
 		private int _column;
 		private string _message;
 		private string _description;
-		private string _stackTrace;
+        private string _stackTrace;
         private bool _isWarning = false;
+        private bool _isRuntime = true;
 
 		public MicrosoftScriptError(MSScriptControl.Error error, IZeusContext context)
 		{
@@ -40,6 +41,7 @@ namespace Zeus.MicrosoftScript
 		public string Description { get { return _description; } }
         public string StackTrace { get { return _stackTrace; } }
         public bool IsWarning { get { return _isWarning; } }
+        public bool IsRuntime { get { return _isRuntime; } set { _isRuntime = value; } }
         public Exception Exception { get { return null; } }
 	}
 }

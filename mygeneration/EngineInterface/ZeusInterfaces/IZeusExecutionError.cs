@@ -11,8 +11,8 @@ namespace Zeus
 		int Column { get; }
 		string Message { get; }
 		string Description { get; }
-		string StackTrace { get; }
+        string StackTrace { get; }
         bool IsWarning { get; }
-        Exception Exception { get; }
+        bool IsRuntime { get; }
 	}
 }

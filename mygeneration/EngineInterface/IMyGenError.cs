@@ -21,9 +21,11 @@ namespace MyGeneration
         string UniqueIdentifier { get; }
         MyGenErrorClass Class { get; }
         bool IsWarning { get; }
+        bool IsRuntime { get; }
+        bool IsTemplateCodeSegment { get; }
         Guid ErrorGuid { get; }
         string ErrorNumber { get; }
-        string Type { get; }
+        string ErrorType { get; }
         string SourceFile { get; }
         string SourceLine { get; }
         int LineNumber { get; }

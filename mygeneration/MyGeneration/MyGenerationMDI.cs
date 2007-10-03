@@ -34,11 +34,10 @@ namespace MyGeneration
         private const string URL_HOMEPAGE = "http://www.mygenerationsoftware.com/home/";
         private const string URL_DOCUMENTATION = "http://www.mygenerationsoftware.com/Documentation.aspx";
         private const string URL_LATESTVERSION = "http://www.mygenerationsoftware.com/LatestVersion";
-        private const string URL_SOURCEFORGE_DOWNLOAD = "http://sourceforge.net/projects/mygeneration";
+        private const string URL_SOURCEFORGE_DOWNLOAD = "http://sourceforge.net/project/showfiles.php?group_id=198893";
 
         private static ConfigFile configFile;
         private ScintillaConfigureDelegate configureDelegate;
-
         
         private FindForm findDialog = new FindForm();
         private ReplaceForm replaceDialog = new ReplaceForm();
@@ -582,7 +581,7 @@ namespace MyGeneration
 
         private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            StartVersionCheck();
         }
         #endregion
 
@@ -929,7 +928,7 @@ namespace MyGeneration
                             DownloadLatestVersion();
                         }
                     }
-                    else if (newVersionObject > currentVersionObject)
+                    else if (newVersionObject < currentVersionObject)
                     {
                         DialogResult result = MessageBox.Show(this, 
                             @"You are running an currently unreleased build. Do you want to check the SourceForge page for updates now?", 
@@ -950,7 +949,7 @@ namespace MyGeneration
 
         private void DownloadLatestVersion()
         {
-            Zeus.WindowsTools.LaunchBrowser(URL_LATESTVERSION, ProcessWindowStyle.Minimized, true);
+            Zeus.WindowsTools.LaunchBrowser(URL_LATESTVERSION, System.Diagnostics.ProcessWindowStyle.Minimized, true);
         }
         #endregion
 
