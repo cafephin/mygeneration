@@ -14,5 +14,17 @@ namespace MyGeneration.Forms
         {
             InitializeComponent();
         }
+
+        public void Initialize()
+        {
+        }
+
+        public string TextContent
+        {
+            get
+            {
+                return string.Empty;
+            }
+        }
     }
 }

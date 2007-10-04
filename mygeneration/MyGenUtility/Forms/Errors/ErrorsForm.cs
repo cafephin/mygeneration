@@ -40,6 +40,12 @@ namespace MyGeneration.Forms
                 this.listView1.Items.Add(item);
             }
             Application.DoEvents();
+            if (this.IsHidden)
+            {
+                this.Show(this._mdi.DockPanel);
+                this.VisibleState = DockState.DockBottomAutoHide;
+            }
+
             this.Activate();
             this.Refresh();
         }

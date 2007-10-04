@@ -1134,7 +1134,7 @@ namespace MyGeneration
             this.tabInterfaceCode.BackColor = System.Drawing.Color.Transparent;
             this.tabInterfaceCode.Location = new System.Drawing.Point(4, 22);
             this.tabInterfaceCode.Name = "tabInterfaceCode";
-            this.tabInterfaceCode.Size = new System.Drawing.Size(580, 572);
+            this.tabInterfaceCode.Size = new System.Drawing.Size(580, 663);
             this.tabInterfaceCode.TabIndex = 1;
             this.tabInterfaceCode.Text = "Interface Code";
             this.tabInterfaceCode.UseVisualStyleBackColor = true;
@@ -1143,7 +1143,7 @@ namespace MyGeneration
             // 
             this.tabTemplateSource.Location = new System.Drawing.Point(4, 22);
             this.tabTemplateSource.Name = "tabTemplateSource";
-            this.tabTemplateSource.Size = new System.Drawing.Size(580, 572);
+            this.tabTemplateSource.Size = new System.Drawing.Size(580, 663);
             this.tabTemplateSource.TabIndex = 2;
             this.tabTemplateSource.Text = "Template Source";
             this.tabTemplateSource.UseVisualStyleBackColor = true;
@@ -1152,7 +1152,7 @@ namespace MyGeneration
             // 
             this.tabInterfaceSource.Location = new System.Drawing.Point(4, 22);
             this.tabInterfaceSource.Name = "tabInterfaceSource";
-            this.tabInterfaceSource.Size = new System.Drawing.Size(580, 572);
+            this.tabInterfaceSource.Size = new System.Drawing.Size(580, 663);
             this.tabInterfaceSource.TabIndex = 4;
             this.tabInterfaceSource.Text = "Interface Source";
             this.tabInterfaceSource.UseVisualStyleBackColor = true;
@@ -1161,7 +1161,7 @@ namespace MyGeneration
             // 
             this.tabOutput.Location = new System.Drawing.Point(4, 22);
             this.tabOutput.Name = "tabOutput";
-            this.tabOutput.Size = new System.Drawing.Size(580, 572);
+            this.tabOutput.Size = new System.Drawing.Size(580, 663);
             this.tabOutput.TabIndex = 3;
             this.tabOutput.Text = "Output";
             this.tabOutput.UseVisualStyleBackColor = true;
@@ -1234,7 +1234,7 @@ namespace MyGeneration
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.toolStripSeparator3.MergeIndex = 8;
+            this.toolStripSeparator3.MergeIndex = 7;
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
             // 
@@ -1523,8 +1523,8 @@ namespace MyGeneration
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.ClientSize = new System.Drawing.Size(900, 689);
-            this.Controls.Add(this.menuStripMain);
             this.Controls.Add(this.toolStripOptions);
+            this.Controls.Add(this.menuStripMain);
             this.Controls.Add(this.tabControlTemplate);
             this.Controls.Add(this.splitterProperties);
             this.Controls.Add(this.panelProperties);
