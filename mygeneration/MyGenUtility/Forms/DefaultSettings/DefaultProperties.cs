@@ -42,8 +42,14 @@ namespace MyGeneration
 			InitializeComponent();
 
             this.mdi = mdi;
+            this.defaultSettingsControl.ShowOLEDBDialog = new ShowOleDbDialogHandler(ShowOLEDBDialog);
             this.defaultSettingsControl.Initialize();
 		}
+
+        public string ShowOLEDBDialog(string cs)
+        {
+            return mdi.PerformMdiFuntion(this, "ShowOLEDBDialog", cs) as String; 
+        }
 
 		/// <summary>
 		/// Clean up any resources being used.

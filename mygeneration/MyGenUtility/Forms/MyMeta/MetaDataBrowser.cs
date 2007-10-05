@@ -9,7 +9,6 @@ using System.ComponentModel;
 using System.Windows.Forms;
 
 using ADODB;
-using MSDASC;
 
 using WeifenLuo.WinFormsUI.Docking;
 
@@ -247,35 +246,6 @@ namespace MyGeneration
 			}
 			
 			if (doRefresh) this.Setup(settings);
-		}
-
-		private void OpenDataLinkDialog(string connection, dbDriver driver, string caption)
-		{
-			DataLinksClass dl = new MSDASC.DataLinksClass();
-
-			ADODB.Connection conn = new ADODB.ConnectionClass();
-			conn.ConnectionString = connection;
-
-			object objCn = (object) conn;
-
-			//	dl.PromptNew();
-			if(dl.PromptEdit(ref objCn))
-			{				
-				this.Text = "MyMeta Browser " + caption;
-
-				string error = "";
-				try
-				{
-					myMeta = new dbRoot();
-                    myMeta.Connect(driver, conn.ConnectionString);
-				}
-				catch(Exception ex)
-				{
-					error = ex.Message;
-				}
-
-				this.InitializeTree(myMeta, error);
-			}
 		}
 
 		private void OpenUserData()

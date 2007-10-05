@@ -19,6 +19,7 @@ namespace MyGeneration
         private DefaultSettings settings;
         private System.Drawing.Color defaultOleDbButtonColor;
         private DataTable driversTable;
+        public ShowOleDbDialogHandler ShowOLEDBDialog;
 
         public DefaultSettingsControl()
         {
@@ -422,6 +423,8 @@ namespace MyGeneration
 
                 driver = driver.ToUpper();
                 InternalDriver drv = InternalDriver.Get(driver);
+                if (ShowOLEDBDialog != null)
+                    drv.ShowOLEDBDialog = new ShowOleDbDialogHandler(ShowOLEDBDialog);
                 if (drv != null)
                 {
                     if (string.Empty == connstr)

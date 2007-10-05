@@ -5,10 +5,10 @@ using System.Data;
 using System.Windows.Forms;
 
 using ADODB;
-using MSDASC;
 
 namespace MyMeta
 {
+    public delegate string ShowOleDbDialogHandler(string connstring);
     public class InternalDriver
     {
         internal InternalDriver(Type factory, string connString, bool isOleDB)
@@ -18,6 +18,13 @@ namespace MyMeta
             this.ConnectString = connString;
         }
 
+        public ShowOleDbDialogHandler ShowOLEDBDialog;
+
+        public string OnShowOLEDBDialog(string connstring)
+        {
+            if (ShowOLEDBDialog != null) return ShowOLEDBDialog(connstring);
+            return connstring;
+        }
 
         #region driver properties
         private bool isOleDB;
@@ -87,24 +94,7 @@ namespace MyMeta
         public virtual string BrowseConnectionString(string connstr)
         {
             if (this.IsOleDB)
-                return BrowseOleDbConnectionString(connstr);
-            return null;
-        }
-
-        protected string BrowseOleDbConnectionString(string connstr)
-        {
-            DataLinksClass dl = new MSDASC.DataLinksClass();
-
-            ADODB.Connection conn = new ADODB.ConnectionClass();
-            conn.ConnectionString = connstr;
-
-            object objCn = (object)conn;
-
-            //	dl.PromptNew();
-            if (dl.PromptEdit(ref objCn))
-            {
-                return conn.ConnectionString;
-            }
+                return OnShowOLEDBDialog(connstr);
             return null;
         }
 

@@ -168,6 +168,23 @@ namespace MyGeneration
 
                 this.OptionsDockContent.Activate();
             }
+            /*
+            */
+            string connstr = "";
+            MSDASC.DataLinksClass dl = new MSDASC.DataLinksClass();
+
+            ADODB.Connection conn = new ADODB.ConnectionClass();
+            conn.ConnectionString = connstr;
+
+            object objCn = (object)conn;
+
+            	dl.PromptNew();
+            //if (dl.PromptEdit(ref objCn))
+            //{
+             //   return conn.ConnectionString;
+            //}
+            //return null;
+             /**/
         }
 
         private void PickFiles()
@@ -953,6 +970,26 @@ namespace MyGeneration
         }
         #endregion
 
+        #region Show OLEDBDialog Dialog
+
+        protected string BrowseOleDbConnectionString(string connstr)
+        {
+            MSDASC.DataLinksClass dl = new MSDASC.DataLinksClass();
+
+            ADODB.Connection conn = new ADODB.ConnectionClass();
+            conn.ConnectionString = connstr;
+
+            object objCn = (object)conn;
+
+            if (dl.PromptEdit(ref objCn))
+            {
+                return conn.ConnectionString;
+            }
+
+            return null;
+        }
+        #endregion
+
         #region IMyGenerationMDI Members
 
         public FindForm FindDialog
@@ -1024,6 +1061,16 @@ namespace MyGeneration
                     contentItem.ProcessAlert(sender, command, args);
                 }
             }
+        }
+
+        public object PerformMdiFuntion(IMyGenContent sender, string function, params object[] args)
+        {
+            if (function.Equals("showoledbdialog", StringComparison.CurrentCultureIgnoreCase) &&
+                args.Length == 1)
+            {
+                return BrowseOleDbConnectionString(args[0].ToString());
+            }
+            return null;
         }
 
         public IMyGenConsole Console
