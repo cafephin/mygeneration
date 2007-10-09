@@ -10,6 +10,7 @@ using System.Data.OleDb;
 using System.Reflection;
 using System.Windows.Forms;
 using Dl3bak.Data.Xsd3b.Plugin;
+using System.IO;
 
 namespace MyMeta.Plugins
 {
@@ -88,7 +89,15 @@ perspective: with the Xsd3b plugin you can use MyGeneration without the need to 
 
         Uri IMyMetaPlugin.ProviderAuthorUri
         {
-            get { return new Uri(@"http://www.qsl.net/dl3bak/"); }
+            get
+            {
+                string binDir = Path.GetDirectoryName(this.GetType().Assembly.Location);
+                string[] fileNames = Directory.GetFiles(binDir, "*xsd3b*.chm");
+                if (fileNames.Length > 0)
+                    return new Uri(fileNames[0]);
+
+                return new Uri(@"http://www.qsl.net/dl3bak/");
+            }
         }
 
         bool IMyMetaPlugin.StripTrailingNulls
@@ -758,12 +767,14 @@ perspective: with the Xsd3b plugin you can use MyGeneration without the need to 
                 dlg.SupportMultiDottedExtensions = true;
 
             }
-            dlg.FileName = MyConnection.ConnectionString;
+            PlugInSupport.SetSelection(dlg, MyConnection.ConnectionString);
+            // dlg.FileName = MyConnection.ConnectionString;
             // dlg.FilterIndex = filterIndexLoad + DLG_INDEX_OFFSET;
 
             if (DialogResult.OK == dlg.ShowDialog())
             {
-                return dlg.FileName;
+                return PlugInSupport.GetConnectionString(dlg);
+                // return dlg.FileName;
             }
 
             return null;
