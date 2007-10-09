@@ -100,8 +100,9 @@ namespace MyMeta
             PostgreSQL8.ClassFactory.Register();
             Sql.ClassFactory.Register();
             SQLite.ClassFactory.Register();
+#if !IGNORE_VISTA
             VistaDB.ClassFactory.Register();
-
+#endif
 			Reset();
 		}
 
@@ -1358,8 +1359,9 @@ namespace MyMeta
         public const string PostgreSQL8 = "POSTGRESQL8";
         public const string SQLite = "SQLITE";
         public const string SQL = "SQL";
+#if !IGNORE_VISTA
         public const string VistaDB = "VISTADB";
-
+#endif
         public static dbDriver GetDbDriverFromName(string name)
         {
             switch (name)
@@ -1390,8 +1392,10 @@ namespace MyMeta
                     return dbDriver.Interbase;
                 case MyMetaDrivers.SQLite:
                     return dbDriver.SQLite;
+#if !IGNORE_VISTA
                 case MyMetaDrivers.VistaDB:
                     return dbDriver.VistaDB;
+#endif
                 case MyMetaDrivers.Advantage:
                     return dbDriver.Advantage;
                 case MyMetaDrivers.None:

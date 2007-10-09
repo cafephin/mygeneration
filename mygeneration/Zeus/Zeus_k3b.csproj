@@ -146,6 +146,7 @@
     <Compile Include="ErrorHandling\ZeusParseException.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ErrorHandling\ZeusRuntimeException.cs" />
     <Compile Include="Legacy\LegacyTemplateParser.cs">
       <SubType>Code</SubType>
     </Compile>

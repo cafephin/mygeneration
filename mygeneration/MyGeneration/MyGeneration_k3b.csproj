@@ -78,6 +78,7 @@
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="adodb, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -114,6 +115,10 @@
     <ProjectReference Include="..\MyGenUtility\MyGenUtility_k3b.csproj">
       <Name>MyGenUtility_k3b</Name>
       <Project>{A1D6D035-420C-40A3-9598-9E34F11FB1AA}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Zeus\Zeus_k3b.csproj">
+      <Project>{CE8A697D-D45C-4E60-838D-E36980227543}</Project>
+      <Name>Zeus_k3b</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -200,6 +205,14 @@
     <Content Include="Settings\Languages.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <COMReference Include="MSDASC">
+      <Guid>{2206CEB0-19C1-11D1-89E0-00C04FD7A829}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>    
     <WebReferenceUrl Include="http://www.mygenerationsoftware.com/WebServices/VersionInfo.asmx">
       <RelPath>Web References\com.mygenerationsoftware.www\</RelPath>
       <UrlBehavior>Static</UrlBehavior>

@@ -124,14 +124,6 @@
       <Project>{CE8A697D-D45C-4E60-838D-E36980227543}</Project>
       <Name>Zeus_k3b</Name>
     </ProjectReference>
-    <COMReference Include="MSDASC">
-      <Guid>{2206CEB0-19C1-11D1-89E0-00C04FD7A829}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-    </COMReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs">
@@ -166,6 +158,15 @@
       <DependentUpon>DefaultSettingsControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\EditorManager.cs" />
+    <Compile Include="Forms\Errors\ErrorDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Errors\ErrorDetailControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Errors\ErrorDetailControl.Designer.cs">
+      <DependentUpon>ErrorDetailControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Errors\ErrorsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -207,9 +208,6 @@
     <Compile Include="Forms\ProjectEditor\AddEditSavedObject.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ProjectEditor\AddEditSavedObjectEx.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Forms\ProjectEditor\ProjectBrowser.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -238,6 +236,7 @@
     <Compile Include="Forms\TemplateEditor\ZeusScintillaControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="MyGenError.cs" />
     <Compile Include="Properties\Resources.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -259,6 +258,14 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\DefaultSettings\DefaultSettingsControl.resx">
       <DependentUpon>DefaultSettingsControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Errors\ErrorDetail.resx">
+      <DependentUpon>ErrorDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Errors\ErrorDetailControl.resx">
+      <DependentUpon>ErrorDetailControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Errors\Errors.resx">
@@ -310,10 +317,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProjectEditor\AddEditSavedObject.resx">
       <DependentUpon>AddEditSavedObject.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ProjectEditor\AddEditSavedObjectEx.resx">
-      <DependentUpon>AddEditSavedObjectEx.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProjectEditor\ProjectBrowser.resx">
