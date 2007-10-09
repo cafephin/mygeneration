@@ -41,19 +41,19 @@
   <ItemGroup>
     <Reference Include="Dl3bak.Xsd3b, Version=2.1.0.5, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\Dl3bak.Xsd3b.dll</HintPath>
+      <HintPath>..\..\mygeneration\MyGeneration\PluginResources\Dl3bak.Xsd3b.dll</HintPath>
     </Reference>
     <Reference Include="Dl3bak.Xsd3b.Uml14Xmi12Import, Version=2.1.0.8, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\Dl3bak.Xsd3b.Uml14Xmi12Import.dll</HintPath>
+      <HintPath>..\..\mygeneration\MyGeneration\PluginResources\Dl3bak.Xsd3b.Uml14Xmi12Import.dll</HintPath>
     </Reference>
     <Reference Include="Dl3bak.Xsd3b.Xsd, Version=2.1.0.5, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\Dl3bak.Xsd3b.Xsd.dll</HintPath>
+      <HintPath>..\..\mygeneration\MyGeneration\PluginResources\Dl3bak.Xsd3b.Xsd.dll</HintPath>
     </Reference>
     <Reference Include="Dl3bak.Xsd3b.Xslt, Version=2.1.0.8, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\Dl3bak.Xsd3b.Xslt.dll</HintPath>
+      <HintPath>..\..\mygeneration\MyGeneration\PluginResources\Dl3bak.Xsd3b.Xslt.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
