@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Scintilla.Forms;
 using Scintilla;
+using Zeus;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace MyGeneration
@@ -16,6 +17,7 @@ namespace MyGeneration
         FindForm FindDialog { get; }
         ReplaceForm ReplaceDialog { get; }
         ScintillaConfigureDelegate ConfigureDelegate { get; }
+        IZeusController ZeusController { get; }
         DockPanel DockPanel { get; }
         void SendAlert(IMyGenContent sender, string command, params object[] args);
         object PerformMdiFuntion(IMyGenContent sender, string function, params object[] args);

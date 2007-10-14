@@ -278,7 +278,7 @@ namespace Zeus
 |-----------------------------------------------------------------------
 | Project switches
 |-----------------------------------------------------------------------
-| -p <projectpath>                     | generate a template
+| -p <projectpath>                     | generate an entire project
 | -m <modulename>                      | regenerate a specific module
 |-----------------------------------------------------------------------
 | Template switches

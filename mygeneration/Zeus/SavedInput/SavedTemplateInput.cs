@@ -10,7 +10,7 @@ namespace Zeus
 	/// <summary>
 	/// Summary description for SavedTemplateInput.
 	/// </summary>
-	public class SavedTemplateInput
+	public class SavedTemplateInput : IZeusSavedTemplateInput
 	{
 		private string _savedObjectName;
 		private string _templatePath;
@@ -71,6 +71,18 @@ namespace Zeus
 				_inputItems = value;
 			}
 		}
+
+        public IDictionary InputItemsI
+        {
+            get
+            {
+                return this.InputItems;
+            }
+            set
+            {
+                this.InputItems = value as InputItemCollection;
+            }
+        }
 
 		#region Xml Related Methods
 		public void BuildXML(XmlTextWriter xml) 
@@ -145,13 +157,20 @@ namespace Zeus
 			context.Log = log;
 
 			template.Execute(context, timeout, true);
-		}
+        }
 
-		public SavedTemplateInput Copy() 
-		{
-			SavedTemplateInput copy = new SavedTemplateInput("Copy of " + this.SavedObjectName, this.TemplateUniqueID, this.TemplatePath);
-			copy.InputItems = this.InputItems.Copy();
-			return copy;
-		}
+        public SavedTemplateInput Copy()
+        {
+            SavedTemplateInput copy = new SavedTemplateInput("Copy of " + this.SavedObjectName, this.TemplateUniqueID, this.TemplatePath);
+            copy.InputItems = this.InputItems.Copy();
+            return copy;
+        }
+
+        public IZeusSavedTemplateInput CopyI()
+        {
+            SavedTemplateInput copy = new SavedTemplateInput("Copy of " + this.SavedObjectName, this.TemplateUniqueID, this.TemplatePath);
+            copy.InputItems = this.InputItems.Copy();
+            return copy;
+        }
 	}
 }

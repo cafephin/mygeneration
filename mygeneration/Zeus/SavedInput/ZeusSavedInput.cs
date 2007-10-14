@@ -11,7 +11,7 @@ namespace Zeus
 	/// <summary>
 	/// Summary description for ZeusSavedInput.
 	/// </summary>
-	public class ZeusSavedInput
+    public class ZeusSavedInput : IZeusSavedInput
 	{
 		private string _path = "default.zinp";
 		private SavedTemplateInput _input = new SavedTemplateInput();
@@ -27,12 +27,17 @@ namespace Zeus
 		{
 			get { return _path; }
 			set { _path = value; }
-		}
+        }
 
-		public SavedTemplateInput InputData
-		{
-			get { return _input; } 
-		}
+        public SavedTemplateInput InputData
+        {
+            get { return _input; }
+        }
+
+        public IZeusSavedTemplateInput InputDataI
+        {
+            get { return InputData; }
+        }
 
 		public bool Load() 
 		{

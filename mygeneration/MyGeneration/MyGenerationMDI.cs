@@ -214,6 +214,34 @@ namespace MyGeneration
             }
         }
 
+        public void OpenDialog(params string[] keys)
+        {
+            foreach (string key in keys)
+            {
+                if (dynamicContentWindows.ContainsKey(key))
+                {
+                    IMyGenContent mygenContent = dynamicContentWindows[key];
+                    if (mygenContent.DockContent.Visible)
+                    {
+                        mygenContent.DockContent.Hide();
+                    }
+                    else
+                    {
+                        mygenContent.DockContent.Show(dockPanel);
+                    }
+                }
+                else
+                {
+                    IMyGenContent mygenContent = DialogManager.CreateContent(this, key);
+                    if (mygenContent != null)
+                    {
+                        dynamicContentWindows[key] = mygenContent;
+                        mygenContent.DockContent.Show(dockPanel);
+                    }
+                }
+            }
+        }
+
         public void CreateDocument(params string[] fileTypes)
         {
             foreach (string fileType in fileTypes)
@@ -974,6 +1002,11 @@ namespace MyGeneration
         #endregion
 
         #region IMyGenerationMDI Members
+
+        public IZeusController ZeusController
+        {
+            get { return Zeus.ZeusController.Instance; }
+        }
 
         public FindForm FindDialog
         {

@@ -100,6 +100,8 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="IDialogManager.cs" />
+    <Compile Include="IMyGenDialog.cs" />
     <Compile Include="IMyGenError.cs" />
     <Compile Include="IMyGenErrorList.cs" />
     <Compile Include="IMyGenConsole.cs" />
@@ -112,6 +114,8 @@
     <Compile Include="ZeusConstants.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ZeusInterfaces\IZeusSavedTemplateInput.cs" />
+    <Compile Include="ZeusInterfaces\IZeusController.cs" />
     <Compile Include="ZeusInterfaces\ILog.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -154,6 +158,7 @@
     <Compile Include="ZeusInterfaces\IZeusOutput.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ZeusInterfaces\IZeusSavedInput.cs" />
     <Compile Include="ZeusInterfaces\IZeusScriptingEngine.cs">
       <SubType>Code</SubType>
     </Compile>
