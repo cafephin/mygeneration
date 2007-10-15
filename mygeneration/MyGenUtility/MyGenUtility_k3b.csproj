@@ -238,6 +238,7 @@
     </Compile>
     <Compile Include="MyGenError.cs" />
     <Compile Include="Properties\Resources.Designer.cs" />
+    <Compile Include="ZeusController.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Forms\AboutBox\AboutBox.resx">

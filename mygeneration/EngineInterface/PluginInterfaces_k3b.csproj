@@ -162,6 +162,11 @@
     <Compile Include="ZeusInterfaces\IZeusTemplateStub.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="IDialogManager.cs" />
+    <Compile Include="IMyGenDialog.cs" />
+    <Compile Include="ZeusInterfaces\IZeusSavedTemplateInput.cs" />
+    <Compile Include="ZeusInterfaces\IZeusController.cs" />
+    <Compile Include="ZeusInterfaces\IZeusSavedInput.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PluginInterfaces.snk" />
