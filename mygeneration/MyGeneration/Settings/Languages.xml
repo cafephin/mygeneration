@@ -112,6 +112,33 @@
 		<Type From="xml" To="System.String" />
 		<Type From="sql_variant" To="System.Object" />
 	</Language>
+	<Language From="SQL" To="VB60">
+		<Type From="bigint" To="Variant" />
+		<Type From="binary" To="Variant" />
+		<Type From="bit" To="Boolean" />
+		<Type From="char" To="String" />
+		<Type From="datetime" To="Date" />
+		<Type From="decimal" To="Variant" />
+		<Type From="float" To="Double" />
+		<Type From="image" To="Variant" />
+		<Type From="int" To="Long" />
+		<Type From="money" To="Currency" />
+		<Type From="nchar" To="String" />
+		<Type From="ntext" To="String" />
+		<Type From="numeric" To="Variant" />
+		<Type From="nvarchar" To="String" />
+		<Type From="real" To="Single" />
+		<Type From="smalldatetime" To="Date" />
+		<Type From="smallint" To="Integer" />
+		<Type From="smallmoney" To="Currency" />
+		<Type From="text" To="String" />
+		<Type From="timestamp" To="variant" />
+		<Type From="tinyint" To="Byte" />
+		<Type From="uniqueidentifier" To="Variant" />
+		<Type From="varbinary" To="Variant" />
+		<Type From="varchar" To="String" />
+		<Type From="sql_variant" To="Variant" />
+	</Language>
 	<Language From="SQLCE" To="C#">
 		<Type From="bigint" To="long" />
 		<Type From="binary" To="object" />
@@ -223,33 +250,6 @@
 		<Type From="varchar" To="System.String" />
 		<Type From="xml" To="System.String" />
 		<Type From="sql_variant" To="System.Object" />
-	</Language>
-	<Language From="SQL" To="VB60">
-		<Type From="bigint" To="Variant" />
-		<Type From="binary" To="Variant" />
-		<Type From="bit" To="Boolean" />
-		<Type From="char" To="String" />
-		<Type From="datetime" To="Date" />
-		<Type From="decimal" To="Variant" />
-		<Type From="float" To="Double" />
-		<Type From="image" To="Variant" />
-		<Type From="int" To="Long" />
-		<Type From="money" To="Currency" />
-		<Type From="nchar" To="String" />
-		<Type From="ntext" To="String" />
-		<Type From="numeric" To="Variant" />
-		<Type From="nvarchar" To="String" />
-		<Type From="real" To="Single" />
-		<Type From="smalldatetime" To="Date" />
-		<Type From="smallint" To="Integer" />
-		<Type From="smallmoney" To="Currency" />
-		<Type From="text" To="String" />
-		<Type From="timestamp" To="variant" />
-		<Type From="tinyint" To="Byte" />
-		<Type From="uniqueidentifier" To="Variant" />
-		<Type From="varbinary" To="Variant" />
-		<Type From="varchar" To="String" />
-		<Type From="sql_variant" To="Variant" />
 	</Language>
 	<Language From="ACCESS" To="C# System Types">
 		<Type From="Text" To="System.String" />
@@ -1919,5 +1919,144 @@
 		<Type From="varbinary" To="System.Object" />
 		<Type From="image" To="System.Object" />
 		<Type From="uniqueidentifier" To="System.Object" />
+	</Language>
+	<Language From="XSD3B" To="C#">
+		<Type From="bigint" To="long" />
+		<Type From="binary" To="object" />
+		<Type From="bit" To="bool" />
+		<Type From="char" To="string" />
+		<Type From="datetime" To="DateTime" />
+		<Type From="decimal" To="decimal" />
+		<Type From="float" To="double" />
+		<Type From="image" To="byte[]" />
+		<Type From="int" To="int" />
+		<Type From="money" To="decimal" />
+		<Type From="nchar" To="string" />
+		<Type From="ntext" To="string" />
+		<Type From="numeric" To="decimal" />
+		<Type From="nvarchar" To="string" />
+		<Type From="real" To="float" />
+		<Type From="smalldatetime" To="DateTime" />
+		<Type From="smallint" To="short" />
+		<Type From="smallmoney" To="decimal" />
+		<Type From="text" To="string" />
+		<Type From="timestamp" To="byte[]" />
+		<Type From="tinyint" To="byte" />
+		<Type From="uniqueidentifier" To="Guid" />
+		<Type From="varbinary" To="byte[]" />
+		<Type From="varchar" To="string" />
+		<Type From="xml" To="string" />
+		<Type From="sql_variant" To="object" />
+	</Language>
+	<Language From="XSD3B" To="C# System Types">
+		<Type From="bigint" To="System.Int64" />
+		<Type From="binary" To="System.Object" />
+		<Type From="bit" To="System.Boolean" />
+		<Type From="char" To="System.String" />
+		<Type From="datetime" To="System.DateTime" />
+		<Type From="decimal" To="System.Decimal" />
+		<Type From="float" To="System.Double" />
+		<Type From="image" To="System.Byte[]" />
+		<Type From="int" To="System.Int32" />
+		<Type From="money" To="System.Decimal" />
+		<Type From="nchar" To="System.String" />
+		<Type From="ntext" To="System.String" />
+		<Type From="numeric" To="System.Decimal" />
+		<Type From="nvarchar" To="System.String" />
+		<Type From="real" To="System.Single" />
+		<Type From="smalldatetime" To="System.DateTime" />
+		<Type From="smallint" To="System.Int16" />
+		<Type From="smallmoney" To="System.Decimal" />
+		<Type From="text" To="System.String" />
+		<Type From="timestamp" To="System.Byte[]" />
+		<Type From="tinyint" To="System.Byte" />
+		<Type From="uniqueidentifier" To="System.Guid" />
+		<Type From="varbinary" To="System.Byte[]" />
+		<Type From="varchar" To="System.String" />
+		<Type From="xml" To="System.String" />
+		<Type From="sql_variant" To="System.Object" />
+	</Language>
+	<Language From="XSD3B" To="VB.NET">
+		<Type From="bigint" To="Long" />
+		<Type From="binary" To="Object" />
+		<Type From="bit" To="Boolean" />
+		<Type From="char" To="String" />
+		<Type From="datetime" To="DateTime" />
+		<Type From="decimal" To="Decimal" />
+		<Type From="float" To="Double" />
+		<Type From="image" To="Byte()" />
+		<Type From="int" To="Integer" />
+		<Type From="money" To="Decimal" />
+		<Type From="nchar" To="String" />
+		<Type From="ntext" To="String" />
+		<Type From="numeric" To="Decimal" />
+		<Type From="nvarchar" To="String" />
+		<Type From="real" To="Single" />
+		<Type From="smalldatetime" To="DateTime" />
+		<Type From="smallint" To="Short" />
+		<Type From="smallmoney" To="Decimal" />
+		<Type From="text" To="String" />
+		<Type From="timestamp" To="Byte()" />
+		<Type From="tinyint" To="Byte" />
+		<Type From="uniqueidentifier" To="Guid" />
+		<Type From="varbinary" To="Byte()" />
+		<Type From="varchar" To="String" />
+		<Type From="xml" To="String" />
+		<Type From="sql_variant" To="Object" />
+	</Language>
+	<Language From="XSD3B" To="VB.NET System Types">
+		<Type From="bigint" To="System.Int64" />
+		<Type From="binary" To="System.Object" />
+		<Type From="bit" To="System.Boolean" />
+		<Type From="char" To="System.String" />
+		<Type From="datetime" To="System.DateTime" />
+		<Type From="decimal" To="System.Decimal" />
+		<Type From="float" To="System.Double" />
+		<Type From="image" To="System.Byte()" />
+		<Type From="int" To="System.Int32" />
+		<Type From="money" To="System.Decimal" />
+		<Type From="nchar" To="System.String" />
+		<Type From="ntext" To="System.String" />
+		<Type From="numeric" To="System.Decimal" />
+		<Type From="nvarchar" To="System.String" />
+		<Type From="real" To="System.Single" />
+		<Type From="smalldatetime" To="System.DateTime" />
+		<Type From="smallint" To="System.Int16" />
+		<Type From="smallmoney" To="System.Decimal" />
+		<Type From="text" To="System.String" />
+		<Type From="timestamp" To="System.Byte()" />
+		<Type From="tinyint" To="System.Byte" />
+		<Type From="uniqueidentifier" To="System.Guid" />
+		<Type From="varbinary" To="System.Byte()" />
+		<Type From="varchar" To="System.String" />
+		<Type From="xml" To="System.String" />
+		<Type From="sql_variant" To="System.Object" />
+	</Language>
+	<Language From="XSD3B" To="VB60">
+		<Type From="bigint" To="Variant" />
+		<Type From="binary" To="Variant" />
+		<Type From="bit" To="Boolean" />
+		<Type From="char" To="String" />
+		<Type From="datetime" To="Date" />
+		<Type From="decimal" To="Variant" />
+		<Type From="float" To="Double" />
+		<Type From="image" To="Variant" />
+		<Type From="int" To="Long" />
+		<Type From="money" To="Currency" />
+		<Type From="nchar" To="String" />
+		<Type From="ntext" To="String" />
+		<Type From="numeric" To="Variant" />
+		<Type From="nvarchar" To="String" />
+		<Type From="real" To="Single" />
+		<Type From="smalldatetime" To="Date" />
+		<Type From="smallint" To="Integer" />
+		<Type From="smallmoney" To="Currency" />
+		<Type From="text" To="String" />
+		<Type From="timestamp" To="variant" />
+		<Type From="tinyint" To="Byte" />
+		<Type From="uniqueidentifier" To="Variant" />
+		<Type From="varbinary" To="Variant" />
+		<Type From="varchar" To="String" />
+		<Type From="sql_variant" To="Variant" />
 	</Language>
 </Languages>

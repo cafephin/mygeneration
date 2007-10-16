@@ -70,8 +70,15 @@
     <Compile Include="Xsd3bProvider.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\mygeneration\MyGeneration\PluginResources\MyGenXsd3b.chm">
+      <Link>MyGenXsd3b.chm</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="templates\xsd3b\DatabaseReport.xsd3b.htm.xsl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="templates\xsd3b\ExampleOracle2.xdm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="templates\xsd3b\Mogwai_ERDesignerModel.xdm.xsd3b.xsl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

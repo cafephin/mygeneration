@@ -91,12 +91,11 @@ perspective: with the Xsd3b plugin you can use MyGeneration without the need to 
         {
             get
             {
-                string binDir = Path.GetDirectoryName(this.GetType().Assembly.Location);
-                string[] fileNames = Directory.GetFiles(binDir, "*xsd3b*.chm");
-                if (fileNames.Length > 0)
-                    return new Uri(fileNames[0]);
+                string name = getHelpFileUrl();
+                if (name == null)
+                    name = @"http://www.qsl.net/dl3bak/";
 
-                return new Uri(@"http://www.qsl.net/dl3bak/");
+                return new Uri(name);
             }
         }
 
@@ -112,7 +111,20 @@ perspective: with the Xsd3b plugin you can use MyGeneration without the need to 
 
         string IMyMetaPlugin.SampleConnectionString
         {
-            get { return @"C:\Test\Northwind.xsd3b"; }
+            get 
+            {
+                string binDir = Path.GetDirectoryName(this.GetType().Assembly.Location);
+                binDir = Path.Combine(Path.Combine(binDir, "Templates"), "xsd3b");
+                string[] fileNames = Directory.GetFiles(binDir, "ExampleOracle2.xdm");
+                if (fileNames.Length > 0)
+                    return fileNames[0];
+
+                fileNames = Directory.GetFiles(binDir, "Example*.*");
+                if (fileNames.Length > 0)
+                    return fileNames[0];
+
+                return @"C:\Test\Northwind.xsd3b"; 
+            }
         }
 
         IDbConnection IMyMetaPlugin.NewConnection
@@ -758,14 +770,25 @@ perspective: with the Xsd3b plugin you can use MyGeneration without the need to 
                 dlg.CheckFileExists = true;
                 dlg.CheckPathExists = true;
                 dlg.DereferenceLinks = true;
-                dlg.Filter = ""
+                if (null != getHelpFileUrl())
+                {
+                    dlg.HelpRequest += new EventHandler(onFileOpenHelprequest);
+                    dlg.ShowHelp = true;
+                }
+                string allDatamodellTypes = ""
                     + "Extendet Schema (*.xsd3b;*.xsd3b.xml)|*.xsd3b;*.xsd3b.xml|"
-                    + PlugInSupport.GetSupportedImportFileTypes()
+                    + PlugInSupport.GetSupportedImportFileTypes();
+                string dataModellExtensions = getSupportedFilter(allDatamodellTypes);
+                dlg.Filter = ""
+                    + allDatamodellTypes
+                    + "Datamodell ("
+                    + getShortFilter(dataModellExtensions)
+                    + ")|" + dataModellExtensions + "|"
                     + "All files (*.*)|*.*";
                 dlg.AddExtension = true;
                 dlg.ValidateNames = true;
                 dlg.SupportMultiDottedExtensions = true;
-
+                dlg.Title = "Xsd3b: Open Datamodell";
             }
             PlugInSupport.SetSelection(dlg, MyConnection.ConnectionString);
             // dlg.FileName = MyConnection.ConnectionString;
@@ -776,6 +799,42 @@ perspective: with the Xsd3b plugin you can use MyGeneration without the need to 
                 return PlugInSupport.GetConnectionString(dlg);
                 // return dlg.FileName;
             }
+
+            return null;
+        }
+
+        private string getShortFilter(string dataModellExtensions)
+        {
+            StringBuilder res = new StringBuilder();
+            string[] types = dataModellExtensions.Split(';');
+            foreach(string name in types)
+                if (!name.ToLower().EndsWith(".xml"))
+                    res.Append(name).Append(";");
+            res.Append("*.xml");
+            return res.ToString();
+        }
+
+        private string getSupportedFilter(string allDatamodellTypes)
+        {
+            string[] types = allDatamodellTypes.Split('|');
+            StringBuilder res = new StringBuilder(types[1]);
+            for (int i = 3; i < types.Length; i += 2)
+                res.Append(";").Append(types[i]);
+            return res.ToString();
+        }
+
+        void onFileOpenHelprequest(object sender, EventArgs e)
+        {
+            Help.ShowHelp(null, getHelpFileUrl(), HelpNavigator.Topic
+                , "Xsd3bOpenModellFileDialog.htm"); // "");
+        }
+
+        private string getHelpFileUrl()
+        {
+            string binDir = Path.GetDirectoryName(this.GetType().Assembly.Location);
+            string[] fileNames = Directory.GetFiles(binDir, "*xsd3b*.chm");
+            if (fileNames.Length > 0)
+                return fileNames[0];
 
             return null;
         }

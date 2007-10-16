@@ -847,4 +847,115 @@
 		<Type From="IMAGE" To="DBType.Binary" />
 		<Type From="UNIQUEIDENTIFIER" To="DBType.Binary" />
 	</DbTarget>
+	<DbTarget From="XSD3B" To="SqlClient">
+		<Type From="bigint" To="SqlDbType.BigInt" />
+		<Type From="binary" To="SqlDbType.Binary" />
+		<Type From="bit" To="SqlDbType.Bit" />
+		<Type From="char" To="SqlDbType.Char" />
+		<Type From="datetime" To="SqlDbType.DateTime" />
+		<Type From="decimal" To="SqlDbType.Decimal" />
+		<Type From="float" To="SqlDbType.Float" />
+		<Type From="image" To="SqlDbType.Image" />
+		<Type From="int" To="SqlDbType.Int" />
+		<Type From="money" To="SqlDbType.Money" />
+		<Type From="nchar" To="SqlDbType.NChar" />
+		<Type From="ntext" To="SqlDbType.NText" />
+		<Type From="numeric" To="SqlDbType.Decimal" />
+		<Type From="nvarchar" To="SqlDbType.NVarChar" />
+		<Type From="real" To="SqlDbType.Real" />
+		<Type From="smalldatetime" To="SqlDbType.SmallDateTime" />
+		<Type From="smallint" To="SqlDbType.SmallInt" />
+		<Type From="smallmoney" To="SqlDbType.SmallMoney" />
+		<Type From="text" To="SqlDbType.Text" />
+		<Type From="timestamp" To="SqlDbType.Timestamp" />
+		<Type From="tinyint" To="SqlDbType.TinyInt" />
+		<Type From="uniqueidentifier" To="SqlDbType.UniqueIdentifier" />
+		<Type From="varbinary" To="SqlDbType.VarBinary" />
+		<Type From="varchar" To="SqlDbType.VarChar" />
+		<Type From="xml" To="SqlDbType.Xml" />
+		<Type From="sql_variant" To="SqlDbType.Variant" />
+	</DbTarget>
+	<DbTarget From="XSD3B" To="OleDb">
+		<Type From="bigint" To="OleDbType.BigInt" />
+		<Type From="binary" To="OleDbType.Binary" />
+		<Type From="bit" To="OleDbType.Boolean" />
+		<Type From="char" To="OleDbType.Char" />
+		<Type From="datetime" To="OleDbType.DBTimeStamp" />
+		<Type From="decimal" To="OleDbType.Numeric" />
+		<Type From="float" To="OleDbType.Double" />
+		<Type From="image" To="OleDbType.LongVarBinary" />
+		<Type From="int" To="OleDbType.Integer" />
+		<Type From="money" To="OleDbType.Currency" />
+		<Type From="nchar" To="OleDbType.WChar" />
+		<Type From="ntext" To="OleDbType.LongVarWChar" />
+		<Type From="numeric" To="OleDbType.Numeric" />
+		<Type From="nvarchar" To="OleDbType.VarWChar" />
+		<Type From="real" To="OleDbType.Single" />
+		<Type From="smalldatetime" To="OleDbType.DBTimeStamp" />
+		<Type From="smallint" To="OleDbType.SmallInt" />
+		<Type From="smallmoney" To="OleDbType.Currency" />
+		<Type From="text" To="OleDbType.LongVarChar" />
+		<Type From="timestamp" To="OleDbType.DBTimeStamp" />
+		<Type From="tinyint" To="OleDbType.UnsignedTinyInt" />
+		<Type From="uniqueidentifier" To="OleDbType.Guid" />
+		<Type From="varbinary" To="OleDbType.VarBinary" />
+		<Type From="varchar" To="OleDbType.VarChar" />
+		<Type From="xml" To="OleDbType.Xml" />
+		<Type From="sql_variant" To="OleDbType.Variant" />
+	</DbTarget>
+	<DbTarget From="XSD3B" To="AllDbClient">
+		<Type From="bigint" To="AllDbType.Int64" />
+		<Type From="binary" To="AllDbType.Binary" />
+		<Type From="bit" To="AllDbType.Boolean" />
+		<Type From="char" To="AllDbType.AnsiStringFixedLength" />
+		<Type From="datetime" To="AllDbType.DateTime" />
+		<Type From="decimal" To="AllDbType.Decimal" />
+		<Type From="float" To="AllDbType.Double" />
+		<Type From="image" To="AllDbType.Binary" />
+		<Type From="int" To="AllDbType.Int32" />
+		<Type From="money" To="AllDbType.Currency" />
+		<Type From="nchar" To="AllDbType.StringFixedLength" />
+		<Type From="ntext" To="AllDbType.String" />
+		<Type From="numeric" To="AllDbType.Decimal" />
+		<Type From="nvarchar" To="AllDbType.String" />
+		<Type From="real" To="AllDbType.Single" />
+		<Type From="smalldatetime" To="AllDbType.DateTime" />
+		<Type From="smallint" To="AllDbType.Int16" />
+		<Type From="smallmoney" To="AllDbType.Currency" />
+		<Type From="text" To="AllDbType.AnsiString" />
+		<Type From="timestamp" To="AllDbType.Binary" />
+		<Type From="tinyint" To="AllDbType.Byte" />
+		<Type From="uniqueidentifier" To="AllDbType.Guid" />
+		<Type From="varbinary" To="AllDbType.Binary" />
+		<Type From="varchar" To="AllDbType.AnsiString" />
+		<Type From="sql_variant" To="AllDbType.Object" />
+	</DbTarget>
+	<DbTarget From="XSD3B" To="ADODB">
+		<Type From="bigint" To="adBigInt" />
+		<Type From="binary" To="adBinary" />
+		<Type From="bit" To="adBoolean" />
+		<Type From="char" To="adChar" />
+		<Type From="datetime" To="adDBTimeStamp" />
+		<Type From="decimal" To="adNumeric" />
+		<Type From="float" To="adDouble" />
+		<Type From="image" To="adLongVarBinary" />
+		<Type From="int" To="adInteger" />
+		<Type From="money" To="adCurrency" />
+		<Type From="nchar" To="adWChar" />
+		<Type From="ntext" To="adLongVarWChar" />
+		<Type From="numeric" To="adNumeric" />
+		<Type From="nvarchar" To="adVarWChar" />
+		<Type From="real" To="adSingle" />
+		<Type From="smalldatetime" To="adDBTimeStamp" />
+		<Type From="smallint" To="adSmallInt" />
+		<Type From="smallmoney" To="adCurrency" />
+		<Type From="text" To="adLongVarChar" />
+		<Type From="timestamp" To="adBinary" />
+		<Type From="tinyint" To="adUnsignedTinyInt" />
+		<Type From="uniqueidentifier" To="adGuid" />
+		<Type From="varbinary" To="adVarBinary" />
+		<Type From="varchar" To="adVarChar" />
+		<Type From="sql_variant" To="adVariant" />
+	</DbTarget>
+
 </DbTargets>

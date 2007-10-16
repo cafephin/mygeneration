@@ -87,6 +87,13 @@
     <None Include="templates\xsd3b\ToXsd3b.csgen">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="..\..\mygeneration\MyGeneration\PluginResources\MyGenXsd3b.chm">
+      <Link>MyGenXsd3b.chm</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="templates\xsd3b\ExampleOracle2.xdm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>    
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\mymeta\MyMeta.csproj">
