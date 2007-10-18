@@ -54,6 +54,7 @@ namespace MyGeneration
         private TemplateBrowser templateBrowser;
         private ConsoleForm consoleForm;
         private ErrorsForm errorsForm;
+        private ErrorDetail errorDetail;
         
         private string startupPath;
         private string[] startupFiles;
@@ -214,31 +215,21 @@ namespace MyGeneration
             }
         }
 
-        public void OpenDialog(params string[] keys)
+        public void ExecuteSimplePlugin(params string[] keys)
         {
-            foreach (string key in keys)
+            try
             {
-                if (dynamicContentWindows.ContainsKey(key))
+                foreach (string key in keys)
                 {
-                    IMyGenContent mygenContent = dynamicContentWindows[key];
-                    if (mygenContent.DockContent.Visible)
+                    if (PluginManager.SimplePluginManagers.ContainsKey(key))
                     {
-                        mygenContent.DockContent.Hide();
-                    }
-                    else
-                    {
-                        mygenContent.DockContent.Show(dockPanel);
+                        PluginManager.SimplePluginManagers[key].Execute(this);
                     }
                 }
-                else
-                {
-                    IMyGenContent mygenContent = DialogManager.CreateContent(this, key);
-                    if (mygenContent != null)
-                    {
-                        dynamicContentWindows[key] = mygenContent;
-                        mygenContent.DockContent.Show(dockPanel);
-                    }
-                }
+            }
+            catch (Exception ex)
+            {
+                this.ErrorsOccurred(ex);
             }
         }
 
@@ -529,10 +520,21 @@ namespace MyGeneration
         private void openContentDynamicToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ToolStripItem i = sender as ToolStripItem;
-            if (string.IsNullOrEmpty(i.Text)) 
-                this.OpenContent(i.ToolTipText);
-            else 
-                this.OpenContent(i.Text);
+            if (i.Tag == typeof(IContentManager))
+            {
+                if (string.IsNullOrEmpty(i.Text))
+                    this.OpenContent(i.ToolTipText);
+                else
+                    this.OpenContent(i.Text);
+            } 
+            else //if (i.Tag == typeof(ISimplePluginManager))
+            {
+                if (string.IsNullOrEmpty(i.Text))
+                    this.ExecuteSimplePlugin(i.ToolTipText);
+                else
+                    this.ExecuteSimplePlugin(i.Text);
+            }
+
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -757,6 +759,15 @@ namespace MyGeneration
                 if ((errorsForm != null) && errorsForm.IsDisposed) errorsForm = null;
                 if (errorsForm == null) errorsForm = new ErrorsForm(this);
                 return errorsForm;
+            }
+        }
+        public ErrorDetail ErrorDetailDockContent
+        {
+            get
+            {
+                if ((errorDetail != null) && errorDetail.IsDisposed) errorDetail = null;
+                if (errorDetail == null) errorDetail = new ErrorDetail(this);
+                return errorDetail;
             }
         }
         public DefaultProperties OptionsDockContent
@@ -1085,6 +1096,23 @@ namespace MyGeneration
                 args.Length == 1)
             {
                 return BrowseOleDbConnectionString(args[0].ToString());
+            }
+            if (function.Equals("showerrordetail", StringComparison.CurrentCultureIgnoreCase) &&
+                args.Length >= 1)
+            {
+                if (args[0] is List<IMyGenError>)
+                {
+                    List<IMyGenError> errors = args[0] as List<IMyGenError>;
+                    ErrorDetailDockContent.Update(errors[0]);
+                    if (this.ErrorDetailDockContent.IsHidden)
+                    {
+                        this.ErrorDetailDockContent.Show(this.dockPanel);
+                    }
+                    else
+                    {
+                        this.ErrorDetailDockContent.Activate();
+                    }
+                }
             }
             return null;
         }

@@ -39,6 +39,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SampleSimplePluginManager.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -51,6 +52,12 @@
       <DependentUpon>SampleContent.cs</DependentUpon>
     </Compile>
     <Compile Include="SampleContentManager.cs" />
+    <Compile Include="SampleDialogContent.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SampleDialogContent.Designer.cs">
+      <DependentUpon>SampleDialogContent.cs</DependentUpon>
+    </Compile>
     <Compile Include="SampleEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -69,6 +76,10 @@
     <EmbeddedResource Include="SampleContent.resx">
       <SubType>Designer</SubType>
       <DependentUpon>SampleContent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SampleDialogContent.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SampleDialogContent.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SampleEditor.resx">
       <DependentUpon>SampleEditor.cs</DependentUpon>
@@ -92,6 +103,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\bgb.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\puter.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

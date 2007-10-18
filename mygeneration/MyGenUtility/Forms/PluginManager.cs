@@ -11,6 +11,7 @@ namespace MyGeneration
         private static Dictionary<FileInfo, Exception> pluginLoadErrors = new Dictionary<FileInfo, Exception>();
         private static Dictionary<string, IContentManager> contentManagers = null;
         private static Dictionary<string, IEditorManager> editorManagers = null;
+        private static Dictionary<string, ISimplePluginManager> simplePluginManagers = null;
         private static string openFileDialogString = null;
 
         public static void LoadPlugins()
@@ -23,6 +24,8 @@ namespace MyGeneration
             editorManagers.Add(pem.Name, pem);
 
             contentManagers = new Dictionary<string, IContentManager>();
+
+            simplePluginManagers = new Dictionary<string, ISimplePluginManager>();
 
             FileInfo info = new FileInfo(Assembly.GetExecutingAssembly().Location);
             if (info.Exists)
@@ -37,7 +40,9 @@ namespace MyGeneration
                             Type[] interfaces = type.GetInterfaces();
                             foreach (Type iface in interfaces)
                             {
-                                if (iface == typeof(IEditorManager) || iface == typeof(IContentManager))
+                                if (iface == typeof(IEditorManager) || 
+                                    iface == typeof(IContentManager) || 
+                                    iface == typeof(ISimplePluginManager))
                                 {
                                     try
                                     {
@@ -59,6 +64,14 @@ namespace MyGeneration
                                             if (!contentManagers.ContainsKey(cm.Name))
                                             {
                                                 contentManagers[cm.Name] = cm;
+                                            }
+                                        }
+                                        else if (plugin is ISimplePluginManager)
+                                        {
+                                            ISimplePluginManager spm = plugin as ISimplePluginManager;
+                                            if (!simplePluginManagers.ContainsKey(spm.Name))
+                                            {
+                                                simplePluginManagers[spm.Name] = spm;
                                             }
                                         }
                                     }
@@ -100,10 +113,23 @@ namespace MyGeneration
             }
         }
 
+        public static Dictionary<string, ISimplePluginManager> SimplePluginManagers
+        {
+            get
+            {
+                if (simplePluginManagers == null)
+                {
+                    LoadPlugins();
+                }
+                return simplePluginManagers;
+            }
+        }
+
         public static void Refresh()
         {
             contentManagers = null;
             editorManagers = null;
+            simplePluginManagers = null;
             pluginLoadErrors.Clear();
         }
 

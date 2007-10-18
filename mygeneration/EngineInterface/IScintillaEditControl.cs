@@ -10,6 +10,6 @@ namespace MyGeneration
 {
     public interface IScintillaEditControl : IMyGenDocument
     {
-        ScintillaControl ScintillaEditor { get; }
+        IScintillaNet ScintillaEditor { get; }
     }
 }

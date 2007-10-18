@@ -37,6 +37,7 @@ namespace MyGeneration.Forms
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButtonViewDetail = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonSave = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonEmail = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -58,6 +59,7 @@ namespace MyGeneration.Forms
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
+            this.listView1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listView1_MouseDoubleClick);
             // 
             // columnHeaderTime
             // 
@@ -83,7 +85,8 @@ namespace MyGeneration.Forms
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButtonViewDetail,
-            this.toolStripButtonSave});
+            this.toolStripButtonSave,
+            this.toolStripButtonEmail});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(635, 25);
@@ -98,6 +101,7 @@ namespace MyGeneration.Forms
             this.toolStripButtonViewDetail.Name = "toolStripButtonViewDetail";
             this.toolStripButtonViewDetail.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonViewDetail.Text = "toolStripButton1";
+            this.toolStripButtonViewDetail.Click += new System.EventHandler(this.toolStripButtonViewDetail_Click);
             // 
             // toolStripButtonSave
             // 
@@ -107,6 +111,18 @@ namespace MyGeneration.Forms
             this.toolStripButtonSave.Name = "toolStripButtonSave";
             this.toolStripButtonSave.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonSave.Text = "Save";
+            this.toolStripButtonSave.Click += new System.EventHandler(this.toolStripButtonSave_Click);
+            // 
+            // toolStripButtonEmail
+            // 
+            this.toolStripButtonEmail.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonEmail.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonEmail.Image")));
+            this.toolStripButtonEmail.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonEmail.Name = "toolStripButtonEmail";
+            this.toolStripButtonEmail.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonEmail.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolStripButtonEmail.ToolTipText = "Email Error To MyGeneration Developers";
+            this.toolStripButtonEmail.Click += new System.EventHandler(this.toolStripButtonEmail_Click);
             // 
             // ErrorsForm
             // 
@@ -140,5 +156,6 @@ namespace MyGeneration.Forms
         private System.Windows.Forms.ToolStripButton toolStripButtonSave;
         private System.Windows.Forms.ColumnHeader columnHeaderClass;
         private System.Windows.Forms.ColumnHeader columnHeaderMessage;
+        private System.Windows.Forms.ToolStripButton toolStripButtonEmail;
     }
 }

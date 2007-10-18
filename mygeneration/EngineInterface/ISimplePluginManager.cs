@@ -6,12 +6,12 @@ using System.Drawing;
 
 namespace MyGeneration
 {
-    public interface IDialogManager
+    public interface ISimplePluginManager
     {
         string Name { get; }
         string Description { get; }
         Uri AuthorUri { get; }
         Image MenuImage { get; }
-        IMyGenDialog Create(IMyGenerationMDI mdi, params string[] args);
+        void Execute(IMyGenerationMDI mdi, params string[] args);
     }
 }

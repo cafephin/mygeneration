@@ -25,7 +25,8 @@ namespace MyGeneration
         private System.Collections.Generic.Dictionary<int, IMyMetaPlugin> plugins = new System.Collections.Generic.Dictionary<int, IMyMetaPlugin>();
         private System.Collections.Generic.Dictionary<int, IEditorManager> emPlugins = new System.Collections.Generic.Dictionary<int, IEditorManager>();
         private System.Collections.Generic.Dictionary<int, IContentManager> cmPlugins = new System.Collections.Generic.Dictionary<int, IContentManager>();
-		/// <summary>
+        private System.Collections.Generic.Dictionary<int, ISimplePluginManager> smPlugins = new System.Collections.Generic.Dictionary<int, ISimplePluginManager>();
+        /// <summary>
 		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
@@ -177,6 +178,13 @@ namespace MyGeneration
                 IContentManager plugin = PluginManager.ContentManagers[pluginName] as IContentManager;
                 int index = lstBoxProducts.Items.Add(plugin.Name.PadRight(29) + plugin.GetType().Assembly.GetName().Version.ToString());
                 cmPlugins[index] = plugin;
+            }
+
+            foreach (string pluginName in PluginManager.SimplePluginManagers.Keys)
+            {
+                ISimplePluginManager plugin = PluginManager.SimplePluginManagers[pluginName] as ISimplePluginManager;
+                int index = lstBoxProducts.Items.Add(plugin.Name.PadRight(29) + plugin.GetType().Assembly.GetName().Version.ToString());
+                smPlugins[index] = plugin;
             }
 
             foreach (string pluginName in PluginManager.EditorManagers.Keys)
@@ -360,6 +368,18 @@ The C# provider, the very minor C code modifications to SQLite, documentation an
                         if (this.emPlugins[product].AuthorUri != null)
                         {
                             lnkURL.Text = emPlugins[product].AuthorUri.ToString();
+                        }
+                        else
+                        {
+                            lnkURL.Text = "http://www.mygenerationsoftware.com/";
+                        }
+                    }
+                    else if (smPlugins.ContainsKey(product))
+                    {
+                        txtProductInfo.Text = this.smPlugins[product].Description;
+                        if (this.smPlugins[product].AuthorUri != null)
+                        {
+                            lnkURL.Text = smPlugins[product].AuthorUri.ToString();
                         }
                         else
                         {

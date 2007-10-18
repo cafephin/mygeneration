@@ -10,6 +10,8 @@ namespace MyGeneration.Forms
 {
     public partial class ErrorDetailControl : UserControl
     {
+        private IMyGenError error;
+
         public ErrorDetailControl()
         {
             InitializeComponent();
@@ -17,6 +19,34 @@ namespace MyGeneration.Forms
 
         public void Initialize()
         {
+        }
+
+        public void Update(IMyGenError error)
+        {
+            this.error = error;
+
+            this.BindControl();
+        }
+
+        private void BindControl()
+        {
+            if (error.Class == MyGenErrorClass.Template)
+                this.labelTitle.Text = "Template Error";
+            else
+                this.labelTitle.Text = "Application Error";
+
+            this.textBoxClass.Text = error.Class.ToString();
+            this.textBoxColumn.Text = error.ColumnNumber.ToString();
+            this.textBoxDetail.Text = error.Detail;
+            this.textBoxExceptionType.Text = error.ErrorType;
+            this.textBoxFile.Text = error.SourceFile;
+            this.textBoxLine.Text = error.LineNumber.ToString();
+            this.textBoxMessage.Text = error.Message;
+            this.textBoxDate.Text = error.DateTimeOccurred.ToString();
+            this.textBoxSource.Text = error.SourceLine;
+
+            this.checkBoxRuntime.Checked = error.IsRuntime;
+            this.checkBoxWarning.Checked = error.IsWarning;
         }
 
         public string TextContent

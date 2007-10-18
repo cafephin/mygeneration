@@ -100,8 +100,8 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IDialogManager.cs" />
-    <Compile Include="IMyGenDialog.cs" />
+    <Compile Include="IScintillaNet.cs" />
+    <Compile Include="ISimplePluginManager.cs" />
     <Compile Include="IMyGenError.cs" />
     <Compile Include="IMyGenErrorList.cs" />
     <Compile Include="IMyGenConsole.cs" />

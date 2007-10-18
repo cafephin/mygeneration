@@ -25,7 +25,7 @@ namespace MyGeneration
 	/// <summary>
 	/// Summary description for JScriptScintillaControl.
 	/// </summary>
-	public class ZeusScintillaControl : ScintillaControl, IEditControl
+	public class ZeusScintillaControl : ScintillaControl, IEditControl, IScintillaNet
 	{
         private const int WM_KEYDOWN = 0x0100;
         private const int DEFAULT_CODE_PAGE = 65001;

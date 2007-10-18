@@ -31,26 +31,47 @@ namespace MyGeneration
         {
             MyGenError error;
             List<IMyGenError> myGenErrors = new List<IMyGenError>();
-            foreach (Exception ex in exceptions)
+            foreach (Exception loopex in exceptions)
             {
+                Exception ex = loopex,
+                    bex = ex.GetBaseException();
+
                 if (ex is ZeusRuntimeException)
                 {
                     ZeusRuntimeException zrex = ex as ZeusRuntimeException;
-                    Exception bex = zrex.GetBaseException();
-                    if (bex == null) bex = zrex;
+                    if (bex is ZeusExecutionException)
+                    {
+                        ZeusExecutionException zeex = bex as ZeusExecutionException;
 
-                    error = new MyGenError();
-                    error.errorClass = MyGenErrorClass.Template;
-                    error.templateFileName = zrex.Template.FilePath + zrex.Template.FileName;
-                    error.TemplateIdentifier = zrex.Template.UniqueID;
-                    error.IsTemplateCodeSegment = zrex.IsTemplateScript;
-                    error.isRuntime = true;
-                    PopulateErrorFromException(error, bex);
-                    myGenErrors.Add(error);
+                        foreach (IZeusExecutionError zee in zeex.Errors)
+                        {
+                            error = new MyGenError();
+                            error.errorClass = MyGenErrorClass.Template;
+                            error.templateFileName = zrex.Template.FilePath + zrex.Template.FileName;
+                            error.TemplateIdentifier = zrex.Template.UniqueID;
+                            error.IsTemplateCodeSegment = zrex.IsTemplateScript;
+                            
+                            PopulateErrorFromZeusExecError(error, zee);
+                            
+                            myGenErrors.Add(error);
+                        }
+                    }
+                    else
+                    {
+                        error = new MyGenError();
+                        error.errorClass = MyGenErrorClass.Template;
+                        error.templateFileName = zrex.Template.FilePath + zrex.Template.FileName;
+                        error.TemplateIdentifier = zrex.Template.UniqueID;
+                        error.IsTemplateCodeSegment = zrex.IsTemplateScript;
+                        error.isRuntime = true;
+
+                        PopulateErrorFromException(error, bex);
+                        
+                        myGenErrors.Add(error);
+                    }
                 }
                 else if (ex is ZeusExecutionException)
-                {
-                    
+                {                    
                     ZeusExecutionException zeex = ex as ZeusExecutionException;
 
                     foreach (IZeusExecutionError zee in zeex.Errors)
@@ -61,22 +82,13 @@ namespace MyGeneration
                         error.TemplateIdentifier = zeex.Template.UniqueID;
                         error.IsTemplateCodeSegment = zeex.IsTemplateScript;
 
-                        error.columnNumber = zee.Column;
-                        error.SourceFile = zee.FileName;
-                        error.isRuntime = zee.IsRuntime;
-                        error.IsWarning = zee.IsWarning;
-                        error.lineNumber = zee.Line;
-                        error.message = zee.Message;
-                        error.ErrorNumber = zee.Number;
-                        error.SourceLine = zee.Source;
-                        error.detail = zee.StackTrace;
+                        PopulateErrorFromZeusExecError(error, zee);
 
                         myGenErrors.Add(error);
                     }
                 }
                 else
                 {
-                    Exception bex = ex.GetBaseException();
                     if (bex == null) bex = ex;
 
                     error = new MyGenError();
@@ -86,6 +98,19 @@ namespace MyGeneration
                 }
             }
             return myGenErrors;
+        }
+
+        private static void PopulateErrorFromZeusExecError(MyGenError error, IZeusExecutionError zee)
+        {
+            error.columnNumber = zee.Column;
+            error.SourceFile = zee.FileName;
+            error.isRuntime = zee.IsRuntime;
+            error.IsWarning = zee.IsWarning;
+            error.lineNumber = zee.Line;
+            error.message = zee.Message;
+            error.ErrorNumber = zee.Number;
+            error.SourceLine = zee.Source;
+            error.detail = zee.StackTrace;
         }
 
         public static void PopulateErrorFromException(MyGenError error, Exception ex)
@@ -213,6 +238,27 @@ namespace MyGeneration
         {
             get { return detail; }
             set { detail = value; }
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("Date: ").AppendLine(this.DateTimeOccurred.ToString());
+            if (TemplateFileName != null) sb.Append("TemplateFileName: ").AppendLine(TemplateFileName);
+            if (TemplateIdentifier != null) sb.Append("TemplateIdentifier: ").AppendLine(TemplateIdentifier);
+            sb.Append("Class: ").AppendLine(Class.ToString());
+            sb.Append("IsWarning: ").AppendLine(IsWarning.ToString());
+            sb.Append("IsRuntime: ").AppendLine(IsRuntime.ToString());
+            sb.Append("IsTemplateCodeSegment: ").AppendLine(IsTemplateCodeSegment.ToString());
+            if (ErrorNumber != null) sb.Append("ErrorNumber: ").AppendLine(ErrorNumber);
+            if (ErrorType != null) sb.Append("ErrorType: ").AppendLine(ErrorType);
+            if (SourceFile != null) sb.Append("SourceFile: ").AppendLine(SourceFile);
+            if (SourceLine != null) sb.Append("SourceLine: ").AppendLine(SourceLine);
+            sb.Append("LineNumber: ").AppendLine(LineNumber.ToString());
+            sb.Append("ColumnNumber: ").AppendLine(ColumnNumber.ToString());
+            if (Message != null) sb.Append("Message: ").AppendLine(Message);
+            if (Detail != null) sb.Append("Detail: ").AppendLine(Detail);
+            return sb.ToString();
         }
     }
 }

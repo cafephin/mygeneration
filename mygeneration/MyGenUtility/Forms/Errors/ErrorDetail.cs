@@ -86,6 +86,7 @@ namespace MyGeneration.Forms
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ErrorDetail";
+            this.ShowHint = WeifenLuo.WinFormsUI.Docking.DockState.Document;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.TabText = "Error Details";
             this.Text = "Error Details";
@@ -149,8 +150,20 @@ namespace MyGeneration.Forms
             get { return "::ErrorDetail::"; }
         }
 
+        public void Update(IMyGenError error)
+        {
+            this.errorDetailControl.Update(error);
+        }
+
         public void ProcessAlert(IMyGenContent sender, string command, params object[] args)
         {
+            /*if (sender is ErrorsForm)
+            {
+                if (command == "ErrorDetail")
+                {
+                    args[0];
+                }
+            }*/
             //throw new Exception("The method or operation is not implemented.");
         }
 

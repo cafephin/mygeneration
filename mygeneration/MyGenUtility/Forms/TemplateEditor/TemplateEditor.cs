@@ -2473,7 +2473,7 @@ namespace MyGeneration
 
         #region IScintillaEditControl Members
 
-        public ScintillaControl ScintillaEditor
+        public IScintillaNet ScintillaEditor
         {
             get { return this.CurrentScintilla; }
         }

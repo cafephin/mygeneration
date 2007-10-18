@@ -36,7 +36,7 @@ namespace MyGeneration.Forms
                 item.SubItems.Add(error.Class.ToString());
                 item.SubItems.Add(error.Message);
                 item.SubItems.Add(error.Detail);
-                item.Tag = item;
+                item.Tag = error;
                 this.listView1.Items.Add(item);
             }
             Application.DoEvents();
@@ -48,6 +48,88 @@ namespace MyGeneration.Forms
 
             this.Activate();
             this.Refresh();
+        }
+
+        public IMyGenError SelectedError
+        {
+            get
+            {
+                if (this.listView1.SelectedItems.Count == 0) return null;
+                return this.listView1.SelectedItems[0].Tag as IMyGenError;
+            }
+        }
+
+        public List<IMyGenError> SelectedErrors
+        {
+            get
+            {
+                List<IMyGenError> errors = new List<IMyGenError>();
+                foreach (ListViewItem i in this.listView1.SelectedItems)
+                {
+                    errors.Add(i.Tag as IMyGenError);
+                }
+                return errors;
+            }
+        }
+
+        private string ErrorText
+        {
+            get
+            {
+                StringBuilder body = new StringBuilder();
+                body.Append("OS Version: ").AppendLine(Environment.OSVersion.VersionString);
+                body.Append("EXE Version: ").AppendLine(System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString());
+                foreach (IMyGenError err in this.SelectedErrors)
+                {
+                    body.AppendLine("-----------------------------------------------------------------");
+                    body.Append(err.ToString());
+                }
+                return body.ToString();
+            }
+        }
+
+        private void toolStripButtonEmail_Click(object sender, EventArgs e)
+        {
+            if (this.listView1.SelectedItems.Count > 0)
+            {
+                string toEmail = "support@mygenerationsoftware.com,komma8komma1@users.sourceforge.net,jegreenwo@users.sourceforge.net,thegriftster@users.sourceforge.net";
+                string subject = "MyGeneration Error Report";
+                string body = ErrorText;
+                string message =
+                     string.Format("mailto:{0}?subject={1}&body={2}", toEmail, Uri.EscapeUriString(subject), Uri.EscapeUriString(body));
+                Process.Start(message);
+            }
+        }
+
+        private void toolStripButtonSave_Click(object sender, EventArgs e)
+        {
+            if (this.listView1.SelectedItems.Count > 0)
+            {
+                StringBuilder fname = new StringBuilder();
+                fname.Append("ErrorReport_").Append(DateTime.Now.Year)
+                    .Append(DateTime.Now.Month.ToString().PadRight(2, '0'))
+                .Append(DateTime.Now.Day.ToString().PadRight(2, '0'))
+                .Append(DateTime.Now.Hour.ToString().PadRight(2, '0'))
+                .Append(DateTime.Now.Minute.ToString().PadRight(2, '0'))
+                .Append(DateTime.Now.Second.ToString().PadRight(2, '0'))
+                .Append(DateTime.Now.Millisecond.ToString().PadRight(2, '0'))
+                .Append(".txt");
+
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.FileName = fname.ToString();
+                if (sfd.ShowDialog(this) == DialogResult.OK)
+                {
+                    System.IO.File.WriteAllText(sfd.FileName, ErrorText);
+                }
+            }
+        }
+
+        private void toolStripButtonViewDetail_Click(object sender, EventArgs e)
+        {
+            if (this.listView1.SelectedItems.Count > 0)
+            {
+                this._mdi.PerformMdiFuntion(this, "ShowErrorDetail", this.SelectedErrors);
+            }
         }
 
         #region IMyGenErrorList Members
@@ -93,5 +175,14 @@ namespace MyGeneration.Forms
         }
 
         #endregion
+
+        private void listView1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (this.listView1.SelectedItems.Count > 0)
+            {
+                this._mdi.PerformMdiFuntion(this, "ShowErrorDetail", this.SelectedErrors);
+            }
+        }
+
     }
 }

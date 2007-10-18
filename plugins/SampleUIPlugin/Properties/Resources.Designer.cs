@@ -74,6 +74,13 @@ namespace SampleUIPlugin.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap puter {
+            get {
+                object obj = ResourceManager.GetObject("puter", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap toolbar_save {
             get {
                 object obj = ResourceManager.GetObject("toolbar_save", resourceCulture);
