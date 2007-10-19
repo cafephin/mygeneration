@@ -76,25 +76,34 @@ namespace MyGeneration.Forms
         {
             get
             {
-                StringBuilder body = new StringBuilder();
-                body.Append("OS Version: ").AppendLine(Environment.OSVersion.VersionString);
-                body.Append("EXE Version: ").AppendLine(System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString());
-                foreach (IMyGenError err in this.SelectedErrors)
-                {
-                    body.AppendLine("-----------------------------------------------------------------");
-                    body.Append(err.ToString());
-                }
-                return body.ToString();
+                return GetErrorText(-1);
             }
+        }
+
+        private string GetErrorText(int numErrors)
+        {
+            StringBuilder body = new StringBuilder();
+            body.Append("OS Version: ").AppendLine(Environment.OSVersion.VersionString);
+            body.Append("EXE Version: ").AppendLine(System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString());
+
+            int i = 0;
+            foreach (IMyGenError err in this.SelectedErrors)
+            {
+                body.AppendLine("-----------------------------------------------------------------");
+                body.Append(err.ToString());
+
+                if ((numErrors != -1) && (++i >= numErrors)) break;
+            }
+            return body.ToString();
         }
 
         private void toolStripButtonEmail_Click(object sender, EventArgs e)
         {
             if (this.listView1.SelectedItems.Count > 0)
             {
-                string toEmail = "support@mygenerationsoftware.com,komma8komma1@users.sourceforge.net,jegreenwo@users.sourceforge.net,thegriftster@users.sourceforge.net";
+                string toEmail = "jegreenwo@users.sourceforge.net,thegriftster@users.sourceforge.net";
                 string subject = "MyGeneration Error Report";
-                string body = ErrorText;
+                string body = GetErrorText(2);
                 string message =
                      string.Format("mailto:{0}?subject={1}&body={2}", toEmail, Uri.EscapeUriString(subject), Uri.EscapeUriString(body));
                 Process.Start(message);
@@ -108,12 +117,12 @@ namespace MyGeneration.Forms
                 StringBuilder fname = new StringBuilder();
                 fname.Append("ErrorReport_").Append(DateTime.Now.Year)
                     .Append(DateTime.Now.Month.ToString().PadRight(2, '0'))
-                .Append(DateTime.Now.Day.ToString().PadRight(2, '0'))
-                .Append(DateTime.Now.Hour.ToString().PadRight(2, '0'))
-                .Append(DateTime.Now.Minute.ToString().PadRight(2, '0'))
-                .Append(DateTime.Now.Second.ToString().PadRight(2, '0'))
-                .Append(DateTime.Now.Millisecond.ToString().PadRight(2, '0'))
-                .Append(".txt");
+                    .Append(DateTime.Now.Day.ToString().PadRight(2, '0'))
+                    .Append(DateTime.Now.Hour.ToString().PadRight(2, '0'))
+                    .Append(DateTime.Now.Minute.ToString().PadRight(2, '0'))
+                    .Append(DateTime.Now.Second.ToString().PadRight(2, '0'))
+                    .Append(DateTime.Now.Millisecond.ToString().PadRight(2, '0'))
+                    .Append(".txt");
 
                 SaveFileDialog sfd = new SaveFileDialog();
                 sfd.FileName = fname.ToString();
@@ -129,6 +138,26 @@ namespace MyGeneration.Forms
             if (this.listView1.SelectedItems.Count > 0)
             {
                 this._mdi.PerformMdiFuntion(this, "ShowErrorDetail", this.SelectedErrors);
+            }
+        }
+
+        private void listView1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            IMyGenError error = SelectedError;
+            if (error.Class == MyGenErrorClass.Template)
+            {
+                if (this.listView1.SelectedItems.Count > 0)
+                {
+                    this._mdi.PerformMdiFuntion(this, 
+                        "NavigateToTemplateError", this.SelectedError);
+                }
+            }
+            else
+            {
+                if (this.listView1.SelectedItems.Count > 0)
+                {
+                    this._mdi.PerformMdiFuntion(this, "ShowErrorDetail", this.SelectedErrors);
+                }
             }
         }
 
@@ -175,14 +204,5 @@ namespace MyGeneration.Forms
         }
 
         #endregion
-
-        private void listView1_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            if (this.listView1.SelectedItems.Count > 0)
-            {
-                this._mdi.PerformMdiFuntion(this, "ShowErrorDetail", this.SelectedErrors);
-            }
-        }
-
     }
 }

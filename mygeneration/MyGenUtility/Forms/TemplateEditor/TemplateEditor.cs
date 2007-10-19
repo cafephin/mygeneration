@@ -402,7 +402,29 @@ namespace MyGeneration
 				catch {}
 			}
             */
-		}
+        }
+
+        public void NavigateTo(IMyGenError error)
+        {
+            NavigateTo(error.IsTemplateCodeSegment, error.LineNumber, error.ColumnNumber);
+        }
+
+        public void NavigateTo(bool isTemplateSegment, int lineNumber, int columnNumber)
+        {
+            try
+            {
+                ZeusScintillaControl ctrl = (isTemplateSegment ? scintillaTemplateSource : scintillaGuiSource);
+                TabPage tab = (isTemplateSegment ? tabTemplateSource : tabInterfaceSource);
+                this.tabControlTemplate.SelectedTab = tab;
+    
+                ctrl.GrabFocus();
+                ctrl.GotoLine((lineNumber > 0) ? lineNumber-1 : lineNumber);
+                ctrl.EnsureVisibleEnforcePolicy(lineNumber);
+                ctrl.SelectionStart = ctrl.CurrentPos;
+                ctrl.SelectionEnd = ctrl.CurrentPos + ctrl.GetCurLine().Length - 1;
+            }
+            catch { }
+        }
 
 		public void HandleExecuteException(Exception ex) 
 		{

@@ -998,12 +998,15 @@ namespace MyGeneration
 
         private void TemplateBrowser_Enter(object sender, EventArgs e)
         {
-            this.toolBarToolbar.Visible = true;
+            if (this.toolBarToolbar.Visible == false)
+            {
+                this.toolBarToolbar.Visible = true;
+            }
         }
 
         private void TemplateBrowser_Leave(object sender, EventArgs e)
         {
-            this.toolBarToolbar.Visible = false;
+            //this.toolBarToolbar.Visible = false;
         }
 	}
 

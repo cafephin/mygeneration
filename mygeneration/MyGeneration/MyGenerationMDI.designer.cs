@@ -44,6 +44,7 @@ namespace MyGeneration
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
@@ -61,7 +62,7 @@ namespace MyGeneration
             this.toolStripButtonOptions = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonErrors = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonConsole = new System.Windows.Forms.ToolStripButton();
-            this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripButtonOpenGeneratedOutputFolder = new System.Windows.Forms.ToolStripButton();
             this.menuStripMain.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -201,6 +202,13 @@ namespace MyGeneration
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Size = new System.Drawing.Size(201, 6);
             // 
+            // checkForUpdatesToolStripMenuItem
+            // 
+            this.checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem";
+            this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.checkForUpdatesToolStripMenuItem.Text = "Check online for &updates";
+            this.checkForUpdatesToolStripMenuItem.Click += new System.EventHandler(this.checkForUpdatesToolStripMenuItem_Click);
+            // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
@@ -228,6 +236,7 @@ namespace MyGeneration
             this.toolStripDropDownButtonNew,
             this.toolStripButtonOpen,
             this.toolStripButtonTemplateBrowser,
+            this.toolStripButtonOpenGeneratedOutputFolder,
             this.toolStripSeparator1,
             this.toolStripButtonMyMetaBrowser,
             this.toolStripButtonMyMetaProperties,
@@ -374,12 +383,15 @@ namespace MyGeneration
             this.toolStripButtonConsole.Text = "Console";
             this.toolStripButtonConsole.Click += new System.EventHandler(this.toolStripButtonConsole_Click);
             // 
-            // checkForUpdatesToolStripMenuItem
+            // toolStripButtonOpenGeneratedOutputFolder
             // 
-            this.checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem";
-            this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
-            this.checkForUpdatesToolStripMenuItem.Text = "Check online for &updates";
-            this.checkForUpdatesToolStripMenuItem.Click += new System.EventHandler(this.checkForUpdatesToolStripMenuItem_Click);
+            this.toolStripButtonOpenGeneratedOutputFolder.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonOpenGeneratedOutputFolder.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonOpenGeneratedOutputFolder.Image")));
+            this.toolStripButtonOpenGeneratedOutputFolder.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonOpenGeneratedOutputFolder.Name = "toolStripButtonOpenGeneratedOutputFolder";
+            this.toolStripButtonOpenGeneratedOutputFolder.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonOpenGeneratedOutputFolder.ToolTipText = "Open Generated Output Folder";
+            this.toolStripButtonOpenGeneratedOutputFolder.Click += new System.EventHandler(this.toolStripButtonOpenGeneratedOutputFolder_Click);
             // 
             // MyGenerationMDI
             // 
@@ -441,5 +453,6 @@ namespace MyGeneration
         private System.Windows.Forms.ToolStripButton toolStripButtonErrors;
         private System.Windows.Forms.ToolStripButton toolStripButtonConsole;
         private System.Windows.Forms.ToolStripMenuItem checkForUpdatesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripButton toolStripButtonOpenGeneratedOutputFolder;
     }
 }

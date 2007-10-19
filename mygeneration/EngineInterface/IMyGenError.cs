@@ -24,6 +24,8 @@ namespace MyGeneration
         bool IsRuntime { get; }
         bool IsTemplateCodeSegment { get; }
         Guid ErrorGuid { get; }
+        string TemplateFileName { get; }
+        string TemplateIdentifier { get; }
         string ErrorNumber { get; }
         string ErrorType { get; }
         string SourceFile { get; }

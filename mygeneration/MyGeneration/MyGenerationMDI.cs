@@ -740,6 +740,15 @@ namespace MyGeneration
                 this.ErrorsDockContent.Activate();
             }
         }
+
+        private void toolStripButtonOpenGeneratedOutputFolder_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process p = new System.Diagnostics.Process();
+            p.StartInfo.FileName = "explorer";
+            p.StartInfo.Arguments = "/e," + DefaultSettings.Instance.DefaultOutputDirectory;
+            p.StartInfo.UseShellExecute = true;
+            p.Start();
+        }
         #endregion
 
         #region Lazy Load Windows
@@ -1097,7 +1106,7 @@ namespace MyGeneration
             {
                 return BrowseOleDbConnectionString(args[0].ToString());
             }
-            if (function.Equals("showerrordetail", StringComparison.CurrentCultureIgnoreCase) &&
+            else if (function.Equals("showerrordetail", StringComparison.CurrentCultureIgnoreCase) &&
                 args.Length >= 1)
             {
                 if (args[0] is List<IMyGenError>)
@@ -1111,6 +1120,53 @@ namespace MyGeneration
                     else
                     {
                         this.ErrorDetailDockContent.Activate();
+                    }
+                }
+            }
+            else if (function.Equals("navigatetotemplateerror", StringComparison.CurrentCultureIgnoreCase) &&
+                args.Length >= 1)
+            {
+                if (args[0] is IMyGenError)
+                {
+                    IMyGenError error = args[0] as IMyGenError;
+                    TemplateEditor edit = null;
+
+                    if (string.IsNullOrEmpty(error.SourceFile))
+                    {
+                        //it's a new unsaved template
+                        bool isopen = this.IsDocumentOpen(error.TemplateIdentifier);
+                        if (isopen)
+                        {
+                            edit = this.FindDocument(error.TemplateIdentifier) as TemplateEditor;
+                            edit.Activate();
+                        }
+                    }
+                    else
+                    {
+                        FileInfo file = new FileInfo(error.TemplateFileName);
+                        if (file.Exists)
+                        {
+                            bool isopen = this.IsDocumentOpen(file.FullName);
+
+                            if (!isopen)
+                            {
+                                edit = new TemplateEditor(this);
+                                edit.FileOpen(file.FullName);
+                            }
+                            else
+                            {
+                                edit = this.FindDocument(file.FullName) as TemplateEditor;
+                                if (edit != null)
+                                {
+                                    edit.Activate();
+                                }
+                            }
+                        }
+                    }
+
+                    if (edit != null)
+                    {
+                        edit.NavigateTo(error);
                     }
                 }
             }
@@ -1179,5 +1235,6 @@ namespace MyGeneration
             catch { }
         }
         #endregion
+
     }
 }

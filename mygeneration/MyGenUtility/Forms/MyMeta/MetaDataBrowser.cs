@@ -1175,8 +1175,12 @@ namespace MyGeneration
 
         private void MetaDataBrowser_Enter(object sender, EventArgs e)
         {
-            this.toolBar1.Visible = true;
-            this.chkSystem.Visible = true;
+            if (this.toolBar1.Visible == false)
+            {
+                this.toolBar1.Visible = true;
+                this.chkSystem.Visible = true;
+            }
+
             if (this.mdi.DockPanel.ActiveDocument != null)
             {
                 if ((this.mdi.DockPanel.ActiveDocument is IMyGenDocument) && (this.myMeta.IsConnected))
@@ -1193,8 +1197,8 @@ namespace MyGeneration
 
         private void MetaDataBrowser_Leave(object sender, EventArgs e)
         {
-            this.toolBar1.Visible = false;
-            this.chkSystem.Visible = false;
+            /*this.toolBar1.Visible = false;
+            this.chkSystem.Visible = false;*/
         }
 	}
 }

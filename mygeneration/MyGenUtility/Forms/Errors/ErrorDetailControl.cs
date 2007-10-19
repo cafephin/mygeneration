@@ -31,15 +31,26 @@ namespace MyGeneration.Forms
         private void BindControl()
         {
             if (error.Class == MyGenErrorClass.Template)
+            {
                 this.labelTitle.Text = "Template Error";
+                if (string.IsNullOrEmpty(error.TemplateFileName))
+                {
+                    this.textBoxFile.Text = error.SourceFile;
+                }
+                else
+                {
+                    this.textBoxFile.Text = error.TemplateFileName;
+                }
+            }
             else
+            {
                 this.labelTitle.Text = "Application Error";
-
+                this.textBoxFile.Text = error.SourceFile;
+            }
             this.textBoxClass.Text = error.Class.ToString();
             this.textBoxColumn.Text = error.ColumnNumber.ToString();
             this.textBoxDetail.Text = error.Detail;
             this.textBoxExceptionType.Text = error.ErrorType;
-            this.textBoxFile.Text = error.SourceFile;
             this.textBoxLine.Text = error.LineNumber.ToString();
             this.textBoxMessage.Text = error.Message;
             this.textBoxDate.Text = error.DateTimeOccurred.ToString();
