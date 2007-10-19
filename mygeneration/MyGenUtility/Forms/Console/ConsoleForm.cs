@@ -17,18 +17,46 @@ namespace MyGeneration.Forms
         public ConsoleForm(IMyGenerationMDI mdi)
         {
             this.mdi = mdi;
-            InitializeComponent();
 
             zcs = new ZeusScintillaControl();
-            zcs.BringToFront();
             zcs.Dock = DockStyle.Fill;
-            zcs.Name = "test";
+            zcs.BringToFront();
+            zcs.Name = "ScintillaConsole";
             this.Controls.Add(zcs);
+
+            InitializeComponent();
         }
 
         private void toolStripButtonSave_Click(object sender, EventArgs e)
         {
+            StringBuilder fname = new StringBuilder();
+            fname.Append("ConsoleData_").Append(DateTime.Now.Year)
+                .Append(DateTime.Now.Month.ToString().PadRight(2, '0'))
+                .Append(DateTime.Now.Day.ToString().PadRight(2, '0'))
+                .Append(DateTime.Now.Hour.ToString().PadRight(2, '0'))
+                .Append(DateTime.Now.Minute.ToString().PadRight(2, '0'))
+                .Append(DateTime.Now.Second.ToString().PadRight(2, '0'))
+                .Append(DateTime.Now.Millisecond.ToString().PadRight(2, '0'))
+                .Append(".txt");
 
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.FileName = fname.ToString();
+            if (sfd.ShowDialog(this) == DialogResult.OK)
+            {
+                System.IO.File.WriteAllText(sfd.FileName, this.zcs.Text);
+            }
+        }
+
+        private void toolStripButtonClear_Click(object sender, EventArgs e)
+        {
+            this.zcs.ClearAll();
+        }
+
+        private void ConsoleForm_VisibleChanged(object sender, EventArgs e)
+        {
+            zcs.EnsureVisibleEnforcePolicy(zcs.LineCount);
+            zcs.ScrollCaret();
+            zcs.GrabFocus();
         }
 
         #region IMyGenConsole Members
@@ -61,8 +89,11 @@ namespace MyGeneration.Forms
             sb.Append(text);
             if (!text.EndsWith(Environment.NewLine)) sb.Append(Environment.NewLine);
 
-            this.zcs.AppendText(sb.ToString());
-            this.zcs.ScrollCaret();
+            zcs.AppendText(sb.ToString());
+            zcs.GrabFocus();
+            zcs.GotoLine(zcs.LineCount);
+            zcs.EnsureVisibleEnforcePolicy(zcs.LineCount);
+            zcs.ScrollCaret();
         }
 
         public void Write(string text, params object[] args)
@@ -83,5 +114,6 @@ namespace MyGeneration.Forms
         }
 
         #endregion
+
     }
 }

@@ -30,8 +30,9 @@ namespace MyGeneration.Forms
         private void BindErrors()
         {
             this.listView1.Items.Clear();
-            foreach (IMyGenError error in _errors)
+            for (int i = _errors.Count-1; i >= 0; i--) 
             {
+                IMyGenError error = _errors[i];
                 ListViewItem item = new ListViewItem(error.DateTimeOccurred.ToString());
                 item.SubItems.Add(error.Class.ToString());
                 item.SubItems.Add(error.Message);
@@ -159,6 +160,12 @@ namespace MyGeneration.Forms
                     this._mdi.PerformMdiFuntion(this, "ShowErrorDetail", this.SelectedErrors);
                 }
             }
+        }
+
+        private void toolStripButtonClear_Click(object sender, EventArgs e)
+        {
+            this._errors.Clear();
+            BindErrors();
         }
 
         #region IMyGenErrorList Members

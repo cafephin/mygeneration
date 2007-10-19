@@ -5,7 +5,7 @@ del ".\installbuild_doodads.log"
 
 if "%DEVENV%"=="" set DEVENV="%PROGRAMFILES%\Microsoft Visual Studio 8\Common7\IDE\VCSExpress.exe"  /out ".\build.log" /rebuild release
 
-.\MyGeneration\PluginResources\UpdateDLLs.bat
+rem "..\mygeneration\MyGeneration\PluginResources\UpdateDLLs.bat"
 
 %DEVENV% "..\plugins\MyMetaPlugins.sln"
 %DEVENV% "..\plugins\ZeusPlugins.sln"
@@ -18,3 +18,4 @@ if "%MAKENSIS%"=="" set MAKENSIS=%PROGRAMFILES%\NSIS\makensis.exe
 "%MAKENSIS%"  ".\mymeta.nsi" > ".\installbuild_mymeta.log"
 "%MAKENSIS%"  ".\doodads.nsi" > ".\installbuild_doodads.log"
 set MAKENSIS=
+

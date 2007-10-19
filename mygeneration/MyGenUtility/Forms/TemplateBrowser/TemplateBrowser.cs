@@ -68,6 +68,8 @@ namespace MyGeneration
 			treeBuilder = new TemplateTreeBuilder(treeViewTemplates);
 
 			treeBuilder.LoadTemplates();
+
+            TemplateBrowser_Enter(this, EventArgs.Empty);
         }
 
         protected override string GetPersistString()
@@ -953,6 +955,19 @@ namespace MyGeneration
 			//this.CompileAs();
 		}
 
+        private void TemplateBrowser_Enter(object sender, EventArgs e)
+        {
+            if (this.toolBarToolbar.Visible == false)
+            {
+                this.toolBarToolbar.Visible = true;
+            }
+        }
+
+        private void TemplateBrowser_Leave(object sender, EventArgs e)
+        {
+            //this.toolBarToolbar.Visible = false;
+        }
+
         #region IMyGenContent Members
 
         public ToolStrip ToolStrip
@@ -995,19 +1010,6 @@ namespace MyGeneration
         }
 
         #endregion
-
-        private void TemplateBrowser_Enter(object sender, EventArgs e)
-        {
-            if (this.toolBarToolbar.Visible == false)
-            {
-                this.toolBarToolbar.Visible = true;
-            }
-        }
-
-        private void TemplateBrowser_Leave(object sender, EventArgs e)
-        {
-            //this.toolBarToolbar.Visible = false;
-        }
 	}
 
 }

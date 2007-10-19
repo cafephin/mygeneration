@@ -39,7 +39,6 @@ namespace MyGeneration
         private ToolBarButton toolBarButtonExecute;
 		private System.Windows.Forms.ToolBarButton toolBarButton2;
 
-
         public MetaDataBrowser(IMyGenerationMDI mdi, MetaProperties p, UserMetaData u, GlobalUserMetaData g)
 		{
             InitializeComponent();
@@ -48,13 +47,14 @@ namespace MyGeneration
             this.UserData = u;
             this.GlobalUserData = g;
 			this.ShowHint = DockState.DockLeft;
+
+            MetaDataBrowser_Enter(this, EventArgs.Empty);
         }
 
         protected override string GetPersistString()
         {
             return this.GetType().FullName;
         }
-
 
 		/// <summary>
 		/// Clean up any resources being used.

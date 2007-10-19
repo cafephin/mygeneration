@@ -31,13 +31,15 @@ namespace MyGeneration.Forms
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConsoleForm));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButtonSave = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonClear = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButtonSave});
+            this.toolStripButtonSave,
+            this.toolStripButtonClear});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(635, 25);
@@ -54,6 +56,16 @@ namespace MyGeneration.Forms
             this.toolStripButtonSave.Text = "Save";
             this.toolStripButtonSave.Click += new System.EventHandler(this.toolStripButtonSave_Click);
             // 
+            // toolStripButtonClear
+            // 
+            this.toolStripButtonClear.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonClear.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonClear.Image")));
+            this.toolStripButtonClear.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonClear.Name = "toolStripButtonClear";
+            this.toolStripButtonClear.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonClear.Text = "Clear";
+            this.toolStripButtonClear.Click += new System.EventHandler(this.toolStripButtonClear_Click);
+            // 
             // ConsoleForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -68,6 +80,7 @@ namespace MyGeneration.Forms
             this.TabText = "Console";
             this.Text = "Console";
             this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
+            this.VisibleChanged += new System.EventHandler(this.ConsoleForm_VisibleChanged);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -79,5 +92,6 @@ namespace MyGeneration.Forms
 
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton toolStripButtonSave;
+        private System.Windows.Forms.ToolStripButton toolStripButtonClear;
     }
 }

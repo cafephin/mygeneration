@@ -38,6 +38,7 @@ namespace MyGeneration.Forms
             this.toolStripButtonViewDetail = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonSave = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonEmail = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonClear = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -86,7 +87,8 @@ namespace MyGeneration.Forms
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButtonViewDetail,
             this.toolStripButtonSave,
-            this.toolStripButtonEmail});
+            this.toolStripButtonEmail,
+            this.toolStripButtonClear});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(635, 25);
@@ -124,6 +126,16 @@ namespace MyGeneration.Forms
             this.toolStripButtonEmail.ToolTipText = "Email Error To MyGeneration Developers";
             this.toolStripButtonEmail.Click += new System.EventHandler(this.toolStripButtonEmail_Click);
             // 
+            // toolStripButtonClear
+            // 
+            this.toolStripButtonClear.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonClear.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonClear.Image")));
+            this.toolStripButtonClear.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonClear.Name = "toolStripButtonClear";
+            this.toolStripButtonClear.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonClear.Text = "Clear";
+            this.toolStripButtonClear.Click += new System.EventHandler(this.toolStripButtonClear_Click);
+            // 
             // ErrorsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -157,5 +169,6 @@ namespace MyGeneration.Forms
         private System.Windows.Forms.ColumnHeader columnHeaderClass;
         private System.Windows.Forms.ColumnHeader columnHeaderMessage;
         private System.Windows.Forms.ToolStripButton toolStripButtonEmail;
+        private System.Windows.Forms.ToolStripButton toolStripButtonClear;
     }
 }
