@@ -39,6 +39,7 @@ namespace MyGeneration
         private static bool LastSearchIsCaseSensitiveStatic = true;
         private static bool LastSearchIsRegexStatic = false;
         private Hashtable ignoredKeys = new Hashtable();
+        private bool _isControlPressed = false;
         
         public static FindForm FindDialog = new FindForm();
         public static ReplaceForm ReplaceDialog = new ReplaceForm();
@@ -51,6 +52,142 @@ namespace MyGeneration
             this.GotFocus += new EventHandler(ZeusScintillaControl_GotFocus);
 
             this.Configure = StaticConfigure;
+            this.KeyDown += new KeyEventHandler(ZeusScintillaControl_KeyDown);
+            this.KeyUp += new KeyEventHandler(ZeusScintillaControl_KeyUp);
+            this.CharAdded += new EventHandler<CharAddedEventArgs>(ZeusScintillaControl_CharAdded);
+            this.AutoCSelection += new EventHandler<AutoCSelectionEventArgs>(ZeusScintillaControl_AutoCSelection);
+        }
+
+        void ZeusScintillaControl_AutoCSelection(object sender, AutoCSelectionEventArgs e)
+        {
+            //e.Text;
+            //this.AddText(e.Text);
+            //this.CallTipShow(e.WordStartPosition + e.Text.Length, "(string x)\n(string name, int stuff]");
+        }
+
+        private void ZeusScintillaControl_CharAdded(object sender, CharAddedEventArgs e)
+        { 
+            // If the language is one that supports it, we will add autocomplete
+            if (this.ConfigurationLanguage == "TaggedC#" || this.ConfigurationLanguage == "C#"
+                || this.ConfigurationLanguage == "JScript" || this.ConfigurationLanguage == "TaggedJScript")
+            {
+                if (e.Ch == ' ')
+                {
+                    if (_isControlPressed)
+                    {
+                        //string x = this.GetWordFromPosition(this.CurrentPos);
+                        //this.GetCurLine().Substring(0, this.Column);
+                        //this.LineFromPosition
+                        //string stlye = this.StyleAt(this.CurrentPos);
+                        this.DeleteBack();
+                        this.AutoCShow(0, AutoCompleteHelper.RootNodesAutoCompleteString);
+                    }
+                }
+                if (e.Ch == '.' || e.Ch == '(')
+                {
+                    int pos = this.CurrentPos - 1;
+                    char c = CharAt(--pos);
+                    Stack stk = new Stack();
+                    System.Text.StringBuilder tmp = new System.Text.StringBuilder();
+                    while (c.Equals('_') || c.Equals('.') || char.IsLetterOrDigit(c))
+                    {
+                        if (c == '.')
+                        {
+                            if (tmp.Length > 0)
+                            {
+                                stk.Push(tmp.ToString());
+                                tmp.Remove(0, tmp.Length);
+                            }
+                        }
+                        else
+                        {
+                            tmp.Insert(0, c);
+                        }
+                        c = CharAt(--pos);
+                    }
+                    if (tmp.Length > 0)
+                    {
+                        stk.Push(tmp.ToString());
+                        tmp.Remove(0, tmp.Length);
+                    }
+
+                    NodeInfo n = null;
+                    System.Collections.Generic.List<NodeInfo> ns = null;
+                    if (stk.Count > 0) 
+                    {
+                        string m = stk.Pop().ToString();
+                        if (AutoCompleteHelper.RootNodes.ContainsKey(m)) n = AutoCompleteHelper.RootNodes[m];
+                    }
+
+                    while (n != null && stk.Count > 0)
+                    {
+                        ns = n[stk.Pop().ToString()];
+                        if (ns.Count == 1)
+                        {
+                            n = ns[0];
+                        }
+                        else
+                        {
+                            n = null;
+                            if (stk.Count > 0) 
+                            {
+                                ns = null;
+                            }
+                        }
+                    }
+
+
+                    if (n != null)
+                    {
+                        if (e.Ch == '.')
+                        {
+                            this.AutoCShow(0, n.MembersString);
+                        }
+                    }
+                    if (ns != null) 
+                    {
+                        if (e.Ch == '(')
+                        {
+                            string methodSigs = string.Empty;
+                            int i = 0;
+                            foreach (NodeInfo ni in ns)
+                            {
+                                if (ni.MemberType == System.Reflection.MemberTypes.Method)
+                                {
+                                    i++;
+                                    if (methodSigs.Length > 0) methodSigs += "\n";
+                                    //methodSigs += '\u0001' + i.ToString() + " of " + ns.Count + '\u0002' + " " + ni.ParameterString;
+                                    methodSigs += ni.ParameterString;
+                                }
+                            }
+                            if (methodSigs.Length > 0)
+                            {
+                                this.CallTipShow(this.CurrentPos - 1, methodSigs);
+                            }
+                        }
+                    }
+                    //string x = this.GetWordFromPosition(this.CurrentPos);
+                    //if (x != null)
+                    //{
+                     //   string y = this.GetWordFromPosition(this.CurrentPos - x.Length - 1);
+                        //this.GetCurLine().Substring(0, this.Column);
+                        //this.LineFromPosition
+                        //string stlye = this.StyleAt(this.CurrentPos);
+                    //    this.AutoCShow(tmp.Length, "MyMeta.Connect MyMeta.Databases output.preserve output.write output.writeln");
+                    //}
+                    
+                }
+            }
+        }
+
+        private void ZeusScintillaControl_KeyDown(object sender, KeyEventArgs e)
+        {
+            _isControlPressed = e.Control;
+        }
+
+        private void ZeusScintillaControl_KeyUp(object sender, KeyEventArgs e)
+        {
+            _isControlPressed = e.Control;
         }
 
         void ZeusScintillaControl_GotFocus(object sender, EventArgs e)
@@ -401,8 +538,6 @@ namespace MyGeneration
 
 			//this.LegacyConfiguration = MDIParent.scintillaXmlConfig.scintilla;
 			this.ConfigurationLanguage = "TaggedC#";
-
-            
 		}
 		#endregion
 

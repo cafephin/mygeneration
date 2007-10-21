@@ -23,6 +23,9 @@ using Scintilla.Configuration.SciTE;
 using Zeus;
 using MyGeneration.Forms;
 
+
+using System.Reflection;
+
 namespace MyGeneration
 {
     public partial class MyGenerationMDI : Form, IMyGenerationMDI
@@ -38,7 +41,7 @@ namespace MyGeneration
 
         private static ConfigFile configFile;
         private ScintillaConfigureDelegate configureDelegate;
-        
+
         private FindForm findDialog = new FindForm();
         private ReplaceForm replaceDialog = new ReplaceForm();
 
@@ -55,14 +58,14 @@ namespace MyGeneration
         private ConsoleForm consoleForm;
         private ErrorsForm errorsForm;
         private ErrorDetail errorDetail;
-        
+
         private string startupPath;
         private string[] startupFiles;
 
         public MyGenerationMDI(string startupPath, params string[] args)
         {
             this.startupPath = startupPath;
-            
+
             settings = DefaultSettings.Instance;
 
             //Any files that were locked when the TemplateLibrary downloaded and tried to replace them will be replaced now.
@@ -142,7 +145,7 @@ namespace MyGeneration
             #endregion
             if (configFile != null)
             {
-                configureDelegate = configFile.MasterScintilla.Configure; 
+                configureDelegate = configFile.MasterScintilla.Configure;
                 ZeusScintillaControl.StaticConfigure = configureDelegate;
             }
 
@@ -250,7 +253,7 @@ namespace MyGeneration
             foreach (string file in filenames)
             {
                 FileInfo info = new FileInfo(file);
-                
+
                 if (info.Exists)
                 {
                     if (this.IsDocumentOpen(info.FullName))
@@ -328,7 +331,7 @@ namespace MyGeneration
                 else
                 {
                     // Preload all dynamicContentWindows here if needed
-                    foreach (IContentManager cm in PluginManager.ContentManagers.Values) 
+                    foreach (IContentManager cm in PluginManager.ContentManagers.Values)
                     {
                         dynamicContentWindows[cm.Name] = cm.Create(this);
                     }
@@ -365,7 +368,7 @@ namespace MyGeneration
 
         private void dockPanel_ActiveContentChanged(object sender, EventArgs e)
         {
-            
+
             IDockContent fe = this.dockPanel.ActiveContent as IDockContent;
             if (fe is IEditControl)
             {
@@ -383,7 +386,8 @@ namespace MyGeneration
             else if (fe == null)
             {
                 bool foundDoc = false;
-                foreach (DockContent c in dockPanel.Contents) {
+                foreach (DockContent c in dockPanel.Contents)
+                {
                     if ((c is IMyGenDocument) && (!c.IsHidden))
                     {
                         foundDoc = true;
@@ -526,7 +530,7 @@ namespace MyGeneration
                     this.OpenContent(i.ToolTipText);
                 else
                     this.OpenContent(i.Text);
-            } 
+            }
             else //if (i.Tag == typeof(ISimplePluginManager))
             {
                 if (string.IsNullOrEmpty(i.Text))
@@ -603,7 +607,7 @@ namespace MyGeneration
                 else
                 {
                     // May want to add text to resource file for internationalization
-                    MessageBox.Show(this, string.Format("The file \"{0}\" no longer exists.", item.Text), "File Missing"); 
+                    MessageBox.Show(this, string.Format("The file \"{0}\" no longer exists.", item.Text), "File Missing");
                     RemoveRecentFile(item.Text);
                 }
             }
@@ -824,7 +828,7 @@ namespace MyGeneration
             get
             {
                 if ((metaDataBrowser != null) && metaDataBrowser.IsDisposed) metaDataBrowser = null;
-                if (metaDataBrowser == null) metaDataBrowser = new MetaDataBrowser(this, 
+                if (metaDataBrowser == null) metaDataBrowser = new MetaDataBrowser(this,
                     MetaPropertiesDockContent, UserMetaDataDockContent, GlobalUserMetaDataDockContent);
                 return metaDataBrowser;
             }
@@ -886,7 +890,7 @@ namespace MyGeneration
                     info.MoveTo(fileToReplace.FullName);
                 }
 #if DEBUG
-				catch (Exception ex) { throw ex; }
+                catch (Exception ex) { throw ex; }
 #else
                 catch { }
 #endif
@@ -978,10 +982,10 @@ namespace MyGeneration
                     }
                     else if (newVersionObject < currentVersionObject)
                     {
-                        DialogResult result = MessageBox.Show(this, 
-                            @"You are running an currently unreleased build. Do you want to check the SourceForge page for updates now?", 
+                        DialogResult result = MessageBox.Show(this,
+                            @"You are running an currently unreleased build. Do you want to check the SourceForge page for updates now?",
                             "Version Information", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-                        
+
                         if (result == DialogResult.Yes)
                         {
                             Zeus.WindowsTools.LaunchBrowser(URL_SOURCEFORGE_DOWNLOAD);
@@ -1045,7 +1049,7 @@ namespace MyGeneration
 
         public DockPanel DockPanel
         {
-            get { return dockPanel;  }
+            get { return dockPanel; }
         }
 
         private void docItemToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1076,8 +1080,9 @@ namespace MyGeneration
                     }
                 }
             }
-                if (windowToolStripMenuItem.DropDownItems.Count == 0) {
-                }
+            if (windowToolStripMenuItem.DropDownItems.Count == 0)
+            {
+            }
 
         }
 

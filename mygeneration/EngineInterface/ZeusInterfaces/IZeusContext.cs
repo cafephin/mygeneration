@@ -14,7 +14,8 @@ namespace Zeus
 		int ExecutionDepth { get; }
 		IZeusTemplateStub ExecutingTemplate { get; }
 		void ExecuteTemplate(string path); // Depricated
-		void Execute(string path, bool copyContext);
-		IZeusContext Copy();
+        void Execute(string path, bool copyContext);
+        IZeusContext Copy();
+        string Describe(string varName, object obj);
 	}
 }

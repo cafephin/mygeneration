@@ -1,4 +1,6 @@
 using System;
+using System.Text;
+using System.Reflection;
 using System.Collections;
 
 using Zeus.UserInterface;
@@ -18,7 +20,79 @@ namespace Zeus
 		protected IGuiController _gui;
 		protected Stack _templateStack;
 		protected Hashtable _objects;
-		protected ILog _log;
+        protected ILog _log;
+
+
+        public string Describe(string prefix, object o)
+        {
+            StringBuilder sb = new StringBuilder();
+            Describe(sb, prefix, o.GetType(), 0);
+            return sb.ToString();
+        }
+
+        private void Describe(StringBuilder sb, string prefix, Type t, int depth)
+        {
+            if (depth > 2) return;
+            ArrayList assemblyList = new ArrayList();
+            assemblyList.Add("PluginInterfaces");
+            assemblyList.Add("Zeus");
+            assemblyList.Add("MyMeta");
+            assemblyList.Add("MyGenUtility");
+            assemblyList.Add("MyGeneration");
+
+            //Type t = obj.GetType();
+            PropertyInfo[] props = t.GetProperties();
+            MethodInfo[] methods = t.GetMethods();
+            FieldInfo[] fields = t.GetFields();
+
+            foreach (PropertyInfo pi in props)
+            {
+                bool isCool = false;
+                if (pi.CanRead && pi.GetGetMethod().IsPublic) isCool = true;
+                if (pi.CanWrite && pi.GetSetMethod().IsPublic) isCool = true;
+                
+                if (isCool)
+                {
+                    sb.Append(prefix).Append('.').AppendLine(pi.Name);
+                    if (pi.CanRead)
+                    {
+                        Type chtype = pi.PropertyType;
+                        if (assemblyList.Contains(chtype.Assembly.GetName().Name))
+                        {
+                            Describe(sb, prefix + "." + pi.Name, chtype, depth+1);
+                        }
+                    }
+                }
+            }
+
+            foreach (MethodInfo mi in methods)
+            {
+                if (mi.IsPublic)
+                {
+                    if (!mi.Name.StartsWith("get_") && !mi.Name.StartsWith("set_"))
+                    {
+                        sb.Append(prefix).Append('.').AppendLine(mi.Name);
+                        if ((mi.ReturnType != null) && (mi.GetParameters().Length == 0))
+                        {
+                            Type chtype = mi.ReturnType;
+                            if (assemblyList.Contains(chtype.Assembly.GetName().Name))
+                            {
+                                Describe(sb, prefix + "." + mi.Name + "()", chtype, depth + 1);
+                            }
+                        }
+                    }
+                }
+            }
+
+            foreach (FieldInfo fi in fields)
+            {
+                if (fi.IsPublic)
+                {
+                    sb.Append(prefix).Append('.').AppendLine(fi.Name);
+                }
+            }
+        }
+
 
 		/// <summary>
 		/// Creates a new ZeusGuiContext object.

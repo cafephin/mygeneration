@@ -3,20 +3,27 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
-
+using Scintilla.Enums;
 namespace Scintilla
 {
 
     #region CharAddedEventArgs
 
     //public delegate void CharAddedEventHandler(object sender, CharAddedEventArgs e);
+
     public class CharAddedEventArgs : EventArgs
     {
         private char _ch;
-
         public char Ch
         {
-            get { return _ch; }
+            get
+            {
+                return _ch;
+            }
+            set
+            {
+                _ch = value;
+            }
         }
 
         public CharAddedEventArgs(char ch)
@@ -24,10 +31,9 @@ namespace Scintilla
             _ch = ch;
         }
 
-        internal CharAddedEventArgs(SCNotification eventSource) 
-			: this(eventSource.ch){}
+        internal CharAddedEventArgs(SCNotification eventSource)
+            : this(eventSource.ch) { }
     }
-
     #endregion
 
     #region FoldChangedEventArgs
@@ -525,15 +531,15 @@ namespace Scintilla
 		}
 
 		private int _modifiers;
-		public int Modifiers
+		public KeyMod Modifiers
 		{
 			get
 			{
-				return _modifiers;
+				return (KeyMod)Enum.ToObject(typeof(KeyMod), _modifiers);
 			}
 			set
 			{
-				_modifiers = value;
+				_modifiers = (int)value;
 			}
 		}
 
