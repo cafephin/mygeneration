@@ -55,14 +55,7 @@ namespace MyGeneration
             this.KeyDown += new KeyEventHandler(ZeusScintillaControl_KeyDown);
             this.KeyUp += new KeyEventHandler(ZeusScintillaControl_KeyUp);
             this.CharAdded += new EventHandler<CharAddedEventArgs>(ZeusScintillaControl_CharAdded);
-            this.AutoCSelection += new EventHandler<AutoCSelectionEventArgs>(ZeusScintillaControl_AutoCSelection);
-        }
-
-        void ZeusScintillaControl_AutoCSelection(object sender, AutoCSelectionEventArgs e)
-        {
-            //e.Text;
-            //this.AddText(e.Text);
-            //this.CallTipShow(e.WordStartPosition + e.Text.Length, "(string x)\n(string name, int stuff]");
+            this.IsAutoCIgnoreCase = true;
         }
 
         private void ZeusScintillaControl_CharAdded(object sender, CharAddedEventArgs e)
@@ -71,19 +64,7 @@ namespace MyGeneration
             if (this.ConfigurationLanguage == "TaggedC#" || this.ConfigurationLanguage == "C#"
                 || this.ConfigurationLanguage == "JScript" || this.ConfigurationLanguage == "TaggedJScript")
             {
-                if (e.Ch == ' ')
-                {
-                    if (_isControlPressed)
-                    {
-                        //string x = this.GetWordFromPosition(this.CurrentPos);
-                        //this.GetCurLine().Substring(0, this.Column);
-                        //this.LineFromPosition
-                        //string stlye = this.StyleAt(this.CurrentPos);
-                        this.DeleteBack();
-                        this.AutoCShow(0, AutoCompleteHelper.RootNodesAutoCompleteString);
-                    }
-                }
-                if (e.Ch == '.' || e.Ch == '(')
+                if ((e.Ch == ' ' && _isControlPressed) || (e.Ch == '.') || (e.Ch == '('))
                 {
                     int pos = this.CurrentPos - 1;
                     char c = CharAt(--pos);
@@ -112,16 +93,25 @@ namespace MyGeneration
                     }
 
                     NodeInfo n = null;
+                    NodeInfo nextToLastNode = null;
                     System.Collections.Generic.List<NodeInfo> ns = null;
-                    if (stk.Count > 0) 
+                    string lastmsg = null;
+                    if (stk.Count > 0)
                     {
-                        string m = stk.Pop().ToString();
-                        if (AutoCompleteHelper.RootNodes.ContainsKey(m)) n = AutoCompleteHelper.RootNodes[m];
+                        lastmsg = stk.Pop().ToString();
+                        if (AutoCompleteHelper.RootNodes.ContainsKey(lastmsg))
+                        {
+                            n = AutoCompleteHelper.RootNodes[lastmsg];
+                        }
                     }
 
                     while (n != null && stk.Count > 0)
                     {
-                        ns = n[stk.Pop().ToString()];
+                        nextToLastNode = n;
+                        int stkCount = stk.Count;
+                        lastmsg = stk.Pop().ToString();
+
+                        ns = n[lastmsg];
                         if (ns.Count == 1)
                         {
                             n = ns[0];
@@ -129,53 +119,72 @@ namespace MyGeneration
                         else
                         {
                             n = null;
-                            if (stk.Count > 0) 
+                            if (stk.Count != 0)
                             {
                                 ns = null;
                             }
                         }
                     }
 
-
-                    if (n != null)
+                    if (e.Ch == ' ')
                     {
-                        if (e.Ch == '.')
+                        this.DeleteBack();
+
+                        if (n != null)
                         {
-                            this.AutoCShow(0, n.MembersString);
+                            if (this.CharAt(this.CurrentPos - 1) == '.')
+                            {
+                                this.AutoCShow(0, n.MembersString);
+                            }
+                            else
+                            {
+                                this.AutoCShow(n.Name.Length, nextToLastNode.MembersString);
+                            }
+                        }
+                        else if (stk.Count == 0 && nextToLastNode != null)
+                        {
+                            this.AutoCShow(lastmsg.Length, nextToLastNode.MembersString);
+                        }
+                        else if (stk.Count == 0 && n == null && nextToLastNode == null)
+                        {
+                            if (lastmsg == null) lastmsg = string.Empty;
+                            
+                            this.AutoCShow(lastmsg.Length, AutoCompleteHelper.RootNodesAutoCompleteString);
                         }
                     }
-                    if (ns != null) 
+                    if (e.Ch == '.' || e.Ch == '(')
                     {
-                        if (e.Ch == '(')
+                        if (n != null)
                         {
-                            string methodSigs = string.Empty;
-                            int i = 0;
-                            foreach (NodeInfo ni in ns)
+                            if (e.Ch == '.')
                             {
-                                if (ni.MemberType == System.Reflection.MemberTypes.Method)
+                                this.AutoCShow(0, n.MembersString);
+                            }
+                        }
+                        if (ns != null)
+                        {
+                            if (e.Ch == '(')
+                            {
+                                string methodSigs = string.Empty;
+                                int i = 0;
+                                foreach (NodeInfo ni in ns)
                                 {
-                                    i++;
-                                    if (methodSigs.Length > 0) methodSigs += "\n";
-                                    //methodSigs += '\u0001' + i.ToString() + " of " + ns.Count + '\u0002' + " " + ni.ParameterString;
-                                    methodSigs += ni.ParameterString;
+                                    if (ni.MemberType == System.Reflection.MemberTypes.Method)
+                                    {
+                                        i++;
+                                        if (methodSigs.Length > 0) methodSigs += "\n";
+                                        //methodSigs += '\u0001' + i.ToString() + " of " + ns.Count + '\u0002' + " " + ni.ParameterString;
+                                        methodSigs += ni.ParameterString;
+                                    }
+                                }
+                                if (methodSigs.Length > 0)
+                                {
+                                    this.CallTipShow(this.CurrentPos - 1, methodSigs);
                                 }
                             }
-                            if (methodSigs.Length > 0)
-                            {
-                                this.CallTipShow(this.CurrentPos - 1, methodSigs);
-                            }
                         }
                     }
-                    //string x = this.GetWordFromPosition(this.CurrentPos);
-                    //if (x != null)
-                    //{
-                     //   string y = this.GetWordFromPosition(this.CurrentPos - x.Length - 1);
-                        //this.GetCurLine().Substring(0, this.Column);
-                        //this.LineFromPosition
-                        //string stlye = this.StyleAt(this.CurrentPos);
-                    //    this.AutoCShow(tmp.Length, "MyMeta.Connect MyMeta.Databases output.preserve output.write output.writeln");
-                    //}
-                    
+
                 }
             }
         }
