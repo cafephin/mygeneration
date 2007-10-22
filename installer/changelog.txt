@@ -1,0 +1,24 @@
+2007.??.?? - MyGeneration 1.3 beta 2
+- Added MyGeneration Intellesense features. Ctrl-Space, autocomplete on ".", and calltip on "(" for methods work for the intrinsic objects. There is a lot of potential here for the future. This is just something I've implemented in C# and JScript to learn how scintilla works in this area.
+
+2007.10.19 - MyGeneration 1.3 beta 1
+- Upgraded DockPanel Suite
+- Upgraded to my own custom branch of the Scintilla.Net project
+- Complete rewrite of MDI Interface forms.
+- Moved current controls/forms to seperate assembly so that they can e used in IDE plugins if needed
+- Added a new Errors form that tracks application & template errors/exceptions. It can be saved to disk, emailed or cleared.
+- Added a new console form that tracks activity in the application. It can be saved to disk or cleared.
+- Using new toolbars and menus from 2.0. 
+- Added toolbar merging for document type dockable windows.
+- Added 3 types of plugins:
+	- Document plugin: This allows the plugin author to tie into our file menu and toolbars and open specified file type into a custom dockable document window.
+	- Content plugin: Allows a dockable window like a control bar or file browser that is not an editable/savable document, but provides some useful content/functionality to the user. The MyMeta browser and template broswer are good examples.
+	- Simple Execute plugin: This is a menu item/toolbar icon plugin that executes some code in the plugin. It doesn't tie into the dockpanel suite, but could potentially launch a modal window.
+- Added queries to proc-parameter descriptions in MyMeta for SQL Server.
+- Fixed a couple Postgresql MyMeta performance issues thanks to Michael McKean
+- Added ability to execute SQL in the current active document by clicking on the execute button in the MyMeta browser.
+- Error handling is more controlled now. We can more accurately determine if an error happened within a template or the application.
+- Xsd3b Plugin fixes/enhancements by k3b
+	- Bugfiexs xsd export with numeric(10,2) adn function as default-value
+	- Added more errorhandling with unique-constraints
+
