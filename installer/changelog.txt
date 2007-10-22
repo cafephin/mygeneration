@@ -1,4 +1,4 @@
-2007.??.?? - MyGeneration 1.3 beta 2
+2007.10.21 - MyGeneration 1.3 beta 2
 - Added MyGeneration Intellesense features. Ctrl-Space, autocomplete on ".", and calltip on "(" for methods work for the intrinsic objects. There is a lot of potential here for the future. This is just something I've implemented in C# and JScript to learn how scintilla works in this area.
 
 2007.10.19 - MyGeneration 1.3 beta 1
