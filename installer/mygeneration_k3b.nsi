@@ -143,6 +143,9 @@ Section "-Install Mygeneration and Register Shell Extensions"
   File /oname=dOOdads.chm ..\doodads\dOOdads.chm
   File /oname=Zeus.chm ..\mygeneration\Zeus\Zeus.chm
   File /oname=MyGeneration.chm .\MyGeneration.chm
+  
+  File /oname=todo.txt .\todo.txt
+  File /oname=changelog.txt .\changelog.txt
 
   File /oname=MyGeneration.ico ..\mygeneration\MyGeneration\Icons\MainWindow.ico
   File /oname=ZeusProject.ico ..\mygeneration\MyGeneration\Icons\NewZeus.ico

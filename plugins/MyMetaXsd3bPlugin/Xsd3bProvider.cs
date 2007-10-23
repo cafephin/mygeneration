@@ -465,29 +465,11 @@ perspective: with the Xsd3b plugin you can use MyGeneration without the need to 
 
                 // FKs = tab.GetParentRelationDefinitionRows().GetFieldRelationDefinitionRows().
                 foreach (RelationDefinitionRow rel in tab.GetParentRelationDefinitionRows())
-                {
-                    int ordinal = 1;
-                    foreach (FieldRelationDefinitionRow f in rel.GetFieldRelationDefinitionRows())
-                    {
-                        DataRow row = metaData.NewRow();
-                        metaData.Rows.Add(row);
+                    AddForeignKey(metaData, rel);
 
-                        set(row,"PK_TABLE_CATALOG",DBNull.Value); // GetDatabaseName();
-                        set(row,"PK_TABLE_SCHEMA",DBNull.Value);
-                        set(row,"FK_TABLE_CATALOG",DBNull.Value);
-                        set(row,"FK_TABLE_SCHEMA",DBNull.Value);
-                        set(row,"FK_TABLE_NAME",rel.ChildTableName);
-                        set(row,"PK_TABLE_NAME",rel.ParentTableName);
-                        set(row,"ORDINAL",ordinal++);
-                        set(row,"FK_NAME",rel.RelationName);
-                        set(row,"PK_NAME","PrimaryKey");
-                        set(row,"PK_COLUMN_NAME",f.ParentFieldName);
-                        set(row,"FK_COLUMN_NAME",f.ChildFieldName);
-
-                        set(row,"UPDATE_RULE",Xsd3bRule2OleRule(rel.UpdateRule)); //  relInfo.UpdateIntegrity;
-                        set(row,"DELETE_RULE",Xsd3bRule2OleRule(rel.DeleteRule));
-                    }
-                }
+                // bugfix 20071022 MyGen always have both parent-child and child-parent as FK
+                foreach (RelationDefinitionRow rel in tab.GetChildRelationDefinitionRows())
+                    AddForeignKey(metaData, rel);
             }
             finally
             {
@@ -496,6 +478,31 @@ perspective: with the Xsd3b plugin you can use MyGeneration without the need to 
             TraceTable("GetForeignKeys-" + databaseName, metaData);
 
             return metaData;
+        }
+
+        private void AddForeignKey(DataTable metaData, RelationDefinitionRow rel)
+        {
+            int ordinal = 1;
+            foreach (FieldRelationDefinitionRow f in rel.GetFieldRelationDefinitionRows())
+            {
+                DataRow row = metaData.NewRow();
+                metaData.Rows.Add(row);
+
+                set(row, "PK_TABLE_CATALOG", DBNull.Value); // GetDatabaseName();
+                set(row, "PK_TABLE_SCHEMA", DBNull.Value);
+                set(row, "FK_TABLE_CATALOG", DBNull.Value);
+                set(row, "FK_TABLE_SCHEMA", DBNull.Value);
+                set(row, "FK_TABLE_NAME", rel.ChildTableName);
+                set(row, "PK_TABLE_NAME", rel.ParentTableName);
+                set(row, "ORDINAL", ordinal++);
+                set(row, "FK_NAME", rel.RelationName);
+                set(row, "PK_NAME", "PrimaryKey");
+                set(row, "PK_COLUMN_NAME", f.ParentFieldName);
+                set(row, "FK_COLUMN_NAME", f.ChildFieldName);
+
+                set(row, "UPDATE_RULE", Xsd3bRule2OleRule(rel.UpdateRule)); //  relInfo.UpdateIntegrity;
+                set(row, "DELETE_RULE", Xsd3bRule2OleRule(rel.DeleteRule));
+            }
         }
 
         private static string Xsd3bRule2OleRule(string action)

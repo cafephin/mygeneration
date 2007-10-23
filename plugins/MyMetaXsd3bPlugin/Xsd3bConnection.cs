@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Data;
 using Dl3bak.Data.Xsd3b;
+using Dl3bak.Data.Xsd3b.Plugin;
+using System.Collections.Specialized;
+using System.IO;
 
 namespace MyMeta.Plugins.Xsd3b
 {
@@ -46,14 +49,56 @@ namespace MyMeta.Plugins.Xsd3b
         {
         }
 
+        #region connection cache
+        private static DateTime lastModified = DateTime.MinValue;
+        private static String lastConnectString = "";
+        private static SchemaXsd3bEx lastXsd3b = null;
+
+        /// <summary>
+        /// opening a connection might take a long time
+        /// opening a 2.3 MB umlfile with 86 tables requires 87 Seconds on a 2GHz pc with 768MB ram
+        /// 
+        /// therefor the connection opens it only once until either 
+        /// - the connectionstring changes
+        /// - the file modificationdate changes
+        /// </summary>
+        private static SchemaXsd3bEx getXsd3b(string connectionString)
+        {
+        	return SchemaXsd3bEx.ReadXsd3b(connectionString,null);
+        /* feature not completed yet, disabled
+            if (connectionString != null)
+            {
+                ListDictionary parms = PlugInSupport.GetConnectParameters(connectionString);
+                String fileName = parms[PlugInSupport.CONNECT_FILENAME].ToString();
+
+                if ((lastXsd3b == null) 
+                    || (connectionString.CompareTo(lastConnectString) != 0)
+                    || (lastModified != System.IO.File.GetLastWriteTime(fileName)))
+                {
+                    string tempDir = Path.Combine(Environment.GetEnvironmentVariable("temp"), "tmpLastLoaded.xsd3b");
+
+                    // hier gehts weiter
+
+                    lastXsd3b = null; // reset if there is a exception in ReadXsd3b
+                    lastXsd3b = SchemaXsd3bEx.ReadXsd3b(connectionString, null);
+                    lastModified = System.IO.File.GetLastWriteTime(fileName);
+                    lastConnectString = connectionString;                    
+                }
+            }
+            return lastXsd3b;
+            */
+        }
+        #endregion
         private SchemaXsd3bEx xsd3b = null;
         public SchemaXsd3bEx Xsd3b
         {
             get
             {
                 if (xsd3b == null)
-                    xsd3b = SchemaXsd3bEx.ReadXsd3b(this.ConnectionString, null);
-                //xsd3b = SchemaXsd3bEx.ReadXsd3b(@"D:\Eigene Dateien\SharpDevelop Projects\Xsd3bAll\nwind3b.xsd3b", null); // this.context.ConnectionString,null);
+                {
+                    xsd3b = getXsd3b(this.ConnectionString);
+                    // xsd3b = SchemaXsd3bEx.ReadXsd3b(this.ConnectionString,null);
+                }
                 return xsd3b;
             }
         }
@@ -92,7 +137,7 @@ namespace MyMeta.Plugins.Xsd3b
 
             try
             {
-                xsd3b = SchemaXsd3bEx.ReadXsd3b(this.ConnectionString, null);
+                xsd3b = getXsd3b(this.ConnectionString);
                 state = ConnectionState.Open;
             }
             catch (Exception)
