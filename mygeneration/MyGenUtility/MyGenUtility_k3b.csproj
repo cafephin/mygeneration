@@ -173,6 +173,7 @@
     <Compile Include="Forms\Errors\ErrorsForm.Designer.cs">
       <DependentUpon>ErrorsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\TemplateEditor\AutoCompleteHelper.cs" />
     <Compile Include="Forms\MyMeta\AddDbTargetMappingDialog.cs">
       <SubType>Form</SubType>
     </Compile>

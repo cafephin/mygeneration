@@ -99,6 +99,8 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="IScintillaNet.cs" />
+    <Compile Include="ISimplePluginManager.cs" />
     <Compile Include="IEditorManager.cs" />
     <Compile Include="IMyGenContent.cs" />
     <Compile Include="IMyGenDocument.cs" />
@@ -162,8 +164,6 @@
     <Compile Include="ZeusInterfaces\IZeusTemplateStub.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IDialogManager.cs" />
-    <Compile Include="IMyGenDialog.cs" />
     <Compile Include="ZeusInterfaces\IZeusSavedTemplateInput.cs" />
     <Compile Include="ZeusInterfaces\IZeusController.cs" />
     <Compile Include="ZeusInterfaces\IZeusSavedInput.cs" />
