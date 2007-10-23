@@ -8,3 +8,4 @@ TODO:
 - Create new help file for MyGeneration
 - Add Sample plugins of each type. Zip them up and put them on sourceforge.
 - Test in Windows Vista.
+- Update MyGenXsd3b.chm on How to import from uml/er-Modellfiles
