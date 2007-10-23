@@ -469,7 +469,7 @@ Section "Install Xsd3b Provider for xml (xsd, uml, entityrelationship)"
   ; Set output path to the installation directory.
   SetOutPath $INSTDIR
     
-  File /nonfatal /oname=MyMeta.Plugins.Xsd3b.dll ..\plugins\MyMetaVistaDB3xPlugin\bin\Release\MyMeta.Plugins.Xsd3b.dll
+  File /nonfatal /oname=MyMeta.Plugins.Xsd3b.dll ..\plugins\MyMetaXsd3bPlugin\bin\Release\MyMeta.Plugins.Xsd3b.dll
   File /nonfatal ..\mygeneration\MyGeneration\PluginResources\Dl3bak.*.dll
   File /nonfatal ..\mygeneration\MyGeneration\PluginResources\*xsd3b*.chm
 

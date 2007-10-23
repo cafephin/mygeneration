@@ -1,4 +1,5 @@
-2007.10.23
+2007.10.23 (k3b)
+- Bugfix: MyMeta.Plugins.Xsd3b.dll was not added to installer and therefore not available in MyGenerateion
 - Bugfix in xsd3b provider: Foreignkeys had only parent-child relation. Added child-parent relations
 - Added support for uml1.3 import from "Enterprise Architect 2.5"
 
