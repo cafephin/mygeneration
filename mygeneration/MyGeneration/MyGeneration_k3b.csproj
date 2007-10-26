@@ -78,7 +78,10 @@
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="adodb, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="adodb, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\installer\adodb.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -104,6 +107,10 @@
       <Name>WeifenLuo.WinFormsUI.Docking</Name>
       <HintPath>DockManager\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
+    <ProjectReference Include="..\..\plugins\MyMetaXsd3bPlugin\MyMetaXsd3bPlugin_k3b.csproj">
+      <Project>{17CC8224-460F-4990-8031-F23BF808075E}</Project>
+      <Name>MyMetaXsd3bPlugin_k3b</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\scintilla\ScintillaNET\ScintillaNET_k3b.csproj">
       <Project>{F9B6DABD-BBC1-4638-8CE6-A5C9506BFDCB}</Project>
       <Name>ScintillaNET_k3b</Name>

@@ -58,7 +58,7 @@ namespace MyMeta.Plugins
 
         string IMyMetaPlugin.ProviderName
         {
-            get { return @"Xsd3b"; }
+            get { return @"Xsd3b (xml,xsd,uml,er)"; }
         }
 
         string IMyMetaPlugin.ProviderUniqueKey
@@ -71,17 +71,15 @@ namespace MyMeta.Plugins
             get 
             { 
                 return
-@"Xsd3b is a provider and a consumer plugin for MyGeneration 
+@"Xsd3b is a provider and a consumer plugin for MyGeneration.
 
-use XSDFile s (*.xsd, *.xsd3b) as datasource instead of an online sqldatabase or create them from any MyGeneration Datasource.
+use xml,xsd,uml,er,xsd3b ... files as datasource instead of an online sqldatabase or create xml from any MyGeneration Datasource.
 
 (c) 2007 by dl3bak@qsl.net
 
-provider features: use XSDFile s (*.xsd, *.xsd3b) as datasource instead of an online sqldatabase.
+provider features: use xml based File as datasource instead of an online sqldatabase. New import fileformats are created through xsl.
 
-consumer features: transform the databaseschema from any MyGeneration Datasource into an xml file, either microsofts version of *.xsd ('typed dataset') or the much simpler and more powerful *.xsd3b 
-
-required files: MyMeta.Plugins.Xsd3b.dll, dl3bak.Xsd3b.dll, dl3bak.Xsd3b.xsd.dll
+consumer features: transform the databaseschema from any MyGeneration Datasource into an xml file, either microsofts version of *.xsd ('typed dataset') or the much simpler and more powerful *.xsd3b. This file can be used as a MyGeneration Datasource.
 
 perspective: with the Xsd3b plugin you can use MyGeneration without the need to have an online database at codegeneration. If you already have 'dotnet typed datasets' (*.xsd) you can use MyGeneration to create additional sourcefiles."; 
             }
@@ -117,7 +115,7 @@ perspective: with the Xsd3b plugin you can use MyGeneration without the need to 
                 binDir = Path.Combine(Path.Combine(binDir, "Templates"), "xsd3b");
                 string[] fileNames = Directory.GetFiles(binDir, "ExampleOracle2.xdm");
                 if (fileNames.Length > 0)
-                    return fileNames[0];
+                    return "FILETYPE=DATAMODELL;FILENAME=" + fileNames[0];
 
                 fileNames = Directory.GetFiles(binDir, "Example*.*");
                 if (fileNames.Length > 0)
