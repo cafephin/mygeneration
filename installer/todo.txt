@@ -1,4 +1,5 @@
 TODO:
+- Improve Project File support. Look at suggestions in enhancement list online/email.
 - Full Application Wide Test. Build test suite?
 - Create more tutorial videos on youtube
 - Create new help file for MyGeneration
