@@ -84,7 +84,7 @@ Section "Install Files and Reg Entries"
   File /oname=MyMeta.Plugins.DelimitedText.dll ..\plugins\MyMetaTextFilePlugin\bin\Release\MyMeta.Plugins.DelimitedText.dll
   File /oname=MyMeta.Plugins.VistaDB3x.dll ..\plugins\MyMetaVistaDB3xPlugin\bin\Release\MyMeta.Plugins.VistaDB3x.dll
   File /oname=MyMeta.Plugins.SqlCe.dll ..\plugins\MyMetaSqlCePlugin\bin\Release\MyMeta.Plugins.SqlCe.dll
-  File /oname=MyMeta.Plugins.Xsd3b.dll ..\plugins\MyMetaXsd3bPlugin\bin\Release\MyMeta.Plugins.Xsd3b.dll
+; File /oname=MyMeta.Plugins.Xsd3b.dll ..\plugins\MyMetaXsd3bPlugin\bin\Release\MyMeta.Plugins.Xsd3b.dll
   File /oname=MyMeta.dll ..\mymeta\bin\Release\MyMeta.dll
   File /oname=MyMeta.tlb ..\mymeta\bin\Release\MyMeta.tlb
   File /oname=MyMeta.chm ..\mymeta\MyMeta.chm
@@ -109,6 +109,27 @@ Section "Install Files and Reg Entries"
   File /oname=Settings\DbTargets.xml ..\mygeneration\MyGeneration\Settings\DbTargets.xml
   File /oname=Settings\Languages.xml ..\mygeneration\MyGeneration\Settings\Languages.xml
  
+SectionEnd ; end the section
+
+Section "Install Xsd3b Provider for xml (xsd, uml, entityrelationship)"
+  ; Set output path to the installation directory.
+  SetOutPath $INSTDIR
+  
+  File /nonfatal /oname=MyMeta.Plugins.Xsd3b.dll ..\plugins\MyMetaXsd3bPlugin\bin\Release\MyMeta.Plugins.Xsd3b.dll
+  File /nonfatal ..\mygeneration\MyGeneration\PluginResources\Dl3bak.*.dll
+  File /nonfatal ..\mygeneration\MyGeneration\PluginResources\*xsd3b*.chm
+
+  SetOutPath "$INSTDIR\Templates\Xsd3b"
+  ; CreateDirectory "$INSTDIR\Templates\Xsd3b"
+  
+  ; File /oname=Templates\Xsd3b\ToXsd3b.csgen ..\Templates\Xsd3b\ToXsd3b.csgen
+  ; File /oname=Templates\Xsd3b\ToXsd.csgen ..\Templates\Xsd3b\ToXsd.csgen
+  ; File ..\Templates\Xsd3b\*.*
+  File ..\plugins\MyMetaXsd3bPlugin\templates\xsd3b\*.*
+  
+  SetOutPath $INSTDIR
+
+  WriteUninstaller "uninstall.exe"
 SectionEnd ; end the section
 
 Section "MSDTC Reset Log (sometimes needed)"
