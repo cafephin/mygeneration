@@ -491,7 +491,7 @@ namespace MyGeneration
             this.Name = "ProjectBrowser";
             this.TabText = "Project Browser";
             this.Text = "Project Browser";
-            this.Closing += new System.ComponentModel.CancelEventHandler(this.ProjectBrowser_Closing);
+            this.FormClosing += new FormClosingEventHandler(ProjectBrowser_FormClosing);
             this.MouseLeave += new System.EventHandler(this.ProjectBrowser_MouseLeave);
             this.menuStripMain.ResumeLayout(false);
             this.menuStripMain.PerformLayout();
@@ -662,15 +662,19 @@ namespace MyGeneration
 		private void ProjectBrowser_MouseLeave(object sender, System.EventArgs e)
 		{
 			this.toolTipProjectBrowser.SetToolTip(treeViewProject, string.Empty);
-		}
+        }
 
-		private void ProjectBrowser_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-		{
-			if (!this.CanClose(true)) 
-			{
-				e.Cancel = true;
-			}
-		}
+        void ProjectBrowser_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if ((e.CloseReason == CloseReason.UserClosing) ||
+                (e.CloseReason == CloseReason.FormOwnerClosing))
+            {
+                if (!this.CanClose(true))
+                {
+                    e.Cancel = true;
+                }
+            }
+        }
 		#endregion
 
 		#region ContextMenu Event Handlers

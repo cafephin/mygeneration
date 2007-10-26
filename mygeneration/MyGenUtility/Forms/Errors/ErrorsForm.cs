@@ -168,6 +168,49 @@ namespace MyGeneration.Forms
             BindErrors();
         }
 
+        private void ErrorsForm_SizeChanged(object sender, EventArgs e)
+        {
+            ResizeGridColumns();
+        }
+
+        private void ResizeGridColumns() 
+        {
+            int columnCount = this.listView1.Columns.Count;
+            int targetWidth = this.listView1.Width;
+
+            if (targetWidth == 0) return;
+
+            int currentWidth = 0;
+            List<int> individualWidths = new List<int>();
+            bool ohCrapFlag = false;
+            foreach (ColumnHeader c in this.listView1.Columns) 
+            {
+                if (c.Width == 0) ohCrapFlag = true;
+                individualWidths.Add(c.Width);
+                currentWidth += c.Width;
+            }
+            if (currentWidth == 0) return;
+            else
+            {
+                if (ohCrapFlag)
+                {
+                    for (int i = 0; i < this.listView1.Columns.Count; i++)
+                    {
+                        individualWidths[i] = (targetWidth / columnCount);
+                    }
+                    currentWidth += individualWidths[0] * columnCount;
+                }
+                if (currentWidth != targetWidth && (currentWidth > 0))
+                {
+                    for (int i = 0; i < this.listView1.Columns.Count; i++)
+                    {
+                        ColumnHeader c = this.listView1.Columns[i];
+                        c.Width = Convert.ToInt32((int)targetWidth * ((float)individualWidths[i] / (float)currentWidth));
+                    }
+                }
+            }
+        }
+
         #region IMyGenErrorList Members
 
         public ToolStrip ToolStrip

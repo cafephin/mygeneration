@@ -90,7 +90,7 @@ namespace MyGeneration.Forms
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.TabText = "Error Details";
             this.Text = "Error Details";
-            this.Closing += new System.ComponentModel.CancelEventHandler(this.ErrorDetail_Closing);
+            this.FormClosing += new FormClosingEventHandler(ErrorDetail_FormClosing);
             this.Load += new System.EventHandler(this.ErrorDetail_Load);
             this.ResumeLayout(false);
 
@@ -102,40 +102,9 @@ namespace MyGeneration.Forms
             //this.errorDetailControl.Populate();
         }
 
-        private void ErrorDetail_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        void ErrorDetail_FormClosing(object sender, FormClosingEventArgs e)
         {
-            /*DialogResult r = DialogResult.None;
-
-            // Something's Changed since the load...
-            if (defaultSettingsControl.SettingsModified)
-            {
-                r = MessageBox.Show("Default settings have changed.\r\n Would you like to save before exiting?", "Default Settings Changed", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
-            }
-            else if (defaultSettingsControl.ConnectionInfoModified)
-            {
-                r = MessageBox.Show("The loaded connection profile has changed.\r\n Would you like to save before exiting?", "Connection Profile Changed", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
-            }
-
-            if (r != DialogResult.None)
-            {
-                if (r == DialogResult.Cancel)
-                {
-                    e.Cancel = true;
-                }
-                else if (r == DialogResult.Yes)
-                {
-                    if (defaultSettingsControl.Save())
-                    {
-                        this.DialogResult = DialogResult.OK;
-                        mdi.SendAlert(this, "UpdateDefaultSettings");
-                    }
-                }
-                else
-                {
-                    defaultSettingsControl.Cancel();
-                    this.DialogResult = DialogResult.Cancel;
-                }
-            }*/
+            //
         }
 
         #region IMyGenDocument Members

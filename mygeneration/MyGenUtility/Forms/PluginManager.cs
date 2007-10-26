@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
 using System.IO;
+using System.Windows.Forms;
 
 namespace MyGeneration
 {
@@ -148,5 +149,28 @@ namespace MyGeneration
                 return pluginLoadErrors;
             }
         }
+
+        public static void AddHelpMenuItems(EventHandler onClickEvent, ToolStripMenuItem pluginsMenuItem, int mergeIndex)
+        {
+            SortedList<string, string> chms = new SortedList<string, string>();
+            chms.Add("MyMeta.chm", "MyMeta API Reference");
+            chms.Add("Zeus.chm", "Zeus API Reference");
+            chms.Add("Dnp.Utils.chm", "Dnp.Utils API Reference");
+            chms.Add("dOOdads.chm", "dOOdads API Reference");
+            chms.Add("MyGenXsd3b.chm", "MyGenXsd3b Help");
+            chms.Add("xsd3b.chm", "xsd3b Help");
+
+            foreach (string key in chms.Keys) 
+            {
+                ToolStripMenuItem i = new ToolStripMenuItem(chms[key]);
+                i.Tag = @"\" + key;
+                i.Click += new EventHandler(onClickEvent);
+                pluginsMenuItem.DropDownItems.Insert(mergeIndex++, i);
+            }
+
+
+            // Could add others by adding to plugin API
+        }
+
     }
 }

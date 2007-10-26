@@ -196,7 +196,7 @@ namespace MyGeneration
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.TabText = "Default Settings";
             this.Text = "Default Settings";
-            this.Closing += new System.ComponentModel.CancelEventHandler(this.DefaultProperties_Closing);
+            this.FormClosing += new FormClosingEventHandler(DefaultProperties_FormClosing);
             this.Load += new System.EventHandler(this.DefaultProperties_Load);
             this.toolStripOptions.ResumeLayout(false);
             this.toolStripOptions.PerformLayout();
@@ -213,38 +213,42 @@ namespace MyGeneration
             this.defaultSettingsControl.Populate();
         }
 
-        private void DefaultProperties_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        void DefaultProperties_FormClosing(object sender, FormClosingEventArgs e)
         {
-            DialogResult r = DialogResult.None;
+            if ((e.CloseReason == CloseReason.UserClosing) ||
+                (e.CloseReason == CloseReason.FormOwnerClosing))
+            {
+                DialogResult r = DialogResult.None;
 
-            // Something's Changed since the load...
-            if (defaultSettingsControl.SettingsModified)
-            {
-                r = MessageBox.Show("Default settings have changed.\r\n Would you like to save before exiting?", "Default Settings Changed", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
-            }
-            else if (defaultSettingsControl.ConnectionInfoModified)
-            {
-                r = MessageBox.Show("The loaded connection profile has changed.\r\n Would you like to save before exiting?", "Connection Profile Changed", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
-            }
-
-            if (r != DialogResult.None)
-            {
-                if (r == DialogResult.Cancel)
+                // Something's Changed since the load...
+                if (defaultSettingsControl.SettingsModified)
                 {
-                    e.Cancel = true;
+                    r = MessageBox.Show("Default settings have changed.\r\n Would you like to save before exiting?", "Default Settings Changed", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
                 }
-                else if (r == DialogResult.Yes)
+                else if (defaultSettingsControl.ConnectionInfoModified)
                 {
-                    if (defaultSettingsControl.Save())
+                    r = MessageBox.Show("The loaded connection profile has changed.\r\n Would you like to save before exiting?", "Connection Profile Changed", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
+                }
+
+                if (r != DialogResult.None)
+                {
+                    if (r == DialogResult.Cancel)
                     {
-                        this.DialogResult = DialogResult.OK;
-                        mdi.SendAlert(this, "UpdateDefaultSettings");
+                        e.Cancel = true;
                     }
-                }
-                else
-                {
-                    defaultSettingsControl.Cancel();
-                    this.DialogResult = DialogResult.Cancel;
+                    else if (r == DialogResult.Yes)
+                    {
+                        if (defaultSettingsControl.Save())
+                        {
+                            this.DialogResult = DialogResult.OK;
+                            mdi.SendAlert(this, "UpdateDefaultSettings");
+                        }
+                    }
+                    else
+                    {
+                        defaultSettingsControl.Cancel();
+                        this.DialogResult = DialogResult.Cancel;
+                    }
                 }
             }
         }

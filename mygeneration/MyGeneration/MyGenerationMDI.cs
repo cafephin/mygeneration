@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.Diagnostics;
 using System.Threading;
 
 using WeifenLuo.WinFormsUI;
@@ -81,6 +82,8 @@ namespace MyGeneration
 
             ContentManager.AddNewContentMenuItems(openContentDynamicToolStripMenuItem_Click, this.pluginsToolStripMenuItem,
                 this.toolStrip1);
+
+            PluginManager.AddHelpMenuItems(chmToolStripMenuItem_Click, this.helpToolStripMenuItem, 2);
 
             this.RefreshRecentFiles();
         }
@@ -171,6 +174,54 @@ namespace MyGeneration
                     this.OptionsDockContent.Show(this.dockPanel);
 
                 this.OptionsDockContent.Activate();
+            }
+        }
+
+        private void MyGenerationMDI_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            bool allowPrevent = true;
+            if (e.CloseReason == CloseReason.TaskManagerClosing
+                || e.CloseReason == CloseReason.WindowsShutDown
+                || e.CloseReason == CloseReason.ApplicationExitCall)
+            {
+                allowPrevent = false;
+            }
+            if (!this.Shutdown(allowPrevent))
+            {
+                e.Cancel = true;
+                return;
+            }
+        }
+
+        private void dockPanel_ActiveContentChanged(object sender, EventArgs e)
+        {
+
+            IDockContent fe = this.dockPanel.ActiveContent as IDockContent;
+            if (fe is IEditControl)
+            {
+                ToolStripManager.RevertMerge(toolStrip1);
+            }
+            else if (fe is IMyGenDocument)
+            {
+                ToolStripManager.RevertMerge(toolStrip1);
+                IMyGenDocument mgd = fe as IMyGenDocument;
+                if (mgd.ToolStrip != null)
+                {
+                    ToolStripManager.Merge(mgd.ToolStrip, this.toolStrip1);
+                }
+            }
+            else if (fe == null)
+            {
+                bool foundDoc = false;
+                foreach (DockContent c in dockPanel.Contents)
+                {
+                    if ((c is IMyGenDocument) && (!c.IsHidden))
+                    {
+                        foundDoc = true;
+                        break;
+                    }
+                }
+                if (!foundDoc) ToolStripManager.RevertMerge(toolStrip1);
             }
         }
 
@@ -366,39 +417,6 @@ namespace MyGeneration
             return content;
         }
 
-        private void dockPanel_ActiveContentChanged(object sender, EventArgs e)
-        {
-
-            IDockContent fe = this.dockPanel.ActiveContent as IDockContent;
-            if (fe is IEditControl)
-            {
-                ToolStripManager.RevertMerge(toolStrip1);
-            }
-            else if (fe is IMyGenDocument)
-            {
-                ToolStripManager.RevertMerge(toolStrip1);
-                IMyGenDocument mgd = fe as IMyGenDocument;
-                if (mgd.ToolStrip != null)
-                {
-                    ToolStripManager.Merge(mgd.ToolStrip, this.toolStrip1);
-                }
-            }
-            else if (fe == null)
-            {
-                bool foundDoc = false;
-                foreach (DockContent c in dockPanel.Contents)
-                {
-                    if ((c is IMyGenDocument) && (!c.IsHidden))
-                    {
-                        foundDoc = true;
-                        break;
-                    }
-                }
-                if (!foundDoc) ToolStripManager.RevertMerge(toolStrip1);
-            }
-        }
-
-
         private bool Shutdown(bool allowPrevent)
         {
             bool shutdown = true;
@@ -439,16 +457,45 @@ namespace MyGeneration
             return shutdown;
         }
 
-        private void MyGenerationMDI_FormClosing(object sender, FormClosingEventArgs e)
+        #region Dran n' Drop
+        private void MyGenerationMDI_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
         {
-            if (!this.Shutdown(true))
-            {
-                e.Cancel = true;
-                return;
-            }
-
-            //Application.Exit();
+            string[] filenames = (string[])e.Data.GetData(DataFormats.FileDrop);
+            OpenDocuments(filenames);
         }
+
+        private void MyGenerationMDI_DragEnter(object sender, System.Windows.Forms.DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop, false) == true)
+            {
+                bool foundValidFile = false;
+                string[] filenames = (string[])e.Data.GetData(DataFormats.FileDrop);
+                foreach (string filename in filenames)
+                {
+                    int idx = filename.LastIndexOf('.');
+                    if (idx >= 0) {
+                        string ext = filename.Substring(idx + 1);
+                    foreach (IEditorManager em in PluginManager.EditorManagers.Values)
+                    {
+                        if (em.FileExtensions.ContainsKey(ext))
+                        {
+                            foundValidFile = true;
+                            break;
+                        }
+                    }
+                    }
+                    if (foundValidFile) break;
+                }
+
+                // allow them to continue
+                // (without this, the cursor stays a "NO" symbol
+                if (foundValidFile)
+                {
+                    e.Effect = DragDropEffects.All;
+                }
+            }
+        }
+        #endregion
 
         #region DockManager Helper Methods
         public bool IsDocumentOpen(string text, params IMyGenDocument[] docsToExclude)
@@ -588,9 +635,14 @@ namespace MyGeneration
             }
         }
 
-        private void contentsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void chmToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            ToolStripMenuItem item = sender as ToolStripMenuItem;
 
+            if (item != null)
+            {
+                Zeus.WindowsTools.LaunchHelpFile(this.startupPath + item.Tag.ToString(), ProcessWindowStyle.Maximized, true);
+            }
         }
 
         private void recentFilesToolStripMenuItem_Click(object sender, EventArgs e)

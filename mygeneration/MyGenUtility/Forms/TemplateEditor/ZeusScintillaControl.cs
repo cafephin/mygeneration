@@ -10,6 +10,7 @@ using Scintilla.Forms;
 using Scintilla.Enums;
 using Zeus;
 using Zeus.Templates;
+using MyGeneration.AutoCompletion;
 
 namespace MyGeneration
 {
@@ -39,7 +40,6 @@ namespace MyGeneration
         private static bool LastSearchIsCaseSensitiveStatic = true;
         private static bool LastSearchIsRegexStatic = false;
         private Hashtable ignoredKeys = new Hashtable();
-        private bool _isControlPressed = false;
         
         public static FindForm FindDialog = new FindForm();
         public static ReplaceForm ReplaceDialog = new ReplaceForm();
@@ -52,151 +52,16 @@ namespace MyGeneration
             this.GotFocus += new EventHandler(ZeusScintillaControl_GotFocus);
 
             this.Configure = StaticConfigure;
-            this.KeyDown += new KeyEventHandler(ZeusScintillaControl_KeyDown);
-            this.KeyUp += new KeyEventHandler(ZeusScintillaControl_KeyUp);
             this.CharAdded += new EventHandler<CharAddedEventArgs>(ZeusScintillaControl_CharAdded);
+            this.AllowDrop = true;
             this.IsAutoCIgnoreCase = true;
         }
 
         private void ZeusScintillaControl_CharAdded(object sender, CharAddedEventArgs e)
-        { 
-            // If the language is one that supports it, we will add autocomplete
-            if (this.ConfigurationLanguage == "TaggedC#" || this.ConfigurationLanguage == "C#"
-                || this.ConfigurationLanguage == "JScript" || this.ConfigurationLanguage == "TaggedJScript")
-            {
-                if ((e.Ch == ' ' && _isControlPressed) || (e.Ch == '.') || (e.Ch == '('))
-                {
-                    int pos = this.CurrentPos - 1;
-                    char c = CharAt(--pos);
-                    Stack stk = new Stack();
-                    System.Text.StringBuilder tmp = new System.Text.StringBuilder();
-                    while (c.Equals('_') || c.Equals('.') || char.IsLetterOrDigit(c))
-                    {
-                        if (c == '.')
-                        {
-                            if (tmp.Length > 0)
-                            {
-                                stk.Push(tmp.ToString());
-                                tmp.Remove(0, tmp.Length);
-                            }
-                        }
-                        else
-                        {
-                            tmp.Insert(0, c);
-                        }
-                        c = CharAt(--pos);
-                    }
-                    if (tmp.Length > 0)
-                    {
-                        stk.Push(tmp.ToString());
-                        tmp.Remove(0, tmp.Length);
-                    }
-
-                    NodeInfo n = null;
-                    NodeInfo nextToLastNode = null;
-                    System.Collections.Generic.List<NodeInfo> ns = null;
-                    string lastmsg = null;
-                    if (stk.Count > 0)
-                    {
-                        lastmsg = stk.Pop().ToString();
-                        if (AutoCompleteHelper.RootNodes.ContainsKey(lastmsg))
-                        {
-                            n = AutoCompleteHelper.RootNodes[lastmsg];
-                        }
-                    }
-
-                    while (n != null && stk.Count > 0)
-                    {
-                        nextToLastNode = n;
-                        int stkCount = stk.Count;
-                        lastmsg = stk.Pop().ToString();
-
-                        ns = n[lastmsg];
-                        if (ns.Count == 1)
-                        {
-                            n = ns[0];
-                        }
-                        else
-                        {
-                            n = null;
-                            if (stk.Count != 0)
-                            {
-                                ns = null;
-                            }
-                        }
-                    }
-
-                    if (e.Ch == ' ')
-                    {
-                        this.DeleteBack();
-
-                        if (n != null)
-                        {
-                            if (this.CharAt(this.CurrentPos - 1) == '.')
-                            {
-                                this.AutoCShow(0, n.MembersString);
-                            }
-                            else
-                            {
-                                this.AutoCShow(n.Name.Length, nextToLastNode.MembersString);
-                            }
-                        }
-                        else if (stk.Count == 0 && nextToLastNode != null)
-                        {
-                            this.AutoCShow(lastmsg.Length, nextToLastNode.MembersString);
-                        }
-                        else if (stk.Count == 0 && n == null && nextToLastNode == null)
-                        {
-                            if (lastmsg == null) lastmsg = string.Empty;
-                            
-                            this.AutoCShow(lastmsg.Length, AutoCompleteHelper.RootNodesAutoCompleteString);
-                        }
-                    }
-                    if (e.Ch == '.' || e.Ch == '(')
-                    {
-                        if (n != null)
-                        {
-                            if (e.Ch == '.')
-                            {
-                                this.AutoCShow(0, n.MembersString);
-                            }
-                        }
-                        if (ns != null)
-                        {
-                            if (e.Ch == '(')
-                            {
-                                string methodSigs = string.Empty;
-                                int i = 0;
-                                foreach (NodeInfo ni in ns)
-                                {
-                                    if (ni.MemberType == System.Reflection.MemberTypes.Method)
-                                    {
-                                        i++;
-                                        if (methodSigs.Length > 0) methodSigs += "\n";
-                                        //methodSigs += '\u0001' + i.ToString() + " of " + ns.Count + '\u0002' + " " + ni.ParameterString;
-                                        methodSigs += ni.ParameterString;
-                                    }
-                                }
-                                if (methodSigs.Length > 0)
-                                {
-                                    this.CallTipShow(this.CurrentPos - 1, methodSigs);
-                                }
-                            }
-                        }
-                    }
-
-                }
-            }
-        }
-
-        private void ZeusScintillaControl_KeyDown(object sender, KeyEventArgs e)
         {
-            _isControlPressed = e.Control;
-        }
-
-        private void ZeusScintillaControl_KeyUp(object sender, KeyEventArgs e)
-        {
-            _isControlPressed = e.Control;
+            this.Cursor_ = (int)Scintilla.Enums.CursorShape.Wait;
+            AutoCompleteHelper.CharAdded(this, e.Ch);
+            this.Cursor_ = (int)Scintilla.Enums.CursorShape.Normal;
         }
 
         void ZeusScintillaControl_GotFocus(object sender, EventArgs e)

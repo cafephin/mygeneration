@@ -183,8 +183,21 @@ namespace MyGeneration
             this.scintillaGuiSource.UpdateUI += new EventHandler<UpdateUIEventArgs>(UpdateUI);
             this.scintillaOutput.UpdateUI += new EventHandler<UpdateUIEventArgs>(UpdateUI);
 
-			//this.KeyDown += new KeyEventHandler(TemplateEditor_KeyDown);
+            // Handle drag/drop
+            this.scintillaTemplateCode.UriDropped += new EventHandler<UriDroppedEventArgs>(ZeusScintillaControl_UriDropped);
+            this.scintillaTemplateSource.UriDropped += new EventHandler<UriDroppedEventArgs>(ZeusScintillaControl_UriDropped);
+            this.scintillaGUICode.UriDropped += new EventHandler<UriDroppedEventArgs>(ZeusScintillaControl_UriDropped);
+            this.scintillaGuiSource.UriDropped += new EventHandler<UriDroppedEventArgs>(ZeusScintillaControl_UriDropped);
+            this.scintillaOutput.UriDropped += new EventHandler<UriDroppedEventArgs>(ZeusScintillaControl_UriDropped);
 		}
+
+
+
+        void ZeusScintillaControl_UriDropped(object sender, UriDroppedEventArgs e)
+        {
+            string[] files = e.UriText.Split('|');
+            this.mdi.OpenDocuments(files);
+        }
 
 		protected override string GetPersistString()
 		{
@@ -1426,6 +1439,7 @@ namespace MyGeneration
             this.goToLineToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.G)));
             this.goToLineToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
             this.goToLineToolStripMenuItem.Text = "Go to Line ...";
+            this.goToLineToolStripMenuItem.Click += new System.EventHandler(this.goToLineToolStripMenuItem_Click);
             // 
             // templateToolStripMenuItem
             // 
@@ -1545,8 +1559,8 @@ namespace MyGeneration
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.ClientSize = new System.Drawing.Size(900, 689);
-            this.Controls.Add(this.toolStripOptions);
             this.Controls.Add(this.menuStripMain);
+            this.Controls.Add(this.toolStripOptions);
             this.Controls.Add(this.tabControlTemplate);
             this.Controls.Add(this.splitterProperties);
             this.Controls.Add(this.panelProperties);
@@ -1556,7 +1570,7 @@ namespace MyGeneration
             this.TabText = "Template Editor";
             this.Text = "Template Editor";
             this.Activated += new System.EventHandler(this.TemplateEditor_Activated);
-            this.Closing += new System.ComponentModel.CancelEventHandler(this.TemplateEditor_Closing);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TemplateEditor_FormClosing);
             this.DockStateChanged += new System.EventHandler(this.TemplateEditor_DockStateChanged);
             this.Load += new System.EventHandler(this.TemplateEditor_Load);
             this.panelProperties.ResumeLayout(false);
@@ -2271,11 +2285,20 @@ namespace MyGeneration
             }
         }
 
-        private void TemplateEditor_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+
+        private void TemplateEditor_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!this.CanClose(true))
+            if ((e.CloseReason == CloseReason.UserClosing) ||
+                (e.CloseReason == CloseReason.FormOwnerClosing))
             {
-                e.Cancel = true;
+                if (!this.CanClose(true))
+                {
+                    e.Cancel = true;
+                }
+                else
+                {
+                    e.Cancel = false;
+                }
             }
         }
 
@@ -2555,6 +2578,7 @@ namespace MyGeneration
         }
 
         #endregion
+
     }
 
 	/// <summary>

@@ -1,3 +1,10 @@
+2007.10.25 - MyGeneration 1.3 beta 3
+- Bugfix: Goto dialog didn't work.
+- Bugfix: Fixed form closing issues
+- Bugfix: Add drag and drop back into the app
+- Bugfix: Add Help file support again
+- Enhancement: Improved autocomplete/intellisense.
+- Enhancement: Clean up errors grid. Add more useful info and resize grid when form resizes.
 2007.10.23 (k3b)
 - Bugfix: MyMeta.Plugins.Xsd3b.dll was not added to installer and therefore not available in MyGenerateion
 - Bugfix in xsd3b provider: Foreignkeys had only parent-child relation. Added child-parent relations

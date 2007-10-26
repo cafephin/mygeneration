@@ -102,7 +102,8 @@ namespace Scintilla
                 fixed (byte* b = buffer)
                 {
                     NativeMethods.DragQueryFileA(hDrop, i, (IntPtr)b, 1024);
-                    files = files + ' ' + MarshalStr((IntPtr)b);
+                    if (files.Length > 0) files += "|";
+                    files += MarshalStr((IntPtr)b);
                 }
             }
             NativeMethods.DragFinish(hDrop);
@@ -122,14 +123,14 @@ namespace Scintilla
             //	Windows Forms Sends Notify messages back to the originating
             //	control ORed with 0x2000. This is way cool becuase we can listen for
             //	WM_NOTIFY messages originating form our own hWnd (from Scintilla)
-            if ((m.Msg ^ 0x2000) != NativeMethods.WM_NOTIFY)
-            {
-                base.WndProc(ref m);
-                return;
-            }
-            else if ((m.Msg) == NativeMethods.WM_DROPFILES)
+            if ((m.Msg) == NativeMethods.WM_DROPFILES)
             {
                 HandleFileDrop(m.WParam);
+                return;
+            }
+            else if ((m.Msg ^ 0x2000) != NativeMethods.WM_NOTIFY)
+            {
+                base.WndProc(ref m);
                 return;
             }
 

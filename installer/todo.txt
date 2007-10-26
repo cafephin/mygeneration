@@ -1,11 +1,8 @@
 TODO:
 - Full Application Wide Test. Build test suite?
-- Improve intellisense to track non-intrinsic object variables and also support VB/VBS.
-- Create more tutorial videos on myspace
-- Clean up errors grid. Add more useful info and resize grid when form resizes.
-- Add drag and drop back into the app
-- Add Help file support again
+- Create more tutorial videos on youtube
 - Create new help file for MyGeneration
+- Update all API Documentation
 - Add Sample plugins of each type. Zip them up and put them on sourceforge.
 - Test in Windows Vista.
 - Update MyGenXsd3b.chm on How to import from uml/er-Modellfiles

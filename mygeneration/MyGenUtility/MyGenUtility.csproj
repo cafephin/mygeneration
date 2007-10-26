@@ -174,7 +174,12 @@
     <Compile Include="Forms\Errors\ErrorsForm.Designer.cs">
       <DependentUpon>ErrorsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\TemplateEditor\AutoCompleteHelper.cs" />
+    <Compile Include="Forms\TemplateEditor\AutoCompletion\AutoCompleteHelper.cs" />
+    <Compile Include="Forms\TemplateEditor\AutoCompletion\AutoCompleteNodeInfo.cs" />
+    <Compile Include="Forms\TemplateEditor\AutoCompletion\VBNetAutoCompleteHelper.cs" />
+    <Compile Include="Forms\TemplateEditor\AutoCompletion\VBScriptAutoCompleteHelper.cs" />
+    <Compile Include="Forms\TemplateEditor\AutoCompletion\JScriptAutoCompleteHelper.cs" />
+    <Compile Include="Forms\TemplateEditor\AutoCompletion\CSharpAutoCompleteHelper.cs" />
     <Compile Include="MyGenError.cs" />
     <Compile Include="Forms\MyMeta\AddDbTargetMappingDialog.cs">
       <SubType>Form</SubType>

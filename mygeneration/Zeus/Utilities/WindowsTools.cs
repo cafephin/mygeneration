@@ -54,6 +54,19 @@ namespace Zeus
             }
         }
 
+        public static void LaunchHelpFile(string uri, ProcessWindowStyle windowStyle, bool createNoWindow)
+        {
+            try
+            {
+                Process p = new Process();
+                p.StartInfo.FileName = uri;
+                p.StartInfo.CreateNoWindow = createNoWindow;
+                p.StartInfo.WindowStyle = windowStyle;
+                p.Start();
+            }
+            catch { }
+        }
+
         private static string s_browser = string.Empty;
 
         private static string DefaultBrowser

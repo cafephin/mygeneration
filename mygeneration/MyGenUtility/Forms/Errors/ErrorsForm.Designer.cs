@@ -151,6 +151,7 @@ namespace MyGeneration.Forms
             this.TabText = "Errors";
             this.Text = "Errors";
             this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
+            this.SizeChanged += new System.EventHandler(this.ErrorsForm_SizeChanged);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
