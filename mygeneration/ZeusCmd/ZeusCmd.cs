@@ -10,6 +10,7 @@ using Zeus.Serializers;
 using Zeus.UserInterface;
 using MyGeneration;
 using MyMeta;
+using Microsoft.Win32;
 
 namespace Zeus
 {
@@ -22,30 +23,31 @@ namespace Zeus
 		private CmdInput _argmgr;
 		private int _returnValue = 0;
 
-		public ZeusCmd(string[] args) 
-		{
-			_log = new Log();
-			if (_ProcessArgs(args)) 
-			{
-				switch (_argmgr.Mode) 
-				{
-					case ProcessMode.Project:
-						_ProcessProject();
-						break;
-					case ProcessMode.Template:
-						_ProcessTemplate();
-						break;
-					case ProcessMode.MyMeta:
-						_ProcessMyMeta();
-						break;
-				}
-			}
-			else 
-			{
-				_returnValue = -1;
-			}
-			_log.Close();
-		}
+        public ZeusCmd(string[] args)
+        {
+            _log = new Log();
+            if (_ProcessArgs(args))
+            {
+                switch (_argmgr.Mode)
+                {
+                    case ProcessMode.Project:
+                        _ProcessProject();
+                        break;
+                    case ProcessMode.Template:
+                        _ProcessTemplate();
+                        break;
+                    case ProcessMode.MyMeta:
+                        _ProcessMyMeta();
+                        break;
+                }
+            }
+            else
+            {
+                _returnValue = -1;
+            }
+
+            _log.Close();
+        }
 
 		public int ReturnValue { get { return _returnValue; } }
 
@@ -124,31 +126,31 @@ namespace Zeus
 			}
 		}
 
-		private void _ProcessMyMeta() 
-		{
-			IDbConnection connection = null;
-			try 
-			{
-				dbRoot mymeta = new dbRoot();
-				connection = mymeta.BuildConnection(_argmgr.ConnectionType, _argmgr.ConnectionString);
-				_log.Write("Beginning test for {0}: {1}", connection.GetType().ToString(), _argmgr.ConnectionString);
-				connection.Open();
-				connection.Close();
-				_log.Write("Test Successful");
-			}
-			catch (Exception ex)
-			{
-				_log.Write("Test Failed");
-				if (_log != null) _log.Write(ex);
-				_returnValue = -1;
-			}
+        private void _ProcessMyMeta()
+        {
+            IDbConnection connection = null;
+            try
+            {
+                dbRoot mymeta = new dbRoot();
+                connection = mymeta.BuildConnection(_argmgr.ConnectionType, _argmgr.ConnectionString);
+                _log.Write("Beginning test for {0}: {1}", connection.GetType().ToString(), _argmgr.ConnectionString);
+                connection.Open();
+                connection.Close();
+                _log.Write("Test Successful");
+            }
+            catch (Exception ex)
+            {
+                _log.Write("Test Failed");
+                if (_log != null) _log.Write(ex);
+                _returnValue = -1;
+            }
 
-			if (connection != null) 
-			{
-				connection.Close();
-				connection = null;
-			}
-		}
+            if (connection != null)
+            {
+                connection.Close();
+                connection = null;
+            }
+        }
 
 		private void _ProcessProject() 
 		{

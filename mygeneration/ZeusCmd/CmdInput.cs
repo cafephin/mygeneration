@@ -23,8 +23,8 @@ namespace Zeus
 		private bool _silent = false;
 		private bool _valid = true;
 		private bool _showHelp = false;
-		private bool _enableLog = false;
-		private bool _makeRelative = false;
+        private bool _enableLog = false;
+        private bool _makeRelative = false;
 		private string _errorMessage = null;
 		private string _pathProject = null;
 		private string _pathTemplate = null;
@@ -32,8 +32,8 @@ namespace Zeus
 		private string _pathXmlData = null;
 		private string _pathCollectXmlData = null;
 		private string _pathLog = null;
-		private string _connType = null;
-		private string _connString = null;
+        private string _connType = null;
+        private string _connString = null;
 		private ArrayList _moduleNames = new ArrayList();
 		private ZeusTemplate _template = null;
 		private ZeusProject _project = null;
@@ -61,22 +61,22 @@ namespace Zeus
 			{
 				arg = args[i];
 
-				switch (arg) 
-				{
-					case "-tc":
-					case "-testconnection":
-						this._mode = ProcessMode.MyMeta;
-						if (numargs > (i+2)) 
-						{
-							this._connType = args[++i];
-							this._connString = args[++i];
-						}
-						else 
-						{
-							this._valid = false;
-							this._errorMessage = "Invalid switch usage: " + arg;
-						}
-						break;
+				switch (arg)
+                {
+                    case "-tc":
+                    case "-testconnection":
+                        this._mode = ProcessMode.MyMeta;
+                        if (numargs > (i + 2))
+                        {
+                            this._connType = args[++i];
+                            this._connString = args[++i];
+                        }
+                        else
+                        {
+                            this._valid = false;
+                            this._errorMessage = "Invalid switch usage: " + arg;
+                        }
+                        break;
 					case "-aio":
 					case "-addintrinsicobject":
 						if (numargs > (i+3)) 
@@ -107,7 +107,7 @@ namespace Zeus
 							this._valid = false;
 							this._errorMessage = "Invalid switch usage: " + arg;
 						}
-						break;
+                        break;
 					case "-r":
 					case "-relative":
 						this._makeRelative = true;

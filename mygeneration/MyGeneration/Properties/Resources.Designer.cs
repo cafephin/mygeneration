@@ -74,6 +74,13 @@ namespace MyGeneration.Properties {
             }
         }
         
+        internal static System.Drawing.Icon MyGeneration {
+            get {
+                object obj = ResourceManager.GetObject("MyGeneration", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap mygenlogo1 {
             get {
                 object obj = ResourceManager.GetObject("mygenlogo1", resourceCulture);

@@ -97,6 +97,10 @@ Section "-Install Mygeneration and Register Shell Extensions"
   ;Create Settings Directory 
   ;ExecShell mkdir $INSTDIR\Settings
 
+  ;unregister current MyMeta.dll if it exists
+  IfFileExists "$INSTDIR\MyMeta.dll" 0 +2
+	ExecWait `"$WINDIR\Microsoft.NET\Framework\v2.0.50727\regasm.exe" /u "$INSTDIR\MyMeta.dll" /tlb:MyMeta.tlb`
+  
   ; Get latest DLLs and EXE
   File /oname=ZeusCmd.exe ..\mygeneration\ZeusCmd\bin\Release\ZeusCmd.exe
   File /oname=MyGeneration.exe ..\mygeneration\MyGeneration\bin\Release\MyGeneration.exe
@@ -143,6 +147,10 @@ Section "-Install Mygeneration and Register Shell Extensions"
   
   File /oname=todo.txt .\todo.txt
   File /oname=changelog.txt .\changelog.txt
+  
+  File /oname=changelog.txt .\UnregisterMyMeta12.reg
+  File /oname=changelog.txt .\UnregisterMyMeta13.reg
+  File /oname=changelog.txt .\RegisterMyMeta.bat
 
   File /oname=MyGeneration.ico ..\mygeneration\MyGeneration\Icons\MainWindow.ico
   File /oname=ZeusProject.ico ..\mygeneration\MyGeneration\Icons\NewZeus.ico
@@ -535,8 +543,9 @@ UninstallIcon ".\modern-uninstall.ico"
 ; special uninstall section.
 Section "Uninstall"
     
-  ExecWait `"$WINDIR\Microsoft.Net\Framework\v1.1.4322\regasm.exe" "$INSTDIR\MyMeta.dll" /unregister`
-
+  IfFileExists "$INSTDIR\MyMeta.dll" 0 +2
+	ExecWait `"$WINDIR\Microsoft.NET\Framework\v2.0.50727\regasm.exe" /u "$INSTDIR\MyMeta.dll" /tlb:MyMeta.tlb`
+  
   ; remove registry keys
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\MyGeneration"
   DeleteRegKey HKLM SOFTWARE\MyGeneration
