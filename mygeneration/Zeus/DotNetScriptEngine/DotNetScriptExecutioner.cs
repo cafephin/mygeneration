@@ -339,7 +339,6 @@ namespace Zeus.DotNetScript
 			if (!references.Contains("System.dll")) references.Add("System.dll");
 			if (!references.Contains("System.EnterpriseServices.dll")) references.Add("System.EnterpriseServices.dll");
 			if (!references.Contains("Zeus.dll")) references.Add("Zeus.dll");
-			if (!references.Contains("DotNetScriptingEngine.dll")) references.Add("DotNetScriptingEngine.dll");
 			if (!references.Contains("PluginInterfaces.dll")) references.Add("PluginInterfaces.dll");
 			foreach (string reference in references) 
 			{
