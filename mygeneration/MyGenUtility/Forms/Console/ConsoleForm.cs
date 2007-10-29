@@ -55,7 +55,10 @@ namespace MyGeneration.Forms
         private void ConsoleForm_VisibleChanged(object sender, EventArgs e)
         {
             zcs.EnsureVisibleEnforcePolicy(zcs.LineCount);
+            zcs.SelectionStart = zcs.CurrentPos;
+            zcs.SelectionEnd = zcs.CurrentPos;
             zcs.ScrollCaret();
+            
             zcs.GrabFocus();
         }
 
@@ -93,6 +96,8 @@ namespace MyGeneration.Forms
             zcs.GrabFocus();
             zcs.GotoLine(zcs.LineCount);
             zcs.EnsureVisibleEnforcePolicy(zcs.LineCount);
+            zcs.SelectionStart = zcs.CurrentPos;
+            zcs.SelectionEnd = zcs.CurrentPos;
             zcs.ScrollCaret();
         }
 

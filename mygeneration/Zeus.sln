@@ -2,10 +2,6 @@ Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual C# Express 2005
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus", "Zeus\Zeus.csproj", "{CE8A697D-D45C-4E60-838D-E36980227543}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicrosoftScriptingEngine", "..\plugins\MicrosoftScriptingEngine\MicrosoftScriptingEngine.csproj", "{5CFE661C-1C7D-4191-A6F7-D7891C448690}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetScriptingEngine", "..\plugins\DotNetScriptingEngine\DotNetScriptingEngine.csproj", "{497C072A-648D-4EF9-B5EC-71895D182018}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginInterfaces", "EngineInterface\PluginInterfaces.csproj", "{61B369D1-95DD-4158-9F30-2E051CEB9D50}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZeusCmd", "ZeusCmd\ZeusCmd.csproj", "{5B4F8E02-8E97-48F5-B57C-7391CF20C94F}"
@@ -34,14 +30,6 @@ Global
 		{CE8A697D-D45C-4E60-838D-E36980227543}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE8A697D-D45C-4E60-838D-E36980227543}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE8A697D-D45C-4E60-838D-E36980227543}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5CFE661C-1C7D-4191-A6F7-D7891C448690}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5CFE661C-1C7D-4191-A6F7-D7891C448690}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5CFE661C-1C7D-4191-A6F7-D7891C448690}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5CFE661C-1C7D-4191-A6F7-D7891C448690}.Release|Any CPU.Build.0 = Release|Any CPU
-		{497C072A-648D-4EF9-B5EC-71895D182018}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{497C072A-648D-4EF9-B5EC-71895D182018}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{497C072A-648D-4EF9-B5EC-71895D182018}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{497C072A-648D-4EF9-B5EC-71895D182018}.Release|Any CPU.Build.0 = Release|Any CPU
 		{61B369D1-95DD-4158-9F30-2E051CEB9D50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{61B369D1-95DD-4158-9F30-2E051CEB9D50}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61B369D1-95DD-4158-9F30-2E051CEB9D50}.Release|Any CPU.ActiveCfg = Release|Any CPU

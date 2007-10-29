@@ -6,8 +6,6 @@ set DEVENV=
 
 COPY "..\..\..\plugins\ContextProcessor\bin\release\*.dll" .
 COPY "..\..\..\plugins\Dnp.Utils\bin\release\*.dll" .
-COPY "..\..\..\plugins\DotNetScriptingEngine\bin\release\*.dll" .
-COPY "..\..\..\plugins\MicrosoftScriptingEngine\bin\Release\*.dll" .
 COPY "..\..\..\plugins\MyMetaSqlCePlugin\bin\release\*.dll" .
 COPY "..\..\..\plugins\MyMetaTextFilePlugin\bin\release\*.dll" .
 COPY "..\..\..\plugins\MyMetaVistaDB3xPlugin\bin\release\*.dll" .

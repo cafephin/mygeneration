@@ -103,6 +103,14 @@
       <Project>{E184159A-9644-4315-98EC-0F5967E8A735}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
+    <COMReference Include="MSScriptControl">
+      <Guid>{0E59F1D2-1FBE-11D0-8FF2-00A0D10038BC}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
     <COMReference Include="Scripting">
       <Guid>{420B2830-E718-11CF-893D-00A0C9054228}</Guid>
       <VersionMajor>1</VersionMajor>
@@ -136,6 +144,16 @@
     <Compile Include="Data\SimpleTableTools.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DotNetScriptEngine\DotNetScriptCodeParser.cs" />
+    <Compile Include="DotNetScriptEngine\DotNetScriptEngine.cs" />
+    <Compile Include="DotNetScriptEngine\DotNetScriptError.cs" />
+    <Compile Include="DotNetScriptEngine\DotNetScriptExecutioner.cs" />
+    <Compile Include="DotNetScriptEngine\_DotNetScriptGui.cs" />
+    <Compile Include="DotNetScriptEngine\_DotNetScriptTemplate.cs" />
+    <Compile Include="MicrosoftScriptEngine\MicrosoftScriptCodeParser.cs" />
+    <Compile Include="MicrosoftScriptEngine\MicrosoftScriptEngine.cs" />
+    <Compile Include="MicrosoftScriptEngine\MicrosoftScriptError.cs" />
+    <Compile Include="MicrosoftScriptEngine\MicrosoftScriptExecutioner.cs" />
     <Compile Include="ErrorHandling\ZeusRuntimeException.cs" />
     <Compile Include="ErrorHandling\ZeusDynamicException.cs">
       <SubType>Code</SubType>

@@ -172,33 +172,47 @@ namespace Zeus
 			IZeusScriptingEngine engine;
 			_engines = new Hashtable();
 
+            engine = new DotNetScript.DotNetScriptEngine();
+            _engines.Add(engine.EngineName, engine);
+
+            engine = new MicrosoftScript.MicrosoftScriptEngine();
+            _engines.Add(engine.EngineName, engine);
+
 			string path;
 			Assembly assembly;
 			foreach (string unparsedpath in config.ScriptingEngines) 
 			{
-				path = FileTools.ResolvePath(unparsedpath);
-				assembly = DynamicAssemblyTools.LoadDynamicAssembly(path);
+                if (unparsedpath.EndsWith("MicrosoftScriptingEngine.dll", StringComparison.CurrentCultureIgnoreCase) ||
+                    unparsedpath.EndsWith("DotNetScriptingEngine.dll", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    continue;
+                }
+                else
+                {
+                    path = FileTools.ResolvePath(unparsedpath);
+                    assembly = DynamicAssemblyTools.LoadDynamicAssembly(path);
 
-				if (assembly != null) 
-				{
-					object[] tmp = DynamicAssemblyTools.InstantiateClassesByType(assembly, typeof(IZeusScriptingEngine));
+                    if (assembly != null)
+                    {
+                        object[] tmp = DynamicAssemblyTools.InstantiateClassesByType(assembly, typeof(IZeusScriptingEngine));
 
-					for (int i = 0; i < tmp.Length; i++)
-					{
-						engine = tmp[i] as IZeusScriptingEngine;
-						
-						if (engine != null)
-						{
-							_engines.Add(engine.EngineName, engine);
-						}
-					}
-				}
-				else
-				{
-					throw new ZeusDynamicException(ZeusDynamicExceptionType.ScriptingEnginePluginInvalid, path);
-				}
+                        for (int i = 0; i < tmp.Length; i++)
+                        {
+                            engine = tmp[i] as IZeusScriptingEngine;
 
-				assembly = null;
+                            if (engine != null)
+                            {
+                                _engines.Add(engine.EngineName, engine);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        throw new ZeusDynamicException(ZeusDynamicExceptionType.ScriptingEnginePluginInvalid, path);
+                    }
+
+                    assembly = null;
+                }
 			}
 		}
 	}

@@ -178,6 +178,14 @@ namespace MyGeneration.AutoCompletion
                         {
                             n = AutoCompleteHelper.RootNodes[lastmsg];
                         }
+                        else 
+                        {
+                            AutoCompleteNodeInfo newRootNode;
+                            if (ScanCodeForVariable(scintilla, lastmsg, out newRootNode))
+                            {
+                                n = newRootNode;
+                            }
+                        }
                     }
 
                     while (n != null && stk.Count > 0)
@@ -236,20 +244,22 @@ namespace MyGeneration.AutoCompletion
                                 scintilla.AutoCShow(0, n.MembersString);
                             }
                         }
-                        else if (!string.IsNullOrEmpty(lastmsg) && (memberDepth == 1))
+                        /*else if (!string.IsNullOrEmpty(lastmsg) && (memberDepth == 1))
                         {
                             // try to find the data type of the member
                             AutoCompleteNodeInfo newRootNode;
+                            
                             if (ScanCodeForVariable(scintilla, lastmsg, out newRootNode))
                             {
-                                //AutoCompleteHelper._rootNodes[newRootNode.Name] = newRootNode;
+                                AutoCompleteHelper.RootNodes[newRootNode.Name] = newRootNode;
                                 scintilla.AutoCShow(0, newRootNode.MembersString);
                             }
                             else 
                             {
                                 // could prompt for datatype or just put in an unknown list
                             }
-                        }
+                        }*/
+
 
                         if (ns != null)
                         {

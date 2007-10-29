@@ -1,4 +1,10 @@
 2007.10.25 - MyGeneration 1.3 beta 3
+- Bugfix: Fixed MyMeta registration issues on install/uninstall
+- Fixed missing icon issue
+- Move scripting plugins to Zeus assembly. It still supports additional engine, but it's unlikely to ever happen.
+-
+
+2007.10.25 - MyGeneration 1.3 beta 3
 - Bugfix: Goto dialog didn't work.
 - Bugfix: Fixed form closing issues
 - Bugfix: Add drag and drop back into the app
