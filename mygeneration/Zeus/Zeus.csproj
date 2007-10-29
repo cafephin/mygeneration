@@ -93,14 +93,13 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
+    <ProjectReference Include="..\..\mymeta\MyMeta.csproj">
+      <Project>{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}</Project>
+      <Name>MyMeta</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EngineInterface\PluginInterfaces.csproj">
       <Name>PluginInterfaces</Name>
       <Project>{61B369D1-95DD-4158-9F30-2E051CEB9D50}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
-    <ProjectReference Include="..\..\plugins\TypeSerializer\TypeSerializer.csproj">
-      <Name>TypeSerializer</Name>
-      <Project>{E184159A-9644-4315-98EC-0F5967E8A735}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
     <COMReference Include="MSScriptControl">
@@ -126,6 +125,7 @@
     <Compile Include="Configuration\ZeusConfig.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ContextPreprocessors\DefaultContextProcessor.cs" />
     <Compile Include="Data\SimpleColumn.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -209,6 +209,12 @@
     <Compile Include="Serializers\SerializeSimpleTable.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Serializers\MyMeta\IColumnSerializer.cs" />
+    <Compile Include="Serializers\MyMeta\IDatabaseSerializer.cs" />
+    <Compile Include="Serializers\MyMeta\IProcedureSerializer.cs" />
+    <Compile Include="Serializers\MyMeta\ITableSerializer.cs" />
+    <Compile Include="Serializers\MyMeta\IViewSerializer.cs" />
+    <Compile Include="Serializers\MyMeta\MyMetaSerializer.cs" />
     <Compile Include="UserInterface\GuiButton.cs">
       <SubType>Code</SubType>
     </Compile>
