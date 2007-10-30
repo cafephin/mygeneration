@@ -93,14 +93,22 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
+    <ProjectReference Include="..\..\mymeta\MyMeta_k3b.csproj">
+      <Project>{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}</Project>
+      <Name>MyMeta_k3b</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EngineInterface\PluginInterfaces_k3b.csproj">
       <Name>PluginInterfaces_k3b</Name>
       <Project>{61B369D1-95DD-4158-9F30-2E051CEB9D50}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\plugins\TypeSerializer\TypeSerializer_k3b.csproj">
-      <Name>TypeSerializer_k3b</Name>
-      <Project>{E184159A-9644-4315-98EC-0F5967E8A735}</Project>
-    </ProjectReference>
+    <COMReference Include="MSScriptControl">
+      <Guid>{0E59F1D2-1FBE-11D0-8FF2-00A0D10038BC}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
     <COMReference Include="Scripting">
       <Guid>{420B2830-E718-11CF-893D-00A0C9054228}</Guid>
       <VersionMajor>1</VersionMajor>
@@ -116,6 +124,7 @@
     <Compile Include="Configuration\ZeusConfig.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ContextPreprocessors\DefaultContextProcessor.cs" />
     <Compile Include="Data\SimpleColumn.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -134,6 +143,12 @@
     <Compile Include="Data\SimpleTableTools.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DotNetScriptEngine\DotNetScriptCodeParser.cs" />
+    <Compile Include="DotNetScriptEngine\DotNetScriptEngine.cs" />
+    <Compile Include="DotNetScriptEngine\DotNetScriptError.cs" />
+    <Compile Include="DotNetScriptEngine\DotNetScriptExecutioner.cs" />
+    <Compile Include="DotNetScriptEngine\_DotNetScriptGui.cs" />
+    <Compile Include="DotNetScriptEngine\_DotNetScriptTemplate.cs" />
     <Compile Include="ErrorHandling\ZeusDynamicException.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -150,6 +165,10 @@
     <Compile Include="Legacy\LegacyTemplateParser.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MicrosoftScriptEngine\MicrosoftScriptCodeParser.cs" />
+    <Compile Include="MicrosoftScriptEngine\MicrosoftScriptEngine.cs" />
+    <Compile Include="MicrosoftScriptEngine\MicrosoftScriptError.cs" />
+    <Compile Include="MicrosoftScriptEngine\MicrosoftScriptExecutioner.cs" />
     <Compile Include="Projects\ZeusModule.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -180,6 +199,12 @@
     <Compile Include="Serializers\MasterSerializer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Serializers\MyMeta\IColumnSerializer.cs" />
+    <Compile Include="Serializers\MyMeta\IDatabaseSerializer.cs" />
+    <Compile Include="Serializers\MyMeta\IProcedureSerializer.cs" />
+    <Compile Include="Serializers\MyMeta\ITableSerializer.cs" />
+    <Compile Include="Serializers\MyMeta\IViewSerializer.cs" />
+    <Compile Include="Serializers\MyMeta\MyMetaSerializer.cs" />
     <Compile Include="Serializers\SerializeHashtable.cs">
       <SubType>Code</SubType>
     </Compile>

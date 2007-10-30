@@ -21,7 +21,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -71,6 +70,7 @@
     <Compile Include="Configuration\ScintillaConfigProvider.cs" />
     <Compile Include="Configuration\ScintillaPropertiesHelper.cs" />
     <Compile Include="Configuration\SciTE\SciTEProperties.cs" />
+    <Compile Include="Configuration\SciTE\SciTEPropertiesReader.cs" />
     <Compile Include="Enums.generated.cs" />
     <Compile Include="EventArgs.cs" />
     <Compile Include="Forms\Configuration\ColorHandler.cs" />
@@ -262,12 +262,14 @@
     <None Include="SciTEConfigFiles\css.properties" />
     <None Include="SciTEConfigFiles\d.properties" />
     <None Include="SciTEConfigFiles\eiffel.properties" />
+    <None Include="SciTEConfigFiles\Embedded.properties" />
     <None Include="SciTEConfigFiles\erlang.properties" />
     <None Include="SciTEConfigFiles\escript.properties" />
     <None Include="SciTEConfigFiles\flagship.properties" />
     <None Include="SciTEConfigFiles\forth.properties" />
     <None Include="SciTEConfigFiles\fortran.properties" />
     <None Include="SciTEConfigFiles\freebasic.properties" />
+    <None Include="SciTEConfigFiles\gap.properties" />
     <None Include="SciTEConfigFiles\global.properties" />
     <None Include="SciTEConfigFiles\html.properties" />
     <None Include="SciTEConfigFiles\inno.properties" />

@@ -6,8 +6,7 @@
     <ProjectGuid>{02EA6C17-3A7B-47A6-9AC9-0C27F41E394E}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>MyGeneration.ico</ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
     <AssemblyName>MyGeneration</AssemblyName>
@@ -203,6 +202,7 @@
     </None>
     <None Include="Web References\com.mygenerationsoftware.www\VersionInfo.disco" />
     <None Include="Web References\com.mygenerationsoftware.www\VersionInfo.wsdl" />
+    <Content Include="MyGeneration.ico" />
     <Content Include="Settings\DbTargets.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
