@@ -1073,6 +1073,7 @@ namespace MyGeneration
         protected string BrowseOleDbConnectionString(string connstr)
         {
             MSDASC.DataLinksClass dl = new MSDASC.DataLinksClass();
+            dl.hWnd = this.Handle.ToInt32();
 
             ADODB.Connection conn = new ADODB.ConnectionClass();
             conn.ConnectionString = connstr;
