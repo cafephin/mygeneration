@@ -487,7 +487,7 @@ namespace MyGeneration
 				(x.Trim() != this.textBoxName.Text.Trim()))
 			{
 				e.Cancel = true;
-				this.errorProviderRequiredFields.SetError(this.textBoxName, "This name has already been difined in this module");
+				this.errorProviderRequiredFields.SetError(this.textBoxName, "This name has already been difined in this folder");
 			}
 			else 
 			{

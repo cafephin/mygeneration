@@ -271,7 +271,7 @@ namespace MyGeneration
             // contextItemAddModule
             // 
             this.contextItemAddModule.Index = 3;
-            this.contextItemAddModule.Text = "Add &Module";
+            this.contextItemAddModule.Text = "Add &Folder";
             this.contextItemAddModule.Click += new System.EventHandler(this.contextItemAddModule_Click);
             // 
             // contextItemAddSavedObject

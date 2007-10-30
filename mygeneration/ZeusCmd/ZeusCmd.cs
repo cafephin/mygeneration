@@ -182,7 +182,7 @@ namespace Zeus
 					catch (Exception ex)
 					{
 						this._log.Write(ex);
-						this._log.Write("Module execution failed.");
+						this._log.Write("Project Folder execution failed.");
 					}
 				}
 			}
@@ -281,7 +281,8 @@ namespace Zeus
 | Project switches
 |-----------------------------------------------------------------------
 | -p <projectpath>                     | generate an entire project
-| -m <modulename>                      | regenerate a specific module
+| -pf <projectfolder>                  | regenerate a project folder
+| -m  <projectfolder>                  | same as -pf above
 |-----------------------------------------------------------------------
 | Template switches
 |-----------------------------------------------------------------------

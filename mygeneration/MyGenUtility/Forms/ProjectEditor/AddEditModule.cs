@@ -23,11 +23,8 @@ namespace MyGeneration
 		private System.Windows.Forms.ErrorProvider errorProviderRequiredFields;
 
 		private ZeusModule _module;
-		private bool _isActivated = false;
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.Container components = null;
+        private bool _isActivated = false;
+        private IContainer components;
 
 		public FormAddEditModule()
 		{
@@ -63,102 +60,106 @@ namespace MyGeneration
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.labelName = new System.Windows.Forms.Label();
-			this.labelDescription = new System.Windows.Forms.Label();
-			this.textBoxName = new System.Windows.Forms.TextBox();
-			this.textBoxDescription = new System.Windows.Forms.TextBox();
-			this.buttonCancel = new System.Windows.Forms.Button();
-			this.buttonOK = new System.Windows.Forms.Button();
-			this.errorProviderRequiredFields = new System.Windows.Forms.ErrorProvider();
-			this.SuspendLayout();
-			// 
-			// labelName
-			// 
-			this.labelName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.labelName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.labelName.Location = new System.Drawing.Point(16, 8);
-			this.labelName.Name = "labelName";
-			this.labelName.Size = new System.Drawing.Size(256, 23);
-			this.labelName.TabIndex = 0;
-			this.labelName.Text = "Name:";
-			this.labelName.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-			// 
-			// labelDescription
-			// 
-			this.labelDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.labelDescription.Location = new System.Drawing.Point(16, 56);
-			this.labelDescription.Name = "labelDescription";
-			this.labelDescription.Size = new System.Drawing.Size(256, 23);
-			this.labelDescription.TabIndex = 1;
-			this.labelDescription.Text = "Description:";
-			this.labelDescription.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-			// 
-			// textBoxName
-			// 
-			this.textBoxName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.textBoxName.Location = new System.Drawing.Point(16, 32);
-			this.textBoxName.Name = "textBoxName";
-			this.textBoxName.Size = new System.Drawing.Size(256, 20);
-			this.textBoxName.TabIndex = 2;
-			this.textBoxName.Text = "";
-			this.textBoxName.Validating += new System.ComponentModel.CancelEventHandler(this.textBoxName_Validating);
-			// 
-			// textBoxDescription
-			// 
-			this.textBoxDescription.AcceptsReturn = true;
-			this.textBoxDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.textBoxDescription.Location = new System.Drawing.Point(16, 80);
-			this.textBoxDescription.Multiline = true;
-			this.textBoxDescription.Name = "textBoxDescription";
-			this.textBoxDescription.Size = new System.Drawing.Size(256, 80);
-			this.textBoxDescription.TabIndex = 3;
-			this.textBoxDescription.Text = "";
-			// 
-			// buttonCancel
-			// 
-			this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.buttonCancel.CausesValidation = false;
-			this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.buttonCancel.Location = new System.Drawing.Point(208, 168);
-			this.buttonCancel.Name = "buttonCancel";
-			this.buttonCancel.TabIndex = 4;
-			this.buttonCancel.Text = "Cancel";
-			this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
-			// 
-			// buttonOK
-			// 
-			this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.buttonOK.Location = new System.Drawing.Point(128, 168);
-			this.buttonOK.Name = "buttonOK";
-			this.buttonOK.TabIndex = 5;
-			this.buttonOK.Text = "OK";
-			this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
-			// 
-			// errorProviderRequiredFields
-			// 
-			this.errorProviderRequiredFields.ContainerControl = this;
-			// 
-			// FormAddEditModule
-			// 
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(292, 198);
-			this.Controls.Add(this.buttonOK);
-			this.Controls.Add(this.buttonCancel);
-			this.Controls.Add(this.textBoxDescription);
-			this.Controls.Add(this.textBoxName);
-			this.Controls.Add(this.labelDescription);
-			this.Controls.Add(this.labelName);
-			this.Name = "FormAddEditModule";
-			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "Add/Edit Module";
-			this.Load += new System.EventHandler(this.FormAddEditModule_Load);
-			this.Activated += new System.EventHandler(this.FormAddEditModule_Activated);
-			this.ResumeLayout(false);
+            this.components = new System.ComponentModel.Container();
+            this.labelName = new System.Windows.Forms.Label();
+            this.labelDescription = new System.Windows.Forms.Label();
+            this.textBoxName = new System.Windows.Forms.TextBox();
+            this.textBoxDescription = new System.Windows.Forms.TextBox();
+            this.buttonCancel = new System.Windows.Forms.Button();
+            this.buttonOK = new System.Windows.Forms.Button();
+            this.errorProviderRequiredFields = new System.Windows.Forms.ErrorProvider(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProviderRequiredFields)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // labelName
+            // 
+            this.labelName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelName.Location = new System.Drawing.Point(16, 8);
+            this.labelName.Name = "labelName";
+            this.labelName.Size = new System.Drawing.Size(256, 23);
+            this.labelName.TabIndex = 0;
+            this.labelName.Text = "Name:";
+            this.labelName.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            // 
+            // labelDescription
+            // 
+            this.labelDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelDescription.Location = new System.Drawing.Point(16, 56);
+            this.labelDescription.Name = "labelDescription";
+            this.labelDescription.Size = new System.Drawing.Size(256, 23);
+            this.labelDescription.TabIndex = 1;
+            this.labelDescription.Text = "Description:";
+            this.labelDescription.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            // 
+            // textBoxName
+            // 
+            this.textBoxName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxName.Location = new System.Drawing.Point(16, 32);
+            this.textBoxName.Name = "textBoxName";
+            this.textBoxName.Size = new System.Drawing.Size(256, 20);
+            this.textBoxName.TabIndex = 2;
+            this.textBoxName.Validating += new System.ComponentModel.CancelEventHandler(this.textBoxName_Validating);
+            // 
+            // textBoxDescription
+            // 
+            this.textBoxDescription.AcceptsReturn = true;
+            this.textBoxDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxDescription.Location = new System.Drawing.Point(16, 80);
+            this.textBoxDescription.Multiline = true;
+            this.textBoxDescription.Name = "textBoxDescription";
+            this.textBoxDescription.Size = new System.Drawing.Size(256, 80);
+            this.textBoxDescription.TabIndex = 3;
+            // 
+            // buttonCancel
+            // 
+            this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonCancel.CausesValidation = false;
+            this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.buttonCancel.Location = new System.Drawing.Point(208, 168);
+            this.buttonCancel.Name = "buttonCancel";
+            this.buttonCancel.Size = new System.Drawing.Size(75, 23);
+            this.buttonCancel.TabIndex = 4;
+            this.buttonCancel.Text = "Cancel";
+            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
+            // 
+            // buttonOK
+            // 
+            this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonOK.Location = new System.Drawing.Point(128, 168);
+            this.buttonOK.Name = "buttonOK";
+            this.buttonOK.Size = new System.Drawing.Size(75, 23);
+            this.buttonOK.TabIndex = 5;
+            this.buttonOK.Text = "OK";
+            this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
+            // 
+            // errorProviderRequiredFields
+            // 
+            this.errorProviderRequiredFields.ContainerControl = this;
+            // 
+            // FormAddEditModule
+            // 
+            this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
+            this.ClientSize = new System.Drawing.Size(292, 198);
+            this.Controls.Add(this.buttonOK);
+            this.Controls.Add(this.buttonCancel);
+            this.Controls.Add(this.textBoxDescription);
+            this.Controls.Add(this.textBoxName);
+            this.Controls.Add(this.labelDescription);
+            this.Controls.Add(this.labelName);
+            this.Name = "FormAddEditModule";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Add/Edit Project Folder";
+            this.Activated += new System.EventHandler(this.FormAddEditModule_Activated);
+            this.Load += new System.EventHandler(this.FormAddEditModule_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProviderRequiredFields)).EndInit();
+            this.ResumeLayout(false);
+            this.PerformLayout();
 
 		}
 		#endregion
@@ -176,12 +177,12 @@ namespace MyGeneration
 				if(_module.Name != null) 
 				{
 					this.textBoxName.Text = _module.Name;
-					this.Text = "Module: " + _module.Name;
+					this.Text = "Folder: " + _module.Name;
 				}
 				else 
 				{
 					this.textBoxName.Text = string.Empty;
-					this.Text = "Module: [New] ";
+                    this.Text = "Folder: [New] ";
 				}
 
 				if(_module.Description != null)

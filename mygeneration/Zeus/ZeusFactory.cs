@@ -7,6 +7,7 @@ using System.Reflection;
 //using Zeus.DotNetScript;
 using Zeus.ErrorHandling;
 using Zeus.Configuration;
+using TypeSerializer.MyMeta;
 
 namespace Zeus
 {
@@ -19,6 +20,7 @@ namespace Zeus
 		private static ArrayList _preprocessors;
 		private static ArrayList _serializers;
 
+
 		public static ArrayList Preprocessors
 		{
 			get 
@@ -26,6 +28,7 @@ namespace Zeus
 				if (_preprocessors == null) 
 				{
 					_preprocessors = new ArrayList();
+                    _preprocessors.Add(new DefaultContextProcessor());
 
 					ZeusConfig config = ZeusConfig.Current;
 					Assembly assembly;
@@ -33,16 +36,23 @@ namespace Zeus
 
 					foreach (string path in config.Preprocessors) 
 					{
-						assembly = Assembly.LoadFile( FileTools.ResolvePath(path) );
+                        if (path.EndsWith("\\ContextPreprocessor.dll"))
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            assembly = Assembly.LoadFile(FileTools.ResolvePath(path));
 
-						if (assembly != null) 
-						{
-							objects = DynamicAssemblyTools.InstantiateClassesByType(assembly, typeof(IZeusContextProcessor));
-							if (objects.Length > 0)
-							{
-								_preprocessors.AddRange(objects);
-							}
-						}
+                            if (assembly != null)
+                            {
+                                objects = DynamicAssemblyTools.InstantiateClassesByType(assembly, typeof(IZeusContextProcessor));
+                                if (objects.Length > 0)
+                                {
+                                    _preprocessors.AddRange(objects);
+                                }
+                            }
+                        }
 					}	
 				}
 				return _preprocessors;
@@ -55,7 +65,13 @@ namespace Zeus
 			{
 				if (_serializers == null) 
 				{
-					_serializers = new ArrayList();
+                    _serializers = new ArrayList();
+                    _serializers.Add(new MyMetaSerializer());
+                    _serializers.Add(new IDatabaseSerializer());
+                    _serializers.Add(new ITableSerializer());
+                    _serializers.Add(new IViewSerializer());
+                    _serializers.Add(new IProcedureSerializer());
+                    _serializers.Add(new IColumnSerializer());
 
 					ZeusConfig config = ZeusConfig.Current;
 					Assembly assembly;
@@ -63,16 +79,23 @@ namespace Zeus
 
 					foreach (string path in config.Serializers) 
 					{
-						assembly = Assembly.LoadFile( FileTools.ResolvePath(path) );
+                        if (path.EndsWith("\\TypeSerializer.dll"))
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            assembly = Assembly.LoadFile(FileTools.ResolvePath(path));
 
-						if (assembly != null) 
-						{
-							objects = DynamicAssemblyTools.InstantiateClassesByType(assembly, typeof(ITypeSerializer));
-							if (objects.Length > 0)
-							{
-								_serializers.AddRange(objects);
-							}
-						}
+                            if (assembly != null)
+                            {
+                                objects = DynamicAssemblyTools.InstantiateClassesByType(assembly, typeof(ITypeSerializer));
+                                if (objects.Length > 0)
+                                {
+                                    _serializers.AddRange(objects);
+                                }
+                            }
+                        }
 					}	
 				}
 				return _serializers;

@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using Zeus.Serializers;
-using TypeSerializer.MyMeta;
+//using TypeSerializer.MyMeta;
 
 namespace Zeus
 {
@@ -227,24 +227,6 @@ namespace Zeus
 				_serializers[szr.DataType] = szr;
 
 				szr = new SerializeSimpleTable();
-				_serializers[szr.DataType] = szr;
-
-				szr = new MyMetaSerializer();
-				_serializers[szr.DataType] = szr;
-
-				szr = new IDatabaseSerializer();
-				_serializers[szr.DataType] = szr;
-				
-				szr = new ITableSerializer();
-				_serializers[szr.DataType] = szr;
-				
-				szr = new IViewSerializer();
-				_serializers[szr.DataType] = szr;
-				
-				szr = new IProcedureSerializer();
-				_serializers[szr.DataType] = szr;
-				
-				szr = new IColumnSerializer();
 				_serializers[szr.DataType] = szr;
 
 				ArrayList listcustom = ZeusFactory.Serializers;

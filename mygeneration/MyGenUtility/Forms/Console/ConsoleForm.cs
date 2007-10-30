@@ -20,6 +20,7 @@ namespace MyGeneration.Forms
 
             zcs = new ZeusScintillaControl();
             zcs.Dock = DockStyle.Fill;
+            zcs.IsReadOnly = true;
             zcs.BringToFront();
             zcs.Name = "ScintillaConsole";
             this.Controls.Add(zcs);
@@ -49,7 +50,9 @@ namespace MyGeneration.Forms
 
         private void toolStripButtonClear_Click(object sender, EventArgs e)
         {
+            zcs.IsReadOnly = false;
             this.zcs.ClearAll();
+            zcs.IsReadOnly = true;
         }
 
         private void ConsoleForm_VisibleChanged(object sender, EventArgs e)
@@ -86,6 +89,7 @@ namespace MyGeneration.Forms
 
         public void Write(string text)
         {
+            zcs.IsReadOnly = false;
             StringBuilder sb = new StringBuilder();
             sb.Append(DateTime.Now);
             sb.Append(" - ");
@@ -99,6 +103,7 @@ namespace MyGeneration.Forms
             zcs.SelectionStart = zcs.CurrentPos;
             zcs.SelectionEnd = zcs.CurrentPos;
             zcs.ScrollCaret();
+            zcs.IsReadOnly = true;
         }
 
         public void Write(string text, params object[] args)

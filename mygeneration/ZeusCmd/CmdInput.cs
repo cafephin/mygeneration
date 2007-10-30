@@ -163,9 +163,11 @@ namespace Zeus
 							this._valid = false;
 							this._errorMessage = "Invalid switch usage: " + arg;
 						}
-						break;
-					case "-m":
-					case "-module":
+                        break;
+                    case "-m":
+                    case "-pf":
+                    case "-module":
+                    case "-projectfolder":
 						if (numargs > (i+1)) 
 						{
 							string data = args[++i];

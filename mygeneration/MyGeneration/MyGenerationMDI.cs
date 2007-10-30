@@ -179,14 +179,18 @@ namespace MyGeneration
 
         private void MyGenerationMDI_FormClosing(object sender, FormClosingEventArgs e)
         {
-            bool allowPrevent = true;
-            if (e.CloseReason == CloseReason.TaskManagerClosing
-                || e.CloseReason == CloseReason.WindowsShutDown
-                || e.CloseReason == CloseReason.ApplicationExitCall)
+            bool allowPrevent = true, allowSave = true;
+            if (e.CloseReason == CloseReason.TaskManagerClosing)
+            {
+                allowSave = false;
+            }
+            else if (e.CloseReason == CloseReason.WindowsShutDown ||
+                e.CloseReason == CloseReason.ApplicationExitCall)
             {
                 allowPrevent = false;
             }
-            if (!this.Shutdown(allowPrevent))
+
+            if (allowSave && !this.Shutdown(allowPrevent))
             {
                 e.Cancel = true;
                 return;
@@ -420,38 +424,45 @@ namespace MyGeneration
         private bool Shutdown(bool allowPrevent)
         {
             bool shutdown = true;
-            string dockConfigFileName = startupPath + DOCK_CONFIG_FILE;
-
-            IMyGenContent bw = null;
-            DockContentCollection coll = this.dockPanel.Contents;
-            bool canClose = true;
-
-            for (int i = 0; i < coll.Count; i++)
+            try
             {
-                bw = coll[i] as IMyGenContent;
+                string dockConfigFileName = startupPath + DOCK_CONFIG_FILE;
 
-                // We need the MetaDataBrowser window to be closed last because it houses the UserMetaData.
-                if (!(bw is MetaDataBrowser))
+                IMyGenContent bw = null;
+                DockContentCollection coll = this.dockPanel.Contents;
+                bool canClose = true;
+
+                for (int i = 0; i < coll.Count; i++)
                 {
-                    canClose = bw.CanClose(allowPrevent);
+                    bw = coll[i] as IMyGenContent;
 
-                    if (allowPrevent && !canClose)
+                    // We need the MetaDataBrowser window to be closed last because it houses the UserMetaData.
+                    if (!(bw is MetaDataBrowser))
                     {
-                        shutdown = false;
-                        break;
+                        canClose = bw.CanClose(allowPrevent);
+
+                        if (allowPrevent && !canClose)
+                        {
+                            shutdown = false;
+                            break;
+                        }
+                    }
+
+                    // Close hidden windows.
+                    if (coll[i].DockHandler.IsHidden)
+                    {
+                        coll[i].DockHandler.Close();
                     }
                 }
 
-                // Close hidden windows.
-                if (coll[i].DockHandler.IsHidden)
+                if (shutdown)
                 {
-                    coll[i].DockHandler.Close();
+                    dockPanel.SaveAsXml(dockConfigFileName);
                 }
             }
-
-            if (shutdown)
+            catch
             {
-                dockPanel.SaveAsXml(dockConfigFileName);
+                shutdown = true;
             }
 
             return shutdown;

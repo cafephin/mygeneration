@@ -21,6 +21,26 @@ namespace MyGeneration.Forms
             InitializeComponent();
         }
 
+        private void DeleteMatchingTemplateErrors(IMyGenError error)
+        {
+            if (error.Class == MyGenErrorClass.Template)
+            {
+                List<IMyGenError> errorsToHack = new List<IMyGenError>();
+                foreach (IMyGenError ee in _errors)
+                {
+                    if ((error.TemplateIdentifier == ee.TemplateIdentifier) ||
+                        (error.TemplateFileName == ee.TemplateFileName))
+                    {
+                        errorsToHack.Add(ee);
+                    }
+                }
+                foreach (IMyGenError ee in errorsToHack)
+                {
+                    _errors.Remove(ee);
+                }
+            }
+        }
+
         private void AddError(IMyGenError error)
         {
             if (_errors.Count == 0) _errors.Add(error); 
@@ -241,7 +261,16 @@ namespace MyGeneration.Forms
 
         public void AddErrors(params IMyGenError[] errors)
         {
-            _errors.AddRange(errors);
+            bool haveHitTemplateError = false;
+            foreach (IMyGenError error in errors) 
+            {
+                if ((error.Class == MyGenErrorClass.Template) && !haveHitTemplateError)
+                {
+                    haveHitTemplateError = true;
+                    DeleteMatchingTemplateErrors(error);
+                }
+                this.AddError(error);
+            }
             BindErrors();
         }
 

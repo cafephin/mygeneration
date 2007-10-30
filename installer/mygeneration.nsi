@@ -99,7 +99,26 @@ Section "-Install Mygeneration and Register Shell Extensions"
 
   ;unregister current MyMeta.dll if it exists
   IfFileExists "$INSTDIR\MyMeta.dll" 0 +2
-	ExecWait `"$WINDIR\Microsoft.NET\Framework\v2.0.50727\regasm.exe" /u "$INSTDIR\MyMeta.dll" /tlb:MyMeta.tlb`
+  ExecWait `"$WINDIR\Microsoft.NET\Framework\v2.0.50727\regasm.exe" /u "$INSTDIR\MyMeta.dll" /tlb:MyMeta.tlb`
+  
+  ; delete some old assemblies
+  IfFileExists "$INSTDIR\DotNetScriptingEngine.dll" 0 +2
+    Delete "$INSTDIR\DotNetScriptingEngine.dll"
+
+  IfFileExists "$INSTDIR\MicrosoftScriptingEngine.dll" 0 +2
+    Delete "$INSTDIR\MicrosoftScriptingEngine.dll"
+
+  IfFileExists "$INSTDIR\ContextProcessor.dll" 0 +2
+    Delete "$INSTDIR\ContextProcessor.dll"
+
+  IfFileExists "$INSTDIR\MyWinformUI.dll" 0 +2
+    Delete "$INSTDIR\MyWinformUI.dll"
+
+  IfFileExists "$INSTDIR\TypeSerializer.dll" 0 +2
+    Delete "$INSTDIR\TypeSerializer.dll"
+
+  IfFileExists "$INSTDIR\Templates\Other\WinformDemo.vbgen" 0 +2
+    Delete "$INSTDIR\Templates\Other\WinformDemo.vbgen"
   
   ; Get latest DLLs and EXE
   File /oname=ZeusCmd.exe ..\mygeneration\ZeusCmd\bin\Release\ZeusCmd.exe
@@ -130,15 +149,14 @@ Section "-Install Mygeneration and Register Shell Extensions"
  
   File /oname=Zeus.dll ..\mygeneration\Zeus\bin\Release\Zeus.dll
   File /oname=PluginInterfaces.dll ..\mygeneration\EngineInterface\bin\Release\PluginInterfaces.dll
-  File /oname=DotNetScriptingEngine.dll ..\plugins\DotNetScriptingEngine\bin\Release\DotNetScriptingEngine.dll
-  File /oname=MicrosoftScriptingEngine.dll ..\plugins\MicrosoftScriptingEngine\bin\Release\MicrosoftScriptingEngine.dll
   File /oname=MyMeta.dll ..\mymeta\bin\Release\MyMeta.dll
   File /oname=MyMeta.tlb ..\mymeta\bin\Release\MyMeta.tlb
-  File /oname=ContextProcessor.dll ..\plugins\ContextProcessor\bin\Release\ContextProcessor.dll
   File /oname=MyGenUtility.dll ..\mygeneration\MyGenUtility\bin\Release\MyGenUtility.dll
-  File /oname=TypeSerializer.dll ..\plugins\TypeSerializer\bin\Release\TypeSerializer.dll
-
-  File /oname=MyWinformUI.dll ..\mygeneration\MyGeneration\MyWinformUI.dll
+  ;File /oname=MyWinformUI.dll ..\mygeneration\MyGeneration\MyWinformUI.dll
+  ;File /oname=DotNetScriptingEngine.dll ..\plugins\DotNetScriptingEngine\bin\Release\DotNetScriptingEngine.dll
+  ;File /oname=MicrosoftScriptingEngine.dll ..\plugins\MicrosoftScriptingEngine\bin\Release\MicrosoftScriptingEngine.dll
+  ;File /oname=ContextProcessor.dll ..\plugins\ContextProcessor\bin\Release\ContextProcessor.dll
+  ;File /oname=TypeSerializer.dll ..\plugins\TypeSerializer\bin\Release\TypeSerializer.dll
   
   File /oname=MyMeta.chm ..\mymeta\MyMeta.chm
   File /oname=dOOdads.chm ..\doodads\dOOdads.chm
@@ -365,7 +383,7 @@ Section "-Install Mygeneration and Register Shell Extensions"
   File /oname=Templates\Other\TemplateGroupExample.jgen ..\templates\Other\TemplateGroupExample.jgen
   File /oname=Templates\Other\UserMetaData.vbgen ..\templates\Other\UserMetaData.vbgen
   File /oname=Templates\Other\UserMetaData.jgen ..\templates\Other\UserMetaData.jgen
-  File /oname=Templates\Other\WinformDemo.vbgen ..\templates\Other\WinformDemo.vbgen
+  ;File /oname=Templates\Other\WinformDemo.vbgen ..\templates\Other\WinformDemo.vbgen
   File /oname=Templates\HTML\HTML_DatabaseReport.csgen ..\templates\HTML\HTML_DatabaseReport.csgen
   File /oname=Templates\HTML\HTML_TableDefinition.vbgen ..\templates\HTML\HTML_TableDefinition.vbgen
   File /oname=Templates\Firebird\FirebirdStoredProcs.vbgen ..\templates\Firebird\FirebirdStoredProcs.vbgen
@@ -570,6 +588,25 @@ Section "Uninstall"
   ;RMDir /r "$INSTDIR"
   Delete $INSTDIR\*.exe
   Delete $INSTDIR\*.dll
+  
+  ;get rid of new config files, but back them up first.
+  Rename $INSTDIR\Settings\Languages.xml $INSTDIR\Settings\Languages.xml.downgrade.backup
+  Delete $INSTDIR\Settings\Languages.xml
+  
+  Rename $INSTDIR\Settings\DbTargets.xml $INSTDIR\Settings\DbTargets.xml.downgrade.backup
+  Delete $INSTDIR\Settings\DbTargets.xml
+  
+  Rename $INSTDIR\Settings\MyGeneration.xml $INSTDIR\Settings\MyGeneration.xml.downgrade.backup
+  Delete $INSTDIR\Settings\MyGeneration.xml
+  
+  Rename $INSTDIR\Settings\ZeusConfig.xml $INSTDIR\Settings\ZeusConfig.xml.downgrade.backup
+  Delete $INSTDIR\Settings\ZeusConfig.xml
+  
+  Rename $INSTDIR\Settings\DefaultSettings.xml $INSTDIR\Settings\DefaultSettings.xml.downgrade.backup
+  Delete $INSTDIR\Settings\DefaultSettings.xml
+  
+  Rename $INSTDIR\Settings\ScintillaNET.xml $INSTDIR\Settings\ScintillaNET.xml.downgrade.backup
+  Delete $INSTDIR\Settings\ScintillaNET.xml
   
 SectionEnd
 
