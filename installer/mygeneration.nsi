@@ -102,6 +102,10 @@ Section "-Install Mygeneration and Register Shell Extensions"
   ExecWait `"$WINDIR\Microsoft.NET\Framework\v2.0.50727\regasm.exe" /u "$INSTDIR\MyMeta.dll" /tlb:MyMeta.tlb`
   
   ; delete some old assemblies
+  IfFileExists "$INSTDIR\Settings\ZeusConfig.xml" 0 +3
+    Rename $INSTDIR\Settings\ZeusConfig.xml $INSTDIR\Settings\ZeusConfig.xml.upgrade.backup
+    Delete "$INSTDIR\Settings\ZeusConfig.xml"
+  
   IfFileExists "$INSTDIR\DotNetScriptingEngine.dll" 0 +2
     Delete "$INSTDIR\DotNetScriptingEngine.dll"
 
@@ -166,9 +170,9 @@ Section "-Install Mygeneration and Register Shell Extensions"
   File /oname=todo.txt .\todo.txt
   File /oname=changelog.txt .\changelog.txt
   
-  File /oname=changelog.txt .\UnregisterMyMeta12.reg
-  File /oname=changelog.txt .\UnregisterMyMeta13.reg
-  File /oname=changelog.txt .\RegisterMyMeta.bat
+  File /oname=UnregisterMyMeta12.reg .\UnregisterMyMeta12.reg
+  File /oname=UnregisterMyMeta13.reg .\UnregisterMyMeta13.reg
+  File /oname=RegisterMyMeta.bat .\RegisterMyMeta.bat
 
   File /oname=MyGeneration.ico ..\mygeneration\MyGeneration\Icons\MainWindow.ico
   File /oname=ZeusProject.ico ..\mygeneration\MyGeneration\Icons\NewZeus.ico

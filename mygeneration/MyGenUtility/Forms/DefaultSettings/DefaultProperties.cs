@@ -196,7 +196,8 @@ namespace MyGeneration
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.TabText = "Default Settings";
             this.Text = "Default Settings";
-            this.FormClosing += new FormClosingEventHandler(DefaultProperties_FormClosing);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DefaultProperties_FormClosing);
+            this.Leave += new System.EventHandler(this.DefaultProperties_Leave);
             this.Load += new System.EventHandler(this.DefaultProperties_Load);
             this.toolStripOptions.ResumeLayout(false);
             this.toolStripOptions.PerformLayout();
@@ -272,6 +273,29 @@ namespace MyGeneration
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void DefaultProperties_Leave(object sender, EventArgs e)
+        {
+            DialogResult r = DialogResult.None;
+
+            // Something's Changed since the load...
+            if (defaultSettingsControl.SettingsModified)
+            {
+                r = MessageBox.Show("Default settings have changed.\r\n Would you like to save before leaving?", "Default Settings Changed", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+            }
+            else if (defaultSettingsControl.ConnectionInfoModified)
+            {
+                r = MessageBox.Show("The loaded connection profile has changed.\r\n Would you like to save before leaving?", "Connection Profile Changed", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+            }
+
+            if (r == DialogResult.Yes)
+            {
+                if (defaultSettingsControl.Save())
+                {
+                    mdi.SendAlert(this, "UpdateDefaultSettings");
+                }
+            }
         }
 
         #region IMyGenDocument Members

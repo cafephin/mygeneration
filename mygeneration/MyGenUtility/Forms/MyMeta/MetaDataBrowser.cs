@@ -1180,15 +1180,13 @@ namespace MyGeneration
                 this.toolBar1.Visible = true;
                 this.chkSystem.Visible = true;
             }
-
             
             if ((this.mdi != null) 
-                && (this.mdi.DockPanel != null) 
-                && (this.mdi.DockPanel.ActiveDocument != null)
-                && (this.myMeta != null) // fix k3b 20071025: only if there was connect before
-                )
+                && (this.mdi.DockPanel != null))
             {
-                if ((this.mdi.DockPanel.ActiveDocument is IMyGenDocument) && (this.myMeta.IsConnected))
+                if ((myMeta != null) &&
+                        (this.mdi.DockPanel.ActiveDocument is IMyGenDocument) &&
+                        (this.myMeta.IsConnected))
                 {
                     IMyGenDocument doc = this.mdi.DockPanel.ActiveDocument as IMyGenDocument;
                     this.toolBarButtonExecute.Enabled = true;

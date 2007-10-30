@@ -36,7 +36,7 @@ namespace Zeus
 
 					foreach (string path in config.Preprocessors) 
 					{
-                        if (path.EndsWith("\\ContextPreprocessor.dll"))
+                        if (path.EndsWith("\\ContextProcessor.dll"))
                         {
                             continue;
                         }
