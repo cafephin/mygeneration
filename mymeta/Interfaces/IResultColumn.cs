@@ -35,7 +35,7 @@ namespace MyMeta
 	/// }
 	/// </code>
 	/// </example>
-	[GuidAttribute("0972cda9-94fe-45f6-af94-35923faf9e04"),InterfaceType(ComInterfaceType.InterfaceIsDual)]
+	[GuidAttribute("4b9e3c03-0570-41a8-9044-34ae2e0a1206"),InterfaceType(ComInterfaceType.InterfaceIsDual)]
 	public interface IResultColumn
 	{
 		// Collections

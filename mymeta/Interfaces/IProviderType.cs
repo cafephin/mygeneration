@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace MyMeta
 {
-	[GuidAttribute("4ce1ed26-0164-4b9a-8e53-8ae5288c6add"),InterfaceType(ComInterfaceType.InterfaceIsDual)]
+	[GuidAttribute("8afcc8f1-756b-4ab1-a81c-5f921cc88e4f"),InterfaceType(ComInterfaceType.InterfaceIsDual)]
 	public interface IProviderType 
 	{
 		string Type { get; }

@@ -8,7 +8,7 @@ namespace MyMeta
 	/// This interface allows all the collections here to be bound to 
 	/// Name/Value collection type objects. with ease
 	/// </summary>
-	[GuidAttribute("8f28945e-77ca-4142-8f48-c4ed32f2d640"),InterfaceType(ComInterfaceType.InterfaceIsDual)]
+	[GuidAttribute("8a05e01d-cccd-48f4-94f8-e84d91032b80"),InterfaceType(ComInterfaceType.InterfaceIsDual)]
 	public interface INameValueItem
 	{
 		string ItemName{ get; }

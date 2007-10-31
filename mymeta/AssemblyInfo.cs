@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // This attribute allows us to say Columns[i] instead of Columns.Item[i]
 [assembly: System.Runtime.InteropServices.IDispatchImpl(IDispatchImplType.CompatibleImpl)]
 
-[assembly: Guid("0A2FCCC3-024A-4153-B425-44FAC5278B5D")]
+[assembly: Guid("e9c5abd2-d461-4017-a703-efc83c20c0f2")]
 #endif
 //
 // General Information about an assembly is controlled through the following 
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("MyGeneration Development Community")]
 [assembly: AssemblyProduct("MyGeneration")]
-[assembly: AssemblyCopyright("Copyright © 2004-2007 Mike Griffin and Justin Greenwood. All Rights Reserved")]
+[assembly: AssemblyCopyright("Copyright ï¿½ 2004-2007 Mike Griffin and Justin Greenwood. All Rights Reserved")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
 

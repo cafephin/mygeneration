@@ -10,7 +10,7 @@ namespace MyMeta
 #if ENTERPRISE
 	using System.Runtime.InteropServices;
 	using System.EnterpriseServices;
-	[GuidAttribute("d7907f72-33ac-413b-9bcf-8289047b0054"),ClassInterface(ClassInterfaceType.AutoDual)]
+	[GuidAttribute("3c35ad55-7c6a-4f5f-af6f-340cf4e8b4ea"),ClassInterface(ClassInterfaceType.AutoDual)]
 	public class CollectionEnumerator : ServicedComponent, IEnumerator
 #else
 	public class CollectionEnumerator : IEnumerator

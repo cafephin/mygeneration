@@ -45,7 +45,7 @@ namespace MyMeta
 	/// }
 	///	</code>
 	/// </example>
-	[GuidAttribute("5ca1dd74-5667-482e-90de-b82144566b74"),InterfaceType(ComInterfaceType.InterfaceIsDual)]	 
+	[GuidAttribute("2e9998c4-4873-442e-9ef7-0f68d98d08a5"),InterfaceType(ComInterfaceType.InterfaceIsDual)]	 
 	public interface IColumn 
 	{
 		// Objects

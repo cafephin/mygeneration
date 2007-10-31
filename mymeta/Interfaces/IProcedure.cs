@@ -28,7 +28,7 @@ namespace MyMeta
 	/// output.writeln("This Procedure returns " + objProcedure.ResultColumns.Count + " ResultColumns");
 	/// </code>
 	/// </example>
-	[GuidAttribute("aaf6535c-be07-4d0d-9803-771019832ba8"),InterfaceType(ComInterfaceType.InterfaceIsDual)]
+	[GuidAttribute("e9cf84da-de7e-433f-a67a-e8b221f30cb6"),InterfaceType(ComInterfaceType.InterfaceIsDual)]
 	public interface IProcedure
 	{
 		// Collections

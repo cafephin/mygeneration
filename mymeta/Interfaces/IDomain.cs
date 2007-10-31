@@ -7,7 +7,7 @@ namespace MyMeta
 	/// <summary>
 	/// Summary description for IDomain.
 	/// </summary>
-	[GuidAttribute("410d4008-b43d-48f8-bb96-9a2ad9b72853"),InterfaceType(ComInterfaceType.InterfaceIsDual)]	 
+	[GuidAttribute("4974aee6-17df-485d-8bfd-722926941629"),InterfaceType(ComInterfaceType.InterfaceIsDual)]	 
 	public interface IDomain
 	{
 		/// <summary>

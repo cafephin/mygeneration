@@ -79,7 +79,7 @@ namespace MyMeta
 	/// However, you can override these defaults as many of the sample scripts do. For instance, if you have a script that is for SqlClient
 	/// only go ahead and set the MyMeta.DbTarget in your script thus overriding the Default Settings.
 	/// </example>
-	[GuidAttribute("147a73a3-5620-480e-bf38-379440fa086c"),ClassInterface(ClassInterfaceType.AutoDual)]
+	[GuidAttribute("6b6e4c19-a0c4-405a-8085-0676f5d5cdc3"),ClassInterface(ClassInterfaceType.AutoDual)]
 	public class dbRoot : ServicedComponent
 #else
 	public class dbRoot 
@@ -1249,7 +1249,7 @@ namespace MyMeta
 	/// The current list of support dbDrivers. Typically VBScript and JScript use the string version as defined by MyMeta.DriverString.
 	/// </summary>
 #if ENTERPRISE
-	[GuidAttribute("9bb31988-13bd-481f-9913-7efc9a42bd11")]
+	[GuidAttribute("0e781bc8-b741-4d71-bd0f-8ef7303ab826")]
 #endif
 	public enum dbDriver
 	{

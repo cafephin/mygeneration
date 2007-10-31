@@ -38,7 +38,7 @@ namespace MyMeta
 	/// }
 	/// </code>
 	/// </example>
-	[GuidAttribute("4da4b85e-0217-4e79-9ae1-8698798669c6"),InterfaceType(ComInterfaceType.InterfaceIsDual)] 
+	[GuidAttribute("ecd2d42f-f081-4214-9ba4-74d0ded9bb5a"),InterfaceType(ComInterfaceType.InterfaceIsDual)] 
 	public interface IView
 	{
 		// Collections

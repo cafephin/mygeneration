@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace MyMeta
 {
-	[GuidAttribute("957c18aa-7538-4fbc-8cf3-7414068e93a0"),InterfaceType(ComInterfaceType.InterfaceIsDual)]
+	[GuidAttribute("9cafbed9-46e2-48f5-89ce-80b24a12c639"),InterfaceType(ComInterfaceType.InterfaceIsDual)]
 	public interface IProviderTypes
 	{
 		[DispId(0)]

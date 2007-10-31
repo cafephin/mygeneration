@@ -63,7 +63,7 @@ namespace MyMeta
 	/// }
 	/// </code>
 	/// </example>
-	[GuidAttribute("58c56a82-cfd8-4df9-99af-5cd635c9805a"),InterfaceType(ComInterfaceType.InterfaceIsDual)]	 
+	[GuidAttribute("bdc06a89-6f72-4572-ae37-910f3cac712d"),InterfaceType(ComInterfaceType.InterfaceIsDual)]	 
 	public interface IParameter
 	{
 		/// <summary>

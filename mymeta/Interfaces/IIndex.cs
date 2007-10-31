@@ -36,7 +36,7 @@ namespace MyMeta
 	/// }
 	/// </code>
 	/// </example>
-	[GuidAttribute("b0483374-1417-412d-876c-10e6eb5ab865"),InterfaceType(ComInterfaceType.InterfaceIsDual)]	 
+	[GuidAttribute("88bbd68a-d223-4348-b4cc-4cb1c262e880"),InterfaceType(ComInterfaceType.InterfaceIsDual)]	 
 	public interface IIndex
 	{
 		// Objects

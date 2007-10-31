@@ -39,7 +39,7 @@ namespace MyMeta
 	/// }
 	/// </code>
 	/// </example>
-	[GuidAttribute("5a88ba8f-2e77-4559-bab2-f3614c814a87"),InterfaceType(ComInterfaceType.InterfaceIsDual)] 
+	[GuidAttribute("d623c10a-8a7e-4360-830a-d273c8cc70dd"),InterfaceType(ComInterfaceType.InterfaceIsDual)] 
 	public interface ITable
 	{
 		// Collections

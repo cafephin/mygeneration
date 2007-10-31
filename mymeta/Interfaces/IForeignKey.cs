@@ -37,7 +37,7 @@ namespace MyMeta
 	/// }
 	/// </code>
 	/// </example>
-	[GuidAttribute("7a5cf168-6f05-4fee-8ebd-20f401095f6a"),InterfaceType(ComInterfaceType.InterfaceIsDual)]	 
+	[GuidAttribute("c4c07016-a7a5-4415-b837-285a2b4f9ec1"),InterfaceType(ComInterfaceType.InterfaceIsDual)]	 
 	public interface IForeignKey
 	{
 		/// <summary>

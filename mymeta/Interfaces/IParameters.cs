@@ -7,7 +7,7 @@ namespace MyMeta
 	/// <summary>
 	/// This is a MyMeta Collection. The only two methods meant for public consumption are Count and Item.
 	/// </summary>
-	[GuidAttribute("98b8446d-d760-4983-a1bf-56cdae81e19a"),InterfaceType(ComInterfaceType.InterfaceIsDual)]
+	[GuidAttribute("16f72a4a-6e98-4dc3-a6ce-e58b15a9d9c9"),InterfaceType(ComInterfaceType.InterfaceIsDual)]
 	public interface IParameters : IList, IEnumerable	
 	{
 		// User Meta Data
