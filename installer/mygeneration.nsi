@@ -444,11 +444,11 @@ Section "-Install Mygeneration and Register Shell Extensions"
   Delete Settings\ZeusScriptingObjects.zcfg
 
   ; Write the installation path into the registry
-  WriteRegStr HKLM SOFTWARE\MyGeneration "Install_Dir" "$INSTDIR"
+  WriteRegStr HKLM SOFTWARE\MyGeneration13 "Install_Dir" "$INSTDIR"
 
   ; Write the uninstall keys for Windows
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\MyGeneration" "DisplayName" "MyGeneration (remove only)"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\MyGeneration" "UninstallString" '"$INSTDIR\uninstall.exe"'
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\MyGeneration13" "DisplayName" "MyGeneration 1.3 (remove only)"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\MyGeneration13" "UninstallString" '"$INSTDIR\uninstall.exe"'
 
   ; MyGeneration Development Shell Extensions - JGEN
   WriteRegStr HKCR ".jgen" "" "JGenMyGenFile"
@@ -569,8 +569,8 @@ Section "Uninstall"
 	ExecWait `"$WINDIR\Microsoft.NET\Framework\v2.0.50727\regasm.exe" /u "$INSTDIR\MyMeta.dll" /tlb:MyMeta.tlb`
   
   ; remove registry keys
-  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\MyGeneration"
-  DeleteRegKey HKLM SOFTWARE\MyGeneration
+  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\MyGeneration13"
+  DeleteRegKey HKLM SOFTWARE\MyGeneration13
   DeleteRegKey HKCR ".vbgen"
   DeleteRegKey HKCR ".jgen"
   DeleteRegKey HKCR ".zeus"

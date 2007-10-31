@@ -1,3 +1,6 @@
+2007.10.31 - MyGeneration 1.3 beta5c
+- Fixed registry mixup in the installer.
+
 2007.10.30 - MyGeneration 1.3 beta5
 - Made it a side by side installer (different folder)
 - Changed identity of MyMeta with new SNK file and new COM Guids - NO MORE REGISTRATION ISSUES! YAY! (you can have both versions running at the same time)
