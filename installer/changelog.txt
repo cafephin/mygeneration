@@ -1,3 +1,8 @@
+2007.10.30 - MyGeneration 1.3 beta5
+- Made it a side by side installer (different folder)
+- Changed identity of MyMeta with new SNK file and new COM Guids - NO MORE REGISTRATION ISSUES! YAY! (you can have both versions running at the same time)
+- Fixed COM OLEDB Popup (modal issue)
+
 2007.10.30 - MyGeneration 1.3 beta4d
 - Fixed MyMeta/Default settings bug. (found in testing)
 - Updated SVN and got k3b's changes (oops)

@@ -13,7 +13,7 @@
 SetCompressor lzma 
 
 ; The name of the installer
-Name "MyGeneration"
+Name "MyGeneration 1.3"
 
 ; The file to write
 OutFile "mygeneration_installer.exe"
@@ -29,17 +29,17 @@ LicenseText "Liscence Agreement"
 LicenseData "BSDLicense.rtf"
 
 ; The default installation directory
-InstallDir $PROGRAMFILES\MyGeneration
+InstallDir $PROGRAMFILES\MyGeneration13
 
 ; Registry key to check for directory (so if you install again, it will 
 ; overwrite the old one automatically)
-InstallDirRegKey HKLM SOFTWARE\MyGeneration "Install_Dir"
+InstallDirRegKey HKLM SOFTWARE\MyGeneration13 "Install_Dir"
 
 ; The text to prompt the user to enter a directory
-ComponentText "This will install the MyGeneration Code Generation Tool on your computer. Select which optional things you want installed."
+ComponentText "This will install the MyGeneration Code Generation Tool 1.3 on your computer. Select which optional things you want installed."
 
 ; The text to prompt belithe user to enter a directory
-DirText "Choose an install directory for MyGeneration."
+DirText "Choose an install directory for MyGeneration 1.3."
 
 ; Install .Net Framework 2.0
 Section "Detect .Net Framework 2.0"
@@ -532,16 +532,16 @@ SectionEnd
 
 ; optional section
 Section "Start Menu Shortcuts"
-  CreateDirectory "$SMPROGRAMS\MyGeneration"
-  CreateShortCut "$SMPROGRAMS\MyGeneration\MyGeneration.lnk" "$INSTDIR\MyGeneration.exe" "" "$INSTDIR\MyGeneration.exe" 0
-  CreateShortCut "$SMPROGRAMS\MyGeneration\MyGeneration Website.lnk" "http://www.mygenerationsoftware.com/" "" "$INSTDIR\MyGeneration.exe" 0
-  CreateShortCut "$SMPROGRAMS\MyGeneration\MyGeneration SourceForge Page.lnk" "http://sourceforge.net/projects/mygeneration/" "" "$INSTDIR\MyGeneration.exe" 0
-  CreateShortCut "$SMPROGRAMS\MyGeneration\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
-  CreateShortCut "$SMPROGRAMS\MyGeneration\MyGeneration Help.lnk" "$INSTDIR\MyGeneration.chm"
-  CreateShortCut "$SMPROGRAMS\MyGeneration\MyMeta Reference.lnk" "$INSTDIR\MyMeta.chm"
-  CreateShortCut "$SMPROGRAMS\MyGeneration\dOOdads Reference.lnk" "$INSTDIR\dOOdads.chm"
-  CreateShortCut "$SMPROGRAMS\MyGeneration\Zeus Reference.lnk" "$INSTDIR\Zeus.chm"
-  CreateShortCut "$SMPROGRAMS\MyGeneration\DNP Utils Reference.lnk" "$INSTDIR\Dnp.Utils.chm"
+  CreateDirectory "$SMPROGRAMS\MyGeneration 1.3"
+  CreateShortCut "$SMPROGRAMS\MyGeneration 1.3\MyGeneration.lnk" "$INSTDIR\MyGeneration.exe" "" "$INSTDIR\MyGeneration.exe" 0
+  CreateShortCut "$SMPROGRAMS\MyGeneration 1.3\MyGeneration Website.lnk" "http://www.mygenerationsoftware.com/" "" "$INSTDIR\MyGeneration.exe" 0
+  CreateShortCut "$SMPROGRAMS\MyGeneration 1.3\MyGeneration SourceForge Page.lnk" "http://sourceforge.net/projects/mygeneration/" "" "$INSTDIR\MyGeneration.exe" 0
+  CreateShortCut "$SMPROGRAMS\MyGeneration 1.3\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
+  CreateShortCut "$SMPROGRAMS\MyGeneration 1.3\MyGeneration Help.lnk" "$INSTDIR\MyGeneration.chm"
+  CreateShortCut "$SMPROGRAMS\MyGeneration 1.3\MyMeta Reference.lnk" "$INSTDIR\MyMeta.chm"
+  CreateShortCut "$SMPROGRAMS\MyGeneration 1.3\dOOdads Reference.lnk" "$INSTDIR\dOOdads.chm"
+  CreateShortCut "$SMPROGRAMS\MyGeneration 1.3\Zeus Reference.lnk" "$INSTDIR\Zeus.chm"
+  CreateShortCut "$SMPROGRAMS\MyGeneration 1.3\DNP Utils Reference.lnk" "$INSTDIR\Dnp.Utils.chm"
 SectionEnd
 
 ; Launch Program After Install on section select
@@ -584,10 +584,10 @@ Section "Uninstall"
   Delete $INSTDIR\uninstall.exe
  
   ; remove shortcuts, if any.
-  Delete "$SMPROGRAMS\MyGeneration\*.*"
+  Delete "$SMPROGRAMS\MyGeneration 1.3\*.*"
   
   ; remove directories used.
-  RMDir "$SMPROGRAMS\MyGeneration"
+  RMDir "$SMPROGRAMS\MyGeneration 1.3"
   
   ;RMDir /r "$INSTDIR"
   Delete $INSTDIR\*.exe

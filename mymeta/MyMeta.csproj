@@ -1281,6 +1281,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Content Include="MyMeta.chm" />
+    <None Include="MyMeta.snk" />
     <None Include="ThirdParty\FirebirdSql.Data.Firebird.dll" />
     <None Include="ThirdParty\Mono.Security.dll" />
     <None Include="ThirdParty\Mono.Security.Protocol.Tls.dll" />
@@ -1310,9 +1311,6 @@
       <WrapperTool>tlbimp</WrapperTool>
       <Isolated>False</Isolated>
     </COMReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="MyMeta.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
