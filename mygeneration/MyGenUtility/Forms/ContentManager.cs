@@ -33,7 +33,7 @@ namespace MyGeneration
                     item.Tag = typeof(IContentManager);
                     pluginsMenuItem.DropDownItems.Add(item);
 
-                    if (cm.MenuImage != null)
+                    if ((cm.MenuImage != null) && cm.AddToolbarIcon)
                     {
                         ToolStripButton b = new ToolStripButton(null, cm.MenuImage, onClickEvent, "toolStripButton" + id);
                         b.ImageTransparentColor = Color.Magenta;
@@ -58,7 +58,7 @@ namespace MyGeneration
                     item.Tag = typeof(ISimplePluginManager);
                     pluginsMenuItem.DropDownItems.Add(item);
 
-                    if (spm.MenuImage != null)
+                    if ((spm.MenuImage != null) && spm.AddToolbarIcon)
                     {
                         ToolStripButton b = new ToolStripButton(null, spm.MenuImage, onClickEvent, "toolStripButton" + id);
                         b.ImageTransparentColor = Color.Magenta;
@@ -89,8 +89,9 @@ namespace MyGeneration
         public abstract string Name { get; }
         public abstract Uri AuthorUri { get; }
         public abstract string Description { get; }
+        public abstract bool AddToolbarIcon { get; }
         public abstract IMyGenContent Create(IMyGenerationMDI mdi, params string[] args);
-        
+
         public virtual Image MenuImage
         {
             get { return null; }

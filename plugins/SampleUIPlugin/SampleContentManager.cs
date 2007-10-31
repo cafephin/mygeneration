@@ -27,6 +27,14 @@ namespace SampleUIPlugin
             }
         }
 
+        public bool AddToolbarIcon
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         public Image MenuImage
         {
             get { return Properties.Resources.bgb; }

@@ -6,18 +6,18 @@ using System.IO;
 using System.Windows.Forms;
 using MyGeneration;
 
-namespace SampleUIPlugin
+namespace MyGeneration.UI.Plugins.CodeSmith2MyGen
 {
-    public class SampleSimplePluginManager : ISimplePluginManager
+    public class CodeSmith2MyGenPluginManager : ISimplePluginManager
     {
         public string Name
         {
-            get { return "Sample Simple Plugin"; }
+            get { return "CodeSmith2MyGen Plugin"; }
         }
 
         public string Description
         {
-            get { return "This is a sample simple plugin. It basically shows how to add a simple plugin into MyGeneration. - komma8.komma1"; }
+            get { return ". - komma8.komma1"; }
         }
 
         public Uri AuthorUri
@@ -30,21 +30,18 @@ namespace SampleUIPlugin
 
         public bool AddToolbarIcon
         {
-            get
-            {
-                return true;
-            }
+            get { return true; }
         }
 
         public Image MenuImage
         {
-            get { return Properties.Resources.puter; }
+            get { return null; }
         }
 
         public void Execute(IMyGenerationMDI mdi, params string[] args)
         {
-            SampleDialogContent sdc = new SampleDialogContent(mdi);
-            DialogResult result = sdc.ShowDialog(mdi.DockPanel.Parent.FindForm());
+            /*SampleDialogContent sdc = new SampleDialogContent(mdi);
+            DialogResult result = sdc.ShowDialog(mdi.DockPanel.Parent.FindForm());*/
         }
     }
 }

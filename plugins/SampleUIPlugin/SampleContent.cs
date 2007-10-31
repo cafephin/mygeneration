@@ -33,6 +33,11 @@ namespace SampleUIPlugin
             //
         }
 
+        public bool AddToolbarIcon
+        {
+            get { return false; }
+        }
+
         public bool CanClose(bool allowPrevent)
         {
             return true;

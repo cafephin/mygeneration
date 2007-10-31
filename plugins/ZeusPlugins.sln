@@ -12,6 +12,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleUIPlugin", "SampleUIP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScintillaNET", "..\scintilla\ScintillaNET\ScintillaNET.csproj", "{F9B6DABD-BBC1-4638-8CE6-A5C9506BFDCB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyGeneration.UI.Plugins.CodeSmith2MyGen", "MyGeneration.UI.Plugins.CodeSmith2MyGen\MyGeneration.UI.Plugins.CodeSmith2MyGen.csproj", "{8A169B10-BD39-4635-844D-34D5655FAAF8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyGeneration.UI.Plugins.SqlTool", "MyGeneration.UI.Plugins.SqlTool\MyGeneration.UI.Plugins.SqlTool.csproj", "{6D58CFD6-E000-4927-94C9-4EDB34AE3E9B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +46,14 @@ Global
 		{F9B6DABD-BBC1-4638-8CE6-A5C9506BFDCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9B6DABD-BBC1-4638-8CE6-A5C9506BFDCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9B6DABD-BBC1-4638-8CE6-A5C9506BFDCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A169B10-BD39-4635-844D-34D5655FAAF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A169B10-BD39-4635-844D-34D5655FAAF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A169B10-BD39-4635-844D-34D5655FAAF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A169B10-BD39-4635-844D-34D5655FAAF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D58CFD6-E000-4927-94C9-4EDB34AE3E9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D58CFD6-E000-4927-94C9-4EDB34AE3E9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D58CFD6-E000-4927-94C9-4EDB34AE3E9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D58CFD6-E000-4927-94C9-4EDB34AE3E9B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

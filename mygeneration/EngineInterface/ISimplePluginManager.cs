@@ -12,6 +12,7 @@ namespace MyGeneration
         string Description { get; }
         Uri AuthorUri { get; }
         Image MenuImage { get; }
+        bool AddToolbarIcon { get; }
         void Execute(IMyGenerationMDI mdi, params string[] args);
     }
 }
