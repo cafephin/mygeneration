@@ -385,15 +385,19 @@ namespace MyGeneration.AutoCompletion
 
                         foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies())
                         {
-                            Type[] atypes = a.GetTypes();
-                            foreach (Type t in atypes)
+                            try
                             {
-                                if (string.Equals(t.Name, type, StringComparison.CurrentCultureIgnoreCase))
+                                Type[] atypes = a.GetTypes();
+                                foreach (Type t in atypes)
                                 {
-                                    types.Add(t);
-                                    break;
+                                    if (string.Equals(t.Name, type, StringComparison.CurrentCultureIgnoreCase))
+                                    {
+                                        types.Add(t);
+                                        break;
+                                    }
                                 }
                             }
+                            catch { }
                         }
                     }
                 }
