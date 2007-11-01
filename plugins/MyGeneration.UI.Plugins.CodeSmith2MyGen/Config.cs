@@ -95,7 +95,6 @@ namespace MyGeneration.CodeSmithConversion
 			tmp = Path.Combine(dirInfo.FullName, PLUGIN_FOLDER + PLUGIN_LOCATION);
 			if (!File.Exists(tmp)) 
 			{
-                MessageBox.Show(tmp);
                 CopyResourceToFile(CM.Properties.Resources.SamplePlugin_plugin, tmp);
 			}
 		}

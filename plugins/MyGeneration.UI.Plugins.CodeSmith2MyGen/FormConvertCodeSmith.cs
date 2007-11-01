@@ -680,7 +680,6 @@ namespace MyGeneration.CodeSmithConversion
 		private void menuItemExit_Click(object sender, System.EventArgs e)
 		{
 			this.Close();
-			Application.Exit();
 		}
 
 		private void menuItemAbout_Click(object sender, System.EventArgs e)

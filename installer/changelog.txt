@@ -1,3 +1,7 @@
+2007.11.01 - MyGeneration 1.3 beta6
+- Made small changes to the Plugin interfaces
+- Created a codesmith converter plugin with the source to the old converter app.
+
 2007.10.31 - MyGeneration 1.3 beta5c
 - Fixed registry mixup in the installer.
 
