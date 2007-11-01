@@ -9,6 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MyGeneration.UI.Plugins.CodeSmith2MyGen</RootNamespace>
     <AssemblyName>MyGeneration.UI.Plugins.CodeSmith2MyGen</AssemblyName>
+    <ApplicationIcon>Resources\App.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,6 +34,10 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.1.2706.19617, Culture=neutral, PublicKeyToken=d481317c817cec47, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\mygeneration\MyGeneration\DockManager\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config.cs" />
@@ -42,7 +47,7 @@
     <Compile Include="FormConvertCodeSmith.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Plugins\SamplePlugin.plugin.cs" />
+    <EmbeddedResource Include="Plugins\SamplePlugin.plugin.cs" />
     <Compile Include="Conversion\CSharpHelper.cs" />
     <Compile Include="Conversion\LanguageHelper.cs" />
     <Compile Include="Conversion\SimpleMapping\SimpleMap.cs" />
@@ -52,6 +57,11 @@
     <Compile Include="Parser\CstParser.cs" />
     <Compile Include="Plugins\ICstProcessor.cs" />
     <Compile Include="Plugins\PluginController.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Template\CstProperty.cs" />
     <Compile Include="Template\CstTemplate.cs" />
     <Compile Include="Template\CstToken.cs" />
@@ -65,12 +75,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Config.xml" />
+    <EmbeddedResource Include="Config.xml" />
     <Content Include="Documentation\CodeSmith2MyGen.html" />
+    <None Include="Resources\Hammer.png" />
+    <None Include="Resources\App.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Default.csmap" />
-    <None Include="Default.vbmap" />
+    <EmbeddedResource Include="Default.csmap" />
+    <EmbeddedResource Include="Default.vbmap" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="FormAbout.resx">
@@ -80,6 +92,11 @@
     <EmbeddedResource Include="FormConvertCodeSmith.resx">
       <DependentUpon>FormConvertCodeSmith.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

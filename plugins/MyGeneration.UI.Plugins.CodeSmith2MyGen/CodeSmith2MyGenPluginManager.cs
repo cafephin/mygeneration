@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using MyGeneration;
+using MyGeneration.CodeSmithConversion;
 
 namespace MyGeneration.UI.Plugins.CodeSmith2MyGen
 {
@@ -17,7 +18,7 @@ namespace MyGeneration.UI.Plugins.CodeSmith2MyGen
 
         public string Description
         {
-            get { return ". - komma8.komma1"; }
+            get { return "This is a port of the CodeSmith to MyGeneration software as a MyGeneration plugin. - komma8.komma1"; }
         }
 
         public Uri AuthorUri
@@ -35,13 +36,13 @@ namespace MyGeneration.UI.Plugins.CodeSmith2MyGen
 
         public Image MenuImage
         {
-            get { return null; }
+            get { return Properties.Resources.Hammer; }
         }
 
         public void Execute(IMyGenerationMDI mdi, params string[] args)
         {
-            /*SampleDialogContent sdc = new SampleDialogContent(mdi);
-            DialogResult result = sdc.ShowDialog(mdi.DockPanel.Parent.FindForm());*/
+            FormConvertCodeSmith form = new FormConvertCodeSmith(mdi);
+            form.ShowDialog(mdi.DockPanel.Parent.FindForm());
         }
     }
 }

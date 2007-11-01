@@ -5,6 +5,7 @@ using System.Text;
 using System.Globalization;
 using System.Reflection;
 using System.Windows.Forms;
+using MyGeneration.UI.Plugins.CodeSmith2MyGen;
 
 namespace MyGeneration.CodeSmithConversion
 {
@@ -255,6 +256,7 @@ namespace MyGeneration.CodeSmithConversion
 
 		protected XmlDocument LoadFromResource()
 		{
+            
 			XmlDocument xmldoc = new XmlDocument();
 			
 			Assembly assembly = Assembly.GetExecutingAssembly();
