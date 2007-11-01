@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Windows.Forms;
 using MyGeneration.UI.Plugins.CodeSmith2MyGen;
+using CM = MyGeneration.UI.Plugins.CodeSmith2MyGen;
 
 namespace MyGeneration.CodeSmithConversion
 {
@@ -17,13 +18,13 @@ namespace MyGeneration.CodeSmithConversion
 		private const string CONFIG_LOCATION = "Config.xml";
 		private const string VBMAP_LOCATION = "Default.vbmap";
 		private const string CSMAP_LOCATION = "Default.csmap";
-		private const string PLUGIN_LOCATION = "SamplePlugin.plugin.cs";
+        private const string PLUGIN_LOCATION = "SamplePlugin.plugin.cs";
 		private const string PLUGIN_FOLDER = @"Plugins\";
-		private const string BASE_RESOURCE_PATH = "MyGeneration.CodeSmithConversion.";
-		private const string CONFIG_RESOURCE_PATH = BASE_RESOURCE_PATH + CONFIG_LOCATION;
-		private const string VBMAP_RESOURCE_PATH = BASE_RESOURCE_PATH + VBMAP_LOCATION;
-		private const string CSMAP_RESOURCE_PATH = BASE_RESOURCE_PATH + CSMAP_LOCATION;
-		private const string PLUGIN_RESOURCE_PATH = BASE_RESOURCE_PATH + PLUGIN_LOCATION;
+        private const string BASE_RESOURCE_PATH = "MyGeneration.UI.Plugins.CodeSmith2MyGen.";
+		//private const string CONFIG_RESOURCE_PATH = BASE_RESOURCE_PATH + CONFIG_LOCATION;
+		//private const string VBMAP_RESOURCE_PATH = BASE_RESOURCE_PATH + VBMAP_LOCATION;
+		//private const string CSMAP_RESOURCE_PATH = BASE_RESOURCE_PATH + CSMAP_LOCATION;
+		//private const string PLUGIN_RESOURCE_PATH = BASE_RESOURCE_PATH + PLUGIN_LOCATION;
 
 		private string filename = null;
 		private string myGenExePath = null;
@@ -78,23 +79,24 @@ namespace MyGeneration.CodeSmithConversion
 
 			if (!File.Exists(filename)) 
 			{
-				CopyResourceToFile(CONFIG_RESOURCE_PATH, filename);
+				CopyResourceToFile(CM.Properties.Resources.Config, filename);
 			}
 
 			string tmp = Path.Combine(dirInfo.FullName, VBMAP_LOCATION);
 			if (!File.Exists(tmp)) 
 			{
-				CopyResourceToFile(VBMAP_RESOURCE_PATH, tmp);
+                CopyResourceToFile(CM.Properties.Resources.DefaultVBMap, tmp);
 			}
 			tmp = Path.Combine(dirInfo.FullName, CSMAP_LOCATION);
 			if (!File.Exists(tmp)) 
 			{
-				CopyResourceToFile(CSMAP_RESOURCE_PATH, tmp);
+                CopyResourceToFile(CM.Properties.Resources.DefaultCSMap, tmp);
 			}
 			tmp = Path.Combine(dirInfo.FullName, PLUGIN_FOLDER + PLUGIN_LOCATION);
 			if (!File.Exists(tmp)) 
 			{
-				CopyResourceToFile(PLUGIN_RESOURCE_PATH, tmp);
+                MessageBox.Show(tmp);
+                CopyResourceToFile(CM.Properties.Resources.SamplePlugin_plugin, tmp);
 			}
 		}
 
@@ -256,31 +258,26 @@ namespace MyGeneration.CodeSmithConversion
 
 		protected XmlDocument LoadFromResource()
 		{
-            
 			XmlDocument xmldoc = new XmlDocument();
-			
-			Assembly assembly = Assembly.GetExecutingAssembly();
-			Stream stream = assembly.GetManifestResourceStream(CONFIG_RESOURCE_PATH);
-			xmldoc.Load(stream);
+			xmldoc.LoadXml(CM.Properties.Resources.Config);
 
 			return xmldoc;
 		}
 
-		protected void CopyResourceToFile(string resource, string file) 
-		{
-			FileStream outstream = File.OpenWrite(file);
-			StreamWriter sw = new StreamWriter(outstream);
-				
-			Stream instream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resource);
-			StreamReader sr = new StreamReader(instream);
+        protected void CopyResourceToFile(string resourcedata, string file)
+        {
+            FileInfo f = new FileInfo(file);
+            if (!f.Directory.Exists) f.Directory.Create();
 
-			sw.Write(sr.ReadToEnd());
-			sw.Flush();
-			sw.Close();
+            FileStream outstream = File.OpenWrite(file);
+            StreamWriter sw = new StreamWriter(outstream);
 
-			sw = null;
-			sr = null;
-		}
+            sw.Write(resourcedata);
+            sw.Flush();
+            sw.Close();
+
+            sw = null;
+        }
 		#endregion
 	}
 }

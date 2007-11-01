@@ -35,8 +35,9 @@ namespace MyGeneration.CodeSmithConversion.Plugins
 					ps.ReferencedAssemblies.Add("System.dll");
 					ps.ReferencedAssemblies.Add("System.Xml.dll");
 					ps.ReferencedAssemblies.Add("System.Data.dll");
-					ps.ReferencedAssemblies.Add("System.Drawing.dll");
-					ps.ReferencedAssemblies.Add("System.Windows.Forms.dll");
+                    ps.ReferencedAssemblies.Add("System.Drawing.dll");
+                    ps.ReferencedAssemblies.Add("System.Windows.Forms.dll");
+                    ps.ReferencedAssemblies.Add("MyGeneration.UI.Plugins.CodeSmith2MyGen.dll");
 
 					if (vbfiles.Length > 0) 
 					{

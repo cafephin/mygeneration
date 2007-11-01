@@ -121,7 +121,19 @@
   <data name="CodeSmithConverter" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\App.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Config" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\config.xml;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="DefaultCSMap" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\default.csmap;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="DefaultVBMap" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\default.vbmap;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
   <data name="Hammer" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Hammer.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SamplePlugin_plugin" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\plugins\sampleplugin.plugin.cs;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
 </root>

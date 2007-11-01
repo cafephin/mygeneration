@@ -699,8 +699,13 @@ namespace MyGeneration.CodeSmithConversion
 
 		public void AddEntry(Exception ex)
 		{
-			AddEntry("EXCEPTION [{0}] - Message=\"{1}\" Source=\"{2}\" StackTrace=\"{3}\" ", 
-				ex.GetType().Name, ex.Message, ex.Source, ex.StackTrace);
+            string message = ex.Message;
+            if (ex is FileNotFoundException)
+            {
+                message += "File: " + (ex as FileNotFoundException).FileName;
+            }
+			AddEntry("EXCEPTION [{0}] - Message=\"{1}\" Source=\"{2}\" StackTrace=\"{3}\" ",
+                ex.GetType().Name, message, ex.Source, ex.StackTrace);
 		}
 
 		public void AddEntry(string message, params object[] args)

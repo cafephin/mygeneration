@@ -67,10 +67,86 @@ namespace MyGeneration.UI.Plugins.CodeSmith2MyGen.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
+        ///&lt;configuration&gt;
+        ///	&lt;mygeneration exepath=&quot;&quot; templatepath=&quot;&quot; launch=&quot;True&quot;/&gt;
+        ///	&lt;codesmith applicationpath=&quot;C:\Program Files\CodeSmith&quot; templatepath=&quot;C:\Program Files\CodeSmith\Samples\Collections&quot; /&gt;
+        ///&lt;/configuration&gt;
+        ///.
+        /// </summary>
+        internal static string Config {
+            get {
+                return ResourceManager.GetString("Config", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
+        ///&lt;maps&gt;
+        ///	&lt;map source=&quot;Response.WriteLine()&quot; target=&quot;output.writeln(&amp;quot;&amp;quot;)&quot;/&gt;
+        ///	&lt;map source=&quot;Response.WriteLine(&quot; target=&quot;output.writeln(&quot;/&gt;
+        ///	&lt;map source=&quot;Response.Write(&quot; target=&quot;output.write(&quot;/&gt;
+        ///	&lt;map source=&quot;.cst&quot; target=&quot;.zeus&quot;/&gt;
+        ///&lt;/maps&gt;
+        ///.
+        /// </summary>
+        internal static string DefaultCSMap {
+            get {
+                return ResourceManager.GetString("DefaultCSMap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
+        ///&lt;maps&gt;
+        ///	&lt;map source=&quot;Response.WriteLine &amp;quot;&quot; target=&quot;output.writeln &amp;quot;&quot;/&gt;
+        ///	&lt;map source=&quot;Response.WriteLine&quot; target=&quot;output.writeln &amp;quot;&amp;quot;&quot;/&gt;
+        ///	&lt;map source=&quot;Response.Write&quot; target=&quot;output.write&quot;/&gt;
+        ///	&lt;map source=&quot;.cst&quot; target=&quot;.zeus&quot;/&gt;
+        ///&lt;/maps&gt;.
+        /// </summary>
+        internal static string DefaultVBMap {
+            get {
+                return ResourceManager.GetString("DefaultVBMap", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Bitmap Hammer {
             get {
                 object obj = ResourceManager.GetObject("Hammer", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to using System;
+        ///using System.IO;
+        ///using System.Collections;
+        ///using System.Text;
+        ///using System.Reflection;
+        ///
+        ///using MyGeneration.CodeSmithConversion;
+        ///using MyGeneration.CodeSmithConversion.Plugins;
+        ///using MyGeneration.CodeSmithConversion.Template;
+        ///
+        ////*
+        ///The DLLs Referenced are:
+        ///	System.dll
+        ///	System.Xml.dll
+        ///	System.Data.dll
+        ///	System.Drawing.dll
+        ///	System.Windows.Forms.dll
+        ///	MyGeneration.CodeSmithConversion.dll
+        ///*/
+        ///namespace MyGeneration.CodeSmithConversion
+        ///{
+        ///	/// &lt;summary&gt;
+        ///	/// A Sample Plugin for custo [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SamplePlugin_plugin {
+            get {
+                return ResourceManager.GetString("SamplePlugin_plugin", resourceCulture);
             }
         }
     }

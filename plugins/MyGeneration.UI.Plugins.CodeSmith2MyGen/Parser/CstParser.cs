@@ -55,8 +55,8 @@ namespace MyGeneration.CodeSmithConversion.Parser
 			template.RawCode = cstText;
 			template.Filename = cstFileInfo.Name.Substring(0, cstFileInfo.Name.LastIndexOf("."));
 
-			IncludeFiles();
-			ReplaceComments();
+            IncludeFiles();
+            ReplaceComments();
 			ReplaceScriptBlocks();
 			GrabDirectives();
 			ReplaceEscapedASPTags();
@@ -66,7 +66,7 @@ namespace MyGeneration.CodeSmithConversion.Parser
 			return template;
 		}
 
-		private void IncludeFiles() 
+        private void IncludeFiles() 
 		{
 			log.AddEntry("Searching for included files...");
 
@@ -84,12 +84,14 @@ namespace MyGeneration.CodeSmithConversion.Parser
 					log.AddEntry("--> Found match: {0}", match.Value.ToString());
 					
 					filename = PullCapturedAttribute(match, "file");
-					log.AddEntry("--> Including file: {0}", filename );
+                    char c = (char)65533;
+                    filename = filename.Trim(c);
+                    log.AddEntry("--> Including file: {0}", filename);
+                    
+                    filename = Path.Combine(cstFileInfo.Directory.FullName, filename);
 
-					filename = Path.Combine(cstFileInfo.DirectoryName, filename);
+                    LoadFileText(filename, ref filetext);
 
-					LoadFileText(filename, ref filetext);
-					
 					cstText = cstText.Remove(match.Index, match.Length);
 					cstText = cstText.Insert(match.Index, filetext);
 
@@ -463,7 +465,7 @@ namespace MyGeneration.CodeSmithConversion.Parser
 			if (info.Exists) 
 			{
 				StreamReader reader = null;
-				reader = info.OpenText();
+                reader = new StreamReader(info.FullName, true);
 				text = reader.ReadToEnd();
 				reader.Close();
 			}
