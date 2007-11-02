@@ -8,14 +8,5 @@ TODO:
 - Test in Windows Vista.
 
 ToDo (k3b on xsd3b)
-	* wiki on sourceforge http://mygeneration.wiki.sourceforge.net/
-		* link onlinehelp MyGenXsd3b.chm to wiki-topics on sourceforge
-		* Xsd3b
-		* Xsd3b-SupportedModelingTools
-		* Xsd3b-Xsl
-		* PlugIns
-		* link from Mygen-Aboutbox to xsd3b wikipage
 	* interlink MyGeneration.chm <-> MyGenXsd3b.chm
 		<A HREF="ms-its:file name.chm::/topic.htm"> or mk:@MSITStore:file name.chm::/topic.htm
-	* create template xml/Modelfile2XSD3b.csgen
-		

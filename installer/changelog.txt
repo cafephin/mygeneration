@@ -1,3 +1,10 @@
+2007.11.01 (k3b) MyGenXsd3b Versionnumber 0.9.0.116
+- MyGenXsd3b plugin code complete
+- MyGenXsd3b.chm added uml stuff and new MyGeneration-Gui-Details to chm
+- wiki on sourceforge http://mygeneration.wiki.sourceforge.net/ as onlineupdate for MyGenXsd3b.chm
+	- topics SupportedTools, XSL and XSD3b
+- new template xml/Modelfile2XSD3b.csgen to overcome performanceproblems with big uml-files
+
 2007.11.01 - MyGeneration 1.3 beta6
 - Made small changes to the Plugin interfaces
 - Created a codesmith converter plugin with the source to the old converter app.
