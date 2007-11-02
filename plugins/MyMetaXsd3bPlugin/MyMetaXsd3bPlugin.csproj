@@ -66,8 +66,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Xsd3bConnection.cs" />
     <Compile Include="Xsd3bProvider.cs" />
-    <None Include="lib\MogwaiERDesignerModelXdm.wiki" />
-    <None Include="lib\Xsd3bImportFromUml.wiki" />
     <None Include="templates\xsd3b\DatabaseReport.xsd3b.htm.xsl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -79,8 +77,18 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="lib\MyGenXsd3b.wiki" />
-    <None Include="lib\XSD3bHistory.wiki" />
+    <None Include="templates\xsd3b\ArgoUmlSample.uml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="templates\xsd3b\DemoStarUml.xmi">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="templates\xsd3b\Modelfile2XSD3b.csgen">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="templates\xsd3b\StarUmlSample.staruml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="templates\xsd3b\ToXsd.csgen">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -92,8 +100,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="templates\xsd3b\ExampleOracle2.xdm">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>    
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\mymeta\MyMeta.csproj">

@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("MyGen.Plugin.Xsd3b")]
-[assembly: AssemblyDescription("Plugin for xml/xsd im- and export for MyGeneration ")]
+[assembly: AssemblyDescription("Plugin for xml/xsd/uml/er im- and export for MyGeneration ")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany(".")]
 [assembly: AssemblyProduct("MyGen.Plugin.Xsd3b")]
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("0.7.0.16")]
-[assembly: AssemblyFileVersion("0.7.0.16")]
+[assembly: AssemblyVersion("0.9.0.116")]
+[assembly: AssemblyFileVersion("0.9.0.116")]

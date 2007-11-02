@@ -89,7 +89,7 @@ perspective: with the Xsd3b plugin you can use MyGeneration without the need to 
         {
             get
             {
-                string name = getHelpFileUrl();
+                string name = @"http://mygeneration.wiki.sourceforge.net/Xsd3b"; // getHelpFileUrl();
                 if (name == null)
                     name = @"http://www.qsl.net/dl3bak/";
 

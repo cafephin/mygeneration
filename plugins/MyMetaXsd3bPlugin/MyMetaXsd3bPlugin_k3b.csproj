@@ -74,13 +74,25 @@
       <Link>MyGenXsd3b.chm</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="templates\xsd3b\ArgoUmlSample.uml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="templates\xsd3b\DatabaseReport.xsd3b.htm.xsl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="templates\xsd3b\DemoStarUml.xmi">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="templates\xsd3b\ExampleOracle2.xdm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="templates\xsd3b\Modelfile2XSD3b.csgen">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="templates\xsd3b\Mogwai_ERDesignerModel.xdm.xsd3b.xsl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="templates\xsd3b\StarUmlSample.staruml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="templates\xsd3b\xsd3b2htm.xsl">
