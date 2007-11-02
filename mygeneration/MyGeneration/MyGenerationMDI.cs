@@ -195,6 +195,35 @@ namespace MyGeneration
                 e.Cancel = true;
                 return;
             }
+            else
+            {
+                try
+                {
+                    switch (this.WindowState)
+                    {
+                        case FormWindowState.Maximized:
+
+                            settings.WindowState = "Maximized";
+                            break;
+
+                        case FormWindowState.Minimized:
+
+                            settings.WindowState = "Minimized";
+                            break;
+
+                        case FormWindowState.Normal:
+
+                            settings.WindowState = "Normal";
+                            settings.WindowPosLeft = this.Location.X.ToString();
+                            settings.WindowPosTop = this.Location.Y.ToString();
+                            settings.WindowPosWidth = this.Size.Width.ToString();
+                            settings.WindowPosHeight = this.Size.Height.ToString();
+                            break;
+                    }
+                    settings.Save();
+                }
+                catch { }
+            }
         }
 
         private void dockPanel_ActiveContentChanged(object sender, EventArgs e)
