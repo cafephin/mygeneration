@@ -48,7 +48,6 @@ namespace MyGeneration.UI.Plugins.SqlTool
             this.scintilla.Size = new System.Drawing.Size(784, 304);
             this.scintilla.SmartIndentType = Scintilla.Enums.SmartIndent.None;
             this.scintilla.TabIndex = 0;
-            this.scintilla.Text = "SELECT * FROM Employee WHERE Name = \'Justin\';";
             // 
             // splitContainer1
             // 

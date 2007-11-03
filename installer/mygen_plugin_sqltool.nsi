@@ -58,24 +58,24 @@ Section "Install Files, Reg Entries, Uninstaller, & Shortcuts"
   
   CreateDirectory "$INSTDIR"
 
-  File /oname=MyGeneration.UI.Plugins.CodeSmith2MyGen.dll ..\plugins\MyGeneration.UI.Plugins.CodeSmith2MyGen\bin\Release\MyGeneration.UI.Plugins.CodeSmith2MyGen.dll
+  File /oname=MyGeneration.UI.Plugins.SqlTool.dll ..\plugins\MyGeneration.UI.Plugins.SqlTool\bin\Release\MyGeneration.UI.Plugins.SqlTool.dll
 
   ; Write the installation path into the registry
   WriteRegStr HKLM SOFTWARE\MyGenerationSqlTool "Install_Dir" "$INSTDIR"
 
   ; Write the uninstall keys for Windows
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\MyGenerationSqlTool" "DisplayName" "MyGenerationSqlTool Plugin (remove only)"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\MyGenerationSqlTool" "UninstallString" '"$INSTDIR\CodeSmith2MyGenUninstall.exe"'
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\MyGenerationSqlTool" "UninstallString" '"$INSTDIR\MyGenerationSqlToolUninstall.exe"'
 
-  WriteUninstaller "CodeSmith2MyGenUninstall.exe"
+  WriteUninstaller "MyGenerationSqlToolUninstall.exe"
   
   CreateDirectory "$SMPROGRAMS\MyGeneration 1.3"
-  CreateShortCut "$SMPROGRAMS\MyGeneration 1.3\Uninstall CodeSmith2MyGen.lnk" "$INSTDIR\CodeSmith2MyGenUninstall.exe" "" "$INSTDIR\CodeSmith2MyGenUninstall.exe" 0
+  CreateShortCut "$SMPROGRAMS\MyGeneration 1.3\Uninstall MyGeneration SqlTool.lnk" "$INSTDIR\MyGenerationSqlToolUninstall.exe" "" "$INSTDIR\MyGenerationSqlToolUninstall.exe" 0
 
 SectionEnd ; end the section
 
 ; uninstall stuff
-UninstallText "This will uninstall the MyGenerationSqlTool conversion tool plugin. Hit next to continue."
+UninstallText "This will uninstall the MyGeneration SqlTool plugin. Hit next to continue."
 UninstallIcon ".\modern-uninstall.ico"
 
 ; special uninstall section.
@@ -86,10 +86,10 @@ Section "Uninstall"
   DeleteRegKey HKLM SOFTWARE\MyGenerationSqlTool
 
   ; MUST REMOVE UNINSTALLER, too
-  Delete $INSTDIR\CodeSmith2MyGenUninstall.exe
-  Delete $INSTDIR\MyGeneration.UI.Plugins.CodeSmith2MyGen.dll
+  Delete $INSTDIR\MyGenerationSqlToolUninstall.exe
+  Delete $INSTDIR\MyGeneration.UI.Plugins.SqlTool.dll
    
-  Delete "$SMPROGRAMS\MyGeneration 1.3\Uninstall CodeSmith2MyGen.lnk"
+  Delete "$SMPROGRAMS\MyGeneration 1.3\Uninstall MyGeneration SqlTool.lnk"
 SectionEnd
 
 ; detects Microsoft .Net Framework 2.0

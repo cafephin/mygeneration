@@ -194,7 +194,7 @@ namespace MyGeneration.UI.Plugins.SqlTool
                 this.dataGridViewResults.Rows.Clear();
                 this.dataGridViewResults.Columns.Clear();
                 int rowindex = 0;
-                if (r != null)
+                if ((r != null) && (!r.IsClosed))
                 {
                     while (r.Read())
                     {

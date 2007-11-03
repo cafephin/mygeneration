@@ -28,16 +28,19 @@ namespace MyGeneration.UI.Plugins.SqlTool
         {
             this._filename = fileName;
             this.sqlToolUserControl1.Open(fileName);
+            if (!string.IsNullOrEmpty(sqlToolUserControl1.FileName)) this.TabText = sqlToolUserControl1.FileName;
         }
 
         public void Save()
         {
             this.sqlToolUserControl1.Save();
+            if (!string.IsNullOrEmpty(sqlToolUserControl1.FileName)) this.TabText = sqlToolUserControl1.FileName;
         }
 
         public void SaveAs()
         {
             this.sqlToolUserControl1.SaveAs();
+            if (!string.IsNullOrEmpty(sqlToolUserControl1.FileName)) this.TabText = sqlToolUserControl1.FileName;
         }
 
         public void Execute()
