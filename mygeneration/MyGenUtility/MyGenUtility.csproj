@@ -104,10 +104,6 @@
       <Project>{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}</Project>
       <Name>MyMeta</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\scintilla\ScintillaNET\ScintillaNET.csproj">
-      <Project>{F9B6DABD-BBC1-4638-8CE6-A5C9506BFDCB}</Project>
-      <Name>ScintillaNET</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EngineInterface\PluginInterfaces.csproj">
       <Name>PluginInterfaces</Name>
       <Project>{61B369D1-95DD-4158-9F30-2E051CEB9D50}</Project>

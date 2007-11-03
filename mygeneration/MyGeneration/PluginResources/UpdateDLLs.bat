@@ -13,6 +13,7 @@ COPY "..\..\..\plugins\MyMetaXsd3bPlugin\bin\release\*.dll" .
 COPY "..\..\..\plugins\TypeSerializer\bin\release\*.dll" .
 COPY "..\..\..\plugins\SampleUIPlugin\bin\release\*.dll" .
 COPY "..\..\..\plugins\MyGeneration.UI.Plugins.CodeSmith2MyGen\bin\release\*.dll" .
+COPY "..\..\..\plugins\MyGeneration.UI.Plugins.SqlTool\bin\release\*.dll" .
 
 DEL Dnp.Utils.dll
 DEL MyGenUtility.dll
@@ -22,3 +23,4 @@ DEL ScintillaNET.dll
 DEL WeifenLuo.WinFormsUI.Docking.dll
 DEL Zeus.dll
 DEL MyGeneration.UI.Plugins.Sample.dll
+DEL SciLexer.dll
