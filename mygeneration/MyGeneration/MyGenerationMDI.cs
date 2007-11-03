@@ -1268,6 +1268,15 @@ namespace MyGeneration
                     }
                 }
             }
+
+            else if (function.Equals("getmymetadbdriver", StringComparison.CurrentCultureIgnoreCase))
+            {
+                return DefaultSettings.Instance.DbDriver;
+            }
+            else if (function.Equals("getmymetaconnection", StringComparison.CurrentCultureIgnoreCase))
+            {
+                return DefaultSettings.Instance.ConnectionString;
+            }
             return null;
         }
 

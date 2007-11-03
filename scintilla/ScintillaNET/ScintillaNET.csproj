@@ -242,6 +242,8 @@
     <EmbeddedResource Include="Configuration\Samples\yaml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Configuration\ConfigFiles\lex_sql_properties" />
+    <EmbeddedResource Include="Configuration\ConfigFiles\lang_sql_properties" />
     <None Include="languages.iface" />
     <None Include="Scintilla.iface" />
     <None Include="ScintillaNet.snk" />

@@ -36,7 +36,7 @@ var.font-vbs=font:Lucida Sans Unicode,size:10
 
 
 #================== Editor settings ==================
-language-names=cs html
+language-names=cs html sql
 open-filter=All Source|$(files-source)|$(files-all)
 default-file-ext=cs
 #---------------------------------------------------------------------------------------
@@ -47,11 +47,12 @@ default-file-ext=cs
 #---------------------------------------------------------------------------------------
 menu-language=\
 C&#|cs||\
-&HTML|html||
+&HTML|html||\
+&SQL|sql||
 #---------------------------------------------------------------------------------------
 # Default extensions for each supported language in pattern -> extension:language,
 #---------------------------------------------------------------------------------------
-extension-languages=cs:cs,html:html,htm:html,asp:html,php:html
+extension-languages=cs:cs,html:html,htm:html,asp:html,php:html,sql:sql
 
 
 

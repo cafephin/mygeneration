@@ -84,6 +84,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\MyGeneration\CollapsableSplitter\CollapsibleSplitter.dll</HintPath>
     </Reference>
+    <Reference Include="ScintillaNET, Version=1.0.2863.315, Culture=neutral, PublicKeyToken=a8e8a5e40ca52c59, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\MyGeneration\PluginResources\ScintillaNET.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -98,7 +102,7 @@
     </Reference>
     <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.1.2706.19617, Culture=neutral, PublicKeyToken=d481317c817cec47, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\MyGeneration\DockManager\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+      <HintPath>..\MyGeneration\PluginResources\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
     <ProjectReference Include="..\..\mymeta\MyMeta.csproj">
       <Project>{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}</Project>

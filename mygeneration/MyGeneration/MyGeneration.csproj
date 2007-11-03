@@ -82,6 +82,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\installer\adodb.dll</HintPath>
     </Reference>
+    <Reference Include="ScintillaNET, Version=1.0.2863.315, Culture=neutral, PublicKeyToken=a8e8a5e40ca52c59, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>PluginResources\ScintillaNET.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -103,14 +107,10 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
-    <Reference Include="WeifenLuo.WinFormsUI.Docking">
-      <Name>WeifenLuo.WinFormsUI.Docking</Name>
-      <HintPath>DockManager\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.1.2706.19617, Culture=neutral, PublicKeyToken=d481317c817cec47, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>PluginResources\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
-    <ProjectReference Include="..\..\scintilla\ScintillaNET\ScintillaNET.csproj">
-      <Project>{F9B6DABD-BBC1-4638-8CE6-A5C9506BFDCB}</Project>
-      <Name>ScintillaNET</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EngineInterface\PluginInterfaces.csproj">
       <Name>PluginInterfaces</Name>
       <Project>{61B369D1-95DD-4158-9F30-2E051CEB9D50}</Project>

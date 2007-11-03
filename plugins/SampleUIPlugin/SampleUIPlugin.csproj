@@ -35,7 +35,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.1.2706.19617, Culture=neutral, PublicKeyToken=d481317c817cec47, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\mygeneration\MyGeneration\DockManager\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+      <HintPath>..\..\mygeneration\MyGeneration\PluginResources\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

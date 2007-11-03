@@ -19,8 +19,8 @@ DEL Dnp.Utils.dll
 DEL MyGenUtility.dll
 DEL MyMeta.dll
 DEL PluginInterfaces.dll
-DEL ScintillaNET.dll
-DEL WeifenLuo.WinFormsUI.Docking.dll
 DEL Zeus.dll
 DEL MyGeneration.UI.Plugins.Sample.dll
-DEL SciLexer.dll
+REM DEL SciLexer.dll
+REM DEL ScintillaNET.dll
+REM DEL WeifenLuo.WinFormsUI.Docking.dll

@@ -136,12 +136,13 @@ Section "-Install Mygeneration and Register Shell Extensions"
   File /oname=adodb.dll .\adodb.dll
   File /oname=System.Data.SQLite.DLL ..\mymeta\ThirdParty\System.Data.SQLite.DLL
   File /oname=CollapsibleSplitter.dll ..\mygeneration\MyGeneration\bin\Release\CollapsibleSplitter.dll
-  File /oname=ScintillaNET.dll ..\scintilla\ScintillaNET\bin\release\ScintillaNET.dll
-  File /oname=SciLexer.dll ..\scintilla\ScintillaNET\SciLexer.dll
   File /oname=Npgsql.dll ..\mymeta\ThirdParty\Npgsql.dll
   File /oname=Mono.Security.dll ..\mymeta\ThirdParty\Mono.Security.dll
   File /oname=FirebirdSql.Data.Firebird.dll ..\mymeta\ThirdParty\FirebirdSql.Data.Firebird.dll
-  File /oname=WeifenLuo.WinFormsUI.Docking.dll ..\mygeneration\MyGeneration\DockManager\WeifenLuo.WinFormsUI.Docking.dll
+  
+  File /oname=ScintillaNET.dll ..\mygeneration\MyGeneration\PluginResources\ScintillaNET.dll
+  File /oname=SciLexer.dll ..\mygeneration\MyGeneration\PluginResources\SciLexer.dll
+  File /oname=WeifenLuo.WinFormsUI.Docking.dll ..\mygeneration\MyGeneration\PluginResources\WeifenLuo.WinFormsUI.Docking.dll
 
 ; Plugins nonfatal means create installer even if the filese do not exist
   File /nonfatal /oname=MyMeta.Plugins.DelimitedText.dll ..\plugins\MyMetaTextFilePlugin\bin\Release\MyMeta.Plugins.DelimitedText.dll
