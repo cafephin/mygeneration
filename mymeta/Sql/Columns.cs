@@ -42,49 +42,75 @@ namespace MyMeta.Sql
 			{
 				string dbName = ("T" == type) ? this.Table.Database.Name : this.View.Database.Name;
 				string schema = ("T" == type) ? this.Table.Schema : this.View.Schema;
-				string select = "EXEC [" + dbName + "].dbo.sp_columns '" + name + "', '" + schema + "'"; 
+				string select = "EXEC [" + dbName + "].dbo.sp_columns '" + name + "', '" + schema + "'";
 
-				OleDbConnection cn = new OleDbConnection(dbRoot.ConnectionString);
-				cn.Open();
-				cn.ChangeDatabase("[" + dbName + "]");
-	
-				OleDbDataAdapter adapter = new OleDbDataAdapter(select, cn);
-				DataTable dataTable = new DataTable();
+                using (OleDbConnection cn = new OleDbConnection(dbRoot.ConnectionString))
+                {
+                    cn.Open();
+                    cn.ChangeDatabase("[" + dbName + "]");
 
-				adapter.Fill(dataTable);
-				cn.Close();
+                    OleDbDataAdapter adapter = new OleDbDataAdapter(select, cn);
+                    DataTable dataTable = new DataTable();
 
-				if(this._array.Count > 0)
-				{
-					Column col = this._array[0] as Column;
+                    adapter.Fill(dataTable);
 
-					f_TypeName = new DataColumn("TYPE_NAME", typeof(string));
-					col._row.Table.Columns.Add(f_TypeName);
+                    if (this._array.Count > 0)
+                    {
+                        Column col = this._array[0] as Column;
 
-					string typeName = "";
-					DataRowCollection rows = dataTable.Rows;
+                        f_TypeName = new DataColumn("TYPE_NAME", typeof(string));
+                        col._row.Table.Columns.Add(f_TypeName);
 
-					int count = this._array.Count;
-					Column c = null;
+                        string typeName = "";
+                        DataRowCollection rows = dataTable.Rows;
 
-					for( int index = 0; index < count; index++)
-					{
-						c = (Column)this[index];
+                        int count = this._array.Count;
+                        Column c = null;
 
-						typeName = rows[index]["TYPE_NAME"] as string;
+                        for (int index = 0; index < count; index++)
+                        {
+                            c = (Column)this[index];
 
-						if (typeName.EndsWith(" identity")) 
-						{
-							typeName = typeName.Replace(" identity", "");
-							typeName = typeName.Replace("()", "");
-							c._row["TYPE_NAME"] = typeName;
-						}
-						else
-						{
-							c._row["TYPE_NAME"] = typeName;
-						}
-					}
-				}
+                            typeName = rows[index]["TYPE_NAME"] as string;
+
+                            if (typeName.EndsWith(" identity"))
+                            {
+                                typeName = typeName.Replace(" identity", "");
+                                typeName = typeName.Replace("()", "");
+                                c._row["TYPE_NAME"] = typeName;
+                            }
+                            else
+                            {
+                                c._row["TYPE_NAME"] = typeName;
+                            }
+                        }
+                    }
+
+                    select = @"select COLUMN_NAME, DATA_TYPE from 
+INFORMATION_SCHEMA.COLUMNS 
+where table_schema = '" + schema + @"' 
+and table_catalog='" + dbName + @"' and table_name='" + name + @"' 
+and DATA_TYPE in ('nvarchar', 'varchar', 'varbinary') 
+and character_maximum_length=-1 and character_octet_length=-1;";
+
+                    adapter = new OleDbDataAdapter(select, cn);
+                    dataTable = new DataTable();
+
+                    adapter.Fill(dataTable);
+
+                    Column colz = null;
+                    foreach (DataRow row in dataTable.Rows)
+                    {
+                        colz = this[row["COLUMN_NAME"] as string] as Column;
+
+                        if (null != colz)
+                        {
+                            colz._row["TYPE_NAME"] = row["DATA_TYPE"] as string;
+                        }
+                    }
+
+                    cn.Close();
+                }
 			}
 			catch {}
 		}

@@ -33,7 +33,13 @@ namespace MyGeneration.UI.Plugins.SqlTool
             this.toolStripButtonSave = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonExecute = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripLabelCommandSep = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripTextBoxSeperator = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripSeparatorDatabase = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripLabelDatabase = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripComboBoxDatabase = new System.Windows.Forms.ToolStripComboBox();
             this.menuStripSqlTool = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -75,7 +81,13 @@ namespace MyGeneration.UI.Plugins.SqlTool
             this.toolStripButtonSave,
             this.toolStripSeparator1,
             this.toolStripButtonExecute,
-            this.toolStripSeparator3});
+            this.toolStripSeparator2,
+            this.toolStripSeparator4,
+            this.toolStripLabelCommandSep,
+            this.toolStripTextBoxSeperator,
+            this.toolStripSeparatorDatabase,
+            this.toolStripLabelDatabase,
+            this.toolStripComboBoxDatabase});
             this.toolStripSqlTool.Location = new System.Drawing.Point(0, 0);
             this.toolStripSqlTool.Name = "toolStripSqlTool";
             this.toolStripSqlTool.Size = new System.Drawing.Size(984, 25);
@@ -113,12 +125,48 @@ namespace MyGeneration.UI.Plugins.SqlTool
             this.toolStripButtonExecute.Text = "Execute";
             this.toolStripButtonExecute.Click += new System.EventHandler(this.toolStripButtonExecute_Click);
             // 
-            // toolStripSeparator3
+            // toolStripSeparator2
             // 
-            this.toolStripSeparator3.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.toolStripSeparator3.MergeIndex = 5;
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            this.toolStripSeparator2.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.toolStripSeparator2.MergeIndex = 5;
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripLabelCommandSep
+            // 
+            this.toolStripLabelCommandSep.Name = "toolStripLabelCommandSep";
+            this.toolStripLabelCommandSep.Size = new System.Drawing.Size(105, 22);
+            this.toolStripLabelCommandSep.Text = "Command Seperator";
+            // 
+            // toolStripTextBoxSeperator
+            // 
+            this.toolStripTextBoxSeperator.Name = "toolStripTextBoxSeperator";
+            this.toolStripTextBoxSeperator.Size = new System.Drawing.Size(35, 25);
+            this.toolStripTextBoxSeperator.Text = "GO";
+            this.toolStripTextBoxSeperator.KeyUp += new System.Windows.Forms.KeyEventHandler(this.toolStripTextBoxSeperator_KeyUp);
+            // 
+            // toolStripSeparatorDatabase
+            // 
+            this.toolStripSeparatorDatabase.Name = "toolStripSeparatorDatabase";
+            this.toolStripSeparatorDatabase.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripLabelDatabase
+            // 
+            this.toolStripLabelDatabase.Name = "toolStripLabelDatabase";
+            this.toolStripLabelDatabase.RightToLeftAutoMirrorImage = true;
+            this.toolStripLabelDatabase.Size = new System.Drawing.Size(53, 22);
+            this.toolStripLabelDatabase.Text = "Database";
+            // 
+            // toolStripComboBoxDatabase
+            // 
+            this.toolStripComboBoxDatabase.Name = "toolStripComboBoxDatabase";
+            this.toolStripComboBoxDatabase.Size = new System.Drawing.Size(121, 25);
+            this.toolStripComboBoxDatabase.Click += new System.EventHandler(this.toolStripComboBoxDatabase_Click);
             // 
             // menuStripSqlTool
             // 
@@ -381,10 +429,12 @@ namespace MyGeneration.UI.Plugins.SqlTool
             // 
             // sqlToolUserControl1
             // 
+            this.sqlToolUserControl1.CommandSeperator = "GO";
             this.sqlToolUserControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sqlToolUserControl1.Location = new System.Drawing.Point(0, 0);
+            this.sqlToolUserControl1.Location = new System.Drawing.Point(0, 25);
             this.sqlToolUserControl1.Name = "sqlToolUserControl1";
-            this.sqlToolUserControl1.Size = new System.Drawing.Size(984, 611);
+            this.sqlToolUserControl1.SelectedDatabase = null;
+            this.sqlToolUserControl1.Size = new System.Drawing.Size(984, 586);
             this.sqlToolUserControl1.TabIndex = 2;
             // 
             // SqlToolForm
@@ -446,7 +496,13 @@ namespace MyGeneration.UI.Plugins.SqlTool
         private System.Windows.Forms.ToolStripButton toolStripButtonSave;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton toolStripButtonExecute;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparatorDatabase;
         private SqlToolUserControl sqlToolUserControl1;
+        private System.Windows.Forms.ToolStripLabel toolStripLabelCommandSep;
+        private System.Windows.Forms.ToolStripTextBox toolStripTextBoxSeperator;
+        private System.Windows.Forms.ToolStripLabel toolStripLabelDatabase;
+        private System.Windows.Forms.ToolStripComboBox toolStripComboBoxDatabase;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
     }
 }

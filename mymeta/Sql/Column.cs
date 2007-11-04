@@ -77,26 +77,37 @@ namespace MyMeta.Sql
 					}
 				}
 
-				switch(this.DataTypeName)
+                string dtnf = null;
+                switch(this.DataTypeName)
 				{
+                    case "varchar":
+                    case "nvarchar":
+                    case "varbinary":
+                        if (this.CharacterMaxLength > 1000000)
+                            dtnf = this.DataTypeName + "(MAX)";
+                        else
+                            dtnf = this.DataTypeName + "(" + this.CharacterMaxLength + ")";
+                        break;
 					case "binary":
 					case "char":
 					case "nchar":
-					case "nvarchar":
-					case "varchar":
-					case "varbinary":
 
-						return this.DataTypeName + "(" + this.CharacterMaxLength + ")";
+                        dtnf = this.DataTypeName + "(" + this.CharacterMaxLength + ")";
+                        break;
 
 					case "decimal":
 					case "numeric":
 
-						return this.DataTypeName + "(" + this.NumericPrecision + "," + this.NumericScale + ")";
+                        dtnf = this.DataTypeName + "(" + this.NumericPrecision + "," + this.NumericScale + ")";
+                        break;
 
 					default:
 
-						return this.DataTypeName;
+                        dtnf = this.DataTypeName;
+                        break;
 				}
+
+                return dtnf;
 			}
 		}
 

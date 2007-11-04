@@ -20,9 +20,13 @@ namespace MyGeneration.UI.Plugins.SqlTool
     {
         private IMyGenerationMDI _mdi;
         private ScintillaConfig _scintillaConfig;
-        private IDbConnection _connection;
         private string _filename = string.Empty;
         private string _fileId;
+        private string _dbDriver = null;
+        private string _connString = null;
+        private string _databaseName = null;
+        private string _commandSeperator = "GO";
+        private List<string> _databaseNames = new List<string>();
         private bool _isNew = true;
 
         public SqlToolUserControl()
@@ -39,6 +43,114 @@ namespace MyGeneration.UI.Plugins.SqlTool
         {
             this._fileId = Guid.NewGuid().ToString();
             _mdi = mdi;
+            RefreshConnectionInfo();
+        }
+
+        public dbRoot NewDbRoot()
+        {
+            dbRoot mymeta = new dbRoot();
+            try
+            {
+                mymeta.Connect(DbDriver, ConnectionString);
+            }
+            catch (Exception ex)
+            {
+                this._mdi.ErrorList.AddErrors(ex);
+            }
+            return mymeta;
+        }
+
+        public IDbConnection NewConnection()
+        {
+            dbRoot mymeta = new dbRoot();
+            IDbConnection _connection = null;
+            try
+            {
+                _connection = mymeta.BuildConnection(DbDriver, ConnectionString);
+            }
+            catch (Exception ex)
+            {
+                this._mdi.ErrorList.AddErrors(ex);
+            }
+            return _connection;
+        }
+
+        public List<string> DatabaseNames
+        {
+            get
+            {
+                return _databaseNames;
+            }
+        }
+
+        public string CommandSeperator
+        {
+            get
+            {
+                return _commandSeperator;
+            }
+            set
+            {
+                this._commandSeperator = value;
+            }
+        }
+
+        public string SelectedDatabase
+        {
+            get
+            {
+                return _databaseName;
+            }
+            set
+            {
+                this._databaseName = value;
+            }
+        }
+
+        public string ConnectionString
+        {
+            get
+            {
+                if (_connString == null)
+                {
+                    _connString = _mdi.PerformMdiFuntion(this.Parent as IMyGenContent, "getmymetaconnection") as String;
+                }
+                return _connString;
+            }
+        }
+
+        public string DbDriver
+        {
+            get
+            {
+                if (_dbDriver == null)
+                {
+                    _dbDriver = _mdi.PerformMdiFuntion(this.Parent as IMyGenContent, "getmymetadbdriver") as String;
+                }
+                return _dbDriver;
+            }
+        }
+
+        public void RefreshConnectionInfo()
+        {
+            _dbDriver = null;
+            _connString = null;
+            dbRoot mymeta = NewDbRoot();
+            _databaseNames.Clear();
+
+            foreach (IDatabase db in mymeta.Databases)
+            {
+                _databaseNames.Add(db.Name);
+            }
+
+            if (mymeta.Databases.Count > 1)
+            {
+                //show databases dropdown - select current
+                if ((string.IsNullOrEmpty(_databaseName)) || (!_databaseNames.Contains(_databaseName)))
+                {
+                    this._databaseName = mymeta.DefaultDatabase.Name;
+                }
+            }
         }
 
         public void Open(string filename)
@@ -58,6 +170,82 @@ namespace MyGeneration.UI.Plugins.SqlTool
                     _mdi.Console.Write(x);
                     _isNew = true;
                 }
+            }
+        }
+
+        public List<string> SqlToExecute
+        {
+            get
+            {
+                List<string> commands = new List<string>();
+                StringBuilder sb = new StringBuilder();
+                string exectext = this.scintilla.GetSelectedText();
+                if (string.IsNullOrEmpty(exectext))
+                {
+                    if (string.IsNullOrEmpty(this.CommandSeperator))
+                    {
+                        commands.Add(scintilla.Text);
+                    }
+                    else
+                    {
+                        for (int i = 0; i < scintilla.LineCount; i++)
+                        {
+                            string line = scintilla.Line[i].TrimEnd('\r', '\n');
+                            if (line.TrimEnd() == CommandSeperator)
+                            {
+                                exectext = sb.ToString().Trim();
+                                if (exectext.Length > 0)
+                                {
+                                    commands.Add(exectext);
+                                }
+                                sb.Remove(0, sb.Length);
+                            }
+                            else
+                            {
+                                sb.AppendLine(line);
+                            }
+                        }
+                        exectext = sb.ToString().Trim();
+                        if (exectext.Length > 0)
+                        {
+                            commands.Add(exectext);
+                        }
+                    }
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(this.CommandSeperator))
+                    {
+                        commands.Add(exectext);
+                    }
+                    else
+                    {
+                        string[] lines = exectext.Split('\n');
+                        for (int i = 0; i < lines.Length; i++)
+                        {
+                            string line = lines[i].TrimEnd('\r', '\n');
+                            if (line.TrimEnd() == CommandSeperator)
+                            {
+                                exectext = sb.ToString().Trim();
+                                if (exectext.Length > 0)
+                                {
+                                    commands.Add(exectext);
+                                }
+                                sb.Remove(0, sb.Length);
+                            }
+                            else
+                            {
+                                sb.AppendLine(line);
+                            }
+                        }
+                        exectext = sb.ToString().Trim();
+                        if (exectext.Length > 0)
+                        {
+                            commands.Add(exectext);
+                        }
+                    }
+                }
+                return commands;
             }
         }
 
@@ -163,71 +351,61 @@ namespace MyGeneration.UI.Plugins.SqlTool
             this.scintilla.GrabFocus();
         }
 
-        public IDbConnection Connection 
-        {
-            get
-            {
-                if (_connection == null)
-                {
-                    string dbdriver = _mdi.PerformMdiFuntion(this.Parent as IMyGenContent, "getmymetadbdriver") as String;
-                    string connString = _mdi.PerformMdiFuntion(this.Parent as IMyGenContent, "getmymetaconnection") as String;
-                    dbRoot mymeta = new dbRoot();
-                    _connection = mymeta.BuildConnection(dbdriver, connString);
-                }
-                return _connection;
-            }
-        }
-
         public void Execute()
         {
             IDbConnection conn = null;
             IDataReader r = null;
             try
             {
-                conn = Connection;
-                conn.Open();
-
-                IDbCommand db = conn.CreateCommand();
-                db.CommandText = scintilla.Text;
-                r = db.ExecuteReader();
-
-                this.dataGridViewResults.Rows.Clear();
-                this.dataGridViewResults.Columns.Clear();
-                int rowindex = 0;
-                if ((r != null) && (!r.IsClosed))
+                List<string> sqlCommands = this.SqlToExecute;
+                foreach (string sql in sqlCommands)
                 {
-                    while (r.Read())
+                    conn = NewConnection();
+                    conn.Open();
+
+                    if (!string.IsNullOrEmpty(_databaseName))
+                        conn.ChangeDatabase(_databaseName);
+
+                    IDbCommand db = conn.CreateCommand();
+                    db.CommandText = sql;
+                    r = db.ExecuteReader();
+
+                    this.dataGridViewResults.Rows.Clear();
+                    this.dataGridViewResults.Columns.Clear();
+                    int rowindex = 0;
+                    if ((r != null) && (!r.IsClosed))
                     {
-                        if (rowindex == 0)
+                        while (r.Read())
                         {
+                            if (rowindex == 0)
+                            {
+                                for (int i = 0; i < r.FieldCount; i++)
+                                {
+                                    dataGridViewResults.Columns.Add(r.GetName(i), r.GetName(i));
+                                }
+                            }
+
+                            dataGridViewResults.Rows.Add();
                             for (int i = 0; i < r.FieldCount; i++)
                             {
-
-                                dataGridViewResults.Columns.Add(r.GetName(i), r.GetName(i));
+                                dataGridViewResults.Rows[rowindex].Cells[i].Value = r[i];
                             }
+                            rowindex++;
                         }
-
-                        dataGridViewResults.Rows.Add();
-                        for (int i = 0; i < r.FieldCount; i++)
-                        {
-                            dataGridViewResults.Rows[rowindex].Cells[i].Value = r[i];
-                        }
-                        rowindex++;
                     }
+
+                    if (rowindex == 0)
+                    {
+                        dataGridViewResults.Columns.Add("Result", "Result");
+                        dataGridViewResults.Rows.Add();
+                        dataGridViewResults.Rows[0].Cells[0].Value = "";
+                    }
+                    r.Close();
+                    r.Dispose();
+
+                    conn.Close();
+                    conn.Dispose();
                 }
-
-                if (rowindex == 0)
-                {
-                    dataGridViewResults.Columns.Add("Result", "Result");
-                    dataGridViewResults.Rows.Add();
-                    dataGridViewResults.Rows[0].Cells[0].Value = "";
-                }
-                r.Close();
-                r.Dispose();
-
-                conn.Close();
-                conn.Dispose();
-
             }
             catch (Exception ex)
             {

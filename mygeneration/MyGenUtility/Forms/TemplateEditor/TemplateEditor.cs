@@ -2539,7 +2539,7 @@ namespace MyGeneration
 
         public void ProcessAlert(IMyGenContent sender, string command, params object[] args)
         {
-            if (command == "UpdateDefaultSettings")
+            if (command.Equals("UpdateDefaultSettings", StringComparison.CurrentCultureIgnoreCase))
             {
                 DefaultSettings settings = DefaultSettings.Instance;
                 SetCodePageOverride(settings.CodePage);
@@ -2548,7 +2548,7 @@ namespace MyGeneration
                 this.scintillaTemplateCode.TabWidth = settings.Tabs;
                 this.copyOutputToClipboardToolStripMenuItem.Checked = settings.EnableClipboard;
             }
-            else if (command == "UpdateTemplate")
+            if (command.Equals("UpdateTemplate", StringComparison.CurrentCultureIgnoreCase))
             {
                 if (args.Length > 0)
                 {

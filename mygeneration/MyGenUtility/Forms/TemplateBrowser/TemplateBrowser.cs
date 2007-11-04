@@ -978,7 +978,7 @@ namespace MyGeneration
         public void ProcessAlert(IMyGenContent sender, string command, params object[] args)
         {
             DefaultSettings settings = DefaultSettings.Instance;
-            if (command == "UpdateDefaultSettings")
+            if (command.Equals("UpdateDefaultSettings", StringComparison.CurrentCultureIgnoreCase))
             {
                 bool doRefresh = false;
 

@@ -1143,35 +1143,7 @@ namespace MyGeneration
 				this.UserData.MetaDataStateChanged(_isUserDataDirty);
 				this.GlobalUserData.MetaDataStateChanged(_isUserDataDirty);
 			}
-		}
-
-
-        #region IMyGenContent Members
-
-        public ToolStrip ToolStrip
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
         }
-
-        public void ProcessAlert(IMyGenContent sender, string command, params object[] args)
-        {
-            if (command == "UpdateDefaultSettings")
-            {
-                this.DefaultSettingsChanged(DefaultSettings.Instance);
-            }
-        }
-
-        public bool CanClose(bool allowPrevent)
-        {
-            return true;
-        }
-
-        public DockContent DockContent
-        {
-            get { return this; }
-        }
-
-        #endregion
 
         private void MetaDataBrowser_Enter(object sender, EventArgs e)
         {
@@ -1180,8 +1152,8 @@ namespace MyGeneration
                 this.toolBar1.Visible = true;
                 this.chkSystem.Visible = true;
             }
-            
-            if ((this.mdi != null) 
+
+            if ((this.mdi != null)
                 && (this.mdi.DockPanel != null))
             {
                 if ((myMeta != null) &&
@@ -1203,5 +1175,32 @@ namespace MyGeneration
             /*this.toolBar1.Visible = false;
             this.chkSystem.Visible = false;*/
         }
+
+        #region IMyGenContent Members
+
+        public ToolStrip ToolStrip
+        {
+            get { throw new Exception("The method or operation is not implemented."); }
+        }
+
+        public void ProcessAlert(IMyGenContent sender, string command, params object[] args)
+        {
+            if (command.Equals("UpdateDefaultSettings", StringComparison.CurrentCultureIgnoreCase))
+            {
+                this.DefaultSettingsChanged(DefaultSettings.Instance);
+            }
+        }
+
+        public bool CanClose(bool allowPrevent)
+        {
+            return true;
+        }
+
+        public DockContent DockContent
+        {
+            get { return this; }
+        }
+
+        #endregion
 	}
 }

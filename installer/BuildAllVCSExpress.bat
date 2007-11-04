@@ -3,6 +3,7 @@ del ".\installbuild_mygen.log"
 del ".\installbuild_mymeta.log"
 del ".\installbuild_doodads.log"
 del ".\installbuild_cst2mygen.log"
+del ".\installbuild_sqltool.log"
 
 if "%DEVENV%"=="" set DEVENV="%PROGRAMFILES%\Microsoft Visual Studio 8\Common7\IDE\VCSExpress.exe"  /out ".\build.log" /rebuild release
 
@@ -19,5 +20,6 @@ if "%MAKENSIS%"=="" set MAKENSIS=%PROGRAMFILES%\NSIS\makensis.exe
 "%MAKENSIS%"  ".\mymeta.nsi" > ".\installbuild_mymeta.log"
 "%MAKENSIS%"  ".\doodads.nsi" > ".\installbuild_doodads.log"
 "%MAKENSIS%"  ".\cst2mygen.nsi" > ".\installbuild_cst2mygen.log"
+"%MAKENSIS%"  ".\mygen_plugin_sqltool.nsi" > ".\installbuild_sqltool.log"
 set MAKENSIS=
-s
+

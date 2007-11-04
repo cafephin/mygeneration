@@ -22,6 +22,7 @@ namespace MyGeneration.UI.Plugins.SqlTool
             InitializeComponent();
 
             sqlToolUserControl1.Initialize(mdi);
+            BindForm();
         }
 
         public void Open(string fileName)
@@ -105,6 +106,46 @@ namespace MyGeneration.UI.Plugins.SqlTool
             }
         }
 
+        private void toolStripComboBoxDatabase_Click(object sender, EventArgs e)
+        {
+            if (toolStripComboBoxDatabase.SelectedIndex > -1) 
+                this.sqlToolUserControl1.SelectedDatabase = toolStripComboBoxDatabase.SelectedItem.ToString();
+        }
+
+        private void toolStripTextBoxSeperator_KeyUp(object sender, KeyEventArgs e)
+        {
+            this.sqlToolUserControl1.CommandSeperator = toolStripTextBoxSeperator.Text;
+        }
+
+        public void BindForm()
+        {
+            this.toolStripComboBoxDatabase.Items.Clear();
+            this.toolStripTextBoxSeperator.Text = sqlToolUserControl1.CommandSeperator;
+
+            bool showDbThingy = (this.sqlToolUserControl1.DatabaseNames.Count > 0);
+            this.toolStripComboBoxDatabase.Visible = showDbThingy;
+            this.toolStripLabelDatabase.Visible = showDbThingy;
+            this.toolStripSeparatorDatabase.Visible = showDbThingy;
+
+            if (showDbThingy)
+            {
+
+                foreach (string dbname in sqlToolUserControl1.DatabaseNames)
+                {
+                    int i = this.toolStripComboBoxDatabase.Items.Add(dbname);
+                    if (dbname == this.sqlToolUserControl1.SelectedDatabase)
+                    {
+                        this.toolStripComboBoxDatabase.SelectedIndex = i;
+                    }
+                }
+
+                if (this.sqlToolUserControl1.DatabaseNames.Count == 1)
+                {
+                    this.toolStripComboBoxDatabase.Enabled = false;
+                }
+            }
+        }
+
         #region IMyGenDocument Members
 
         public ToolStrip ToolStrip
@@ -119,7 +160,11 @@ namespace MyGeneration.UI.Plugins.SqlTool
 
         public void ProcessAlert(IMyGenContent sender, string command, params object[] args)
         {
-            //
+            if (command.Equals("UpdateDefaultSettings", StringComparison.CurrentCultureIgnoreCase))
+            {
+                sqlToolUserControl1.RefreshConnectionInfo();
+                BindForm();
+            }
         }
 
         public bool CanClose(bool allowPrevent)
@@ -172,6 +217,5 @@ namespace MyGeneration.UI.Plugins.SqlTool
             this.Execute();
         }
         #endregion
-
     }
 }

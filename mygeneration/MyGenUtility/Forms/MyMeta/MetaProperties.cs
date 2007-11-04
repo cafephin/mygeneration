@@ -660,7 +660,7 @@ namespace MyGeneration
 
         public void ProcessAlert(IMyGenContent sender, string command, params object[] args)
         {
-            if (command == "UpdateDefaultSettings")
+            if (command.Equals("UpdateDefaultSettings", StringComparison.CurrentCultureIgnoreCase))
             {
                 this.Clear();
             }
