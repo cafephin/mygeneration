@@ -1,12 +1,23 @@
-TODO:
+TODO: (by Priority)
+
+komma8.komma1:
+Tasks:
 - Improve Project File support. Look at suggestions in enhancement list online/email.
+- Fix Default Settings Confusion. Either add a Save/OK button in there or make it modal.
+- Fix tooltip on error window button.
+- Enhance results grid of SqlTool Plugin.
+- Execution of projects to console instead of that modal popup? 
+- Add Sample plugins of each type. Zip them up and put them on sourceforge. SqlTool for document(done), CodeSmith for simple(done), new template library for conent(not yet started)
+
+Q/A:
+- Test in Windows Vista.
 - Full Application Wide Test. Build test suite?
+
+Docs/Press/Other:
 - Create more tutorial videos on youtube
 - Create new help file for MyGeneration
 - Update all API Documentation
-- Add Sample plugins of each type. Zip them up and put them on sourceforge.
-- Test in Windows Vista.
 
-ToDo (k3b on xsd3b)
+K3B:
 	* interlink MyGeneration.chm <-> MyGenXsd3b.chm
 		<A HREF="ms-its:file name.chm::/topic.htm"> or mk:@MSITStore:file name.chm::/topic.htm
