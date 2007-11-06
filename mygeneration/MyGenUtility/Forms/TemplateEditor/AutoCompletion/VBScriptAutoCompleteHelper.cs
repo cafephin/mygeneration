@@ -13,7 +13,14 @@ namespace MyGeneration.AutoCompletion
 
         public override bool IsCodeStyle(bool isTagged, int style)
         {
-            return (style == (isTagged ? 86 : 7));
+            if (isTagged)
+            {
+                return (style == 86 || style == 84 || style == 81);
+            }
+            else
+            {
+                return (style == 7 || style == 3 || style == 0);
+            }
         }
     }
 }

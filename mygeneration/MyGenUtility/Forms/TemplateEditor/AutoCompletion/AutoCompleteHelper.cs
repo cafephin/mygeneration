@@ -92,6 +92,16 @@ namespace MyGeneration.AutoCompletion
 
         public abstract bool IsCommentStyle(bool isTagged, int style);
         public abstract bool IsCodeStyle(bool isTagged, int style);
+       
+        public virtual string SelfQualifier
+        {
+            get { return string.Empty; }
+        }
+
+        public virtual StringComparison SelfQualifierStringComparisonRule
+        {
+            get { return StringComparison.InvariantCultureIgnoreCase; }
+        }
 
         public virtual bool IsAutoCompleteSeek(char ch, bool isCtrlPressed)
         {
@@ -174,6 +184,11 @@ namespace MyGeneration.AutoCompletion
                     if (stk.Count > 0)
                     {
                         lastmsg = stk.Pop();
+                        if ((lastmsg.Equals(this.SelfQualifier, this.SelfQualifierStringComparisonRule)) && (stk.Count > 0))
+                        {
+                            lastmsg = stk.Pop();
+                        }
+
                         if (AutoCompleteHelper.RootNodes.ContainsKey(lastmsg))
                         {
                             n = AutoCompleteHelper.RootNodes[lastmsg];
@@ -244,22 +259,16 @@ namespace MyGeneration.AutoCompletion
                                 scintilla.AutoCShow(0, n.MembersString);
                             }
                         }
-                        /*else if (!string.IsNullOrEmpty(lastmsg) && (memberDepth == 1))
+                        else
                         {
-                            // try to find the data type of the member
-                            AutoCompleteNodeInfo newRootNode;
-                            
-                            if (ScanCodeForVariable(scintilla, lastmsg, out newRootNode))
+                            if (isAutoMember && 
+                                (lastmsg != null) && 
+                                (lastmsg.Equals(this.SelfQualifier, this.SelfQualifierStringComparisonRule)) && 
+                                (memberDepth == 1))
                             {
-                                AutoCompleteHelper.RootNodes[newRootNode.Name] = newRootNode;
-                                scintilla.AutoCShow(0, newRootNode.MembersString);
+                                scintilla.AutoCShow(0, AutoCompleteHelper.RootNodesAutoCompleteString);
                             }
-                            else 
-                            {
-                                // could prompt for datatype or just put in an unknown list
-                            }
-                        }*/
-
+                        }
 
                         if (ns != null)
                         {
@@ -294,11 +303,15 @@ namespace MyGeneration.AutoCompletion
 
             if (type.Contains("."))
             {
-                Type t = Type.ReflectionOnlyGetType(type, false, true);
-                if (t != null)
+                try
                 {
-                    types.Add(t);
+                    Type t = Type.ReflectionOnlyGetType(type, false, true);
+                    if (t != null)
+                    {
+                        types.Add(t);
+                    }
                 }
+                catch { }
             }
             else
             {
@@ -362,15 +375,19 @@ namespace MyGeneration.AutoCompletion
 
                     foreach (Assembly a in assemblies)
                     {
-                        Type[] atypes = a.GetTypes();
-                        foreach (Type t in atypes)
+                        try
                         {
-                            if (string.Equals(t.Name, type, StringComparison.CurrentCultureIgnoreCase))
+                            Type[] atypes = a.GetTypes();
+                            foreach (Type t in atypes)
                             {
-                                types.Add(t);
-                                break;
+                                if (string.Equals(t.Name, type, StringComparison.CurrentCultureIgnoreCase))
+                                {
+                                    types.Add(t);
+                                    break;
+                                }
                             }
                         }
+                        catch { }
                     }
 
                     if (types.Count == 0)

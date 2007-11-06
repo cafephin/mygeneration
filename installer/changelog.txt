@@ -1,3 +1,10 @@
+2007.11.06 - MyGeneration 1.3 beta9
+- Fixed bugs in AutoComplete: crash and ctrl-space
+- Added better autcomplete to VB.Net (supporting Dim'd variables)
+- Added "this" and "Me" to autocomplete to thier respective languages
+- Fix tooltip on error window button.
+- Fix Default Settings Confusion. Either add a Save/OK button in there or make it modal.
+
 2007.11.04 - MyGeneration 1.3 beta8
 - Fixed bugs in the SQLTool plugin
 	- Added select database/execute only selection featues.

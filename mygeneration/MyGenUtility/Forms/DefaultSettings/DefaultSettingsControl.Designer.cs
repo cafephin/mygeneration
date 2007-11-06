@@ -99,6 +99,8 @@ namespace MyGeneration
             this.toolStripButtonSave = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.buttonSaveSettings = new System.Windows.Forms.Button();
+            this.buttonCancelSettings = new System.Windows.Forms.Button();
             this.tabControl.SuspendLayout();
             this.tabConnection.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -121,12 +123,12 @@ namespace MyGeneration
             this.tabControl.Controls.Add(this.tabConnection);
             this.tabControl.Controls.Add(this.tabScript);
             this.tabControl.Controls.Add(this.tabMisc);
-            this.tabControl.Location = new System.Drawing.Point(3, 3);
+            this.tabControl.Location = new System.Drawing.Point(3, 13);
             this.tabControl.MinimumSize = new System.Drawing.Size(595, 498);
             this.tabControl.Name = "tabControl";
             this.tabControl.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(834, 611);
+            this.tabControl.Size = new System.Drawing.Size(834, 601);
             this.tabControl.TabIndex = 1;
             // 
             // tabConnection
@@ -139,7 +141,7 @@ namespace MyGeneration
             this.tabConnection.Location = new System.Drawing.Point(4, 22);
             this.tabConnection.Name = "tabConnection";
             this.tabConnection.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.tabConnection.Size = new System.Drawing.Size(826, 585);
+            this.tabConnection.Size = new System.Drawing.Size(826, 575);
             this.tabConnection.TabIndex = 0;
             this.tabConnection.Text = "Connection";
             // 
@@ -850,10 +852,36 @@ namespace MyGeneration
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
+            // buttonSaveSettings
+            // 
+            this.buttonSaveSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonSaveSettings.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.buttonSaveSettings.Location = new System.Drawing.Point(703, 3);
+            this.buttonSaveSettings.Name = "buttonSaveSettings";
+            this.buttonSaveSettings.Size = new System.Drawing.Size(62, 23);
+            this.buttonSaveSettings.TabIndex = 2;
+            this.buttonSaveSettings.Text = "Save";
+            this.buttonSaveSettings.UseVisualStyleBackColor = true;
+            this.buttonSaveSettings.Click += new System.EventHandler(this.buttonSaveSettings_Click);
+            // 
+            // buttonCancelSettings
+            // 
+            this.buttonCancelSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonCancelSettings.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.buttonCancelSettings.Location = new System.Drawing.Point(771, 3);
+            this.buttonCancelSettings.Name = "buttonCancelSettings";
+            this.buttonCancelSettings.Size = new System.Drawing.Size(62, 23);
+            this.buttonCancelSettings.TabIndex = 3;
+            this.buttonCancelSettings.Text = "Cancel";
+            this.buttonCancelSettings.UseVisualStyleBackColor = true;
+            this.buttonCancelSettings.Click += new System.EventHandler(this.buttonCancelSettings_Click);
+            // 
             // DefaultSettingsControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.buttonCancelSettings);
+            this.Controls.Add(this.buttonSaveSettings);
             this.Controls.Add(this.tabControl);
             this.Name = "DefaultSettingsControl";
             this.Size = new System.Drawing.Size(840, 617);
@@ -953,5 +981,7 @@ namespace MyGeneration
         private System.Windows.Forms.ToolStripButton toolStripButtonSave;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.Windows.Forms.Button buttonSaveSettings;
+        private System.Windows.Forms.Button buttonCancelSettings;
     }
 }

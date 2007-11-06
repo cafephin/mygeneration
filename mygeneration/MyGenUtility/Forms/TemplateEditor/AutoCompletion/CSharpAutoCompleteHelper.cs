@@ -16,7 +16,24 @@ namespace MyGeneration.AutoCompletion
 
         public override bool IsCodeStyle(bool isTagged, int style)
         {
-            return (style == (isTagged ? 61 : 11));
+            if (isTagged)
+            {
+                return (style == 62 || style == 61 || style == 56);
+            }
+            else
+            {
+                return (style == 11 || style == 5 || style == 0);
+            }
+        }
+
+        public override string SelfQualifier
+        {
+            get { return "this"; }
+        }
+
+        public override StringComparison SelfQualifierStringComparisonRule
+        {
+            get { return StringComparison.CurrentCulture; }
         }
 
         public override bool ScanCodeForVariable(ZeusScintillaControl scintilla, String varname, out AutoCompleteNodeInfo node)

@@ -20,14 +20,16 @@ namespace MyGeneration
         private System.Drawing.Color defaultOleDbButtonColor;
         private DataTable driversTable;
         public ShowOleDbDialogHandler ShowOLEDBDialog;
+        private IMyGenerationMDI mdi;
 
         public DefaultSettingsControl()
         {
             InitializeComponent();
         }
 
-        public void Initialize()
+        public void Initialize(IMyGenerationMDI mdi)
         {
+            this.mdi = mdi;
             settings = DefaultSettings.Instance;
         }
 
@@ -405,6 +407,19 @@ namespace MyGeneration
         }
 
         #region Control Event Handlers
+        private void buttonCancelSettings_Click(object sender, EventArgs e)
+        {
+            this.ParentForm.Close();
+        }
+
+        private void buttonSaveSettings_Click(object sender, EventArgs e)
+        {
+            if (Save())
+            {
+                mdi.SendAlert(this.ParentForm as IMyGenContent, "UpdateDefaultSettings");
+            }
+        }
+
         private void btnOleDb_Click(object sender, System.EventArgs e)
         {
             try

@@ -43,7 +43,7 @@ namespace MyGeneration
 
             this.mdi = mdi;
             this.defaultSettingsControl.ShowOLEDBDialog = new ShowOleDbDialogHandler(ShowOLEDBDialog);
-            this.defaultSettingsControl.Initialize();
+            this.defaultSettingsControl.Initialize(mdi);
 		}
 
         public string ShowOLEDBDialog(string cs)

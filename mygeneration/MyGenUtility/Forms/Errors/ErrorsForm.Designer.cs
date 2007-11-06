@@ -102,7 +102,7 @@ namespace MyGeneration.Forms
             this.toolStripButtonViewDetail.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonViewDetail.Name = "toolStripButtonViewDetail";
             this.toolStripButtonViewDetail.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButtonViewDetail.Text = "toolStripButton1";
+            this.toolStripButtonViewDetail.ToolTipText = "View Error Detail";
             this.toolStripButtonViewDetail.Click += new System.EventHandler(this.toolStripButtonViewDetail_Click);
             // 
             // toolStripButtonSave
@@ -112,7 +112,7 @@ namespace MyGeneration.Forms
             this.toolStripButtonSave.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonSave.Name = "toolStripButtonSave";
             this.toolStripButtonSave.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButtonSave.Text = "Save";
+            this.toolStripButtonSave.ToolTipText = "Save Errors To Disk";
             this.toolStripButtonSave.Click += new System.EventHandler(this.toolStripButtonSave_Click);
             // 
             // toolStripButtonEmail
@@ -133,7 +133,7 @@ namespace MyGeneration.Forms
             this.toolStripButtonClear.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonClear.Name = "toolStripButtonClear";
             this.toolStripButtonClear.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButtonClear.Text = "Clear";
+            this.toolStripButtonClear.ToolTipText = "Clear Errors";
             this.toolStripButtonClear.Click += new System.EventHandler(this.toolStripButtonClear_Click);
             // 
             // ErrorsForm
