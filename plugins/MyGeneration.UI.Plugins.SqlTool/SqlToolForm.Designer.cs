@@ -103,7 +103,7 @@ namespace MyGeneration.UI.Plugins.SqlTool
             this.toolStripButtonSave.MergeIndex = 2;
             this.toolStripButtonSave.Name = "toolStripButtonSave";
             this.toolStripButtonSave.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButtonSave.Text = "Save Settings";
+            this.toolStripButtonSave.Text = "Save";
             this.toolStripButtonSave.Click += new System.EventHandler(this.toolStripButtonSave_Click);
             // 
             // toolStripSeparator1

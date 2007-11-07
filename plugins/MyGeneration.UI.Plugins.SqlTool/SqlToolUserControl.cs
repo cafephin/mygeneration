@@ -39,8 +39,9 @@ namespace MyGeneration.UI.Plugins.SqlTool
             this.scintilla.SmartIndentType = SmartIndent.Simple;
         }
 
-        public void Initialize(IMyGenerationMDI mdi)
+        public void Initialize(IMyGenerationMDI mdi, ToolStripItemCollection menuItems)
         {
+            this.scintilla.AddShortcuts(menuItems);
             this._fileId = Guid.NewGuid().ToString();
             _mdi = mdi;
             RefreshConnectionInfo();

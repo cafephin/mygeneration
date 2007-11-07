@@ -18,10 +18,11 @@ namespace MyGeneration.UI.Plugins.SqlTool
         public SqlToolForm(IMyGenerationMDI mdi)
         {
             this._mdi = mdi;
+            this.DockAreas = DockAreas.Document;
 
             InitializeComponent();
 
-            sqlToolUserControl1.Initialize(mdi);
+            sqlToolUserControl1.Initialize(mdi, this.MainMenuStrip.Items);
             this.TabText = "New SQL File";
             this.Text = "New SQL File";
             BindForm();
