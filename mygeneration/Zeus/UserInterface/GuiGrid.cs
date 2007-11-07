@@ -79,12 +79,14 @@ namespace Zeus.UserInterface
 		/// Binds a DataSource to this GuiGrid. Binding supports SimpleTables, DataTables, DataViews, and other IEnumerable classes.
 		/// </summary>
 		/// <param name="dataSource">The data source object to bind.</param>
-		public void BindData(object dataSource) 
-		{
-			if (dataSource is SimpleTable)
+		public void BindData(object dataSource)
+        {
+#if !HTML_HELP
+            if (dataSource is SimpleTable)
 				this.DataSource = dataSource as SimpleTable;
 			else
 				this.DataSource = SimpleTableTools.ConvertToSimpleTable(dataSource);
+#endif
 		}
 
 

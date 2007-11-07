@@ -431,10 +431,10 @@ namespace MyGeneration.UI.Plugins.SqlTool
             // 
             this.sqlToolUserControl1.CommandSeperator = "GO";
             this.sqlToolUserControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sqlToolUserControl1.Location = new System.Drawing.Point(0, 25);
+            this.sqlToolUserControl1.Location = new System.Drawing.Point(0, 24);
             this.sqlToolUserControl1.Name = "sqlToolUserControl1";
             this.sqlToolUserControl1.SelectedDatabase = null;
-            this.sqlToolUserControl1.Size = new System.Drawing.Size(984, 586);
+            this.sqlToolUserControl1.Size = new System.Drawing.Size(984, 587);
             this.sqlToolUserControl1.TabIndex = 2;
             // 
             // SqlToolForm

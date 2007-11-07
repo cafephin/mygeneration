@@ -4,7 +4,8 @@ using System.Collections;
 namespace Zeus
 {
 	public interface IZeusCodeSegmentStub
-	{		bool IsEmpty { get; }
+	{
+		bool IsEmpty { get; }
 		string SegmentType { get; }
 		string Engine { get; }
 		string Language { get; }
