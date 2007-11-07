@@ -22,6 +22,8 @@ namespace MyGeneration.UI.Plugins.SqlTool
             InitializeComponent();
 
             sqlToolUserControl1.Initialize(mdi);
+            this.TabText = "New SQL File";
+            this.Text = "New SQL File";
             BindForm();
         }
 
@@ -29,19 +31,31 @@ namespace MyGeneration.UI.Plugins.SqlTool
         {
             this._filename = fileName;
             this.sqlToolUserControl1.Open(fileName);
-            if (!string.IsNullOrEmpty(sqlToolUserControl1.FileName)) this.TabText = sqlToolUserControl1.FileName;
+            if (!string.IsNullOrEmpty(sqlToolUserControl1.FileName))
+            {
+                this.TabText = sqlToolUserControl1.FileName;
+                this.Text = sqlToolUserControl1.FileName;
+            }
         }
 
         public void Save()
         {
             this.sqlToolUserControl1.Save();
-            if (!string.IsNullOrEmpty(sqlToolUserControl1.FileName)) this.TabText = sqlToolUserControl1.FileName;
+            if (!string.IsNullOrEmpty(sqlToolUserControl1.FileName))
+            {
+                this.TabText = sqlToolUserControl1.FileName;
+                this.Text = sqlToolUserControl1.FileName;
+            }
         }
 
         public void SaveAs()
         {
             this.sqlToolUserControl1.SaveAs();
-            if (!string.IsNullOrEmpty(sqlToolUserControl1.FileName)) this.TabText = sqlToolUserControl1.FileName;
+            if (!string.IsNullOrEmpty(sqlToolUserControl1.FileName))
+            {
+                this.TabText = sqlToolUserControl1.FileName;
+                this.Text = sqlToolUserControl1.FileName;
+            }
         }
 
         public void Execute()
@@ -53,7 +67,7 @@ namespace MyGeneration.UI.Plugins.SqlTool
         {
             if (!string.IsNullOrEmpty(_filename))
             {
-                return GetType().ToString() + "," + this.sqlToolUserControl1.FileName;
+                return "file," + this.sqlToolUserControl1.FileName;
             }
             else
             {

@@ -77,7 +77,7 @@ namespace MyGeneration
 				this.rootNode.Project != null &&
 				this.rootNode.Project.FilePath != null)
 			{
-				return GetType().ToString() + "," + this.rootNode.Project.FilePath;
+				return "file," + this.rootNode.Project.FilePath;
 			}
 			else
 			{

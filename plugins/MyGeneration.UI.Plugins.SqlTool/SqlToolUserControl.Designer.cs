@@ -31,11 +31,15 @@ namespace MyGeneration.UI.Plugins.SqlTool
             this.scintilla = new Scintilla.ScintillaControl();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.dataGridViewResults = new System.Windows.Forms.DataGridView();
+            this.tabControlResults = new System.Windows.Forms.TabControl();
+            this.tabPageResults1 = new System.Windows.Forms.TabPage();
             ((System.ComponentModel.ISupportInitialize)(this.scintilla)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewResults)).BeginInit();
+            this.tabControlResults.SuspendLayout();
+            this.tabPageResults1.SuspendLayout();
             this.SuspendLayout();
             // 
             // scintilla
@@ -62,7 +66,7 @@ namespace MyGeneration.UI.Plugins.SqlTool
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.dataGridViewResults);
+            this.splitContainer1.Panel2.Controls.Add(this.tabControlResults);
             this.splitContainer1.Size = new System.Drawing.Size(784, 600);
             this.splitContainer1.SplitterDistance = 304;
             this.splitContainer1.TabIndex = 1;
@@ -72,13 +76,37 @@ namespace MyGeneration.UI.Plugins.SqlTool
             this.dataGridViewResults.AllowUserToAddRows = false;
             this.dataGridViewResults.AllowUserToDeleteRows = false;
             this.dataGridViewResults.AllowUserToOrderColumns = true;
+            this.dataGridViewResults.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText;
             this.dataGridViewResults.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewResults.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewResults.Location = new System.Drawing.Point(0, 0);
+            this.dataGridViewResults.Location = new System.Drawing.Point(3, 3);
             this.dataGridViewResults.Name = "dataGridViewResults";
             this.dataGridViewResults.ReadOnly = true;
-            this.dataGridViewResults.Size = new System.Drawing.Size(784, 292);
+            this.dataGridViewResults.Size = new System.Drawing.Size(770, 260);
             this.dataGridViewResults.TabIndex = 0;
+            // 
+            // tabControlResults
+            // 
+            this.tabControlResults.Alignment = System.Windows.Forms.TabAlignment.Bottom;
+            this.tabControlResults.Controls.Add(this.tabPageResults1);
+            this.tabControlResults.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControlResults.HotTrack = true;
+            this.tabControlResults.Location = new System.Drawing.Point(0, 0);
+            this.tabControlResults.Name = "tabControlResults";
+            this.tabControlResults.SelectedIndex = 0;
+            this.tabControlResults.Size = new System.Drawing.Size(784, 292);
+            this.tabControlResults.TabIndex = 0;
+            // 
+            // tabPageResults1
+            // 
+            this.tabPageResults1.Controls.Add(this.dataGridViewResults);
+            this.tabPageResults1.Location = new System.Drawing.Point(4, 4);
+            this.tabPageResults1.Name = "tabPageResults1";
+            this.tabPageResults1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageResults1.Size = new System.Drawing.Size(776, 266);
+            this.tabPageResults1.TabIndex = 0;
+            this.tabPageResults1.Text = "Results 01";
+            this.tabPageResults1.UseVisualStyleBackColor = true;
             // 
             // SqlToolUserControl
             // 
@@ -92,6 +120,8 @@ namespace MyGeneration.UI.Plugins.SqlTool
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewResults)).EndInit();
+            this.tabControlResults.ResumeLayout(false);
+            this.tabPageResults1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -101,5 +131,7 @@ namespace MyGeneration.UI.Plugins.SqlTool
         private Scintilla.ScintillaControl scintilla;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.DataGridView dataGridViewResults;
+        private System.Windows.Forms.TabControl tabControlResults;
+        private System.Windows.Forms.TabPage tabPageResults1;
     }
 }

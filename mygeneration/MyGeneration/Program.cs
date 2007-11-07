@@ -16,7 +16,6 @@ namespace MyGeneration
         [STAThread]
         static void Main(string[] args)
         {
-
             MyGenerationMDI mdi;
             try
             {

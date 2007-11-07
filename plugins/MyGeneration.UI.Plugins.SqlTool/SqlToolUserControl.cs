@@ -353,15 +353,30 @@ namespace MyGeneration.UI.Plugins.SqlTool
 
         public void Execute()
         {
+            for (int i = (this.tabControlResults.TabPages.Count-1); i > 0 ; i--)
+            {
+                this.tabControlResults.TabPages.RemoveAt(i);
+            }
+
             IDbConnection conn = null;
             IDataReader r = null;
+            int resultSetIndex = 0;
             try
             {
+                conn = NewConnection();
+                conn.Open();
+
                 List<string> sqlCommands = this.SqlToExecute;
                 foreach (string sql in sqlCommands)
                 {
-                    conn = NewConnection();
-                    conn.Open();
+                    if (conn == null)
+                    {
+                        conn = NewConnection();
+                    }
+                    if (conn.State != ConnectionState.Open)
+                    {
+                        conn.Open();
+                    }
 
                     if (!string.IsNullOrEmpty(_databaseName))
                         conn.ChangeDatabase(_databaseName);
@@ -370,42 +385,67 @@ namespace MyGeneration.UI.Plugins.SqlTool
                     db.CommandText = sql;
                     r = db.ExecuteReader();
 
-                    this.dataGridViewResults.Rows.Clear();
-                    this.dataGridViewResults.Columns.Clear();
-                    int rowindex = 0;
-                    if ((r != null) && (!r.IsClosed))
+                    do
                     {
-                        while (r.Read())
+                        DataGridView dgv = this.dataGridViewResults;
+                        if (resultSetIndex > 0)
                         {
-                            if (rowindex == 0)
+                            string post = (resultSetIndex + 1).ToString().PadLeft(2, '0');
+                            dgv = new DataGridView();
+                            dgv.Dock = DockStyle.Fill;
+                            dgv.AllowUserToAddRows = false;
+                            dgv.AllowUserToDeleteRows = false;
+                            dgv.AllowUserToOrderColumns = true;
+                            dgv.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText;
+                            dgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+                            dgv.Name = "dataGridViewResults" + post;
+                            dgv.ReadOnly = true;
+
+                            TabPage ntp = new TabPage("Results " + post);
+                            ntp.Controls.Add(dgv);
+                            this.tabControlResults.TabPages.Add(ntp);
+                        }
+                        dgv.Rows.Clear();
+                        dgv.Columns.Clear();
+                        int rowindex = 0;
+
+                        if ((r != null) && (!r.IsClosed))
+                        {
+                            while (r.Read())
                             {
+                                if (rowindex == 0)
+                                {
+                                    for (int i = 0; i < r.FieldCount; i++)
+                                    {
+                                        dgv.Columns.Add(r.GetName(i), r.GetName(i));
+                                    }
+                                }
+
+                                dgv.Rows.Add();
                                 for (int i = 0; i < r.FieldCount; i++)
                                 {
-                                    dataGridViewResults.Columns.Add(r.GetName(i), r.GetName(i));
+                                    dgv.Rows[rowindex].Cells[i].Value = r[i];
                                 }
+                                rowindex++;
                             }
-
-                            dataGridViewResults.Rows.Add();
-                            for (int i = 0; i < r.FieldCount; i++)
-                            {
-                                dataGridViewResults.Rows[rowindex].Cells[i].Value = r[i];
-                            }
-                            rowindex++;
                         }
-                    }
+                        if (rowindex == 0)
+                        {
+                            dgv.Columns.Add("Result", "Result");
+                            dgv.Rows.Add();
+                            dgv.Rows[0].Cells[0].Value = "";
+                        }
 
-                    if (rowindex == 0)
-                    {
-                        dataGridViewResults.Columns.Add("Result", "Result");
-                        dataGridViewResults.Rows.Add();
-                        dataGridViewResults.Rows[0].Cells[0].Value = "";
-                    }
+                        resultSetIndex++;
+                        
+                    } while (r.NextResult());
+
                     r.Close();
                     r.Dispose();
-
-                    conn.Close();
-                    conn.Dispose();
                 }
+
+                conn.Close();
+                conn.Dispose();
             }
             catch (Exception ex)
             {
