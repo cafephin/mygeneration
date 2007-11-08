@@ -663,6 +663,7 @@ namespace MyGeneration.CodeSmithConversion
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Menu = this.mainMenuConverter;
             this.Name = "FormConvertCodeSmith";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "CodeSmith-2-MyGeneration Converter";
             this.Closed += new System.EventHandler(this.FormConvertCodeSmith_Closed);
             this.Load += new System.EventHandler(this.FormConvertCodeSmith_Load);

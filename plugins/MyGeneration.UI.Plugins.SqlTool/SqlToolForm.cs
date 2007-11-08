@@ -64,6 +64,16 @@ namespace MyGeneration.UI.Plugins.SqlTool
             this.sqlToolUserControl1.Execute();
         }
 
+        public bool IsEmpty
+        {
+            get { return this.sqlToolUserControl1.IsEmpty; }
+        }
+
+        public bool IsNew
+        {
+            get { return this.sqlToolUserControl1.IsNew; }
+        }
+
         protected override string GetPersistString()
         {
             if (!string.IsNullOrEmpty(_filename))
@@ -195,6 +205,7 @@ namespace MyGeneration.UI.Plugins.SqlTool
         public string TextContent
         {
             get { return this.sqlToolUserControl1.TextContent; }
+            set { this.sqlToolUserControl1.TextContent = value; }
         }
 
         #endregion
@@ -230,6 +241,21 @@ namespace MyGeneration.UI.Plugins.SqlTool
         private void executeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Execute();
+        }
+
+        private void cutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.sqlToolUserControl1.Cut();
+        }
+
+        private void copyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.sqlToolUserControl1.Copy();
+        }
+
+        private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.sqlToolUserControl1.Paste();
         }
         #endregion
     }

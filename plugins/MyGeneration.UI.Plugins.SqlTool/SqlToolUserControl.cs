@@ -76,6 +76,16 @@ namespace MyGeneration.UI.Plugins.SqlTool
             return _connection;
         }
 
+        public bool IsEmpty
+        {
+            get { return (this.scintilla.Length == 0); }
+        }
+
+        public bool IsNew
+        {
+            get { return (this._isNew); }
+        }
+
         public List<string> DatabaseNames
         {
             get
@@ -347,6 +357,7 @@ namespace MyGeneration.UI.Plugins.SqlTool
                 {
                     myStream.Close();
                     this.FileSaveAs(saveFileDialog.FileName);
+                    _isNew = false;
                 }
             }
             this.scintilla.GrabFocus();
@@ -361,7 +372,7 @@ namespace MyGeneration.UI.Plugins.SqlTool
 
             IDbConnection conn = null;
             IDataReader r = null;
-            int resultSetIndex = 0;
+            int resultSetIndex = 0, numRows = 0, gridIndex = 1;
             try
             {
                 conn = NewConnection();
@@ -388,10 +399,9 @@ namespace MyGeneration.UI.Plugins.SqlTool
 
                     do
                     {
-                        DataGridView dgv = this.dataGridViewResults;
+                        DataGridView dgv;
                         if (resultSetIndex > 0)
                         {
-                            string post = (resultSetIndex + 1).ToString().PadLeft(2, '0');
                             dgv = new DataGridView();
                             dgv.Dock = DockStyle.Fill;
                             dgv.AllowUserToAddRows = false;
@@ -399,12 +409,11 @@ namespace MyGeneration.UI.Plugins.SqlTool
                             dgv.AllowUserToOrderColumns = true;
                             dgv.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText;
                             dgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-                            dgv.Name = "dataGridViewResults" + post;
                             dgv.ReadOnly = true;
-
-                            TabPage ntp = new TabPage("Results " + post);
-                            ntp.Controls.Add(dgv);
-                            this.tabControlResults.TabPages.Add(ntp);
+                        }
+                        else
+                        {
+                            dgv = this.dataGridViewResults;
                         }
                         dgv.Rows.Clear();
                         dgv.Columns.Clear();
@@ -428,21 +437,39 @@ namespace MyGeneration.UI.Plugins.SqlTool
                                     dgv.Rows[rowindex].Cells[i].Value = r[i];
                                 }
                                 rowindex++;
+                                numRows++;
                             }
                         }
-                        if (rowindex == 0)
+
+                        if (resultSetIndex > 0)
                         {
-                            dgv.Columns.Add("Result", "Result");
-                            dgv.Rows.Add();
-                            dgv.Rows[0].Cells[0].Value = "";
+                            if (rowindex > 0)
+                            {
+                                string post = (++gridIndex).ToString().PadLeft(2, '0');
+                                dgv.Name = "dataGridViewResults" + post;
+                                TabPage ntp = new TabPage("Results " + post);
+                                ntp.Controls.Add(dgv);
+                                this.tabControlResults.TabPages.Add(ntp);
+                            }
+                            else
+                            {
+                                dgv.Dispose();
+                                dgv = null;
+                            }
                         }
 
                         resultSetIndex++;
-                        
                     } while (r.NextResult());
 
                     r.Close();
                     r.Dispose();
+
+                    if (numRows == 0)
+                    {
+                        dataGridViewResults.Columns.Add("Result", "Result");
+                        dataGridViewResults.Rows.Add();
+                        dataGridViewResults.Rows[0].Cells[0].Value = "";
+                    }
                 }
 
                 conn.Close();
@@ -490,12 +517,40 @@ namespace MyGeneration.UI.Plugins.SqlTool
             {
                 return scintilla.Text;
             }
+            set
+            {
+                this.scintilla.Text = value;
+            }
         }
 
         protected void SetClean()
         {
             scintilla.EmptyUndoBuffer();
             scintilla.SetSavePoint();
+        }
+
+        public void Cut()
+        {
+            if (this.scintilla.Focused)
+            {
+                this.scintilla.Cut();
+            }
+        }
+
+        public void Copy()
+        {
+            if (this.scintilla.Focused)
+            {
+                this.scintilla.Copy();
+            }
+        }
+
+        public void Paste()
+        {
+            if (this.scintilla.Focused)
+            {
+                this.scintilla.Paste();
+            }
         }
     }
 }

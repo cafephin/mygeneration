@@ -16,9 +16,9 @@ using Scintilla;
 using Scintilla.Enums;
 using Scintilla.Forms;
 using Scintilla.Printing;
-using Scintilla.Configuration.Legacy;
 using Scintilla.Configuration;
 using Scintilla.Configuration.SciTE;
+using Scintilla.Configuration.Legacy;
 
 //using Zeus.Projects;
 using Zeus;
@@ -158,7 +158,18 @@ namespace MyGeneration
 
             if (File.Exists(dockConfigFileName))
             {
-                dockPanel.LoadFromXml(dockConfigFileName, deserializeDockContent);
+                try 
+                {
+                    dockPanel.LoadFromXml(dockConfigFileName, deserializeDockContent);
+                }
+                catch (Exception ex)
+                {
+                    try 
+                    {
+                        File.Delete(dockConfigFileName);
+                    }
+                    catch {}
+                }
             }
 
             // Startup files from the command line

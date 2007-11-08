@@ -257,6 +257,7 @@ namespace MyGeneration.UI.Plugins.SqlTool
             this.cutToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
             this.cutToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
             this.cutToolStripMenuItem.Text = "Cu&t";
+            this.cutToolStripMenuItem.Click += new System.EventHandler(this.cutToolStripMenuItem_Click);
             // 
             // copyToolStripMenuItem
             // 
@@ -264,6 +265,7 @@ namespace MyGeneration.UI.Plugins.SqlTool
             this.copyToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
             this.copyToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
             this.copyToolStripMenuItem.Text = "&Copy";
+            this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
             // 
             // pasteToolStripMenuItem
             // 
@@ -271,6 +273,7 @@ namespace MyGeneration.UI.Plugins.SqlTool
             this.pasteToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
             this.pasteToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
             this.pasteToolStripMenuItem.Text = "&Paste";
+            this.pasteToolStripMenuItem.Click += new System.EventHandler(this.pasteToolStripMenuItem_Click);
             // 
             // toolStripMenuItem4
             // 
@@ -431,10 +434,10 @@ namespace MyGeneration.UI.Plugins.SqlTool
             // 
             this.sqlToolUserControl1.CommandSeperator = "GO";
             this.sqlToolUserControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sqlToolUserControl1.Location = new System.Drawing.Point(0, 25);
+            this.sqlToolUserControl1.Location = new System.Drawing.Point(0, 24);
             this.sqlToolUserControl1.Name = "sqlToolUserControl1";
             this.sqlToolUserControl1.SelectedDatabase = null;
-            this.sqlToolUserControl1.Size = new System.Drawing.Size(984, 586);
+            this.sqlToolUserControl1.Size = new System.Drawing.Size(984, 587);
             this.sqlToolUserControl1.TabIndex = 2;
             // 
             // SqlToolForm

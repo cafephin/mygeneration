@@ -157,7 +157,9 @@ namespace Scintilla
             get
             {
                 string result;
-                _instance.SendMessageDirect((uint)_getter, new IntPtr(index), out result, _instance.LineLength(index));
+                int lineLength = _instance.LineLength(index);
+                if (lineLength <= 0) result = string.Empty;
+                else _instance.SendMessageDirect((uint)_getter, new IntPtr(index), out result, _instance.LineLength(index));
                 return result;
             }
         }

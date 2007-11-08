@@ -3,7 +3,6 @@ TODO: (by Priority)
 komma8.komma1:
 Tasks:
 - Improve Project File support. Look at suggestions in enhancement list online/email.
-- Enhance results grid of SqlTool Plugin.
 - Execution of projects to console instead of that modal popup? 
 - Add Sample plugins of each type. Zip them up and put them on sourceforge. SqlTool for document(done), CodeSmith for simple(done), new template library for conent(not yet started)
 

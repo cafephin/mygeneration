@@ -4,6 +4,8 @@
 - Added "this" and "Me" to autocomplete to thier respective languages
 - Fix tooltip on error window button.
 - Fix Default Settings Confusion. Either add a Save/OK button in there or make it modal.
+- Enhanced results grid of SqlTool Plugin. - supports multiple result sets now.
+- Can now execute sql from template output by clicking on the plugin toolbar icon.
 
 2007.11.04 - MyGeneration 1.3 beta8
 - Fixed bugs in the SQLTool plugin

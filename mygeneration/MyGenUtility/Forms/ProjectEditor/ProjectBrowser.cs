@@ -997,7 +997,7 @@ namespace MyGeneration
             DefaultSettings settings = DefaultSettings.Instance;
 
 			ProjectExecuteStatus log = new ProjectExecuteStatus();
-			log.Show();
+			log.Show(this);
 
 			if ((node is ModuleTreeNode) || (node is ProjectTreeNode) )
 			{
@@ -1007,10 +1007,12 @@ namespace MyGeneration
 			else if (node is SavedObjectTreeNode)
 			{
 				SavedTemplateInput savedinput = node.Tag as SavedTemplateInput;
-				savedinput.Execute(settings.ScriptTimeout, log);
+                savedinput.Execute(settings.ScriptTimeout, log);
 			}
 
-			log.Finished = true;
+            log.Finished = true;
+            log.BringToFront();
+            log.Activate();
 
 			Cursor.Current = Cursors.Default;
 		}
