@@ -41,45 +41,45 @@ namespace MyGeneration.UI.Plugins.SqlTool
 
         public void Execute(IMyGenerationMDI mdi, params string[] args)
         {
-            if (mdi.DockPanel.ActiveDocument != null)
+            SqlToolForm stf = null;
+            int cnt = 0;
+            do
             {
-                if (mdi.DockPanel.ActiveDocument is IMyGenDocument)
+                foreach (IDockContent d in mdi.DockPanel.Documents)
                 {
-                    IMyGenDocument doc = mdi.DockPanel.ActiveDocument as IMyGenDocument;
-                    SqlToolForm stf = null;
-                    int cnt = 0;
-                    do
+                    if (d is SqlToolForm)
                     {
-                        foreach (IDockContent d in mdi.DockPanel.Documents)
+                        stf = d as SqlToolForm;
+                        if (stf.IsNew && stf.IsEmpty)
                         {
-                            if (d is SqlToolForm)
-                            {
-                                stf = d as SqlToolForm;
-                                if (stf.IsNew && stf.IsEmpty)
-                                {
-                                    break;
-                                }
-                                else
-                                {
-                                    stf = null;
-                                }
-                            }
+                            break;
                         }
-
-                        if (stf == null)
+                        else
                         {
-                            mdi.CreateDocument(SqlToolEditorManager.SQL_FILE);
+                            stf = null;
                         }
-                        cnt++;
-                    } while (stf == null && cnt < 2);
-
-                    if (stf != null)
-                    {
-                        stf.TextContent = doc.TextContent;
-                        stf.Show();
-                        stf.Activate();
                     }
                 }
+
+                if (stf == null)
+                {
+                    mdi.CreateDocument(SqlToolEditorManager.SQL_FILE);
+                }
+                cnt++;
+            } while (stf == null && cnt < 2);
+
+            if (stf != null)
+            {
+                if (mdi.DockPanel.ActiveDocument != null)
+                {
+                    if (mdi.DockPanel.ActiveDocument is IMyGenDocument)
+                    {
+                        IMyGenDocument doc = mdi.DockPanel.ActiveDocument as IMyGenDocument;
+                        stf.TextContent = doc.TextContent;
+                    }
+                }
+                stf.Show();
+                stf.Activate();
             }
         }
     }
