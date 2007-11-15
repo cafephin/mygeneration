@@ -166,6 +166,18 @@
     <Compile Include="Forms\Errors\ErrorsForm.Designer.cs">
       <DependentUpon>ErrorsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\TemplateBrowser\TemplateBrowser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TemplateBrowser\TemplateBrowser.Designer.cs">
+      <DependentUpon>TemplateBrowser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TemplateBrowser\TemplateBrowserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\TemplateBrowser\TemplateBrowserControl.Designer.cs">
+      <DependentUpon>TemplateBrowserControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\TemplateEditor\AutoCompletion\AutoCompleteHelper.cs" />
     <Compile Include="Forms\TemplateEditor\AutoCompletion\AutoCompleteNodeInfo.cs" />
     <Compile Include="Forms\TemplateEditor\AutoCompletion\VBNetAutoCompleteHelper.cs" />
@@ -216,9 +228,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\ProjectEditor\ViewSavedInput.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\TemplateBrowser\TemplateBrowser.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\TemplateBrowser\TemplateTreeBuilder.cs" />
@@ -333,8 +342,12 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\TemplateBrowser\TemplateBrowser.resx">
-      <DependentUpon>TemplateBrowser.cs</DependentUpon>
       <SubType>Designer</SubType>
+      <DependentUpon>TemplateBrowser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TemplateBrowser\TemplateBrowserControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TemplateBrowserControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\TemplateBrowser\WebTemplateLibrary.resx">
       <DependentUpon>WebTemplateLibrary.cs</DependentUpon>
