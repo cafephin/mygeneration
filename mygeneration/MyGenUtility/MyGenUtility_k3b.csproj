@@ -213,6 +213,15 @@
     <Compile Include="Forms\TemplateBrowser\TemplateBrowser.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\TemplateBrowser\TemplateBrowser.Designer.cs">
+      <DependentUpon>TemplateBrowser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TemplateBrowser\TemplateBrowserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\TemplateBrowser\TemplateBrowserControl.Designer.cs">
+      <DependentUpon>TemplateBrowserControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\TemplateBrowser\TemplateTreeBuilder.cs" />
     <Compile Include="Forms\TemplateBrowser\TemplateWebUpdateHelper.cs" />
     <Compile Include="Forms\TemplateBrowser\WebTemplateLibrary.cs">
@@ -333,6 +342,10 @@
     <EmbeddedResource Include="Forms\TemplateBrowser\TemplateBrowser.resx">
       <DependentUpon>TemplateBrowser.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TemplateBrowser\TemplateBrowserControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TemplateBrowserControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\TemplateBrowser\WebTemplateLibrary.resx">
       <DependentUpon>WebTemplateLibrary.cs</DependentUpon>

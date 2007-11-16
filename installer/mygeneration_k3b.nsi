@@ -134,12 +134,13 @@ Section "-Install Mygeneration and Register Shell Extensions"
   File /oname=adodb.dll ..\build\Release\adodb.dll
   File /oname=System.Data.SQLite.DLL ..\build\Release\System.Data.SQLite.DLL
   File /oname=CollapsibleSplitter.dll ..\build\Release\CollapsibleSplitter.dll
-  File /oname=ScintillaNET.dll ..\build\Release\ScintillaNET.dll
-  File /oname=SciLexer.dll ..\build\Release\SciLexer.dll
   File /oname=Npgsql.dll ..\build\Release\Npgsql.dll
   File /oname=Mono.Security.dll ..\build\Release\Mono.Security.dll
   File /oname=FirebirdSql.Data.Firebird.dll ..\build\Release\FirebirdSql.Data.Firebird.dll
-  File /oname=WeifenLuo.WinFormsUI.Docking.dll ..\build\Release\WeifenLuo.WinFormsUI.Docking.dll
+
+  File /oname=ScintillaNET.dll ..\mygeneration\MyGeneration\PluginResources\ScintillaNET.dll
+  File /oname=SciLexer.dll ..\mygeneration\MyGeneration\PluginResources\SciLexer.dll
+  File /oname=WeifenLuo.WinFormsUI.Docking.dll ..\mygeneration\MyGeneration\PluginResources\WeifenLuo.WinFormsUI.Docking.dll
 
 ; Plugins
   File /nonfatal /oname=MyMeta.Plugins.DelimitedText.dll ..\build\Release\MyMeta.Plugins.DelimitedText.dll
