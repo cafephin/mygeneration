@@ -41,6 +41,7 @@ namespace MyGeneration
             this.templateBrowserControl.TabIndex = 0;
             this.templateBrowserControl.TemplateUpdate += new System.EventHandler(this.templateBrowserControl_TemplateUpdate);
             this.templateBrowserControl.TemplateDelete += new System.EventHandler(this.templateBrowserControl_TemplateDelete);
+            this.templateBrowserControl.ErrorsOccurred += new System.EventHandler(this.templateBrowserControl_ErrorsOccurred);
             this.templateBrowserControl.TemplateOpen += new System.EventHandler(this.templateBrowserControl_TemplateOpen);
             // 
             // TemplateBrowser

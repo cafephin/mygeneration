@@ -148,7 +148,7 @@ namespace MyGeneration
 					info = null;
 					if (filename.ToLower().EndsWith(".dll") )
 					{
-						info = new FileInfo(FileTools.RootFolder + "\\" + filename);
+                        info = new FileInfo(FileTools.ApplicationPath + "\\" + filename);
 						if (info.Exists) fileExistsAndIsDLL = true;
 					}
 					else 
@@ -179,7 +179,7 @@ namespace MyGeneration
 
 							newfilename = prefix + "$REPLACEMENT$.dll";
 
-							info = new FileInfo(FileTools.RootFolder + "\\" + filename);
+                            info = new FileInfo(FileTools.ApplicationPath + "\\" + filename);
 
 							FileStream stream = info.Create();
 							writer = new BinaryWriter(stream);

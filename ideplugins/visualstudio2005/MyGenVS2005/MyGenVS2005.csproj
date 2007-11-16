@@ -34,9 +34,17 @@
     <Reference Include="Extensibility, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddInTemplateBrowser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddInTemplateBrowser.Designer.cs">
+      <DependentUpon>AddInTemplateBrowser.cs</DependentUpon>
+    </Compile>
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -45,6 +53,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AddInTemplateBrowser.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AddInTemplateBrowser.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CommandBar.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -82,6 +94,27 @@
       <WrapperTool>primary</WrapperTool>
       <Isolated>False</Isolated>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\mygeneration\EngineInterface\PluginInterfaces.csproj">
+      <Project>{61B369D1-95DD-4158-9F30-2E051CEB9D50}</Project>
+      <Name>PluginInterfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\mygeneration\MyGenUtility\MyGenUtility.csproj">
+      <Project>{A1D6D035-420C-40A3-9598-9E34F11FB1AA}</Project>
+      <Name>MyGenUtility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\mygeneration\Zeus\Zeus.csproj">
+      <Project>{CE8A697D-D45C-4E60-838D-E36980227543}</Project>
+      <Name>Zeus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\mymeta\MyMeta.csproj">
+      <Project>{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}</Project>
+      <Name>MyMeta</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="MyGenVS2005.AddIn" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
   <PropertyGroup>

@@ -269,7 +269,7 @@ namespace MyGeneration
 
 		private void MetaDataBrowser_Load(object sender, System.EventArgs e)
 		{
-            this.startupPath = Zeus.FileTools.RootFolder;
+            this.startupPath = Zeus.FileTools.ApplicationPath;
 
 			DefaultSettings settings = DefaultSettings.Instance;
 			this.Setup(settings);

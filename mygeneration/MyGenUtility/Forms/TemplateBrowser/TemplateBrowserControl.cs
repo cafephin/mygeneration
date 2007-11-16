@@ -20,7 +20,6 @@ namespace MyGeneration
         private const int INDEX_CLOSED_FOLDER = 3;
         private const int INDEX_OPEN_FOLDER = 4;
 
-        private IMyGenerationMDI _mdi;
         private WebTemplateLibrary _templateLibrary;
         private TemplateTreeBuilder _treeBuilder;
         private object _lastObject = null;
@@ -28,16 +27,15 @@ namespace MyGeneration
         public event EventHandler TemplateDelete;
         public event EventHandler TemplateOpen;
         public event EventHandler TemplateUpdate;
+        public event EventHandler ErrorsOccurred;
 
         public TemplateBrowserControl()
         {
             InitializeComponent();
         }
 
-        public void Initialize(IMyGenerationMDI mdi)
+        public void Initialize()
         {
-            this._mdi = mdi;
-
             _treeBuilder = new TemplateTreeBuilder(treeViewTemplates);
             _treeBuilder.LoadTemplates();
         }
@@ -53,6 +51,14 @@ namespace MyGeneration
         public string GetPersistString()
         {
             return this.GetType().FullName;
+        }
+
+        protected void OnErrorsOccurred(Exception ex)
+        {
+            if (ErrorsOccurred != null)
+            {
+                ErrorsOccurred(ex, EventArgs.Empty);
+            }
         }
 
         protected void OnTemplateUpdate(string uniqueId)
@@ -264,7 +270,7 @@ namespace MyGeneration
             }
             catch (Exception ex)
             {
-                _mdi.ErrorsOccurred(ex);
+                OnErrorsOccurred(ex);
 
                 exceptionOccurred = true;
             }
@@ -329,7 +335,7 @@ namespace MyGeneration
             }
             catch (Exception ex)
             {
-                _mdi.ErrorsOccurred(ex);
+                OnErrorsOccurred(ex);
             }
 
             Cursor.Current = Cursors.Default;
@@ -376,7 +382,7 @@ namespace MyGeneration
             }
             catch (Exception ex)
             {
-                _mdi.ErrorsOccurred(ex);
+                OnErrorsOccurred(ex);
             }
 
             Cursor.Current = Cursors.Default;
@@ -398,7 +404,7 @@ namespace MyGeneration
             }
             catch (Exception ex)
             {
-                _mdi.ErrorsOccurred(ex);
+                OnErrorsOccurred(ex);
             }
 
             Cursor.Current = Cursors.Default;

@@ -408,14 +408,14 @@ namespace MyGeneration
 			TestConnectionForm.state = ConnectionTestState.Waiting;
 			TestConnectionForm.info = null;
 
-			string file = Zeus.FileTools.RootFolder + @".\ZeusCmd.exe";
+            string file = Zeus.FileTools.ApplicationPath + @".\ZeusCmd.exe";
 			if (!File.Exists(file)) 
 			{
-				file = Zeus.FileTools.RootFolder + @"\..\..\..\..\ZeusCmd\bin\debug\ZeusCmd.exe";
+                file = Zeus.FileTools.ApplicationPath + @"\..\..\..\..\ZeusCmd\bin\debug\ZeusCmd.exe";
 				
 				if (!File.Exists(file)) 
 				{
-					file = Zeus.FileTools.RootFolder + @"\..\..\..\..\ZeusCmd\bin\release\ZeusCmd.exe";
+                    file = Zeus.FileTools.ApplicationPath + @"\..\..\..\..\ZeusCmd\bin\release\ZeusCmd.exe";
 				}
 			}
 

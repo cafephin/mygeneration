@@ -24,7 +24,15 @@ namespace MyGeneration
 
             InitializeComponent();
 
-            this.templateBrowserControl.Initialize(mdi);
+            this.templateBrowserControl.Initialize();
+        }
+
+        private void templateBrowserControl_ErrorsOccurred(object sender, EventArgs e)
+        {
+            if (sender is Exception)
+            {
+                this._mdi.ErrorsOccurred(sender as Exception);
+            }
         }
 
         private void templateBrowserControl_TemplateOpen(object sender, EventArgs e)

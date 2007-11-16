@@ -33,7 +33,6 @@ namespace MyGeneration
 		private const string MISSING = "*&?$%";
 
         #region members for content that is loaded on demand
-        private string _appPath = null;
         private string _userDataPath = null;
         private Hashtable _savedConnections = null;
 		private ArrayList _recentFiles = null;
@@ -51,6 +50,22 @@ namespace MyGeneration
         // k3b: there is only one setting for all modules (sigelton) 
         // reason: improved loading speed, no risk to work with outdated data
         private static DefaultSettings instance;
+        private static string applicationPath;
+
+        public static string ApplicationPath
+        {
+            get 
+            {
+                if (applicationPath == null)
+                {
+                    applicationPath = Assembly.GetEntryAssembly().Location;
+                    applicationPath = applicationPath.Substring(0, applicationPath.LastIndexOf(@"\"));
+                }
+                return applicationPath; 
+            }
+            set { applicationPath = value; }
+        }
+
         public static DefaultSettings Instance
         {
             get 
@@ -62,7 +77,6 @@ namespace MyGeneration
         }
         public void DiscardChanges()
         {
-            _appPath = null;
             _userDataPath = null;
             _savedConnections = null;
 		    _recentFiles = null;
@@ -81,7 +95,7 @@ namespace MyGeneration
             XmlDocument xmlDoc = new XmlDocument();
 
             Assembly asmblyMyGen = Assembly.GetEntryAssembly();
-            string version = asmblyMyGen.GetName().Version.ToString();
+            string version = (asmblyMyGen == null) ? "Unknown" : (asmblyMyGen.GetName().Version.ToString());
 
             settingsRootNode = null;
             try
@@ -636,21 +650,6 @@ namespace MyGeneration
 #endif
             }
         }
-
-        // .... where all stuff comes from that ships with MyGeneration
-		private string ApplicationPath 
-		{
-			get 
-			{
-				if (_appPath == null) 
-				{
-					_appPath = Assembly.GetEntryAssembly().Location;
-					_appPath = _appPath.Substring(0, _appPath.LastIndexOf(@"\"));
-				}
-				return _appPath;
-			}
-		}
-
 		
 		public void PopulateZeusContext(IZeusContext context) 
 		{
@@ -660,7 +659,10 @@ namespace MyGeneration
 			if (!input.Contains("__version"))
 			{
 				Assembly ver = System.Reflection.Assembly.GetEntryAssembly();
-				input["__version"] = ver.GetName().Version.ToString();
+                if (ver != null)
+                {
+                    input["__version"] = ver.GetName().Version.ToString();
+                }
 			}
 			
 			//-- BEGIN LEGACY VARIABLE SUPPORT -----

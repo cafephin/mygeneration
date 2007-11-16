@@ -120,7 +120,7 @@ namespace Zeus
 			return newPath;
 		}
 
-		public static string RootFolder 
+		public static string ApplicationPath 
 		{
 			get 
 			{
@@ -132,6 +132,10 @@ namespace Zeus
 
 				return _rootFolder;
 			}
+            set
+            {
+                _rootFolder = value;
+            }
 		}
 
 		public static string ResolvePath(string path) 
@@ -146,7 +150,7 @@ namespace Zeus
 				{
 					if (item == ZEUSHOME_VAR) 
 					{
-						newpath += RootFolder;
+                        newpath += ApplicationPath;
 					}
 					else 
 					{

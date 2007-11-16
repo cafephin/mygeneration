@@ -49,19 +49,19 @@ namespace Zeus.Configuration
 
 		private ZeusConfig()
 		{
-			bool dirExists = Directory.Exists(FileTools.RootFolder + SETTINGS_FOLDER);
+            bool dirExists = Directory.Exists(FileTools.ApplicationPath + SETTINGS_FOLDER);
 
 			// Create the settings directory if it doesn't exist already
-			if (!dirExists) Directory.CreateDirectory(FileTools.RootFolder + SETTINGS_FOLDER);
+            if (!dirExists) Directory.CreateDirectory(FileTools.ApplicationPath + SETTINGS_FOLDER);
 
 			XmlDocument xmldoc;
 
-			_filename = FileTools.RootFolder + CONFIG_LOCATION;
+            _filename = FileTools.ApplicationPath + CONFIG_LOCATION;
 			xmldoc = LoadFromFile(_filename);
 
 			if (xmldoc == null) 
 			{
-				_filename = FileTools.RootFolder + CONFIG_LOCATION;
+                _filename = FileTools.ApplicationPath + CONFIG_LOCATION;
 				xmldoc = LoadFromResource();
 			}
 

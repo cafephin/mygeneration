@@ -242,17 +242,17 @@ namespace Zeus
 			if (this._makeRelative) 
 			{
 				if (this._pathCollectXmlData != null)
-					this._pathCollectXmlData = Zeus.FileTools.MakeAbsolute(this._pathCollectXmlData, FileTools.RootFolder);
+					this._pathCollectXmlData = Zeus.FileTools.MakeAbsolute(this._pathCollectXmlData, FileTools.ApplicationPath);
 				if (this._pathLog != null)
-					this._pathLog = Zeus.FileTools.MakeAbsolute(this._pathLog, FileTools.RootFolder);
+                    this._pathLog = Zeus.FileTools.MakeAbsolute(this._pathLog, FileTools.ApplicationPath);
 				if (this._pathOutput != null)
-					this._pathOutput = Zeus.FileTools.MakeAbsolute(this._pathOutput, FileTools.RootFolder);
+                    this._pathOutput = Zeus.FileTools.MakeAbsolute(this._pathOutput, FileTools.ApplicationPath);
 				if (this._pathProject != null)
-					this._pathProject = Zeus.FileTools.MakeAbsolute(this._pathProject, FileTools.RootFolder);
+                    this._pathProject = Zeus.FileTools.MakeAbsolute(this._pathProject, FileTools.ApplicationPath);
 				if (this._pathTemplate != null)
-					this._pathTemplate = Zeus.FileTools.MakeAbsolute(this._pathTemplate, FileTools.RootFolder);
+                    this._pathTemplate = Zeus.FileTools.MakeAbsolute(this._pathTemplate, FileTools.ApplicationPath);
 				if (this._pathXmlData != null)
-					this._pathXmlData = Zeus.FileTools.MakeAbsolute(this._pathXmlData, FileTools.RootFolder);
+                    this._pathXmlData = Zeus.FileTools.MakeAbsolute(this._pathXmlData, FileTools.ApplicationPath);
 			}
 
 
