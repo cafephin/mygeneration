@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Xml;
+using System.Collections.Generic;
 
 namespace Zeus.Projects
 {
@@ -10,7 +11,8 @@ namespace Zeus.Projects
 	public class ZeusModuleCollection : ICollection, IDictionary
 	{
 		private SortedList _hash = new SortedList();
-		private ZeusModule _parentModule;
+        private ZeusModule _parentModule;
+        private List<string> _filesChanged;
 
 		public ZeusModuleCollection(ZeusModule parentModule) 
 		{
@@ -55,13 +57,27 @@ namespace Zeus.Projects
 			{
 				return _parentModule;
 			}
-		}
+        }
+
+        public List<string> SavedFiles
+        {
+            get
+            {
+                if (_filesChanged == null) _filesChanged = new List<string>();
+                return this._filesChanged;
+            }
+        }
 
 		public void Execute(int timeout, ILog log) 
 		{
 			foreach (ZeusModule module in this) 
 			{
-				module.Execute(timeout, log);
+                module.Execute(timeout, log);
+
+                foreach (string file in module.SavedFiles)
+                {
+                    if (!SavedFiles.Contains(file)) SavedFiles.Add(file);
+                }
 			}
 		}
 

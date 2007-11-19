@@ -47,10 +47,9 @@ namespace MyGeneration
 		/// </summary>
 		private System.ComponentModel.Container components = null;
 
-		public FormAddEditSavedObject(IMyGenerationMDI mdi)
+		//public FormAddEditSavedObject(IMyGenerationMDI mdi)
+		public FormAddEditSavedObject()
 		{
-            this.mdi = mdi;
-
 			InitializeComponent();
 			treeBuilder = new TemplateTreeBuilder(this.treeViewTemplates);
 

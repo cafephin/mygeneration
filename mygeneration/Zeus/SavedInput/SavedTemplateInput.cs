@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using System.Xml;
 using System.Collections;
+using System.Collections.Generic;
 using Zeus;
 using Zeus.UserInterface;
 
@@ -15,7 +16,8 @@ namespace Zeus
 		private string _savedObjectName;
 		private string _templatePath;
 		private string _templateUniqueID;
-		private InputItemCollection _inputItems;
+        private InputItemCollection _inputItems;
+        private List<string> _filesChanged = null;
 
 		public SavedTemplateInput(string objectName, IZeusTemplate template)
 		{
@@ -81,6 +83,15 @@ namespace Zeus
             set
             {
                 this.InputItems = value as InputItemCollection;
+            }
+        }
+
+        public List<string> SavedFiles
+        {
+            get
+            {
+                if (_filesChanged == null) _filesChanged = new List<string>();
+                return this._filesChanged;
             }
         }
 
@@ -157,6 +168,11 @@ namespace Zeus
 			context.Log = log;
 
 			template.Execute(context, timeout, true);
+
+            foreach (string file in context.Output.SavedFiles)
+            {
+                if (!SavedFiles.Contains(file)) SavedFiles.Add(file);
+            }
         }
 
         public SavedTemplateInput Copy()

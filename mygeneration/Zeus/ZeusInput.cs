@@ -55,8 +55,8 @@ namespace Zeus
 	/// </code>
 	/// </example>
 	public class ZeusInput : IZeusInput
-	{
-		private Hashtable _invars = new Hashtable();
+    {
+        private Hashtable _invars = new Hashtable();
 
 		/// <summary>
 		/// Creates a new ZeusInput object.

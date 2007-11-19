@@ -1,6 +1,7 @@
 using System;
 using System.Xml;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Zeus
 {
@@ -9,7 +10,8 @@ namespace Zeus
 	/// </summary>
 	public class SavedTemplateInputCollection : ICollection, IDictionary
 	{
-		private SortedList _hash = new SortedList();
+        private SortedList _hash = new SortedList();
+        private List<string> _filesChanged;
 
 		public SavedTemplateInputCollection() {}
 
@@ -26,7 +28,16 @@ namespace Zeus
 			{
 				_hash[objectName] = value;
 			}
-		}
+        }
+
+        public List<string> SavedFiles
+        {
+            get
+            {
+                if (_filesChanged == null) _filesChanged = new List<string>();
+                return this._filesChanged;
+            }
+        }
 
 		public void Add(SavedTemplateInput item) 
 		{
@@ -53,7 +64,12 @@ namespace Zeus
 		{
 			foreach (SavedTemplateInput item in this) 
 			{
-				item.Execute(timeout, log);
+                item.Execute(timeout, log);
+
+                foreach (string file in item.SavedFiles)
+                {
+                    if (!SavedFiles.Contains(file)) SavedFiles.Add(file);
+                }
 			}
 		}
 

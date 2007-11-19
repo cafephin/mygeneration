@@ -12,7 +12,8 @@ namespace Zeus
 		void incTab();
 		void decTab();
 		int tabLevel { get; set; }
-		string text { get; set; }
+        string text { get; set; }
+        ICollection SavedFiles { get; }
 		void clear();
 		void append(string path);
 		void save(string path, object action);

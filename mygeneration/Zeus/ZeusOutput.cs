@@ -83,7 +83,8 @@ namespace Zeus
 		private string _preservePrefix = "//::";
 		private string _preserveSuffix = ":://";
 		private int _tablevel = 0;
-		private Hashtable _preserveData = null;
+        private Hashtable _preserveData = null;
+        private ArrayList _generatedFiles = null;
 		private StringBuilder _output = new StringBuilder();
 
 		/// <summary>
@@ -309,8 +310,11 @@ namespace Zeus
 			if (writer != null) 
 			{
 				writer.Write(_output.ToString());
-				writer.Close();
+                writer.Close();
+
+                _generatedFiles.Add(path);
 			}
+
 		}
 
 		/// <summary>
@@ -437,6 +441,26 @@ namespace Zeus
 			}
 
 			return string.Empty;
-		}
+        }
+
+        /// <summary>
+        /// Returns an ICollection of all the files saved
+        /// </summary>
+        public ICollection SavedFiles
+        {
+            get
+            {
+                if (_generatedFiles == null) _generatedFiles = new ArrayList();
+                return this._generatedFiles;
+            }
+        }
+
+        private void AddSavedFile(string filename)
+        {
+            if (_generatedFiles == null) _generatedFiles = new ArrayList();
+            
+            if (!_generatedFiles.Contains(filename))
+                _generatedFiles.Add(filename);
+        }
 	}
 }

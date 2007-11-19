@@ -1,6 +1,7 @@
 using System;
 using System.Xml;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Zeus.Projects
 {
@@ -14,7 +15,8 @@ namespace Zeus.Projects
 		private InputItemCollection _items;
 		private SavedTemplateInputCollection _objs;
 		private ZeusModuleCollection _modules;
-		private ZeusModule _parentModule;
+        private ZeusModule _parentModule;
+        private List<string> _filesChanged;
 
 		public ZeusModule() {}
 
@@ -97,13 +99,32 @@ namespace Zeus.Projects
 			{
 				_modules = value;
 			}
-		}
+        }
+
+        public List<string> SavedFiles
+        {
+            get
+            {
+                if (_filesChanged == null) _filesChanged = new List<string>();
+                return this._filesChanged;
+            }
+        }
 
 		public void Execute(int timeout, ILog log) 
 		{
 			log.Write("Executing {0} '{1}'", (this.IsParentModule ? "Project" : "Module"), this.Name);
 			this.SavedObjects.Execute(timeout, log);
-			this.ChildModules.Execute(timeout, log);
+            this.ChildModules.Execute(timeout, log);
+
+            foreach (string file in SavedObjects.SavedFiles)
+            {
+                if (!SavedFiles.Contains(file)) SavedFiles.Add(file);
+            }
+
+            foreach (string file in ChildModules.SavedFiles)
+            {
+                if (!SavedFiles.Contains(file)) SavedFiles.Add(file);
+            }
 		}
 
 		private static void FillZeusInputRecursive(ZeusModule module, IZeusInput input) 

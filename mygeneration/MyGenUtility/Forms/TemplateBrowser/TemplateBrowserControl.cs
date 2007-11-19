@@ -27,6 +27,7 @@ namespace MyGeneration
         public event EventHandler TemplateDelete;
         public event EventHandler TemplateOpen;
         public event EventHandler TemplateUpdate;
+        public event EventHandler GeneratedFileSaved;
         public event EventHandler ErrorsOccurred;
 
         public TemplateBrowserControl()
@@ -83,6 +84,14 @@ namespace MyGeneration
             if (TemplateDelete != null)
             {
                 TemplateDelete(path, EventArgs.Empty);
+            }
+        }
+
+        protected void OnGeneratedFileSaved(string path)
+        {
+            if (GeneratedFileSaved != null)
+            {
+                GeneratedFileSaved(path, EventArgs.Empty);
             }
         }
 
@@ -265,6 +274,12 @@ namespace MyGeneration
                 {
                     template.BodySegment.ZeusScriptingEngine.ExecutionHelper.Timeout = settings.ScriptTimeout;
                     result = template.BodySegment.Execute(context);
+
+                    foreach (string filePath in context.Output.SavedFiles)
+                    {
+                        this.OnGeneratedFileSaved(filePath);
+                    }
+
                     template.BodySegment.ZeusScriptingEngine.ExecutionHelper.Cleanup();
                 }
             }
@@ -368,6 +383,11 @@ namespace MyGeneration
 
                             ZeusTemplate template = new ZeusTemplate(savedInput.InputData.TemplatePath);
                             template.Execute(context, settings.ScriptTimeout, true);
+                            
+                            foreach (string filePath in context.Output.SavedFiles) 
+                            {
+                                this.OnGeneratedFileSaved(filePath);
+                            }
 
                             if (log.HasExceptions)
                             {

@@ -166,6 +166,18 @@
     <Compile Include="Forms\Errors\ErrorsForm.Designer.cs">
       <DependentUpon>ErrorsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ProjectEditor\ProjectBrowser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ProjectEditor\ProjectBrowser.Designer.cs">
+      <DependentUpon>ProjectBrowser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ProjectEditor\ProjectBrowserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\ProjectEditor\ProjectBrowserControl.Designer.cs">
+      <DependentUpon>ProjectBrowserControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\TemplateBrowser\TemplateBrowser.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -220,7 +232,7 @@
     <Compile Include="Forms\ProjectEditor\AddEditSavedObject.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ProjectEditor\ProjectBrowser.cs">
+    <Compile Include="Forms\ProjectEditor\ProjectBrowserOld.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\ProjectEditor\ProjectEditorManager.cs" />
@@ -330,8 +342,16 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProjectEditor\ProjectBrowser.resx">
-      <DependentUpon>ProjectBrowser.cs</DependentUpon>
       <SubType>Designer</SubType>
+      <DependentUpon>ProjectBrowser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ProjectEditor\ProjectBrowserOld.resx">
+      <DependentUpon>ProjectBrowserOld.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ProjectEditor\ProjectBrowserControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ProjectBrowserControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProjectEditor\ProjectExecuteStatus.resx">
       <DependentUpon>ProjectExecuteStatus.cs</DependentUpon>
