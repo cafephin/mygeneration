@@ -29,7 +29,7 @@ namespace Zeus
 		public static Assembly LoadDynamicAssembly(string filepath)
 		{
 			string tmpDirectory = System.Environment.CurrentDirectory;
-            System.Environment.CurrentDirectory = FileTools.ApplicationPath;
+            System.Environment.CurrentDirectory = FileTools.AssemblyPath;
 
 			Assembly assembly = null;
 			

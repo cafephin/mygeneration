@@ -313,84 +313,110 @@ namespace Zeus
 		#endregion
 
 		#region Populate Context with Intrinsic Objects
-		protected static void PopulateContextObjects(IZeusContext icontext)
-		{
-			ZeusContext context = icontext as ZeusContext;
-			if (icontext != null) 
-			{
-				ZeusConfig config = ZeusConfig.Current;
-				context.SetIntrinsicObjects(ZeusFactory.IntrinsicObjectsArray);
+        protected static void PopulateContextObjects(IZeusContext icontext)
+        {
+            ZeusContext context = icontext as ZeusContext;
+            if (icontext != null)
+            {
+                ZeusConfig config = ZeusConfig.Current;
+                context.SetIntrinsicObjects(ZeusFactory.IntrinsicObjectsArray);
 
-				foreach (ZeusIntrinsicObject obj in config.IntrinsicObjects) 
-				{
-					if (!context.Objects.Contains(obj.VariableName) && !obj.Disabled) 
-					{
-                        try
+                foreach (ZeusIntrinsicObject obj in config.IntrinsicObjects)
+                {
+                    Type intrinsicObjectType = null;
+                    Assembly newassembly = null;
+                    object[] objs = null;
+
+                    if (!context.Objects.Contains(obj.VariableName) && !obj.Disabled)
+                    {
+                        newassembly = obj.Assembly;
+                        // First thing, try to create the type without knowing the assembly.
+                        /*try
                         {
-                            object[] objs = null;
-                            if (obj.AssemblyPath != string.Empty)
+                            intrinsicObjectType = Type.GetType(obj.ClassPath);
+                        }
+                        catch
+                        {
+                            intrinsicObjectType = null;
+                        }*/
+
+                        if (intrinsicObjectType == null)
+                        {
+                            try
                             {
-                                string assemblyPath = obj.AssemblyPath;
-                                Assembly newassembly = obj.Assembly;
-
-                                if (newassembly == null)
+                                if (obj.AssemblyPath != string.Empty)
                                 {
-                                    assemblyPath = FileTools.ResolvePath(assemblyPath);
-                                    FileInfo finf = new FileInfo(assemblyPath);
-                                    FileInfo callingfinf = new FileInfo(Assembly.GetCallingAssembly().Location);
-                                    if (callingfinf.FullName == finf.FullName)
+                                    string assemblyPath = obj.AssemblyPath;
+
+                                    if (newassembly == null)
                                     {
-                                        newassembly = Assembly.GetCallingAssembly();
+                                        assemblyPath = FileTools.ResolvePath(assemblyPath, true);
+                                        FileInfo finf = new FileInfo(assemblyPath);
+                                        FileInfo callingfinf = new FileInfo(Assembly.GetCallingAssembly().Location);
+                                        if (callingfinf.FullName == finf.FullName)
+                                        {
+                                            newassembly = Assembly.GetCallingAssembly();
+                                        }
                                     }
-                                }
 
-                                if (newassembly == null)
-                                {
-                                    throw new ZeusDynamicException(ZeusDynamicExceptionType.IntrinsicObjectPluginInvalid, "Invalid Assembly: " + assemblyPath);
+                                    if (newassembly == null)
+                                    {
+                                        throw new ZeusDynamicException(ZeusDynamicExceptionType.IntrinsicObjectPluginInvalid, "Invalid Assembly: " + assemblyPath);
+                                    }
+                                    else
+                                    {
+                                        intrinsicObjectType = newassembly.GetType(obj.ClassPath);
+                                    }
                                 }
                                 else
                                 {
-                                    objs = DynamicAssemblyTools.InstantiateClassesByType(newassembly, newassembly.GetType(obj.ClassPath));
-                                    if (objs == null)
-                                    {
-                                        throw new ZeusDynamicException(ZeusDynamicExceptionType.IntrinsicObjectPluginInvalid, "Invalid Type: " + obj.ClassPath);
-                                    }
-                                    else if (objs.Length == 0)
-                                    {
-                                        throw new ZeusDynamicException(ZeusDynamicExceptionType.IntrinsicObjectPluginInvalid, "Invalid Type: " + obj.ClassPath);
-                                    }
+                                    intrinsicObjectType = Type.GetType(obj.ClassPath);
                                 }
                             }
-                            else
+                            catch (ZeusDynamicException zex)
                             {
-                                Type type = Type.GetType(obj.ClassPath);
-                                if (type != null)
+                                context.Objects[obj.VariableName] = zex.Message;
+                            }
+                        }
+
+                        if (intrinsicObjectType != null)
+                        {
+                            try
+                            {
+                                if (intrinsicObjectType != null)
                                 {
-                                    objs = new object[1];
-                                    objs[0] = DynamicAssemblyTools.InstantiateClassByType(type);
+                                    if (newassembly != null)
+                                    {
+                                        objs = DynamicAssemblyTools.InstantiateClassesByType(newassembly, newassembly.GetType(obj.ClassPath));
+                                    }
+                                    else
+                                    {
+                                        objs = new object[1];
+                                        objs[0] = DynamicAssemblyTools.InstantiateClassByType(intrinsicObjectType);
+                                    }
                                 }
                                 else
                                 {
                                     throw new ZeusDynamicException(ZeusDynamicExceptionType.IntrinsicObjectPluginInvalid, "Invalid Type: " + obj.ClassPath);
                                 }
-                            }
 
-                            if (objs != null)
-                            {
-                                if (objs.Length > 0)
+                                if (objs != null)
                                 {
-                                    context.Objects[obj.VariableName] = objs[0];
+                                    if (objs.Length > 0)
+                                    {
+                                        context.Objects[obj.VariableName] = objs[0];
+                                    }
                                 }
                             }
+                            catch (ZeusDynamicException zex)
+                            {
+                                context.Objects[obj.VariableName] = zex.Message;
+                            }
                         }
-                        catch (ZeusDynamicException zex)
-                        {
-                            context.Objects[obj.VariableName] = zex.Message;
-                        }
-					}
-				}
-			}
-		}
+                    }
+                }
+            }
+        }
 		#endregion
 	}
 }

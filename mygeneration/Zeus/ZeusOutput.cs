@@ -312,7 +312,7 @@ namespace Zeus
 				writer.Write(_output.ToString());
                 writer.Close();
 
-                _generatedFiles.Add(path);
+                this.AddSavedFile(path);
 			}
 
 		}

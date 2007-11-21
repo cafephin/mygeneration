@@ -42,7 +42,7 @@ namespace Zeus
                         }
                         else
                         {
-                            assembly = Assembly.LoadFile(FileTools.ResolvePath(path));
+                            assembly = Assembly.LoadFile(FileTools.ResolvePath(path, true));
 
                             if (assembly != null)
                             {
@@ -85,7 +85,7 @@ namespace Zeus
                         }
                         else
                         {
-                            assembly = Assembly.LoadFile(FileTools.ResolvePath(path));
+                            assembly = Assembly.LoadFile(FileTools.ResolvePath(path, true));
 
                             if (assembly != null)
                             {
@@ -212,7 +212,7 @@ namespace Zeus
                 }
                 else
                 {
-                    path = FileTools.ResolvePath(unparsedpath);
+                    path = FileTools.ResolvePath(unparsedpath, true);
                     assembly = DynamicAssemblyTools.LoadDynamicAssembly(path);
 
                     if (assembly != null)

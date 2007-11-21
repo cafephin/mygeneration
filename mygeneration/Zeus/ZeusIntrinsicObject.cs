@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Reflection;
 
 namespace Zeus
 {
@@ -123,11 +125,30 @@ namespace Zeus
                 if (AssemblyPath == string.Empty) isdef = true;
                 else
                 {
-                    string assemblyPath = FileTools.ResolvePath(this.AssemblyPath);
+                    string assemblyPath = FileTools.ResolvePath(this.AssemblyPath, true);
                     isdef = System.IO.File.Exists(assemblyPath);
                     if (isdef)
                     {
-                        _assembly = DynamicAssemblyTools.LoadDynamicAssembly(assemblyPath);
+                        System.Collections.Generic.List<AssemblyName> refs = new System.Collections.Generic.List<AssemblyName>();
+                        refs.Add(Assembly.GetExecutingAssembly().GetName());
+                        refs.AddRange(Assembly.GetExecutingAssembly().GetReferencedAssemblies());
+                        foreach (AssemblyName an in refs)
+                        {
+                            Assembly a = System.Reflection.Assembly.Load(an);
+                            string l1 = a.Location.Substring(a.Location.LastIndexOf("\\"));
+                            string l2 = assemblyPath.Substring(assemblyPath.LastIndexOf("\\"));
+                            if (l1.Equals(l2, StringComparison.CurrentCultureIgnoreCase))
+                            {
+                                _assembly = a;
+                                break;
+                            }
+                        }
+
+                        if (_assembly == null)
+                        {
+                            _assembly = DynamicAssemblyTools.LoadDynamicAssembly(assemblyPath);
+                        }
+
                         isdef = (_assembly != null);
                     }
                 }

@@ -30,6 +30,7 @@ namespace MyGenVS2005
 
         private void templateBrowserControl1_ErrorsOccurred(object sender, EventArgs e)
         {
+            // need to display error dialog if possible?
         }
 
         private void templateBrowserControl1_TemplateOpen(object sender, EventArgs e)

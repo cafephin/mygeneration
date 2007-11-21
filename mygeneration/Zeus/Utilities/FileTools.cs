@@ -12,6 +12,7 @@ namespace Zeus
 	{
 		private const string ZEUSHOME_VAR = "ZEUSHOME";
 		private static string _rootFolder = null;
+        private static string _assemblyPath = null;
 
 		public static string MakeRelative(string pathToChange, string basePath) 
 		{
@@ -118,7 +119,21 @@ namespace Zeus
 			}
 
 			return newPath;
-		}
+        }
+
+        public static string AssemblyPath
+        {
+            get
+            {
+                if (_assemblyPath == null)
+                {
+                    _assemblyPath = Assembly.GetExecutingAssembly().Location;
+                    _assemblyPath = _assemblyPath.Substring(0, _assemblyPath.LastIndexOf(@"\"));
+                }
+
+                return _assemblyPath;
+            }
+        }
 
 		public static string ApplicationPath 
 		{
@@ -140,31 +155,43 @@ namespace Zeus
 
 		public static string ResolvePath(string path) 
 		{
-			string[] items = path.Split('%');
-			string newpath = string.Empty;
+			return ResolvePath(path, false);
+        }
 
-			for (int i=0; i < items.Length ; i++)
-			{
-				string item = items[i];
-				if ((i%2) == 1) 
-				{
-					if (item == ZEUSHOME_VAR) 
-					{
-                        newpath += ApplicationPath;
-					}
-					else 
-					{
-						newpath += Environment.GetEnvironmentVariable(item);
-					}
-				}
-				else 
-				{
-					newpath += item;
-				}
-			}
+        public static string ResolvePath(string path, bool useAssemblyPath)
+        {
+            string[] items = path.Split('%');
+            string newpath = string.Empty;
 
-			return newpath;
-		}
+            for (int i = 0; i < items.Length; i++)
+            {
+                string item = items[i];
+                if ((i % 2) == 1)
+                {
+                    if (item == ZEUSHOME_VAR)
+                    {
+                        if (useAssemblyPath)
+                        {
+                            newpath += AssemblyPath;
+                        }
+                        else
+                        {
+                            newpath += ApplicationPath;
+                        }
+                    }
+                    else
+                    {
+                        newpath += Environment.GetEnvironmentVariable(item);
+                    }
+                }
+                else
+                {
+                    newpath += item;
+                }
+            }
+
+            return newpath;
+        }
 
 		public static ArrayList GetFilenamesRecursive(ArrayList rootPaths, ArrayList extensions)
 		{
