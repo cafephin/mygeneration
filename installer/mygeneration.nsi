@@ -58,6 +58,11 @@ SectionEnd
 
 ; Install MDAC 2.7
 Section "Detect MDAC 2.7+"
+
+	Call GetWindowsVersion
+	Pop $R0
+	StrCmp $R0 "Vista" SkipVistaMDAC
+	
 	Call MDAC27Exists
 	Pop $1
 	IntCmp $1 0 SkipMDAC
@@ -65,6 +70,9 @@ Section "Detect MDAC 2.7+"
 		ExecShell open http://www.microsoft.com/downloads/details.aspx?FamilyID=6c050fe3-c795-4b7d-b037-185d0506396c&DisplayLang=en
 		DetailPrint "MDAC 2.7+ not installed... Aborting Installation."
 		Abort
+		Goto MDACDone
+	SkipVistaMDAC:
+		DetailPrint "Vista doesn't need MDAC installed... Continuing."
 		Goto MDACDone
 	SkipMDAC:
 		DetailPrint "MDAC 2.7+ found... Continuing."
@@ -496,6 +504,18 @@ Section "-Install Mygeneration and Register Shell Extensions"
 SectionEnd ; end the section
 
 
+Section /o "Visual Studio 2005 Add-In"
+  ; Set output path to the installation directory.
+  SetOutPath $INSTDIR
+    
+  File /nonfatal ..\ideplugins\visualstudio2005\MyGenVS2005\MyGenVS2005.AddIn
+  File /nonfatal ..\ideplugins\visualstudio2005\MyGenVS2005\bin\MyGenVS2005.dll
+
+  ExecWait `"$INSTDIR\ZeusCmd.exe" -installvs2005`
+  
+SectionEnd ; end the section
+
+
 Section "Install Xsd3b Provider for xml (xsd, uml, entityrelationship)"
   ; Set output path to the installation directory.
   SetOutPath $INSTDIR
@@ -697,4 +717,98 @@ Function ScriptControlExists
 
 FunctionEnd
 
+; GetWindowsVersion
+ ;
+ ; Based on Yazno's function, http://yazno.tripod.com/powerpimpit/
+ ; Updated by Joost Verburg
+ ;
+ ; Returns on top of stack
+ ;
+ ; Windows Version (95, 98, ME, NT x.x, 2000, XP, 2003, Vista)
+ ; or
+ ; '' (Unknown Windows Version)
+ ;
+ ; Usage:
+ ;   Call GetWindowsVersion
+ ;   Pop $R0
+ ;   ; at this point $R0 is "NT 4.0" or whatnot
+ 
+ Function GetWindowsVersion
+ 
+   Push $R0
+   Push $R1
+ 
+   ClearErrors
+ 
+   ReadRegStr $R0 HKLM \
+   "SOFTWARE\Microsoft\Windows NT\CurrentVersion" CurrentVersion
+
+   IfErrors 0 lbl_winnt
+   
+   ; we are not NT
+   ReadRegStr $R0 HKLM \
+   "SOFTWARE\Microsoft\Windows\CurrentVersion" VersionNumber
+ 
+   StrCpy $R1 $R0 1
+   StrCmp $R1 '4' 0 lbl_error
+ 
+   StrCpy $R1 $R0 3
+ 
+   StrCmp $R1 '4.0' lbl_win32_95
+   StrCmp $R1 '4.9' lbl_win32_ME lbl_win32_98
+ 
+   lbl_win32_95:
+     StrCpy $R0 '95'
+   Goto lbl_done
+ 
+   lbl_win32_98:
+     StrCpy $R0 '98'
+   Goto lbl_done
+ 
+   lbl_win32_ME:
+     StrCpy $R0 'ME'
+   Goto lbl_done
+ 
+   lbl_winnt:
+ 
+   StrCpy $R1 $R0 1
+ 
+   StrCmp $R1 '3' lbl_winnt_x
+   StrCmp $R1 '4' lbl_winnt_x
+ 
+   StrCpy $R1 $R0 3
+ 
+   StrCmp $R1 '5.0' lbl_winnt_2000
+   StrCmp $R1 '5.1' lbl_winnt_XP
+   StrCmp $R1 '5.2' lbl_winnt_2003
+   StrCmp $R1 '6.0' lbl_winnt_vista lbl_error
+ 
+   lbl_winnt_x:
+     StrCpy $R0 "NT $R0" 6
+   Goto lbl_done
+ 
+   lbl_winnt_2000:
+     Strcpy $R0 '2000'
+   Goto lbl_done
+ 
+   lbl_winnt_XP:
+     Strcpy $R0 'XP'
+   Goto lbl_done
+ 
+   lbl_winnt_2003:
+     Strcpy $R0 '2003'
+   Goto lbl_done
+ 
+   lbl_winnt_vista:
+     Strcpy $R0 'Vista'
+   Goto lbl_done
+ 
+   lbl_error:
+     Strcpy $R0 ''
+   lbl_done:
+ 
+   Pop $R1
+   Exch $R0
+ 
+ FunctionEnd
 ; eof

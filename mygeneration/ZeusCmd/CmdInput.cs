@@ -10,7 +10,7 @@ namespace Zeus
 {
 	public enum ProcessMode 
 	{
-		None = 0,
+		Other = 0,
 		Template,
 		Project,
 		MyMeta
@@ -18,13 +18,14 @@ namespace Zeus
 
 	class CmdInput
 	{
-		private ProcessMode _mode = ProcessMode.None;
+        private ProcessMode _mode = ProcessMode.Other;
 		private int _timeout = -1;
 		private bool _silent = false;
 		private bool _valid = true;
 		private bool _showHelp = false;
         private bool _enableLog = false;
         private bool _makeRelative = false;
+        private bool _installVS2005 = false;
 		private string _errorMessage = null;
 		private string _pathProject = null;
 		private string _pathTemplate = null;
@@ -63,6 +64,9 @@ namespace Zeus
 
 				switch (arg)
                 {
+                    case "-installvs2005":
+                        this._installVS2005 = true;
+                        break;
                     case "-tc":
                     case "-testconnection":
                         this._mode = ProcessMode.MyMeta;
@@ -348,6 +352,9 @@ namespace Zeus
 
 		public ProcessMode Mode
 		{ get { return _mode; } }
+
+        public bool InstallVS2005
+		{ get { return _installVS2005; } }
 
 		public bool MakeRelative
 		{ get { return _makeRelative; } }

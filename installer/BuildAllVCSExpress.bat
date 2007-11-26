@@ -12,7 +12,8 @@ rem "..\mygeneration\MyGeneration\PluginResources\UpdateDLLs.bat"
 %DEVENV% "..\plugins\MyMetaPlugins.sln"
 %DEVENV% "..\plugins\ZeusPlugins.sln"
 %DEVENV% "..\mygeneration\Zeus.sln"
-rem %DEVENV% "..\codesmith2mygen\CodeSmith2MyGeneration\CodeSmith2MyGeneration.sln"
+%DEVENV% "..\ideplugins\visualstudio2005\MyGenVS2005.sln"
+%DEVENV% "..\codesmith2mygen\CodeSmith2MyGeneration\CodeSmith2MyGeneration.sln"
 set DEVENV=
 
 if "%MAKENSIS%"=="" set MAKENSIS=%PROGRAMFILES%\NSIS\makensis.exe

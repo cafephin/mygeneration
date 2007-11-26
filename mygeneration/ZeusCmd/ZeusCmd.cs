@@ -3,6 +3,7 @@ using System.Text;
 using System.Data;
 using System.Collections;
 using System.IO;
+using System.Xml;
 using Zeus;
 using Zeus.Configuration;
 using Zeus.Projects;
@@ -19,6 +20,7 @@ namespace Zeus
 	/// </summary>
 	class ZeusCmd
 	{
+        private const string EXT_XML_NAMESPACE = "http://schemas.microsoft.com/AutomationExtensibility";
 		private Log _log;
 		private CmdInput _argmgr;
 		private int _returnValue = 0;
@@ -38,6 +40,13 @@ namespace Zeus
                         break;
                     case ProcessMode.MyMeta:
                         _ProcessMyMeta();
+                        break;
+                    case ProcessMode.Other:
+                        if (_argmgr.InstallVS2005)
+                        {
+                            // Install Visual Studio 2005 Add In
+                            _InstallVS2005();
+                        }
                         break;
                 }
             }
@@ -125,6 +134,58 @@ namespace Zeus
 				return false;
 			}
 		}
+
+        private void _InstallVS2005()
+        {
+            // Parameters required to pass in from installer
+            string productName = "MyGeneration Visual Studio 2005 Add-in";
+            string assemblyName = "MyGenVS2005";
+
+            // Setup .addin path and assembly path
+            string addinTargetPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Visual Studio 2005\Addins");
+            string assemblyPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string addinControlFileName = assemblyName + ".Addin";
+            string addinAssemblyFileName = assemblyName + ".dll";
+
+            try
+            {
+                DirectoryInfo dirInfo = new DirectoryInfo(addinTargetPath);
+                if (!dirInfo.Exists)
+                {
+                    dirInfo.Create();
+                }
+
+                string sourceFile = Path.Combine(assemblyPath, addinControlFileName);
+                XmlDocument doc = new XmlDocument();
+                doc.Load(sourceFile);
+                XmlNamespaceManager xnm = new XmlNamespaceManager(doc.NameTable);
+                xnm.AddNamespace("def", EXT_XML_NAMESPACE);
+
+                // Update Addin/Assembly node
+                XmlNode node = doc.SelectSingleNode("/def:Extensibility/def:Addin/def:Assembly", xnm);
+                if (node != null)
+                {
+                    node.InnerText = Path.Combine(assemblyPath, addinAssemblyFileName);
+                }
+
+                // Update ToolsOptionsPage/Assembly node
+                node = doc.SelectSingleNode("/def:Extensibility/def:ToolsOptionsPage/def:Category/def:SubCategory/def:Assembly", xnm);
+                if (node != null)
+                {
+                    node.InnerText = Path.Combine(assemblyPath, addinAssemblyFileName);
+                }
+
+                doc.Save(sourceFile);
+
+                string targetFile = Path.Combine(addinTargetPath, addinControlFileName);
+                File.Copy(sourceFile, targetFile, true);
+            }
+            catch (Exception ex)
+            {
+                _log.Write(ex);
+                _log.Write("Installation of visual studio add-in failed.");
+            }
+        }
 
         private void _ProcessMyMeta()
         {
