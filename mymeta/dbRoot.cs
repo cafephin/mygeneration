@@ -762,6 +762,7 @@ namespace MyMeta
 		{
 			get
 			{
+                //Provider=SQLOLEDB.1;Persist Security Info=False;User ID=sa;Initial Catalog=Northwind;Data Source=localhost
 				if(null == _parsedConnectionString)
 				{
 					string[] first = ConnectionString.Split(new char[] {';'});

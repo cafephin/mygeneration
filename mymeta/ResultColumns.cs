@@ -81,8 +81,16 @@ namespace MyMeta
 		public IResultColumn this[object index] 
 		{ 
 			get
-			{
-				return null;
+            {
+                if (index is String)
+                {
+                    return GetByPhysicalName(index as String) as IResultColumn;
+                }
+                else
+                {
+                    int idx = Convert.ToInt32(index);
+                    return this._array[idx] as IResultColumn;
+                }
 			}
 		}
 
@@ -104,6 +112,29 @@ namespace MyMeta
 		}
 
 		#endregion
+
+#if ENTERPRISE
+        [ComVisible(false)]
+#endif
+        internal ResultColumn GetByPhysicalName(string name)
+        {
+            ResultColumn obj = null;
+            ResultColumn tmp = null;
+
+            int count = this._array.Count;
+            for (int i = 0; i < count; i++)
+            {
+                tmp = this._array[i] as ResultColumn;
+
+                if (this.CompareStrings(name, tmp.Name))
+                {
+                    obj = tmp;
+                    break;
+                }
+            }
+
+            return obj;
+        }
 
 		internal Procedure Procedure = null;
 	}

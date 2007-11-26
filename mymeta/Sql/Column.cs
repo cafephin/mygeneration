@@ -77,8 +77,8 @@ namespace MyMeta.Sql
 					}
 				}
 
-                string dtnf = null;
-                switch(this.DataTypeName)
+                string dtnf = GetFullDataTypeName(DataTypeName, CharacterMaxLength, NumericPrecision, NumericScale);
+                /*switch(this.DataTypeName)
 				{
                     case "varchar":
                     case "nvarchar":
@@ -105,7 +105,7 @@ namespace MyMeta.Sql
 
                         dtnf = this.DataTypeName;
                         break;
-				}
+				}*/
 
                 return dtnf;
 			}
@@ -115,5 +115,40 @@ namespace MyMeta.Sql
 		{
 			return SqlDatabase.DBSpecific(key, this);
 		}
+
+        internal static string GetFullDataTypeName(string name, int charMaxLen, int precision, int scale)
+        {
+            string dtnf = null;
+            switch (name)
+            {
+                case "varchar":
+                case "nvarchar":
+                case "varbinary":
+                    if (charMaxLen > 1000000)
+                        dtnf = name + "(MAX)";
+                    else
+                        dtnf = name + "(" + charMaxLen + ")";
+                    break;
+                case "binary":
+                case "char":
+                case "nchar":
+
+                    dtnf = name + "(" + charMaxLen + ")";
+                    break;
+
+                case "decimal":
+                case "numeric":
+
+                    dtnf = name + "(" + precision + "," + scale + ")";
+                    break;
+
+                default:
+
+                    dtnf = name;
+                    break;
+            }
+
+            return dtnf;
+        }
 	}
 }
