@@ -97,6 +97,7 @@ namespace MyGeneration
             this.treeViewTemplates.Size = new System.Drawing.Size(392, 677);
             this.treeViewTemplates.TabIndex = 3;
             this.treeViewTemplates.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.treeViewTemplates_AfterCollapse);
+            this.treeViewTemplates.DoubleClick += new System.EventHandler(this.treeViewTemplates_DoubleClick);
             this.treeViewTemplates.MouseMove += new System.Windows.Forms.MouseEventHandler(this.treeViewTemplates_MouseMove);
             this.treeViewTemplates.KeyDown += new System.Windows.Forms.KeyEventHandler(this.treeViewTemplates_KeyDown);
             this.treeViewTemplates.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.treeViewTemplates_AfterExpand);

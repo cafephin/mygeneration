@@ -472,7 +472,7 @@ namespace MyGeneration
             }
         }
 
-        private void treeViewTemplates_OnDoubleClick(object sender, System.EventArgs e)
+        private void treeViewTemplates_DoubleClick(object sender, EventArgs e)
         {
             if (this.treeViewTemplates.SelectedNode is TemplateTreeNode)
             {
@@ -626,5 +626,6 @@ namespace MyGeneration
             this.Delete();
         }
         #endregion
+
     }
 }
