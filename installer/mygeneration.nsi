@@ -156,7 +156,8 @@ Section "-Install Mygeneration and Register Shell Extensions"
   File /nonfatal /oname=MyMeta.Plugins.DelimitedText.dll ..\plugins\MyMetaTextFilePlugin\bin\Release\MyMeta.Plugins.DelimitedText.dll
   File /nonfatal /oname=MyMeta.Plugins.VistaDB3x.dll ..\plugins\MyMetaVistaDB3xPlugin\bin\Release\MyMeta.Plugins.VistaDB3x.dll
   File /nonfatal /oname=MyMeta.Plugins.SqlCe.dll ..\plugins\MyMetaSqlCePlugin\bin\Release\MyMeta.Plugins.SqlCe.dll
-
+  File /nonfatal /oname=MyGeneration.UI.Plugins.SqlTool.dll ..\plugins\MyGeneration.UI.Plugins.SqlTool\bin\Release\MyGeneration.UI.Plugins.SqlTool.dll
+  
   Delete $INSTDIR\WeifenLuo.WinFormsUI.dll
   Delete $INSTDIR\VistaDBHelper.dll
  
@@ -503,17 +504,17 @@ Section "-Install Mygeneration and Register Shell Extensions"
 
 SectionEnd ; end the section
 
-
-Section /o "Visual Studio 2005 Add-In"
-  ; Set output path to the installation directory.
-  SetOutPath $INSTDIR
-    
-  File /nonfatal ..\ideplugins\visualstudio2005\MyGenVS2005\MyGenVS2005.AddIn
-  File /nonfatal ..\ideplugins\visualstudio2005\MyGenVS2005\bin\MyGenVS2005.dll
-
-  ExecWait `"$INSTDIR\ZeusCmd.exe" -installvs2005`
-  
-SectionEnd ; end the section
+; *** We will just have to add this in later, there are too many bugs ***
+;Section /o "Visual Studio 2005 Add-In"
+;  ; Set output path to the installation directory.
+;  SetOutPath $INSTDIR
+;    
+;  File /nonfatal ..\ideplugins\visualstudio2005\MyGenVS2005\MyGenVS2005.AddIn
+;  File /nonfatal ..\ideplugins\visualstudio2005\MyGenVS2005\bin\MyGenVS2005.dll
+;
+;  ExecWait `"$INSTDIR\ZeusCmd.exe" -installvs2005`
+;  
+;SectionEnd ; end the section
 
 
 Section "Install Xsd3b Provider for xml (xsd, uml, entityrelationship)"

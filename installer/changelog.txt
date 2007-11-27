@@ -1,3 +1,9 @@
+2007.11.27 - MyGeneration 1.3 RC1
+- Fixed bugs in MyMeta resultsets
+- Added SQLTool to standard install
+- Installer now skips MDAC for vista installs automatically.
+- moved project browser and template browser into usercontrols so they could be put into a VS2005 plugins. note that the addin will be released after 1.3.
+
 2007.11.06 - MyGeneration 1.3 beta9
 - Fixed bugs in AutoComplete: crash and ctrl-space
 - Added better autcomplete to VB.Net (supporting Dim'd variables)
