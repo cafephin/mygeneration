@@ -39,6 +39,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddInErrorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddInErrorForm.Designer.cs">
+      <DependentUpon>AddInErrorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="AddInTemplateBrowser.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -59,6 +65,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AddInErrorForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AddInErrorForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AddInTemplateBrowser.resx">
       <SubType>Designer</SubType>
       <DependentUpon>AddInTemplateBrowser.cs</DependentUpon>

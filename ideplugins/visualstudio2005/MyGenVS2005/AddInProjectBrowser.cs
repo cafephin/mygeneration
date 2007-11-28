@@ -108,7 +108,11 @@ namespace MyGenVS2005
 
         private void projectBrowserControl1_ErrorsOccurred(object sender, EventArgs e)
         {
-            //nothing yet
+            if (sender is Exception)
+            {
+                AddInErrorForm errorForm = new AddInErrorForm(sender as Exception);
+                errorForm.ShowDialog(this.ParentForm);
+            }
         }
     }
 }

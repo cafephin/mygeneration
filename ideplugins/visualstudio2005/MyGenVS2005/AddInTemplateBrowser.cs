@@ -30,7 +30,11 @@ namespace MyGenVS2005
 
         private void templateBrowserControl1_ErrorsOccurred(object sender, EventArgs e)
         {
-            // need to display error dialog if possible?
+            if (sender is Exception)
+            {
+                AddInErrorForm errorForm = new AddInErrorForm(sender as Exception);
+                errorForm.ShowDialog(this.ParentForm);
+            }
         }
 
         private void templateBrowserControl1_TemplateOpen(object sender, EventArgs e)
