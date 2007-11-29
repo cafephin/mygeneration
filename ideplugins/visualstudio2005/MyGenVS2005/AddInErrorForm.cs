@@ -13,14 +13,15 @@ namespace MyGenVS2005
         private List<Exception> _exceptions = new List<Exception>();
         private int _idx = 0;
 
-        public AddInErrorForm()
+        /*public AddInErrorForm()
         {
             InitializeComponent();
-        }
+        }*/
 
         public AddInErrorForm(params Exception[] exs)
         {
             InitializeComponent();
+            foreach (Exception ex in exs) _exceptions.Add(ex);
         }
 
         public List<Exception> Exceptions
