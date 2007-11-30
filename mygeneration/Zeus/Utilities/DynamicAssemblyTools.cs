@@ -49,14 +49,25 @@ namespace Zeus
 
 		public static object[] InstantiateClassesByType(Assembly assembly, System.Type matchingType) 
 		{
-			if (matchingType.IsInterface) 
-			{
-				return InstantiateClassesByInterfaceType(assembly, matchingType);
-			}
-			else 
-			{
-				return InstantiateClassesByClassType(assembly, matchingType);
-			}
+            try
+            {
+                if (matchingType.IsInterface)
+                {
+                    return InstantiateClassesByInterfaceType(assembly, matchingType);
+                }
+                else
+                {
+                    return InstantiateClassesByClassType(assembly, matchingType);
+                }
+            }
+            catch (Exception ex)
+            {
+                string assInfo = "<NULL>";
+                string typInfo = "<NULL>";
+                if (assembly != null) assInfo = assembly.FullName;
+                if (matchingType != null) typInfo = matchingType.FullName;
+                throw new Exception("Assembly=" + assInfo + " Type=" + typInfo, ex);
+            }
 		}
 				
 		protected static object[] InstantiateClassesByInterfaceType(Assembly assembly, System.Type matchingType)
