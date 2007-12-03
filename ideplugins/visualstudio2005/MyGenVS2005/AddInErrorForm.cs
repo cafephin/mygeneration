@@ -10,24 +10,22 @@ namespace MyGenVS2005
 {
     public partial class AddInErrorForm : Form
     {
-        private List<Exception> _exceptions = new List<Exception>();
+        private List<MyGeneration.IMyGenError> _errors = new List<MyGeneration.IMyGenError>();
         private int _idx = 0;
-
-        /*public AddInErrorForm()
-        {
-            InitializeComponent();
-        }*/
 
         public AddInErrorForm(params Exception[] exs)
         {
             InitializeComponent();
-            foreach (Exception ex in exs) _exceptions.Add(ex);
+            foreach (Exception ex in exs)
+            {
+                _errors.AddRange(MyGeneration.MyGenError.CreateErrors(ex));
+            }
         }
 
-        public List<Exception> Exceptions
+        public List<MyGeneration.IMyGenError> Errors
         {
-            get { return _exceptions; }
-            set { _exceptions = value; }
+            get { return _errors; }
+            set { _errors = value; }
         }
 
         private void AddInErrorForm_Load(object sender, EventArgs e)
@@ -37,34 +35,38 @@ namespace MyGenVS2005
 
         private void Update()
         {
-            bool vis = (_exceptions.Count > 1);
+            bool vis = (_errors.Count > 1);
 
             this.buttonPrevious.Enabled = vis;
             this.buttonNext.Enabled = vis;
 
-            if (_exceptions.Count > 0)
+            if (_errors.Count > 0)
             {
-                List<MyGeneration.IMyGenError> errors = MyGeneration.MyGenError.CreateErrors(_exceptions[_idx]);
-                this.errorDetailControl1.Update(errors[0]);
+                this.errorDetailControl1.Update(_errors[_idx]);
+            }
+            else
+            {
+                List<MyGeneration.IMyGenError> err = MyGeneration.MyGenError.CreateErrors(new Exception("What the heck is going on! There are no errors."));
+                this.errorDetailControl1.Update(err[0]); 
             }
         }
 
         private void buttonNext_Click(object sender, EventArgs e)
         {
-            if (_exceptions.Count > 0)
+            if (_errors.Count > 0)
             {
                 _idx++;
-                if (_idx >= _exceptions.Count) _idx = 0;
+                if (_idx >= _errors.Count) _idx = 0;
                 Update();
             }
         }
 
         private void buttonPrevious_Click(object sender, EventArgs e)
         {
-            if (_exceptions.Count > 0)
+            if (_errors.Count > 0)
             {
                 _idx--;
-                if (_idx < 0) _idx = _exceptions.Count - 1;
+                if (_idx < 0) _idx = _errors.Count - 1;
                 Update();
             }
         }

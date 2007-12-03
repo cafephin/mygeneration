@@ -505,16 +505,16 @@ Section "-Install Mygeneration and Register Shell Extensions"
 SectionEnd ; end the section
 
 ; *** We will just have to add this in later, there are too many bugs ***
-;Section /o "Visual Studio 2005 Add-In"
-;  ; Set output path to the installation directory.
-;  SetOutPath $INSTDIR
-;    
-;  File /nonfatal ..\ideplugins\visualstudio2005\MyGenVS2005\MyGenVS2005.AddIn
-;  File /nonfatal ..\ideplugins\visualstudio2005\MyGenVS2005\bin\MyGenVS2005.dll
-;
-;  ExecWait `"$INSTDIR\ZeusCmd.exe" -installvs2005`
-;  
-;SectionEnd ; end the section
+Section /o "Visual Studio 2005 Add-In"
+  ; Set output path to the installation directory.
+  SetOutPath $INSTDIR
+    
+  File /nonfatal ..\ideplugins\visualstudio2005\MyGenVS2005\MyGenVS2005.AddIn
+  File /nonfatal ..\ideplugins\visualstudio2005\MyGenVS2005\bin\MyGenVS2005.dll
+
+  ExecWait `"$INSTDIR\ZeusCmd.exe" -installvs2005`
+  
+SectionEnd ; end the section
 
 
 Section "Install Xsd3b Provider for xml (xsd, uml, entityrelationship)"
