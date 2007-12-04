@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
+using System.Windows.Forms.ComponentModel;
 using System.IO;
 using System.Data;
 using System.Reflection;
@@ -2502,17 +2503,35 @@ namespace MyGeneration
 
         private void cutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.CurrentScintilla.Cut();
+            if (this.ActiveControl is ScintillaControl)
+                this.CurrentScintilla.Cut();
+            else if ((this.ActiveControl != null) && (this.ActiveControl is TextBoxBase))
+            {
+                TextBoxBase tbb = this.ActiveControl as TextBoxBase;
+                tbb.Cut();
+            }
         }
 
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.CurrentScintilla.Copy();
+            if (this.ActiveControl is ScintillaControl)
+                this.CurrentScintilla.Copy();
+            else if ((this.ActiveControl != null) && (this.ActiveControl is TextBoxBase))
+            {
+                TextBoxBase tbb = this.ActiveControl as TextBoxBase;
+                tbb.Copy();
+            }
         }
 
         private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.CurrentScintilla.Paste();
+            if (this.ActiveControl is ScintillaControl)
+                this.CurrentScintilla.Paste();
+            else if ((this.ActiveControl != null) && (this.ActiveControl is TextBoxBase))
+            {
+                TextBoxBase tbb = this.ActiveControl as TextBoxBase;
+                tbb.Paste();
+            }
         }
         #endregion
 
