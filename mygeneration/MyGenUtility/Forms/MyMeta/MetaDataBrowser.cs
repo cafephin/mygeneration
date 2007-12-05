@@ -82,12 +82,12 @@ namespace MyGeneration
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MetaDataBrowser));
             this.toolBar1 = new System.Windows.Forms.ToolBar();
             this.toolBarButton2 = new System.Windows.Forms.ToolBarButton();
+            this.toolBarButtonExecute = new System.Windows.Forms.ToolBarButton();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.ToolbarImageList = new System.Windows.Forms.ImageList(this.components);
             this.MyTree = new System.Windows.Forms.TreeView();
             this.TreeImageList = new System.Windows.Forms.ImageList(this.components);
             this.chkSystem = new System.Windows.Forms.CheckBox();
-            this.toolBarButtonExecute = new System.Windows.Forms.ToolBarButton();
             this.SuspendLayout();
             // 
             // toolBar1
@@ -111,6 +111,15 @@ namespace MyGeneration
             this.toolBarButton2.ImageIndex = 0;
             this.toolBarButton2.Name = "toolBarButton2";
             this.toolBarButton2.Tag = "refresh";
+            // 
+            // toolBarButtonExecute
+            // 
+            this.toolBarButtonExecute.Enabled = false;
+            this.toolBarButtonExecute.ImageIndex = 1;
+            this.toolBarButtonExecute.Name = "toolBarButtonExecute";
+            this.toolBarButtonExecute.Tag = "execute";
+            this.toolBarButtonExecute.ToolTipText = "Execute SQL in active document";
+            this.toolBarButtonExecute.Visible = false;
             // 
             // imageList1
             // 
@@ -184,20 +193,12 @@ namespace MyGeneration
             // 
             // chkSystem
             // 
-            this.chkSystem.Location = new System.Drawing.Point(56, 4);
+            this.chkSystem.Location = new System.Drawing.Point(28, 4);
             this.chkSystem.Name = "chkSystem";
-            this.chkSystem.Size = new System.Drawing.Size(120, 16);
+            this.chkSystem.Size = new System.Drawing.Size(148, 16);
             this.chkSystem.TabIndex = 5;
             this.chkSystem.Text = "Show System Data";
             this.chkSystem.CheckedChanged += new System.EventHandler(this.chkSystem_CheckedChanged);
-            // 
-            // toolBarButtonExecute
-            // 
-            this.toolBarButtonExecute.Enabled = false;
-            this.toolBarButtonExecute.ImageIndex = 1;
-            this.toolBarButtonExecute.Name = "toolBarButtonExecute";
-            this.toolBarButtonExecute.Tag = "execute";
-            this.toolBarButtonExecute.ToolTipText = "Execute SQL in active document";
             // 
             // MetaDataBrowser
             // 

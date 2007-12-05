@@ -61,6 +61,9 @@ namespace MyGeneration.UI.Plugins.SqlTool
 
         public void Execute()
         {
+            if (toolStripComboBoxDatabase.SelectedIndex > -1)
+                this.sqlToolUserControl1.SelectedDatabase = toolStripComboBoxDatabase.SelectedItem.ToString();
+
             this.sqlToolUserControl1.Execute();
         }
 

@@ -164,8 +164,12 @@ namespace MyGeneration.UI.Plugins.SqlTool
             // 
             // toolStripComboBoxDatabase
             // 
+            this.toolStripComboBoxDatabase.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.toolStripComboBoxDatabase.Name = "toolStripComboBoxDatabase";
             this.toolStripComboBoxDatabase.Size = new System.Drawing.Size(121, 25);
+            this.toolStripComboBoxDatabase.Leave += new System.EventHandler(this.toolStripComboBoxDatabase_Click);
+            this.toolStripComboBoxDatabase.TextUpdate += new System.EventHandler(this.toolStripComboBoxDatabase_Click);
+            this.toolStripComboBoxDatabase.TextChanged += new System.EventHandler(this.toolStripComboBoxDatabase_Click);
             this.toolStripComboBoxDatabase.Click += new System.EventHandler(this.toolStripComboBoxDatabase_Click);
             // 
             // menuStripSqlTool
@@ -434,11 +438,12 @@ namespace MyGeneration.UI.Plugins.SqlTool
             // 
             this.sqlToolUserControl1.CommandSeperator = "GO";
             this.sqlToolUserControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sqlToolUserControl1.Location = new System.Drawing.Point(0, 24);
+            this.sqlToolUserControl1.Location = new System.Drawing.Point(0, 25);
             this.sqlToolUserControl1.Name = "sqlToolUserControl1";
             this.sqlToolUserControl1.SelectedDatabase = null;
-            this.sqlToolUserControl1.Size = new System.Drawing.Size(984, 587);
+            this.sqlToolUserControl1.Size = new System.Drawing.Size(984, 586);
             this.sqlToolUserControl1.TabIndex = 2;
+            this.sqlToolUserControl1.TextContent = "";
             // 
             // SqlToolForm
             // 

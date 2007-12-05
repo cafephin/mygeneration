@@ -131,8 +131,8 @@ namespace MyGeneration
             this.toolStripSeparator2,
             this.toolStripButtonRecord,
             this.toolStripButtonReplay,
-            this.toolStripSeparator3,
-            this.toolStripButtonExecute});
+            this.toolStripButtonExecute,
+            this.toolStripSeparator3});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(392, 25);
@@ -171,6 +171,7 @@ namespace MyGeneration
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            this.toolStripSeparator1.Visible = false;
             // 
             // toolStripButtonOpen
             // 
@@ -179,12 +180,14 @@ namespace MyGeneration
             this.toolStripButtonOpen.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonOpen.Name = "toolStripButtonOpen";
             this.toolStripButtonOpen.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonOpen.Visible = false;
             this.toolStripButtonOpen.Click += new System.EventHandler(this.toolStripButtonOpen_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            this.toolStripSeparator2.Visible = false;
             // 
             // toolStripButtonRecord
             // 
@@ -193,6 +196,7 @@ namespace MyGeneration
             this.toolStripButtonRecord.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonRecord.Name = "toolStripButtonRecord";
             this.toolStripButtonRecord.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonRecord.Visible = false;
             this.toolStripButtonRecord.Click += new System.EventHandler(this.toolStripButtonRecord_Click);
             // 
             // toolStripButtonReplay
@@ -202,12 +206,14 @@ namespace MyGeneration
             this.toolStripButtonReplay.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonReplay.Name = "toolStripButtonReplay";
             this.toolStripButtonReplay.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonReplay.Visible = false;
             this.toolStripButtonReplay.Click += new System.EventHandler(this.toolStripButtonReplay_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            this.toolStripSeparator3.Visible = false;
             // 
             // toolStripButtonExecute
             // 
@@ -216,6 +222,7 @@ namespace MyGeneration
             this.toolStripButtonExecute.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonExecute.Name = "toolStripButtonExecute";
             this.toolStripButtonExecute.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonExecute.Visible = false;
             this.toolStripButtonExecute.Click += new System.EventHandler(this.toolStripButtonExecute_Click);
             // 
             // TemplateBrowserControl
