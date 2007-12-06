@@ -33,6 +33,7 @@ namespace MyGeneration
             this.menuItemExecute = new System.Windows.Forms.MenuItem();
             this.menuItemOpen = new System.Windows.Forms.MenuItem();
             this.contextMenuTree = new System.Windows.Forms.ContextMenu();
+            this.menuItemRecord = new System.Windows.Forms.MenuItem();
             this.menuItemWebUpdate = new System.Windows.Forms.MenuItem();
             this.menuItemDelete = new System.Windows.Forms.MenuItem();
             this.toolTipTemplateBrowser = new System.Windows.Forms.ToolTip(this.components);
@@ -49,8 +50,6 @@ namespace MyGeneration
             this.toolStripButtonReplay = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonExecute = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuItemRecord = new System.Windows.Forms.MenuItem();
-            this.menuItemReplay = new System.Windows.Forms.MenuItem();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -72,10 +71,15 @@ namespace MyGeneration
             this.menuItemExecute,
             this.menuItemOpen,
             this.menuItemRecord,
-            this.menuItemReplay,
             this.menuItemWebUpdate,
             this.menuItemDelete});
             this.contextMenuTree.Popup += new System.EventHandler(this.contextMenuTree_Popup);
+            // 
+            // menuItemRecord
+            // 
+            this.menuItemRecord.Index = 2;
+            this.menuItemRecord.Text = "&Record Input To File";
+            this.menuItemRecord.Click += new System.EventHandler(this.menuItemRecord_Click);
             // 
             // menuItemWebUpdate
             // 
@@ -175,7 +179,6 @@ namespace MyGeneration
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-            this.toolStripSeparator1.Visible = false;
             // 
             // toolStripButtonOpen
             // 
@@ -210,7 +213,6 @@ namespace MyGeneration
             this.toolStripButtonReplay.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonReplay.Name = "toolStripButtonReplay";
             this.toolStripButtonReplay.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButtonReplay.Visible = false;
             this.toolStripButtonReplay.Click += new System.EventHandler(this.toolStripButtonReplay_Click);
             // 
             // toolStripButtonExecute
@@ -228,18 +230,6 @@ namespace MyGeneration
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
             this.toolStripSeparator3.Visible = false;
-            // 
-            // menuItemRecord
-            // 
-            this.menuItemRecord.Index = 2;
-            this.menuItemRecord.Text = "&Record Input To File";
-            this.menuItemRecord.Click += new System.EventHandler(this.menuItemRecord_Click);
-            // 
-            // menuItemReplay
-            // 
-            this.menuItemReplay.Index = 3;
-            this.menuItemReplay.Text = "Re&play Recorded Input";
-            this.menuItemReplay.Click += new System.EventHandler(this.menuItemReplay_Click);
             // 
             // TemplateBrowserControl
             // 
@@ -279,6 +269,5 @@ namespace MyGeneration
         private System.Windows.Forms.ToolStripButton toolStripButtonExecute;
         private System.Windows.Forms.ImageList imageListFormIcons;
         private System.Windows.Forms.MenuItem menuItemRecord;
-        private System.Windows.Forms.MenuItem menuItemReplay;
     }
 }
