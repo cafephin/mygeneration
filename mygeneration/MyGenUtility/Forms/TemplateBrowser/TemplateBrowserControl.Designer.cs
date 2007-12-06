@@ -47,8 +47,10 @@ namespace MyGeneration
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonRecord = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonReplay = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonExecute = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuItemRecord = new System.Windows.Forms.MenuItem();
+            this.menuItemReplay = new System.Windows.Forms.MenuItem();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -69,19 +71,21 @@ namespace MyGeneration
             this.contextMenuTree.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.menuItemExecute,
             this.menuItemOpen,
+            this.menuItemRecord,
+            this.menuItemReplay,
             this.menuItemWebUpdate,
             this.menuItemDelete});
             this.contextMenuTree.Popup += new System.EventHandler(this.contextMenuTree_Popup);
             // 
             // menuItemWebUpdate
             // 
-            this.menuItemWebUpdate.Index = 2;
+            this.menuItemWebUpdate.Index = 4;
             this.menuItemWebUpdate.Text = "&Web Update";
             this.menuItemWebUpdate.Click += new System.EventHandler(this.menuItemWebUpdate_Click);
             // 
             // menuItemDelete
             // 
-            this.menuItemDelete.Index = 3;
+            this.menuItemDelete.Index = 5;
             this.menuItemDelete.Text = "&Delete";
             this.menuItemDelete.Click += new System.EventHandler(this.menuItemDelete_Click);
             // 
@@ -209,12 +213,6 @@ namespace MyGeneration
             this.toolStripButtonReplay.Visible = false;
             this.toolStripButtonReplay.Click += new System.EventHandler(this.toolStripButtonReplay_Click);
             // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
-            this.toolStripSeparator3.Visible = false;
-            // 
             // toolStripButtonExecute
             // 
             this.toolStripButtonExecute.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -224,6 +222,24 @@ namespace MyGeneration
             this.toolStripButtonExecute.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonExecute.Visible = false;
             this.toolStripButtonExecute.Click += new System.EventHandler(this.toolStripButtonExecute_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            this.toolStripSeparator3.Visible = false;
+            // 
+            // menuItemRecord
+            // 
+            this.menuItemRecord.Index = 2;
+            this.menuItemRecord.Text = "&Record Input To File";
+            this.menuItemRecord.Click += new System.EventHandler(this.menuItemRecord_Click);
+            // 
+            // menuItemReplay
+            // 
+            this.menuItemReplay.Index = 3;
+            this.menuItemReplay.Text = "Re&play Recorded Input";
+            this.menuItemReplay.Click += new System.EventHandler(this.menuItemReplay_Click);
             // 
             // TemplateBrowserControl
             // 
@@ -262,5 +278,7 @@ namespace MyGeneration
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripButton toolStripButtonExecute;
         private System.Windows.Forms.ImageList imageListFormIcons;
+        private System.Windows.Forms.MenuItem menuItemRecord;
+        private System.Windows.Forms.MenuItem menuItemReplay;
     }
 }

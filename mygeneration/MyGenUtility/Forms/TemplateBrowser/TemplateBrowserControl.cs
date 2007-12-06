@@ -625,7 +625,16 @@ namespace MyGeneration
         {
             this.Delete();
         }
-        #endregion
 
+        private void menuItemRecord_Click(object sender, EventArgs e)
+        {
+            this.SaveInput();
+        }
+
+        private void menuItemReplay_Click(object sender, EventArgs e)
+        {
+            this.ExecuteSavedInput();
+        }
+        #endregion
     }
 }
