@@ -76,7 +76,7 @@ namespace Zeus
 
 		public void Remove(InputItem item) 
 		{
-			_hash.Remove(item);
+			_hash.Remove(item.VariableName);
 		}
 
 		public bool Contains(string varName) 

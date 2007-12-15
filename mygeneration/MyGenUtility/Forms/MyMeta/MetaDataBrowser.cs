@@ -48,6 +48,9 @@ namespace MyGeneration
             this.GlobalUserData = g;
 			this.ShowHint = DockState.DockLeft;
 
+            this.UserData.MetaDataBrowser = this;
+            this.GlobalUserData.MetaDataBrowser = this;
+
             MetaDataBrowser_Enter(this, EventArgs.Empty);
         }
 

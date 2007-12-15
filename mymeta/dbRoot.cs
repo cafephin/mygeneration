@@ -23,8 +23,9 @@ using System.Reflection;
 using System.Diagnostics;
 
 using Npgsql;
-using FirebirdSql.Data.Firebird;
+using FirebirdSql.Data.FirebirdClient;
 using System.Data.SQLite;
+using MySql.Data.MySqlClient;
 
 namespace MyMeta
 {
@@ -223,8 +224,7 @@ namespace MyMeta
 			switch(driver.ToUpper())
 			{
                 case MyMetaDrivers.MySql2:
-					MyMeta.MySql5.MySql5Databases.LoadAssembly();
-					conn = MyMeta.MySql5.MySql5Databases.CreateConnection(connectionString);
+                    conn = new MySqlConnection(connectionString);
 					break;
 
                 case MyMetaDrivers.PostgreSQL:
@@ -234,7 +234,7 @@ namespace MyMeta
 
                 case MyMetaDrivers.Firebird:
                 case MyMetaDrivers.Interbase:
-					conn = new FirebirdSql.Data.Firebird.FbConnection(connectionString);
+					conn = new FirebirdSql.Data.FirebirdClient.FbConnection(connectionString);
                     break;
 
                 case MyMetaDrivers.SQLite:
@@ -466,24 +466,17 @@ namespace MyMeta
 
 				case dbDriver.MySql2:
 
-					try
-					{
-						MyMeta.MySql5.MySql5Databases.LoadAssembly();
-						IDbConnection conn = MyMeta.MySql5.MySql5Databases.CreateConnection(_connectionString);
-						conn.Open();
-						this._defaultDatabase = conn.Database;
-						conn.Close();
-						conn.Dispose();
+                    using (MySqlConnection mysqlconn = new MySqlConnection(_connectionString))
+                    {
+                        mysqlconn.Close();
+                        mysqlconn.Open();
+                        this._defaultDatabase = mysqlconn.Database;
+                    }
 
-                        this._driverString = MyMetaDrivers.MySql2;
-						this.StripTrailingNulls = true;
-						this.requiredDatabaseName = true;
-						ClassFactory = new MyMeta.MySql5.ClassFactory();
-					}
-					catch (Exception ex)
-					{
-						throw ex;
-					}
+                    this._driverString = MyMetaDrivers.MySql2;
+					this.StripTrailingNulls = true;
+					this.requiredDatabaseName = true;
+					ClassFactory = new MyMeta.MySql5.ClassFactory();
 					break;
 
 				case dbDriver.DB2:
@@ -515,10 +508,11 @@ namespace MyMeta
 
 				case dbDriver.PostgreSQL:
 
-					NpgsqlConnection cn = new Npgsql.NpgsqlConnection(_connectionString);
-					cn.Open();
-					this._defaultDatabase = cn.Database;
-					cn.Close();
+                    using (NpgsqlConnection cn = new Npgsql.NpgsqlConnection(_connectionString))
+                    {
+                        cn.Open();
+                        this._defaultDatabase = cn.Database;
+                    }
 
                     this._driverString = MyMetaDrivers.PostgreSQL;
 					this.StripTrailingNulls = false;
@@ -528,10 +522,11 @@ namespace MyMeta
 
 				case dbDriver.PostgreSQL8:
 
-					NpgsqlConnection cn8 = new Npgsql.NpgsqlConnection(_connectionString);
-					cn8.Open();
-					this._defaultDatabase = cn8.Database;
-					cn8.Close();
+                    using (NpgsqlConnection cn8 = new Npgsql.NpgsqlConnection(_connectionString))
+                    {
+                        cn8.Open();
+                        this._defaultDatabase = cn8.Database;
+                    }
 
                     this._driverString = MyMetaDrivers.PostgreSQL8;
 					this.StripTrailingNulls = false;
@@ -541,10 +536,11 @@ namespace MyMeta
 
 				case dbDriver.Firebird:
 
-					FbConnection cn1 = new FirebirdSql.Data.Firebird.FbConnection(_connectionString);
-					cn1.Open();
-					dbName = cn1.Database;
-					cn1.Close();
+                    using (FbConnection cn1 = new FirebirdSql.Data.FirebirdClient.FbConnection(_connectionString))
+                    {
+                        cn1.Open();
+                        dbName = cn1.Database;
+                    }
 
 					try
 					{
@@ -564,10 +560,11 @@ namespace MyMeta
 
 				case dbDriver.Interbase:
 
-					FbConnection cn2 = new FirebirdSql.Data.Firebird.FbConnection(_connectionString);
-					cn2.Open();
-					this._defaultDatabase = cn2.Database;
-					cn2.Close();
+                    using (FbConnection cn2 = new FirebirdSql.Data.FirebirdClient.FbConnection(_connectionString))
+                    {
+                        cn2.Open();
+                        this._defaultDatabase = cn2.Database;
+                    }
 
                     this._driverString = MyMetaDrivers.Interbase;
 					this.StripTrailingNulls = false;
@@ -577,10 +574,11 @@ namespace MyMeta
 
 				case dbDriver.SQLite:
 
-					SQLiteConnection sqliteConn = new SQLiteConnection(_connectionString);
-					sqliteConn.Open();
-					dbName = sqliteConn.Database;
-					sqliteConn.Close();
+                    using (SQLiteConnection sqliteConn = new SQLiteConnection(_connectionString))
+                    {
+                        sqliteConn.Open();
+                        dbName = sqliteConn.Database;
+                    }
                     this._driverString = MyMetaDrivers.SQLite;
 					this.StripTrailingNulls = false;
 					this.requiredDatabaseName = false;
@@ -624,12 +622,12 @@ namespace MyMeta
                 case dbDriver.Plugin:
 
                     IMyMetaPlugin plugin;
-                    IDbConnection connection = this.GetConnectionFromPlugin(pluginName, _connectionString, out plugin);
-                    if (connection != null)
-                        connection.Open();
-                    dbName = connection.Database;
-                    if (connection != null)
-                        connection.Close();
+                    using (IDbConnection connection = this.GetConnectionFromPlugin(pluginName, _connectionString, out plugin))
+                    {
+                        if (connection != null)
+                            connection.Open();
+                        dbName = connection.Database;
+                    }
                     this._driverString = pluginName;
                     //this.StripTrailingNulls = plugin.StripTrailingNulls;
                     //this.requiredDatabaseName = plugin.RequiredDatabaseName;

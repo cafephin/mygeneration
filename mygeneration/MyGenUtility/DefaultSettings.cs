@@ -6,6 +6,7 @@ using System.Text;
 using System.IO;
 using System.Reflection;
 using System.Collections;
+using System.Collections.Generic;
 using Zeus;
 
 namespace MyGeneration
@@ -712,6 +713,59 @@ namespace MyGeneration
 					input["__userMetaDataFileName"] = settings.UserMetaDataFileName;
 			}
 		}
+
+
+        public void PopulateDictionary(Dictionary<string, string> dict)
+        {
+            DefaultSettings settings = new DefaultSettings();
+
+            if (!dict.ContainsKey("__version"))
+            {
+                Assembly ver = System.Reflection.Assembly.GetEntryAssembly();
+                if (ver != null)
+                {
+                    dict["__version"] = ver.GetName().Version.ToString();
+                }
+            }
+
+            //-- BEGIN LEGACY VARIABLE SUPPORT -----
+            dict["defaultTemplatePath"] = settings.DefaultTemplateDirectory;
+            dict["defaultOutputPath"] = settings.DefaultOutputDirectory;
+            //-- END LEGACY VARIABLE SUPPORT -------
+
+            dict["__defaultTemplatePath"] = settings.DefaultTemplateDirectory;
+
+            dict["__defaultOutputPath"] = settings.DefaultOutputDirectory;
+
+            if (settings.DbDriver != string.Empty)
+            {
+                //-- BEGIN LEGACY VARIABLE SUPPORT -----
+                dict["dbDriver"] = settings.DbDriver;
+                dict["dbConnectionString"] = settings.DomainOverride.ToString();
+                //-- END LEGACY VARIABLE SUPPORT -------
+
+                dict["__dbDriver"] = settings.DbDriver;
+
+                dict["__dbConnectionString"] = settings.ConnectionString;
+
+                dict["__domainOverride"] = settings.DomainOverride.ToString();
+
+                if (settings.DbTarget != string.Empty)
+                    dict["__dbTarget"] = settings.DbTarget;
+
+                if (settings.DbTargetMappingFile != string.Empty)
+                    dict["__dbTargetMappingFileName"] = settings.DbTargetMappingFile;
+
+                if (settings.LanguageMappingFile != string.Empty)
+                    dict["__dbLanguageMappingFileName"] = settings.LanguageMappingFile;
+
+                if (settings.Language != string.Empty)
+                    dict["__language"] = settings.Language;
+
+                if (settings.UserMetaDataFileName != string.Empty)
+                    dict["__userMetaDataFileName"] = settings.UserMetaDataFileName;
+            }
+        }
 
 		#region Internal Stuff
 		private string GetSetting(string name)

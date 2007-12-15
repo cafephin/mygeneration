@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Drawing;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 
@@ -441,6 +442,7 @@ namespace MyGeneration
             this.treeViewProject.Nodes.Clear();
 
             ZeusProject proj = new ZeusProject();
+            proj.DefaultSettingsDelegate = new GetDefaultSettingsDelegate(GetDefaultSettingsDictionary);
             proj.Name = "New Project";
             proj.Description = "New Zeus Project file";
 
@@ -457,6 +459,7 @@ namespace MyGeneration
             this.treeViewProject.Nodes.Clear();
 
             ZeusProject proj = new ZeusProject(filename);
+            proj.DefaultSettingsDelegate = new GetDefaultSettingsDelegate(GetDefaultSettingsDictionary);
             if (proj.Load())
             {
                 OnTextChanged("Project: " + proj.Name, proj.Name, filename);
@@ -477,6 +480,13 @@ namespace MyGeneration
 
 
             this.treeViewProject.Nodes.Add(_rootNode);
+        }
+
+        public Dictionary<string, string> GetDefaultSettingsDictionary()
+        {
+            Dictionary<string, string> ds = new Dictionary<string, string>();
+            DefaultSettings.Instance.PopulateDictionary(ds);
+            return ds;
         }
 
         private void LoadModule(SortedProjectTreeNode parentNode, ZeusModule childModule)

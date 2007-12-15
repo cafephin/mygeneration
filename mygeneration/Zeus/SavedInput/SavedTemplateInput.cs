@@ -8,7 +8,9 @@ using Zeus.UserInterface;
 
 namespace Zeus
 {
-	/// <summary>
+    public delegate void ApplyOverrideDataDelegate(IZeusInput input);
+    
+    /// <summary>
 	/// Summary description for SavedTemplateInput.
 	/// </summary>
 	public class SavedTemplateInput : IZeusSavedTemplateInput
@@ -18,6 +20,7 @@ namespace Zeus
 		private string _templateUniqueID;
         private InputItemCollection _inputItems;
         private List<string> _filesChanged = null;
+        private ApplyOverrideDataDelegate _applyOverrideDataDelegate;
 
 		public SavedTemplateInput(string objectName, IZeusTemplate template)
 		{
@@ -38,7 +41,23 @@ namespace Zeus
 			_templatePath = filepath;
 		}
 
-		public SavedTemplateInput() {}
+        public SavedTemplateInput() { }
+
+        public ApplyOverrideDataDelegate ApplyOverrideDataDelegate
+        {
+            set
+            {
+                _applyOverrideDataDelegate = value;
+            }
+        }
+
+        private void ApplyOverrideData(IZeusInput input)
+        {
+            if (_applyOverrideDataDelegate != null)
+            {
+                _applyOverrideDataDelegate(input);
+            }
+        }
 		
 		public string TemplateUniqueID 
 		{
@@ -164,8 +183,11 @@ namespace Zeus
 			ZeusInput zin = new ZeusInput();
 			zin.AddItems(this.InputItems);
 
+            this.ApplyOverrideData(zin);
+
 			ZeusContext context = new ZeusContext(zin, new GuiController(), new Hashtable());
 			context.Log = log;
+
 
 			template.Execute(context, timeout, true);
 

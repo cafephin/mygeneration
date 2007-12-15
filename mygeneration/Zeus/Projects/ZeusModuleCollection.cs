@@ -79,22 +79,37 @@ namespace Zeus.Projects
                     if (!SavedFiles.Contains(file)) SavedFiles.Add(file);
                 }
 			}
-		}
+        }
 
-		virtual public void BuildXML(XmlTextWriter xml) 
-		{
-			if (this.Count > 0) 
-			{
-				xml.WriteStartElement("modules");
+        virtual public void BuildXML(XmlTextWriter xml)
+        {
+            if (this.Count > 0)
+            {
+                xml.WriteStartElement("modules");
 
-				foreach (ZeusModule module in this.Values) 
-				{
-					module.BuildXML(xml);
-				}
+                foreach (ZeusModule module in this.Values)
+                {
+                    module.BuildXML(xml);
+                }
 
-				xml.WriteEndElement();
-			}
-		}
+                xml.WriteEndElement();
+            }
+        }
+
+        virtual public void BuildUserXML(XmlTextWriter xml)
+        {
+            if (this.Count > 0)
+            {
+                xml.WriteStartElement("modules");
+
+                foreach (ZeusModule module in this.Values)
+                {
+                    module.BuildUserXML(xml);
+                }
+
+                xml.WriteEndElement();
+            }
+        }
 
 		#region ICollection Members
 		public bool IsSynchronized

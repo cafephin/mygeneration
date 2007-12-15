@@ -1,7 +1,7 @@
 using System;
 using System.Data;
 
-using FirebirdSql.Data.Firebird;
+using FirebirdSql.Data.FirebirdClient;
 
 namespace MyMeta.Firebird
 {
@@ -20,7 +20,7 @@ namespace MyMeta.Firebird
 		{
 			try
 			{
-				FbConnection cn = new FirebirdSql.Data.Firebird.FbConnection(this._dbRoot.ConnectionString);
+				FbConnection cn = new FirebirdSql.Data.FirebirdClient.FbConnection(this._dbRoot.ConnectionString);
 				cn.Open();
 				DataTable metaData1 = cn.GetSchema("ForeignKeys", new string[] {null, null, this.Table.Name}); 
 				DataTable metaData2 = cn.GetSchema("ForeignKeys", new string[] {null, null, null, null, null, this.Table.Name}); 

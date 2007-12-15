@@ -2,7 +2,7 @@ using System;
 using System.Text;
 using System.Data;
 
-using FirebirdSql.Data.Firebird;
+using FirebirdSql.Data.FirebirdClient;
 
 namespace MyMeta.Firebird
 {
@@ -23,7 +23,7 @@ namespace MyMeta.Firebird
 		{
 			try
 			{
-				FbConnection cn = new FirebirdSql.Data.Firebird.FbConnection(this._dbRoot.ConnectionString);
+				FbConnection cn = new FirebirdSql.Data.FirebirdClient.FbConnection(this._dbRoot.ConnectionString);
 
 				FbDataAdapter adapter = new FbDataAdapter(BuildSql(this.Procedure.Name), cn);
 				DataTable metaData = new DataTable();
@@ -47,9 +47,9 @@ namespace MyMeta.Firebird
 
 			try
 			{
-				byte dialect = 1;
+				int dialect = 1;
 
-				cn = new FirebirdSql.Data.Firebird.FbConnection(this._dbRoot.ConnectionString);
+				cn = new FirebirdSql.Data.FirebirdClient.FbConnection(this._dbRoot.ConnectionString);
 				cn.Open();
 
 				try

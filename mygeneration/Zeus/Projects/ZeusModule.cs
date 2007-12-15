@@ -12,11 +12,13 @@ namespace Zeus.Projects
 	{
 		private string _name;
 		private string _description;
+        private bool _defaultSettingsOverride = false;
 		private InputItemCollection _items;
 		private SavedTemplateInputCollection _objs;
 		private ZeusModuleCollection _modules;
         private ZeusModule _parentModule;
         private List<string> _filesChanged;
+        private InputItemCollection _userItems;
 
 		public ZeusModule() {}
 
@@ -24,13 +26,19 @@ namespace Zeus.Projects
 		{
 			get { return _name; }
 			set { _name = value; }
-		}
+        }
 
-		public string Description 
-		{
-			get { return _description; }
-			set { _description = value; }
-		}
+        public string Description
+        {
+            get { return _description; }
+            set { _description = value; }
+        }
+
+        public bool DefaultSettingsOverride
+        {
+            get { return _defaultSettingsOverride; }
+            set { _defaultSettingsOverride = value; }
+        }
 
 		internal void SetParentModule(ZeusModule module) 
 		{
@@ -43,7 +51,26 @@ namespace Zeus.Projects
 			{
 				return _parentModule;
 			}
-		}
+        }
+
+        internal ZeusProject RootProject
+        {
+            get
+            {
+                ZeusModule m = this;
+                do
+                {
+                    if (m.IsParentModule)
+                    {
+                        return m as ZeusProject;
+                    }
+
+                    m = this.ParentModule;
+                } while (m != null);
+
+                return null;
+            }
+        }
 
 		public bool IsParentModule
 		{
@@ -67,7 +94,23 @@ namespace Zeus.Projects
 			{
 				_items = value;
 			}
-		}
+        }
+
+        public InputItemCollection UserSavedItems
+        {
+            get
+            {
+                if (_userItems == null)
+                {
+                    _userItems = new InputItemCollection();
+                }
+                return _userItems;
+            }
+            set
+            {
+                _userItems = value;
+            }
+        }
 
 		public SavedTemplateInputCollection SavedObjects 
 		{
@@ -76,13 +119,15 @@ namespace Zeus.Projects
 				if (_objs == null) 
 				{
 					_objs = new SavedTemplateInputCollection();
+                    _objs.ApplyOverrideDataDelegate = new ApplyOverrideDataDelegate(ApplyRuntimeOverrides);
 				}
 				return _objs;
 			}
 			set 
 			{
 				_objs = value;
-			}
+                _objs.ApplyOverrideDataDelegate = new ApplyOverrideDataDelegate(ApplyRuntimeOverrides);
+            }
 		}
 
 		public ZeusModuleCollection ChildModules 
@@ -137,19 +182,86 @@ namespace Zeus.Projects
 			foreach (InputItem item in module.SavedItems) 
 			{
 				input[item.VariableName] = item.DataObject;
-			}
-		}
+            }
 
-		public void PopulateZeusContext(IZeusContext context) 
-		{
-			FillZeusInputRecursive(this, context.Input);
-		}
+            foreach (InputItem item in module.UserSavedItems)
+            {
+                input[item.VariableName] = item.DataObject;
+            }
+
+            if (module.RootProject.DefaultSettingsOverride)
+            {
+                Dictionary<string, string> ds = module.RootProject.GetDefaultSettings();
+
+                foreach (string key in ds.Keys)
+                {
+                    input[key] = ds[key];
+                }
+            }
+        }
+
+        private static void FillZeusInputRuntimeRecursive(ZeusModule module, IZeusInput input, ref bool hasDoneDefSettings)
+        {
+            bool doSettings = false;
+            if (!module.IsParentModule)
+            {
+                FillZeusInputRuntimeRecursive(module.ParentModule, input, ref hasDoneDefSettings);
+            }
+
+            if (!hasDoneDefSettings)
+            {
+                doSettings = module.DefaultSettingsOverride;
+            }
+
+            if (doSettings)
+            {
+                hasDoneDefSettings = true;
+
+                Dictionary<string, string> ds = module.RootProject.GetDefaultSettings();
+
+                foreach (string key in ds.Keys)
+                {
+                    input[key] = ds[key];
+                }
+            }
+
+            foreach (InputItem item in module.UserSavedItems)
+            {
+                input[item.VariableName] = item.DataObject;
+            }
+        }
+
+        public void PopulateZeusContext(IZeusContext context)
+        {
+            FillZeusInputRecursive(this, context.Input);
+        }
+
+        public void ApplyRuntimeOverrides(IZeusInput input)
+        {
+            bool hasDoneDefaults = false;
+            FillZeusInputRuntimeRecursive(this, input, ref hasDoneDefaults);
+        }
+
+        public void BuildUserXML(XmlTextWriter xml)
+        {
+            xml.WriteStartElement((this._parentModule == null) ? "project" : "module");
+            xml.WriteAttributeString("name", this.Name);
+
+            if (_userItems != null)
+                this.UserSavedItems.BuildXML(xml);
+
+            if (_modules != null)
+                this.ChildModules.BuildUserXML(xml);
+
+            xml.WriteEndElement();
+        }
 
 		public void BuildXML(XmlTextWriter xml) 
 		{
 			xml.WriteStartElement( (this._parentModule == null) ? "project" : "module" );
 			xml.WriteAttributeString("name", this.Name);
 			xml.WriteAttributeString("description", this.Description);
+			xml.WriteAttributeString("defaultSettingsOverride", this.DefaultSettingsOverride.ToString());
 			
 			if (_items != null) 
 				this.SavedItems.BuildXML(xml);
@@ -161,7 +273,70 @@ namespace Zeus.Projects
 				this.ChildModules.BuildXML(xml);
 
 			xml.WriteEndElement();
-		}
+        }
+
+        public string ReadUserXML(XmlTextReader xr)
+        {
+            string tagName = string.Empty;
+            bool inStartElement, inEmptyElement, skipread = false;
+
+            inEmptyElement = xr.IsEmptyElement;
+
+            if (!inEmptyElement)
+            {
+                while ((skipread) || (xr.Read()))
+                {
+                    inStartElement = xr.IsStartElement();
+                    inEmptyElement = xr.IsEmptyElement;
+
+                    if (skipread)
+                    {
+                        skipread = false;
+                    }
+                    else
+                    {
+                        tagName = xr.LocalName;
+                    }
+
+                    if (inStartElement)
+                    {
+                        // a module start
+                        if (tagName == "module")
+                        {
+			                string name = xr.GetAttribute("name");
+                            if (this.ChildModules.Contains(name))
+                            {
+                                ZeusModule module = this.ChildModules[name];
+                                tagName = module.ReadUserXML(xr);
+                                skipread = true;
+                            }
+                        }
+                        // a saved item start
+                        else if (tagName == "item")
+                        {
+                            InputItem item = new InputItem();
+                            item.ReadXML(xr);
+
+                            this.UserSavedItems.Add(item);
+                        }
+                    }
+                    else
+                    {
+                        // if not in a sub module and this is an end module tag, break!
+                        if (tagName == "module")
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+
+            xr.Read();
+            inStartElement = xr.IsStartElement();
+            tagName = xr.LocalName;
+
+            return tagName;
+        }
 
 		public string ReadXML(XmlTextReader xr) 
 		{
@@ -169,7 +344,12 @@ namespace Zeus.Projects
 			bool inStartElement, inEmptyElement, skipread = false;
 
 			this.Name = xr.GetAttribute("name");
-			this.Description = xr.GetAttribute("description");
+            this.Description = xr.GetAttribute("description");
+            string tmp = xr.GetAttribute("defaultSettingsOverride");
+            if (!string.IsNullOrEmpty(tmp))
+            {
+                this.DefaultSettingsOverride = Convert.ToBoolean(tmp);
+            }
 
 			inEmptyElement = xr.IsEmptyElement;
 

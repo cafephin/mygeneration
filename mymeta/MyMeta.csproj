@@ -79,26 +79,22 @@
       <HintPath>..\installer\adodb.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="FirebirdSql.Data.Firebird">
-      <Name>FirebirdSql.Data.Firebird</Name>
-      <HintPath>ThirdParty\FirebirdSql.Data.Firebird.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="FirebirdSql.Data.FirebirdClient, Version=2.0.1.0, Culture=neutral, PublicKeyToken=3750abcc3150b00c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>ThirdParty\FirebirdSql.Data.FirebirdClient.dll</HintPath>
     </Reference>
-    <Reference Include="Mono.Security">
-      <Name>Mono.Security</Name>
-      <HintPath>ThirdParty\Mono.Security.dll</HintPath>
+    <Reference Include="MySql.Data, Version=5.1.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>ThirdParty\MySql.Data.dll</HintPath>
     </Reference>
-    <Reference Include="Npgsql">
-      <Name>Npgsql</Name>
-      <HintPath>ThirdParty\Npgsql.dll</HintPath>
-    </Reference>
+    <Reference Include="Npgsql, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL" />
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
     <Reference Include="System.Data">
       <Name>System.Data</Name>
     </Reference>
-    <Reference Include="System.Data.SQLite, Version=1.0.38.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
+    <Reference Include="System.Data.SQLite, Version=1.0.47.2, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>ThirdParty\System.Data.SQLite.DLL</HintPath>
     </Reference>

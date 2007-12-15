@@ -162,7 +162,7 @@ namespace MyMeta.Firebird
 
         public System.Data.IDbConnection CreateConnection()
         {
-            return new FirebirdSql.Data.Firebird.FbConnection();
+            return new FirebirdSql.Data.FirebirdClient.FbConnection();
         }
 
         #endregion

@@ -1,6 +1,6 @@
 using System;
 using System.Data;
-using FirebirdSql.Data.Firebird;
+using FirebirdSql.Data.FirebirdClient;
 
 namespace MyMeta.Firebird
 {
@@ -19,7 +19,7 @@ namespace MyMeta.Firebird
 		{
 			try
 			{
-				FbConnection cn = new FirebirdSql.Data.Firebird.FbConnection(this._dbRoot.ConnectionString);
+				FbConnection cn = new FirebirdSql.Data.FirebirdClient.FbConnection(this._dbRoot.ConnectionString);
 				cn.Open();
 				string dbName = cn.Database;
 				cn.Close();

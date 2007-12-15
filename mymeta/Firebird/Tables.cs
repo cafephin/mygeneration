@@ -1,7 +1,7 @@
 using System;
 using System.Data;
 
-using FirebirdSql.Data.Firebird;
+using FirebirdSql.Data.FirebirdClient;
 
 namespace MyMeta.Firebird
 {
@@ -22,7 +22,7 @@ namespace MyMeta.Firebird
 			{
 				string type = this.dbRoot.ShowSystemData ? "SYSTEM TABLE" : "TABLE";
 
-				FbConnection cn = new FirebirdSql.Data.Firebird.FbConnection(this._dbRoot.ConnectionString);
+				FbConnection cn = new FirebirdSql.Data.FirebirdClient.FbConnection(this._dbRoot.ConnectionString);
 				cn.Open();
 				DataTable metaData = cn.GetSchema("Tables", new string[] {null, null, null, type});
 				cn.Close();

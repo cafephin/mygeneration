@@ -1,6 +1,6 @@
 using System;
-
 using MyMeta;
+using MySql.Data.MySqlClient;
 
 namespace MyMeta.MySql5
 {
@@ -141,10 +141,7 @@ namespace MyMeta.MySql5
 
         public System.Data.IDbConnection CreateConnection()
         {
-            MyMeta.MySql5.MySql5Databases.LoadAssembly();
-            System.Data.IDbConnection conn = MyMeta.MySql5.MySql5Databases.CreateConnection();
-
-            return conn;
+            return new MySqlConnection();
         }
 
         #endregion

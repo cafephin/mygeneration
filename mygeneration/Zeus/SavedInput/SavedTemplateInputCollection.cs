@@ -12,20 +12,41 @@ namespace Zeus
 	{
         private SortedList _hash = new SortedList();
         private List<string> _filesChanged;
+        private ApplyOverrideDataDelegate _applyOverrideDataDelegate;
 
-		public SavedTemplateInputCollection() {}
+        public SavedTemplateInputCollection() { }
+
+        public ApplyOverrideDataDelegate ApplyOverrideDataDelegate
+        {
+            set
+            {
+                if (_applyOverrideDataDelegate != value)
+                {
+                    _applyOverrideDataDelegate = value;
+                    foreach (SavedTemplateInput item in this._hash.Values)
+                    {
+                        item.ApplyOverrideDataDelegate = _applyOverrideDataDelegate;
+                    }
+                }
+            }
+        }
 
 		public SavedTemplateInput this[string objectName] 
 		{
 			get 
 			{
-				if (_hash.ContainsKey(objectName)) 
-					return _hash[objectName] as SavedTemplateInput;
-				else
-					return null;
+                if (_hash.ContainsKey(objectName))
+                {
+                    SavedTemplateInput item = _hash[objectName] as SavedTemplateInput;
+                    item.ApplyOverrideDataDelegate = this._applyOverrideDataDelegate;
+                    return item;
+                }
+                else
+                    return null;
 			}
-			set 
-			{
+			set
+            {
+                value.ApplyOverrideDataDelegate = this._applyOverrideDataDelegate;
 				_hash[objectName] = value;
 			}
         }
@@ -41,6 +62,7 @@ namespace Zeus
 
 		public void Add(SavedTemplateInput item) 
 		{
+            item.ApplyOverrideDataDelegate = this._applyOverrideDataDelegate;
 			this._hash[item.SavedObjectName] = item;
 		}
 
@@ -123,8 +145,19 @@ namespace Zeus
 
 		object System.Collections.IDictionary.this[object key]
 		{
-			get { return _hash[key]; }
-			set { _hash[key] = value; }
+			get
+            {
+                SavedTemplateInput item = _hash[key] as SavedTemplateInput;
+                item.ApplyOverrideDataDelegate = this._applyOverrideDataDelegate;
+                return item;
+                return _hash[key]; 
+            }
+			set 
+            {
+                SavedTemplateInput item = value as SavedTemplateInput;
+                item.ApplyOverrideDataDelegate = this._applyOverrideDataDelegate;
+                _hash[key] = item; 
+            }
 		}
 
 		public void Remove(object key)
@@ -148,8 +181,11 @@ namespace Zeus
 		}
 
 		void System.Collections.IDictionary.Add(object key, object value)
-		{
-			_hash.Add(key, value);
+        {
+            SavedTemplateInput item = value as SavedTemplateInput;
+            item.ApplyOverrideDataDelegate = this._applyOverrideDataDelegate;
+
+            _hash.Add(key, item);
 		}
 
 		public ICollection Keys

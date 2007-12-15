@@ -65,6 +65,24 @@ namespace MyGeneration
             this.menuItemOpen.Text = "&Open";
             this.menuItemOpen.Click += new System.EventHandler(this.menuItemOpen_Click);
             // 
+            // menuItemRecord
+            // 
+            this.menuItemRecord.Index = 2;
+            this.menuItemRecord.Text = "&Record Input To File";
+            this.menuItemRecord.Click += new System.EventHandler(this.menuItemRecord_Click);
+            // 
+            // menuItemWebUpdate
+            // 
+            this.menuItemWebUpdate.Index = 3;
+            this.menuItemWebUpdate.Text = "&Web Update";
+            this.menuItemWebUpdate.Click += new System.EventHandler(this.menuItemWebUpdate_Click);
+            // 
+            // menuItemDelete
+            // 
+            this.menuItemDelete.Index = 4;
+            this.menuItemDelete.Text = "&Delete";
+            this.menuItemDelete.Click += new System.EventHandler(this.menuItemDelete_Click);
+            // 
             // contextMenuTree
             // 
             this.contextMenuTree.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
@@ -74,24 +92,6 @@ namespace MyGeneration
             this.menuItemWebUpdate,
             this.menuItemDelete});
             this.contextMenuTree.Popup += new System.EventHandler(this.contextMenuTree_Popup);
-            // 
-            // menuItemRecord
-            // 
-            this.menuItemRecord.Index = 2;
-            this.menuItemRecord.Text = "&Record Input To File";
-            this.menuItemRecord.Click += new System.EventHandler(this.menuItemRecord_Click);
-            // 
-            // menuItemWebUpdate
-            // 
-            this.menuItemWebUpdate.Index = 4;
-            this.menuItemWebUpdate.Text = "&Web Update";
-            this.menuItemWebUpdate.Click += new System.EventHandler(this.menuItemWebUpdate_Click);
-            // 
-            // menuItemDelete
-            // 
-            this.menuItemDelete.Index = 5;
-            this.menuItemDelete.Text = "&Delete";
-            this.menuItemDelete.Click += new System.EventHandler(this.menuItemDelete_Click);
             // 
             // treeViewTemplates
             // 
