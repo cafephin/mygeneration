@@ -322,30 +322,54 @@ namespace MyMeta.SQLite
 			get { return _metaViews; }
 		}
 
+        private DataTable FillPragmaTable(SQLiteConnection cn, string sql)
+        {
+            DataTable pragma = new DataTable();
+
+            SQLiteCommand command = cn.CreateCommand();
+            command.CommandType = CommandType.Text;
+            command.CommandText = sql;
+
+            SQLiteDataReader reader;
+            using (reader = command.ExecuteReader() as SQLiteDataReader)
+            {
+                int rowindex = 0;
+                while (reader.Read())
+                {
+                    DataRow row = pragma.NewRow();
+                    for (int i = 0; i < reader.FieldCount; i++)
+                    {
+                        object o = reader.GetValue(i);
+                        if (rowindex == 0)
+                        {
+                            string field = reader.GetName(i);
+                            string dtype = reader.GetDataTypeName(i);
+                            if (o != DBNull.Value)
+                            {
+                                pragma.Columns.Add(field, o.GetType());
+                            }
+                            else
+                            {
+                                pragma.Columns.Add(field);
+                            }
+                        }
+                        row[i] = o;
+                    }
+                    pragma.Rows.Add(row);
+                    rowindex++;
+                }
+            }
+            return pragma;
+        }
+
 		private void FillFKMetaTables(SQLiteConnection cn, string tableName, out DataTable pragma) 
 		{
-			SQLiteCommand command = cn.CreateCommand();
-			SQLiteDataAdapter adapter = new SQLiteDataAdapter();
-
-			pragma = new DataTable();
-			command = cn.CreateCommand();
-			command.CommandType = CommandType.Text;
-			command.CommandText = "PRAGMA foreign_key_list('" + tableName + "');";
-			adapter.SelectCommand = command;
-			adapter.Fill(pragma);				
+			pragma = FillPragmaTable(cn, "PRAGMA foreign_key_list('" + tableName + "');");
 		}
 
-		private void FillMetaTables(SQLiteConnection cn, string indexName, out DataTable pragma) 
-		{
-			SQLiteCommand command = cn.CreateCommand();
-			SQLiteDataAdapter adapter = new SQLiteDataAdapter();
-
-			pragma = new DataTable();
-			command = cn.CreateCommand();
-			command.CommandType = CommandType.Text;
-			command.CommandText = "PRAGMA index_info('" + indexName + "');";
-			adapter.SelectCommand = command;
-			adapter.Fill(pragma);				
+		private void FillMetaTables(SQLiteConnection cn, string indexName, out DataTable pragma)
+        {
+            pragma = FillPragmaTable(cn, "PRAGMA index_info('" + indexName + "');");
 		}
 
 		private void FillMetaTables(SQLiteConnection cn, string tableOrView, out DataTable schema, out DataTable pragma) 
@@ -362,13 +386,7 @@ namespace MyMeta.SQLite
 			schema = reader.GetSchemaTable();
 			reader.Close();
 
-			pragma = new DataTable();
-			command = cn.CreateCommand();
-			command.CommandType = CommandType.Text;
-			command.CommandText = "PRAGMA table_info('" + tableOrView + "');";
-			adapter.SelectCommand = command;
-			adapter.Fill(pragma);
-								
+            pragma = FillPragmaTable(cn, "PRAGMA table_info('" + tableOrView + "');");
 		}
 
 		private void CheckForIndexes(SQLiteConnection cn, string tableName, DataTable tempIndexTable) 

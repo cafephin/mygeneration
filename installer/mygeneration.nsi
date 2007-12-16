@@ -131,6 +131,9 @@ Section "-Install Mygeneration and Register Shell Extensions"
 
   IfFileExists "$INSTDIR\Templates\Other\WinformDemo.vbgen" 0 +2
     Delete "$INSTDIR\Templates\Other\WinformDemo.vbgen"
+    
+  IfFileExists "$INSTDIR\FirebirdSql.Data.Firebird.dll" 0 +2
+    Delete "$INSTDIR\FirebirdSql.Data.Firebird.dll"
   
   ; Get latest DLLs and EXE
   File /oname=ZeusCmd.exe ..\mygeneration\ZeusCmd\bin\Release\ZeusCmd.exe
@@ -146,7 +149,8 @@ Section "-Install Mygeneration and Register Shell Extensions"
   File /oname=CollapsibleSplitter.dll ..\mygeneration\MyGeneration\bin\Release\CollapsibleSplitter.dll
   File /oname=Npgsql.dll ..\mymeta\ThirdParty\Npgsql.dll
   File /oname=Mono.Security.dll ..\mymeta\ThirdParty\Mono.Security.dll
-  File /oname=FirebirdSql.Data.Firebird.dll ..\mymeta\ThirdParty\FirebirdSql.Data.Firebird.dll
+  File /oname=FirebirdSql.Data.FirebirdClient.dll ..\mymeta\ThirdParty\FirebirdSql.Data.FirebirdClient.dll
+  File /oname=MySql.Data.dll ..\mymeta\ThirdParty\MySql.Data.dll
   
   File /oname=ScintillaNET.dll ..\mygeneration\MyGeneration\PluginResources\ScintillaNET.dll
   File /oname=SciLexer.dll ..\mygeneration\MyGeneration\PluginResources\SciLexer.dll
@@ -499,6 +503,14 @@ Section "-Install Mygeneration and Register Shell Extensions"
   WriteRegStr HKCR "ProjectMyGenFile\shell" "" "open"
   WriteRegStr HKCR "ProjectMyGenFile\DefaultIcon" "" $INSTDIR\ZeusProject.ico
   WriteRegStr HKCR "ProjectMyGenFile\shell\open\command" "" '"$INSTDIR\MyGeneration.exe" "%1"'
+
+  ; MyGeneration Development Shell Extensions - ZPRJ
+  WriteRegStr HKCR ".zprjusr" "" "ProjectMyGenFile"
+  WriteRegStr HKCR "ProjectMyGenFile" "" "MyGeneration Project (User) File"
+  ;WriteRegStr HKCR "ProjectMyGenFile\shell" "" "open"
+  WriteRegStr HKCR "ProjectMyGenFile\DefaultIcon" "" $INSTDIR\ZeusProject.ico
+  ;WriteRegStr HKCR "ProjectMyGenFile\shell\open\command" "" '"$INSTDIR\MyGeneration.exe" "%1"'
+  
 
   WriteUninstaller "uninstall.exe"
 

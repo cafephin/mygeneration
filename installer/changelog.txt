@@ -1,3 +1,14 @@
+2007.12.16 - MyGeneration 1.3.0.3
+- Workaround fix in MyMeta for datadapter bug in SQLite .net provider.
+
+2007.12.15 - MyGeneration 1.3.0.2
+- Updated MySql, SQLite, Postgresql, and Firebird providers. MySQL provider is now included in the installer 
+  because MyGen is Open Source. YAY! It was loaded by reflection in the past because of licensing issues.
+- Fixed bugs in Saving User Meta Data
+- Finished the new project file code to override variable values at runtime, and 
+  store user specific project data in a ".user" type file (we put .zprjusr as the extention)- Template 
+  browser behavioral bugs on double click, right click, etc
+
 2007.12.06 - MyGeneration 1.3.0.1
 - Fixed bugs in Template editor settings panel
 - Fixed bugs when switching databases in the SQL tool
@@ -8,7 +19,8 @@
 - Fixed bugs in MyMeta resultsets
 - Added SQLTool to standard install
 - Installer now skips MDAC for vista installs automatically.
-- moved project browser and template browser into usercontrols so they could be put into a VS2005 plugins. note that the addin will be released after 1.3.
+- moved project browser and template browser into usercontrols so they could be put into a 
+  VS2005 plugins. note that the addin will be released after 1.3.
 
 2007.11.06 - MyGeneration 1.3 beta9
 - Fixed bugs in AutoComplete: crash and ctrl-space
@@ -21,8 +33,8 @@
 
 2007.11.04 - MyGeneration 1.3 beta8
 - Fixed bugs in the SQLTool plugin
-	- Added select database/execute only selection featues.
-	- fixed dead connection issue
+    - Added select database/execute only selection featues.
+    - fixed dead connection issue
 - fixed MyMeta issue with (MAX) data types in sql 2005
 - save button on settings saves the settings 
 
@@ -35,7 +47,7 @@
 - MyGenXsd3b plugin code complete
 - MyGenXsd3b.chm added uml stuff and new MyGeneration-Gui-Details to chm
 - wiki on sourceforge http://mygeneration.wiki.sourceforge.net/ as onlineupdate for MyGenXsd3b.chm
-	- topics SupportedTools, XSL and XSD3b
+    - topics SupportedTools, XSL and XSD3b
 - new template xml/Modelfile2XSD3b.csgen to overcome performanceproblems with big uml-files
 
 2007.11.01 - MyGeneration 1.3 beta6
@@ -47,7 +59,8 @@
 
 2007.10.30 - MyGeneration 1.3 beta5
 - Made it a side by side installer (different folder)
-- Changed identity of MyMeta with new SNK file and new COM Guids - NO MORE REGISTRATION ISSUES! YAY! (you can have both versions running at the same time)
+- Changed identity of MyMeta with new SNK file and new COM Guids - NO MORE REGISTRATION ISSUES! YAY! 
+  (you can have both versions running at the same time)
 - Fixed COM OLEDB modal popup
 
 2007.10.30 - MyGeneration 1.3 beta4d
@@ -57,7 +70,8 @@
 2007.10.29 - MyGeneration 1.3 beta 4
 - Bugfix: Fixed MyMeta registration issues on install/uninstall
 - Fixed missing icon issue
-- Move scripting/preprocessor/typeconverter plugins into the Zeus assembly. (got rid of 5 DLLs and the need to reflect them) It still supports plugins, just should load faster without the dynamic crap.
+- Move scripting/preprocessor/typeconverter plugins into the Zeus assembly. (got rid of 5 DLLs and the need 
+  to reflect them) It still supports plugins, just should load faster without the dynamic crap.
 - Fixed bugs in Error list. Template errors clear once executed again to reveal a fresh list of errors.
 - Fixed bugs in Console. Read only and scrolls correctly to the end of the console as it writes.
 - fixed shutdown methods to be smarter - will always close immediately if closed by task manager.
@@ -76,7 +90,9 @@
 - Added support for uml1.3 import from "Enterprise Architect 2.5"
 
 2007.10.21 - MyGeneration 1.3 beta 2
-- Added MyGeneration Intellesense features. Ctrl-Space, autocomplete on ".", and calltip on "(" for methods work for the intrinsic objects. There is a lot of potential here for the future. This is just something I've implemented in C# and JScript to learn how scintilla works in this area.
+- Added MyGeneration Intellesense features. Ctrl-Space, autocomplete on ".", and calltip on "(" for 
+  methods work for the intrinsic objects. There is a lot of potential here for the future. This is just 
+  something I've implemented in C# and JScript to learn how scintilla works in this area.
 
 2007.10.19 - MyGeneration 1.3 beta 1
 - Upgraded DockPanel Suite
@@ -88,14 +104,19 @@
 - Using new toolbars and menus from 2.0. 
 - Added toolbar merging for document type dockable windows.
 - Added 3 types of plugins:
-	- Document plugin: This allows the plugin author to tie into our file menu and toolbars and open specified file type into a custom dockable document window.
-	- Content plugin: Allows a dockable window like a control bar or file browser that is not an editable/savable document, but provides some useful content/functionality to the user. The MyMeta browser and template broswer are good examples.
-	- Simple Execute plugin: This is a menu item/toolbar icon plugin that executes some code in the plugin. It doesn't tie into the dockpanel suite, but could potentially launch a modal window.
+    - Document plugin: This allows the plugin author to tie into our file menu and toolbars and open specified file 
+      type into a custom dockable document window.
+    - Content plugin: Allows a dockable window like a control bar or file browser that is not an editable/savable 
+      document, but provides some useful content/functionality to the user. The MyMeta browser and template broswer 
+      are good examples.
+    - Simple Execute plugin: This is a menu item/toolbar icon plugin that executes some code in the plugin. It 
+      doesn't tie into the dockpanel suite, but could potentially launch a modal window.
 - Added queries to proc-parameter descriptions in MyMeta for SQL Server.
 - Fixed a couple Postgresql MyMeta performance issues thanks to Michael McKean
 - Added ability to execute SQL in the current active document by clicking on the execute button in the MyMeta browser.
-- Error handling is more controlled now. We can more accurately determine if an error happened within a template or the application.
+- Error handling is more controlled now. We can more accurately determine if an error happened within a template 
+  or the application.
 - Xsd3b Plugin fixes/enhancements by k3b
-	- Bugfiexs xsd export with numeric(10,2) adn function as default-value
-	- Added more errorhandling with unique-constraints
+    - Bugfiexs xsd export with numeric(10,2) adn function as default-value
+    - Added more errorhandling with unique-constraints
 
