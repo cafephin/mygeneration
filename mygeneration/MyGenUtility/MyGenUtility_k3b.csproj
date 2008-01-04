@@ -200,9 +200,6 @@
     <Compile Include="Forms\ProjectEditor\AddEditSavedObject.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ProjectEditor\ProjectBrowser.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Forms\ProjectEditor\ProjectEditorManager.cs" />
     <Compile Include="Forms\ProjectEditor\ProjectExecuteStatus.cs">
       <SubType>Form</SubType>
@@ -246,6 +243,21 @@
     <Compile Include="Forms\TemplateEditor\AutoCompletion\VBScriptAutoCompleteHelper.cs" />
     <Compile Include="Forms\TemplateEditor\AutoCompletion\JScriptAutoCompleteHelper.cs" />
     <Compile Include="Forms\TemplateEditor\AutoCompletion\CSharpAutoCompleteHelper.cs" />
+    
+    <Compile Include="Forms\ProjectEditor\ProjectBrowser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ProjectEditor\ProjectBrowser.Designer.cs">
+      <DependentUpon>ProjectBrowser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ProjectEditor\ProjectBrowserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\ProjectEditor\ProjectBrowserControl.Designer.cs">
+      <DependentUpon>ProjectBrowserControl.cs</DependentUpon>
+    </Compile>
+    
+    
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Forms\AboutBox\AboutBox.resx">
@@ -328,8 +340,12 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProjectEditor\ProjectBrowser.resx">
-      <DependentUpon>ProjectBrowser.cs</DependentUpon>
       <SubType>Designer</SubType>
+      <DependentUpon>ProjectBrowser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ProjectEditor\ProjectBrowserControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ProjectBrowserControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProjectEditor\ProjectExecuteStatus.resx">
       <DependentUpon>ProjectExecuteStatus.cs</DependentUpon>
