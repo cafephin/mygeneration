@@ -122,7 +122,7 @@ order by colid;", this.Schema, this.Name);
 			return text;
 		}
 
-		private void LoadSubViewInfo()
+         private void LoadSubViewInfo()
 		{
 			_views  = (Views)this.dbRoot.ClassFactory.CreateViews();
 			_views.dbRoot = this._dbRoot;
@@ -134,7 +134,9 @@ order by colid;", this.Schema, this.Name);
 
 			try
 			{
-				string select = "SELECT * FROM INFORMATION_SCHEMA.VIEW_TABLE_USAGE WHERE VIEW_NAME = '" 
+                // Added sp_refreshView - thanks Mike (mr_lasseter@users.sourceforge.net)
+                string select = "exec sp_refreshView '" + this.Schema + "." + this.Name +
+                    "'; SELECT * FROM INFORMATION_SCHEMA.VIEW_TABLE_USAGE WHERE VIEW_NAME = '" 
 					+ this.Name + "' AND VIEW_SCHEMA = '" + this.Schema + "';";
 	
 				OleDbConnection cn = new OleDbConnection(dbRoot.ConnectionString);
