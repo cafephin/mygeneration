@@ -1,4 +1,4 @@
-if "%DEVENV%"=="" set DEVENV="%PROGRAMFILES%\Microsoft Visual Studio 8\Common7\IDE\VCSExpress.exe"  /rebuild release
+if "%DEVENV%"=="" set DEVENV="%PROGRAMFILES%\Microsoft Visual Studio 9.0\Common7\IDE\VCSExpress.exe"  /rebuild release
 
 %DEVENV% "..\..\..\plugins\MyMetaPlugins.sln"
 %DEVENV% "..\..\..\plugins\ZeusPlugins.sln"
@@ -21,6 +21,3 @@ DEL MyMeta.dll
 DEL PluginInterfaces.dll
 DEL Zeus.dll
 DEL MyGeneration.UI.Plugins.Sample.dll
-REM DEL SciLexer.dll
-REM DEL ScintillaNET.dll
-REM DEL WeifenLuo.WinFormsUI.Docking.dll
