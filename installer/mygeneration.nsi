@@ -42,17 +42,32 @@ ComponentText "This will install the MyGeneration Code Generation Tool 1.3 on yo
 DirText "Choose an install directory for MyGeneration 1.3."
 
 ; Install .Net Framework 2.0
-Section "Detect .Net Framework 2.0"
-  Call DotNet20Exists
+;Section "Detect .Net Framework 2.0"
+;  Call DotNet20Exists
+;  Pop $1
+;  IntCmp $1 0 SkipFramework
+;    MessageBox MB_OK|MB_ICONINFORMATION "You cannot run MyGeneration without having the .Net Framework 2.0 installed. It is not included $\r$\nin the installer because the file is huge and most people already have it installed." IDOK
+;    ExecShell open http://www.microsoft.com/downloads/details.aspx?familyid=0856EACB-4362-4B0D-8EDD-AAB15C5E04F5&displaylang=en
+;    DetailPrint ".Net Framework 2.0 not installed... Aborting Installation."
+;    Abort
+;    Goto FrameworkDone
+;	SkipFramework:
+;		DetailPrint ".Net Framework 2.0 found... Continuing."
+;	FrameworkDone:
+;SectionEnd
+
+; Install .Net Framework 3.5
+Section "Detect .Net Framework 3.5"
+  Call DotNet35Exists
   Pop $1
   IntCmp $1 0 SkipFramework
-    MessageBox MB_OK|MB_ICONINFORMATION "You cannot run MyGeneration without having the .Net Framework 2.0 installed. It is not included $\r$\nin the installer because the file is huge and most people already have it installed." IDOK
-    ExecShell open http://www.microsoft.com/downloads/details.aspx?familyid=0856EACB-4362-4B0D-8EDD-AAB15C5E04F5&displaylang=en
-    DetailPrint ".Net Framework 2.0 not installed... Aborting Installation."
+    MessageBox MB_OK|MB_ICONINFORMATION "You cannot run MyGeneration without having the .Net Framework 3.5 installed. It is not included $\r$\nin the installer because the file is huge and most people already have it installed." IDOK
+    ExecShell open http://www.microsoft.com/downloads/details.aspx?FamilyId=333325FD-AE52-4E35-B531-508D977D32A6&displaylang=en
+    DetailPrint ".Net Framework 3.5 not installed... Aborting Installation."
     Abort
     Goto FrameworkDone
 	SkipFramework:
-		DetailPrint ".Net Framework 2.0 found... Continuing."
+		DetailPrint ".Net Framework 3.5 found... Continuing."
 	FrameworkDone:
 SectionEnd
 
@@ -668,10 +683,29 @@ Function .onInit
 FunctionEnd
 
 ; detects Microsoft .Net Framework 2.0
-Function DotNet20Exists
+;Function DotNet20Exists
+;
+;	ClearErrors
+;	ReadRegStr $1 HKLM "SOFTWARE\Microsoft\.NETFramework\policy\v2.0" "50727"
+;	IfErrors MDNFNotFound MDNFFound
+;
+;	MDNFFound:
+;		Push 0
+;		Goto ExitFunction
+;		
+;	MDNFNotFound:
+;		Push 1
+;		Goto ExitFunction
+;
+;	ExitFunction:
+;
+;FunctionEnd
+
+; detects Microsoft .Net Framework 3.5
+Function DotNet35Exists
 
 	ClearErrors
-	ReadRegStr $1 HKLM "SOFTWARE\Microsoft\.NETFramework\policy\v2.0" "50727"
+	ReadRegStr $1 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v3.5" "Version"
 	IfErrors MDNFNotFound MDNFFound
 
 	MDNFFound:
