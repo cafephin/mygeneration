@@ -46,6 +46,7 @@ namespace Scintilla.Enums
         Arrows = 24,
         PixMap = 25,
         FullRectangle = 26,
+        LeftRectangle = 27,
         Character = 10000,
     }
     public enum MarkerOutline
@@ -65,6 +66,13 @@ namespace Scintilla.Enums
         Back = 2,
         Fore = 3,
     }
+    public enum IndentationGuideType
+    {
+        None = 0,
+        Real = 1,
+        LookForward = 2,
+        LookBoth = 3
+    }
     public enum StylesCommon
     {
         Default = 32,
@@ -75,7 +83,7 @@ namespace Scintilla.Enums
         IndentGuide = 37,
         CallTip = 38,
         LastPredefined = 39,
-        Max = 127,
+        Max = 255,
     }
     public enum CharacterSet
     {
@@ -329,8 +337,17 @@ namespace Scintilla.Enums
         Spice = 78,
         D = 79,
         Cmake = 80,
-        Automatic = 1000,
+        Gap = 81,
+        Plm = 82,
+        Progress = 83,
+        Abaqus = 84,
+        Asymptote = 85,
+        R = 86,
+        Magik = 87,
+        PowerShell = 88,
+        Automatic = 1000
     }
+
     public enum Events : uint
     {
         StyleNeeded = 2000,

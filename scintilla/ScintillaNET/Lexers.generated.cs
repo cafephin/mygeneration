@@ -723,6 +723,9 @@ namespace Scintilla.Lexers
         IndentGuide = 37,
         CallTip = 38,
         LastPredefined = 39,
+        SubPrototype = 40,
+        FormatIdent = 41,
+        Format = 42
     }
     public enum Ruby
     {
@@ -946,6 +949,7 @@ namespace Scintilla.Lexers
         Absf = 18,
         Tidy = 19,
         JavaStack = 20,
+        ErrorValue=21,
         GlobalDefault = 32,
         LineNumber = 33,
         BraceLight = 34,
@@ -1579,6 +1583,7 @@ namespace Scintilla.Lexers
         Document = 6,
         Text = 7,
         Error = 8,
+        Operator = 9,
         GlobalDefault = 32,
         LineNumber = 33,
         BraceLight = 34,
@@ -1586,7 +1591,7 @@ namespace Scintilla.Lexers
         ControlChar = 36,
         IndentGuide = 37,
         CallTip = 38,
-        LastPredefined = 39,
+        LastPredefined = 39
     }
     public enum Tex
     {
@@ -2198,5 +2203,90 @@ namespace Scintilla.Lexers
         IndentGuide = 37,
         CallTip = 38,
         LastPredefined = 39,
+    }
+    
+    public enum Abaqus
+    {
+        Default=0,
+        Comment=1,
+        CommentBlock=2,
+        Number=3,
+        String=4,
+        Operator=5,
+        Word=6,
+        Processor=7,
+        Command=8,
+        SlashCommand=9,
+        StarCommand=10,
+        Argument=11,
+        Function=12
+    }
+
+    public enum Asymptote
+    {
+        Default=0,
+        Comment=1,
+        CommentLine=2,
+        Number=3,
+        Word=4,
+        String=5,
+        Character=6,
+        Operator=7,
+        Identifier=8,
+        StringEOL=9,
+        CommentLineDoc=10,
+        Word2=11
+    }
+
+    public enum R 
+    {
+        Default=0,
+        Comment=1,
+        KWord=2,
+        BaseKWord=3,
+        OtherKWord=4,
+        Number=5,
+        String=6,
+        String2=7,
+        Operator=8,
+        Identifier=9,
+        Infix=10,
+        InfixEOL=11
+    }
+
+    public enum Magik
+    {
+        Default=0,
+        Comment=1,
+        String=2,
+        Character=3,
+        Number=4,
+        Identifier=5,
+        Operator=6,
+        Flow=7,
+        Container=8,
+        BracketBlock=9,
+        BraceBlock=10,
+        SqBracketBlock=11,
+        UnknownKeyword=12,
+        Keyword=13,
+        Pragma=14,
+        Symbol  =15,
+        HyperComment=16
+    }
+
+    public enum PowerShell
+    {
+        Default=0,
+        Comment=1,
+        String=2,
+        Character=3,
+        Number=4,
+        Variable=5,
+        Operator=6,
+        Identifier=7,
+        Keyword=8,
+        CmdLet=9,
+        Alias=10
     }
 }

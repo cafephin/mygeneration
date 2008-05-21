@@ -713,11 +713,11 @@ namespace Scintilla
         /// <include file='..\Help\GeneratedInclude.xml' path='root/Properties/Property[@name="IsIndentationGuides"]/*' />
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public virtual bool IsIndentationGuides
+        public virtual int IndentationGuide
         {
             get
             {
-                return (this.SendMessageDirect(2133) != 0);
+                return this.SendMessageDirect(2133);
             }
             set
             {
@@ -1118,6 +1118,20 @@ namespace Scintilla
             set
             {
                 this.SendMessageDirect(2274, value);
+            }
+        }
+        /// <include file='..\Help\GeneratedInclude.xml' path='root/Properties/Property[@name="IsEndAtLastLine"]/*' />
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public virtual bool ScrollWidthTracking
+        {
+            get
+            {
+                return (this.SendMessageDirect(2517) != 0);
+            }
+            set
+            {
+                this.SendMessageDirect(2516, value);
             }
         }
         /// <include file='..\Help\GeneratedInclude.xml' path='root/Properties/Property[@name="IsEndAtLastLine"]/*' />
@@ -2140,6 +2154,11 @@ namespace Scintilla
         public virtual void DelWordRight()
         {
             this.SendMessageDirect(2336);
+        }
+        /// <include file='..\Help\GeneratedInclude.xml' path='root/Methods/Method[@name="DelWordRight"]/*' />
+        public virtual void DelWordRightEnd()
+        {
+            this.SendMessageDirect(2518);
         }
         /// <include file='..\Help\GeneratedInclude.xml' path='root/Methods/Method[@name="LineCut"]/*' />
         public virtual void LineCut()
