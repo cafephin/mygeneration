@@ -1,13 +1,12 @@
 ﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
-    <ProductVersion>8.0.50727</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>MetaDataBrowser.ico</ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
     <AssemblyName>MyMeta</AssemblyName>
@@ -1278,6 +1277,7 @@
     <Compile Include="VistaDB\Views.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Content Include="MetaDataBrowser.ico" />
     <Content Include="MyMeta.chm" />
     <None Include="MyMeta.snk" />
     <None Include="ThirdParty\FirebirdSql.Data.Firebird.dll" />

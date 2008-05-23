@@ -1215,17 +1215,17 @@ namespace MyMeta
 		internal XmlNode DbTargetNode = null;
 
 		#endregion
-      
-        internal XmlDocument UserData = new XmlDocument();
 
-		internal bool IgnoreCase = true;
-		internal bool requiredDatabaseName = false;
-		internal bool requiresSchemaName = false;
-		internal bool StripTrailingNulls = false;
+        public XmlDocument UserData = new XmlDocument();
 
-		internal string TrailingNull = null;
+		public bool IgnoreCase = true;
+        public bool requiredDatabaseName = false;
+        public bool requiresSchemaName = false;
+        public bool StripTrailingNulls = false;
 
-		internal IClassFactory ClassFactory = null;
+        public string TrailingNull = null;
+
+        public IClassFactory ClassFactory = null;
 
 		private bool _showSystemData = false;
 

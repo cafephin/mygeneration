@@ -52,7 +52,7 @@ namespace MyMeta
 				if(DBNull.Value != o)
 				{
 					string s = (string)o;
-					if(dbRoot.StripTrailingNulls)
+					if(this.dbRoot.StripTrailingNulls)
 					{
 						if(s.EndsWith(dbRoot.TrailingNull))
 						{

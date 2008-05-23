@@ -3,6 +3,7 @@ using System.IO;
 using System.Xml;
 using System.Data;
 using System.Drawing;
+using System.Threading;
 using System.Collections;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -31,13 +32,43 @@ namespace MyGeneration
 		private System.ComponentModel.IContainer components;
 
 		private string startupPath;
-		private dbRoot myMeta;
+
+        private dbRoot myMeta
+        {
+            get
+            {
+                if (static_myMeta == null) static_myMeta = new dbRoot();
+                return static_myMeta;
+            }
+        }
 		private System.Windows.Forms.ImageList imageList1;
 		private System.Windows.Forms.TreeView MyTree;
 		public System.Windows.Forms.ImageList TreeImageList;
 		private System.Windows.Forms.CheckBox chkSystem;
         private ToolBarButton toolBarButtonExecute;
 		private System.Windows.Forms.ToolBarButton toolBarButton2;
+
+        private delegate void AddRootNodeCallback();
+
+        private static TreeNode static_rootNode;
+        private static dbRoot static_myMeta;
+
+        private class AsyncLoadInfo 
+        {
+            public TreeNode RootNode; 
+            public dbRoot MyMeta; 
+            public bool ShowSystemEntities; 
+            public string Error;
+            public TreeNode BlankNode
+            {
+                get
+                {
+                    TreeNode blankNode = new TreeNode(string.Empty);
+                    blankNode.Tag = "Blank";
+                    return blankNode;
+                }
+            }
+        }
 
         public MetaDataBrowser(IMyGenerationMDI mdi, MetaProperties p, UserMetaData u, GlobalUserMetaData g)
 		{
@@ -226,30 +257,192 @@ namespace MyGeneration
 		}
 		#endregion
 
-		public void DefaultSettingsChanged(DefaultSettings settings)
+        #region Load Tree Asyncronously
+        private IAsyncResult asyncres;
+
+        private bool IsTreeBusy
+        {
+            get
+            {
+                return ((asyncres != null) && !asyncres.IsCompleted);
+            }
+        }
+
+        public void SetupAsync()
+        {
+            if (IsTreeBusy) return;
+
+            this.toolBar1.Enabled = false;
+
+            this.Text = "MyMeta Browser (" + DefaultSettings.Instance.DbDriver + ")";
+
+            TreeNode loadingNode = new TreeNode("Tree Loading...");
+
+            static_rootNode = new TreeNode();
+
+            this.MyTree.BeginUpdate();
+            this.MyTree.Nodes.Clear();
+            this.MyTree.Nodes.Add(loadingNode);
+            this.MyTree.EndUpdate();
+            this.MyTree.Invalidate();
+
+            AsyncLoadInfo ali = new AsyncLoadInfo();
+            ali.MyMeta = myMeta;
+            ali.RootNode = static_rootNode;
+            ali.ShowSystemEntities = this.chkSystem.Checked;
+            ali.Error = string.Empty;
+
+            this.Invalidate();
+            this.Refresh();
+
+            ParameterizedThreadStart ts = new ParameterizedThreadStart(SetupAndBuildNodeTree);
+            asyncres = ts.BeginInvoke(ali, new AsyncCallback(SetupAsyncCompleted), null);
+        }
+
+        private void SetupAsyncCompleted(IAsyncResult ar)
+        {
+            this.AddRootNodeThreadSafe();
+        }
+
+        private void AddRootNodeThreadSafe()
+        {
+            if (this.InvokeRequired)
+            {
+                AddRootNodeCallback d = new AddRootNodeCallback(AddRootNodeThreadSafe);
+                this.Invoke(d, new object[] { });
+            }
+            else
+            {
+                this.MyTree.BeginUpdate();
+                this.MyTree.Nodes.Clear();
+                if (static_rootNode != null)
+                {
+                    foreach (TreeNode root in static_rootNode.Nodes)
+                    {
+                        this.MyTree.Nodes.Add(root);
+                    }
+                }
+
+                this.MyTree.EndUpdate();
+                this.MyTree.Scrollable = true;
+
+                this.UserData.MetaBrowserRefresh();
+                this.GlobalUserData.MetaBrowserRefresh();
+                this.MetaData.MetaBrowserRefresh();
+
+                this.toolBar1.Enabled = true;
+                this.Invalidate();
+                this.Refresh();
+            }
+        }
+
+        private static void SetupAndBuildNodeTree(object parentObj)
+        {
+            Thread.Sleep(1000 * 5);
+
+            AsyncLoadInfo ali = parentObj as AsyncLoadInfo;
+            DefaultSettings settings = DefaultSettings.Instance;
+
+            //Setup
+            try 
+            {
+                if (string.IsNullOrEmpty(ali.Error)) 
+				{
+                    ali.MyMeta.Connect(settings.DbDriver, settings.ConnectionString);
+                    ali.MyMeta.LanguageMappingFileName = settings.LanguageMappingFile;
+                    ali.MyMeta.Language = settings.Language;
+                    ali.MyMeta.DbTargetMappingFileName = settings.DbTargetMappingFile;
+                    ali.MyMeta.DbTarget = settings.DbTarget;
+                    ali.MyMeta.UserMetaDataFileName = settings.UserMetaDataFileName;
+
+                    ali.MyMeta.DomainOverride = settings.DomainOverride;
+
+                    ali.MyMeta.ShowSystemData = ali.ShowSystemEntities;
+				}
+			}
+			catch(Exception ex)
+			{
+                ali.Error = ex.Message;
+			}
+
+            //build tree
+			InitializeTreeAsync(ali);
+        }
+
+        private static void InitializeTreeAsync(AsyncLoadInfo ali)
+        {
+            string nodeText = string.IsNullOrEmpty(ali.Error) ? ali.MyMeta.DriverString : ali.Error;
+
+            TreeNode serverNode = new TreeNode("MyMeta (" + nodeText + ")");
+            serverNode.Tag = new NodeData(NodeType.MYMETA, ali.MyMeta);
+            serverNode.SelectedImageIndex = serverNode.ImageIndex = 21;
+            ali.RootNode.Nodes.Add(serverNode);
+
+            if (!string.IsNullOrEmpty(ali.Error))
+            {
+                // There's an error when trying to connect, let's bail with the error text in the node 
+                serverNode.Expand();
+            }
+            else if (ali.MyMeta.Databases != null)
+            {
+                try
+                {
+                    TreeNode databasesNode = new TreeNode("Databases");
+                    databasesNode.Tag = new NodeData(NodeType.DATABASES, ali.MyMeta.Databases);
+                    databasesNode.SelectedImageIndex = databasesNode.ImageIndex = 0;
+
+                    serverNode.Nodes.Add(databasesNode);
+
+                    foreach (IDatabase database in ali.MyMeta.Databases)
+                    {
+                        TreeNode dbNode = new TreeNode(database.Name);
+                        dbNode.Tag = new NodeData(NodeType.DATABASE, database);
+                        dbNode.SelectedImageIndex = dbNode.ImageIndex = 1;
+                        dbNode.Nodes.Add(ali.BlankNode);
+                        databasesNode.Nodes.Add(dbNode);
+                    }
+
+                    serverNode.Expand();
+                    databasesNode.Expand();
+                }
+                catch (Exception ex)
+                {
+                    if (serverNode != null)
+                    {
+                        serverNode.Text = "MyMeta (" + ex.Message + " )";
+                    }
+                }
+            }
+        }
+        #endregion
+
+        public void DefaultSettingsChanged(DefaultSettings settings)
 		{
 			bool doRefresh = false;
 
-			try 
-			{
-				if ((myMeta.DriverString != settings.DbDriver) ||
-					(myMeta.ConnectionString != settings.ConnectionString ) ||
-					(myMeta.LanguageMappingFileName != settings.LanguageMappingFile ) ||
-					(myMeta.Language != settings.Language ) ||
-					(myMeta.DbTargetMappingFileName != settings.DbTargetMappingFile ) ||
-					(myMeta.DbTarget != settings.DbTarget ) ||
-					(myMeta.UserMetaDataFileName != settings.UserMetaDataFileName ) ||
-					(myMeta.DomainOverride != settings.DomainOverride )) 
-				{
-					doRefresh = true;
-				}
-			}
-			catch 
-			{
-				doRefresh = true;
-			}
-			
-			if (doRefresh) this.Setup(settings);
+            if (!IsTreeBusy)
+            {
+                try
+                {
+                    if ((myMeta.DriverString != settings.DbDriver) ||
+                        (myMeta.ConnectionString != settings.ConnectionString) ||
+                        (myMeta.LanguageMappingFileName != settings.LanguageMappingFile) ||
+                        (myMeta.Language != settings.Language) ||
+                        (myMeta.DbTargetMappingFileName != settings.DbTargetMappingFile) ||
+                        (myMeta.DbTarget != settings.DbTarget) ||
+                        (myMeta.UserMetaDataFileName != settings.UserMetaDataFileName) ||
+                        (myMeta.DomainOverride != settings.DomainOverride))
+                    {
+                        doRefresh = true;
+                    }
+                }
+                catch
+                {
+                    doRefresh = true;
+                }
+            }
+
+            if (doRefresh) this.SetupAsync();
 		}
 
 		private void OpenUserData()
@@ -276,25 +469,34 @@ namespace MyGeneration
             this.startupPath = Zeus.FileTools.ApplicationPath;
 
 			DefaultSettings settings = DefaultSettings.Instance;
-			this.Setup(settings);
+            
+            this.Setup();
 
-			MyTree.Scrollable = true;
+            //this.Setup(settings);
+
 		}
+        
 #if !DEBUG
 		private static bool isFirstRun = true;
 #endif
-        private void Setup(DefaultSettings settings)
+        private void Setup()
+		{
+            SetupAsync();
+           //Setup(DefaultSettings.Instance); 
+        }
+        
+        /*private void Setup(DefaultSettings settings)
 		{
 			string error = string.Empty;
 
 			try
 			{
-				myMeta = new dbRoot();
+				//myMeta = new dbRoot();
 				this.Text = "MyMeta Browser (" + settings.DbDriver + ")";
 
+#if !DEBUG
 				if (settings.DbDriver.ToUpper() != "NONE")
                 {
-#if !DEBUG
                     TestConnectionForm tcf = new TestConnectionForm(settings.DbDriver, settings.ConnectionString, true);
 					if (isFirstRun) 
 					{
@@ -310,10 +512,10 @@ namespace MyGeneration
 							error = "Connection Error...";
 					}
 					tcf = null;
-#endif
 				}
+#endif
 
-				if (error == string.Empty) 
+                if (error == string.Empty) 
 				{
 					myMeta.Connect(settings.DbDriver, settings.ConnectionString);
 					myMeta.LanguageMappingFileName	= settings.LanguageMappingFile;
@@ -333,15 +535,17 @@ namespace MyGeneration
 			}
 
 			this.InitializeTree(myMeta, error);
-		}
-
-		/*private void menuItemClose_Click(object sender, System.EventArgs e)
-		{
-			this.Close();
 		}*/
 
+        /*private void menuItemClose_Click(object sender, System.EventArgs e)
+        {
+            this.Close();
+        }*/
+
 		private void toolBar1_ButtonClick(object sender, System.Windows.Forms.ToolBarButtonClickEventArgs e)
-		{
+        {
+            if (IsTreeBusy) return; 
+
 			switch(e.Button.Tag as string)
 			{		
 				case "refresh":
@@ -357,12 +561,9 @@ namespace MyGeneration
 						}
 					}
 
-					DefaultSettings settings = DefaultSettings.Instance;
-					this.Setup(settings);
-
-					this.UserData.MetaBrowserRefresh();
-					this.GlobalUserData.MetaBrowserRefresh();
-					this.MetaData.MetaBrowserRefresh();
+					//DefaultSettings settings = DefaultSettings.Instance;
+					//this.Setup(settings);
+                    this.Setup();
 					break;
                 case "execute":
                     if (this.mdi.DockPanel.ActiveDocument != null)
@@ -381,16 +582,17 @@ namespace MyGeneration
 
 		private void chkSystem_CheckedChanged(object sender, System.EventArgs e)
 		{
-			DefaultSettings settings = DefaultSettings.Instance;
-			this.Setup(settings);
+			//DefaultSettings settings = DefaultSettings.Instance;
+			//this.Setup(settings);
+            this.Setup();
 		}
 
-		public void InitializeTree(dbRoot myMeta, string error)
+		/*public void InitializeTree(dbRoot myMeta, string error)
 		{
 			this.MyTree.BeginUpdate();
 
 			this.MyTree.Nodes.Clear();
-			this.myMeta = myMeta;
+			//this.myMeta = myMeta;
 
 			string nodeText = error == "" ? myMeta.DriverString : error;
 
@@ -443,7 +645,7 @@ namespace MyGeneration
 					rootNode.Text = "MyMeta (" + ex.Message + " )";
 				}
 			}
-		}
+		}*/
 
 		public string ConfigurationPath
 		{
@@ -530,7 +732,7 @@ namespace MyGeneration
 		{
 			try
 			{
-				if(null == this.MetaData) return;
+                if (null == this.MetaData || e.Node.Tag == null) return;
 
 				NodeData data  = (NodeData)e.Node.Tag;
 				MetaObject obj = null;
@@ -806,6 +1008,8 @@ namespace MyGeneration
 
 		private void ExpandDatabase(IDatabase database, TreeNode dbNode)
 		{
+            if (IsTreeBusy) return; 
+
 			if(HasBlankNode(dbNode))
 			{
 				IDatabase db = myMeta.Databases[database.Name];
@@ -1127,7 +1331,9 @@ namespace MyGeneration
 		}
 
 		public bool SaveUserMetaData()
-		{
+        {
+            if (IsTreeBusy) return false; 
+
 			bool saved = myMeta.SaveUserMetaData();
 			this.IsUserDataDirty = false;
 			return saved;
@@ -1151,6 +1357,8 @@ namespace MyGeneration
 
         private void MetaDataBrowser_Enter(object sender, EventArgs e)
         {
+            if (IsTreeBusy) return; 
+
             if (this.toolBar1.Visible == false)
             {
                 this.toolBar1.Visible = true;
