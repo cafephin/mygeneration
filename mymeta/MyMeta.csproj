@@ -1289,15 +1289,19 @@
     <None Include="ThirdParty\SQLite3.dll" />
     <EmbeddedResource Include="VistaDB\Source\VistaDBDataSet.resx">
       <DependentUpon>VistaDBDataSet.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="VistaDB\Source\vnCommand.resx">
       <DependentUpon>vnCommand.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="VistaDB\Source\vnCommandBuilder.resx">
       <DependentUpon>vnCommandBuilder.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="VistaDB\Source\vnConnection.resx">
       <DependentUpon>vnConnection.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

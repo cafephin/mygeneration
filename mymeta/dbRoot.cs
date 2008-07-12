@@ -128,7 +128,9 @@ namespace MyMeta
 			_theConnection = new OleDbConnection();
 			_isConnected = false;
 			_parsedConnectionString = null;
-			_defaultDatabase = "";
+            _defaultDatabase = "";
+            _lastConnectionException = null;
+            _lastConnectionError = string.Empty;
 
 			// Language
 			_languageMappingFileName = string.Empty;
@@ -311,8 +313,8 @@ namespace MyMeta
         ///		<item><term>"ISERIES"</term><description>PROVIDER=IBMDA400; DATA SOURCE=MY_SYSTEM_NAME;USER ID=myUserName;PASSWORD=myPwd;DEFAULT COLLECTION=MY_LIBRARY;</description></item>		
 		///	</list>
 		///	</remarks>
-		public bool Connect(string driverIn, string connectionString)
-		{
+        public bool Connect(string driverIn, string connectionString)
+        {
             string driver = driverIn.ToUpper();
             switch (driver)
             {
@@ -323,7 +325,7 @@ namespace MyMeta
 #endif
                 case MyMetaDrivers.SQL:
                 case MyMetaDrivers.Oracle:
-				case MyMetaDrivers.Access:
+                case MyMetaDrivers.Access:
                 case MyMetaDrivers.MySql:
                 case MyMetaDrivers.MySql2:
                 case MyMetaDrivers.DB2:
@@ -339,7 +341,7 @@ namespace MyMeta
                         MyMetaDrivers.GetDbDriverFromName(driver),
                         driver,
                         connectionString);
-				default:
+                default:
                     if (Plugins.ContainsKey(driver))
                     {
                         return this.Connect(dbDriver.Plugin, driver, connectionString);
@@ -348,8 +350,8 @@ namespace MyMeta
                     {
                         return false;
                     }
-			}
-		}
+            }
+        }
 
         /// <summary>
 		/// Same as <see cref="Connect(string, string)"/>(string, string) only this uses an enumeration.  
@@ -373,292 +375,271 @@ namespace MyMeta
 		{
 			Reset();
 
-			string dbName;
-			int index;
-
-			this._connectionString = connectionString.Replace("\"", "");
-			this._driver = driver;
-
-#region not fully implemented yet
-/*
-            InternalDriver drv = InternalDriver.Get(settings.DbDriver);
-            if (drv != null)
+            try
             {
-                this._driverString = drv.DriverId;
-                this.StripTrailingNulls = drv.StripTrailingNulls;
-                this.requiredDatabaseName = drv.RequiredDatabaseName;
+                string dbName;
+                int index;
 
-                IDbConnection con = null;
-		        try
-		        {
-                    ClassFactory = drv.CreateBuildInClass();
-                    if (ClassFactory != null)
-                        con = ClassFactory.CreateConnection();
-                    else
-                    {
-                        IMyMetaPlugin plugin = drv.CreateMyMetaPluginClass();
-                        if (plugin != null)
+                this._connectionString = connectionString.Replace("\"", "");
+                this._driver = driver;
+
+                switch (_driver)
+                {
+                    case dbDriver.SQL:
+
+                        ConnectUsingOleDb(_driver, _connectionString);
+                        this._driverString = MyMetaDrivers.SQL;
+                        this.StripTrailingNulls = false;
+                        this.requiredDatabaseName = true;
+                        ClassFactory = new MyMeta.Sql.ClassFactory();
+                        break;
+
+                    case dbDriver.Oracle:
+
+                        ConnectUsingOleDb(_driver, _connectionString);
+                        this._driverString = MyMetaDrivers.Oracle;
+                        this.StripTrailingNulls = false;
+                        this.requiredDatabaseName = true;
+                        ClassFactory = new MyMeta.Oracle.ClassFactory();
+                        break;
+
+                    case dbDriver.Access:
+
+                        ConnectUsingOleDb(_driver, _connectionString);
+                        this._driverString = MyMetaDrivers.Access;
+                        this.StripTrailingNulls = false;
+                        this.requiredDatabaseName = false;
+                        ClassFactory = new MyMeta.Access.ClassFactory();
+                        break;
+
+                    case dbDriver.MySql:
+
+                        ConnectUsingOleDb(_driver, _connectionString);
+                        this._driverString = MyMetaDrivers.MySql;
+                        this.StripTrailingNulls = true;
+                        this.requiredDatabaseName = true;
+                        ClassFactory = new MyMeta.MySql.ClassFactory();
+                        break;
+
+                    case dbDriver.MySql2:
+
+                        using (MySqlConnection mysqlconn = new MySqlConnection(_connectionString))
                         {
-                            MyMetaPluginContext pluginContext = new MyMetaPluginContext(drv.DriverId, this._connectionString);
-                            plugin.Initialize(pluginContext);
-                            con = plugin.NewConnection;
+                            mysqlconn.Close();
+                            mysqlconn.Open();
+                            this._defaultDatabase = mysqlconn.Database;
                         }
-                    }
-                    if (con != null)
-                    {
-                        con.ConnectionString = this._connectionString;
-			            // cn.Open();
-                    }
-			        this._defaultDatabase = drv.GetDataBaseName(cn);
-		        }
-		        catch(Exception Ex)
-		        {
-			        throw Ex;
-		        } finally {
-                    if (con != null)
-			            cn.Close();
+
+                        this._driverString = MyMetaDrivers.MySql2;
+                        this.StripTrailingNulls = true;
+                        this.requiredDatabaseName = true;
+                        ClassFactory = new MyMeta.MySql5.ClassFactory();
+                        break;
+
+                    case dbDriver.DB2:
+
+                        ConnectUsingOleDb(_driver, _connectionString);
+                        this._driverString = MyMetaDrivers.DB2;
+                        this.StripTrailingNulls = false;
+                        this.requiredDatabaseName = false;
+                        ClassFactory = new MyMeta.DB2.ClassFactory();
+                        break;
+
+                    case dbDriver.ISeries:
+
+                        ConnectUsingOleDb(_driver, _connectionString);
+                        this._driverString = MyMetaDrivers.ISeries;
+                        this.StripTrailingNulls = false;
+                        this.requiredDatabaseName = false;
+                        ClassFactory = new MyMeta.ISeries.ClassFactory();
+                        break;
+
+                    case dbDriver.Pervasive:
+
+                        ConnectUsingOleDb(_driver, _connectionString);
+                        this._driverString = MyMetaDrivers.Pervasive;
+                        this.StripTrailingNulls = false;
+                        this.requiredDatabaseName = false;
+                        ClassFactory = new MyMeta.Pervasive.ClassFactory();
+                        break;
+
+                    case dbDriver.PostgreSQL:
+
+                        using (NpgsqlConnection cn = new Npgsql.NpgsqlConnection(_connectionString))
+                        {
+                            cn.Open();
+                            this._defaultDatabase = cn.Database;
+                        }
+
+                        this._driverString = MyMetaDrivers.PostgreSQL;
+                        this.StripTrailingNulls = false;
+                        this.requiredDatabaseName = false;
+                        ClassFactory = new MyMeta.PostgreSQL.ClassFactory();
+                        break;
+
+                    case dbDriver.PostgreSQL8:
+
+                        using (NpgsqlConnection cn8 = new Npgsql.NpgsqlConnection(_connectionString))
+                        {
+                            cn8.Open();
+                            this._defaultDatabase = cn8.Database;
+                        }
+
+                        this._driverString = MyMetaDrivers.PostgreSQL8;
+                        this.StripTrailingNulls = false;
+                        this.requiredDatabaseName = false;
+                        ClassFactory = new MyMeta.PostgreSQL8.ClassFactory();
+                        break;
+
+                    case dbDriver.Firebird:
+
+                        using (FbConnection cn1 = new FirebirdSql.Data.FirebirdClient.FbConnection(_connectionString))
+                        {
+                            cn1.Open();
+                            dbName = cn1.Database;
+                        }
+
+                        try
+                        {
+                            index = dbName.LastIndexOfAny(new char[] { '\\' });
+                            if (index >= 0)
+                            {
+                                this._defaultDatabase = dbName.Substring(index + 1);
+                            }
+                        }
+                        catch { }
+
+                        this._driverString = MyMetaDrivers.Firebird;
+                        this.StripTrailingNulls = false;
+                        this.requiredDatabaseName = false;
+                        ClassFactory = new MyMeta.Firebird.ClassFactory();
+                        break;
+
+                    case dbDriver.Interbase:
+
+                        using (FbConnection cn2 = new FirebirdSql.Data.FirebirdClient.FbConnection(_connectionString))
+                        {
+                            cn2.Open();
+                            this._defaultDatabase = cn2.Database;
+                        }
+
+                        this._driverString = MyMetaDrivers.Interbase;
+                        this.StripTrailingNulls = false;
+                        this.requiredDatabaseName = false;
+                        ClassFactory = new MyMeta.Firebird.ClassFactory();
+                        break;
+
+                    case dbDriver.SQLite:
+
+                        using (SQLiteConnection sqliteConn = new SQLiteConnection(_connectionString))
+                        {
+                            sqliteConn.Open();
+                            dbName = sqliteConn.Database;
+                        }
+                        this._driverString = MyMetaDrivers.SQLite;
+                        this.StripTrailingNulls = false;
+                        this.requiredDatabaseName = false;
+                        ClassFactory = new MyMeta.SQLite.ClassFactory();
+                        break;
+#if !IGNORE_VISTA
+                    case dbDriver.VistaDB:
+
+                        try
+                        {
+                            MyMeta.VistaDB.MetaHelper mh = new MyMeta.VistaDB.MetaHelper();
+                            dbName = mh.LoadDatabases(_connectionString);
+
+                            if (dbName == "") return false;
+
+                            this._defaultDatabase = dbName;
+
+                            this._driverString = MyMetaDrivers.VistaDB;
+                            this.StripTrailingNulls = false;
+                            this.requiredDatabaseName = false;
+                            ClassFactory = new MyMeta.VistaDB.ClassFactory();
+                        }
+                        catch
+                        {
+                            throw new Exception("Invalid VistaDB connection or VistaDB not installed");
+                        }
+
+                        break;
+#endif
+                    case dbDriver.Advantage:
+
+                        ConnectUsingOleDb(_driver, _connectionString);
+                        this._driverString = MyMetaDrivers.Advantage;
+                        this.StripTrailingNulls = false;
+                        this.requiredDatabaseName = false;
+                        ClassFactory = new MyMeta.Advantage.ClassFactory();
+                        string[] s = this._defaultDatabase.Split('.');
+                        this._defaultDatabase = s[0];
+                        break;
+
+                    case dbDriver.Plugin:
+
+                        IMyMetaPlugin plugin;
+                        using (IDbConnection connection = this.GetConnectionFromPlugin(pluginName, _connectionString, out plugin))
+                        {
+                            if (connection != null)
+                                connection.Open();
+                            dbName = connection.Database;
+                        }
+                        this._driverString = pluginName;
+                        //this.StripTrailingNulls = plugin.StripTrailingNulls;
+                        //this.requiredDatabaseName = plugin.RequiredDatabaseName;
+                        ClassFactory = new MyMeta.Plugin.ClassFactory(plugin);
+                        break;
+
+                    case dbDriver.None:
+
+                        this._driverString = MyMetaDrivers.None;
+                        break;
                 }
             }
-            else
+            catch (OleDbException ex)
             {
-                // Error
-            }           
-*/
-#endregion not fully implemented yet
-
-			switch(_driver)
-			{
-				case dbDriver.SQL:
-
-					ConnectUsingOleDb(_driver, _connectionString);
-                    this._driverString = MyMetaDrivers.SQL;
-					this.StripTrailingNulls = false;
-					this.requiredDatabaseName = true;
-					ClassFactory = new MyMeta.Sql.ClassFactory();
-					break;
-
-				case dbDriver.Oracle:
-
-					ConnectUsingOleDb(_driver, _connectionString);
-                    this._driverString = MyMetaDrivers.Oracle;
-					this.StripTrailingNulls = false;
-					this.requiredDatabaseName = true;
-					ClassFactory = new MyMeta.Oracle.ClassFactory();
-					break;
-
-				case dbDriver.Access:
-
-					ConnectUsingOleDb(_driver, _connectionString);
-                    this._driverString = MyMetaDrivers.Access;
-					this.StripTrailingNulls = false;
-					this.requiredDatabaseName = false;
-					ClassFactory = new MyMeta.Access.ClassFactory();
-					break;
-
-				case dbDriver.MySql:
-
-					ConnectUsingOleDb(_driver, _connectionString);
-                    this._driverString = MyMetaDrivers.MySql;
-					this.StripTrailingNulls = true;
-					this.requiredDatabaseName = true;
-					ClassFactory = new MyMeta.MySql.ClassFactory();
-					break;
-
-				case dbDriver.MySql2:
-
-                    using (MySqlConnection mysqlconn = new MySqlConnection(_connectionString))
-                    {
-                        mysqlconn.Close();
-                        mysqlconn.Open();
-                        this._defaultDatabase = mysqlconn.Database;
-                    }
-
-                    this._driverString = MyMetaDrivers.MySql2;
-					this.StripTrailingNulls = true;
-					this.requiredDatabaseName = true;
-					ClassFactory = new MyMeta.MySql5.ClassFactory();
-					break;
-
-				case dbDriver.DB2:
-
-					ConnectUsingOleDb(_driver, _connectionString);
-                    this._driverString = MyMetaDrivers.DB2;
-					this.StripTrailingNulls = false;
-					this.requiredDatabaseName = false;
-					ClassFactory = new MyMeta.DB2.ClassFactory();
-					break;
-
-				case dbDriver.ISeries:
-
-					ConnectUsingOleDb(_driver, _connectionString);
-                    this._driverString = MyMetaDrivers.ISeries;
-					this.StripTrailingNulls = false;
-					this.requiredDatabaseName = false;
-					ClassFactory = new MyMeta.ISeries.ClassFactory();
-					break;
-
-				case dbDriver.Pervasive:
-
-					ConnectUsingOleDb(_driver, _connectionString);
-                    this._driverString = MyMetaDrivers.Pervasive;
-					this.StripTrailingNulls = false;
-					this.requiredDatabaseName = false;
-					ClassFactory = new MyMeta.Pervasive.ClassFactory();
-					break;
-
-				case dbDriver.PostgreSQL:
-
-                    using (NpgsqlConnection cn = new Npgsql.NpgsqlConnection(_connectionString))
-                    {
-                        cn.Open();
-                        this._defaultDatabase = cn.Database;
-                    }
-
-                    this._driverString = MyMetaDrivers.PostgreSQL;
-					this.StripTrailingNulls = false;
-					this.requiredDatabaseName = false;
-					ClassFactory = new MyMeta.PostgreSQL.ClassFactory();
-					break;
-
-				case dbDriver.PostgreSQL8:
-
-                    using (NpgsqlConnection cn8 = new Npgsql.NpgsqlConnection(_connectionString))
-                    {
-                        cn8.Open();
-                        this._defaultDatabase = cn8.Database;
-                    }
-
-                    this._driverString = MyMetaDrivers.PostgreSQL8;
-					this.StripTrailingNulls = false;
-					this.requiredDatabaseName = false;
-					ClassFactory = new MyMeta.PostgreSQL8.ClassFactory();
-					break;
-
-				case dbDriver.Firebird:
-
-                    using (FbConnection cn1 = new FirebirdSql.Data.FirebirdClient.FbConnection(_connectionString))
-                    {
-                        cn1.Open();
-                        dbName = cn1.Database;
-                    }
-
-					try
-					{
-						index = dbName.LastIndexOfAny(new char[]{'\\'});
-						if (index >= 0)
-						{
-							this._defaultDatabase = dbName.Substring(index + 1);
-						}
-					}
-					catch {}
-
-                    this._driverString = MyMetaDrivers.Firebird;
-					this.StripTrailingNulls = false;
-					this.requiredDatabaseName = false;
-					ClassFactory = new MyMeta.Firebird.ClassFactory();
-					break;
-
-				case dbDriver.Interbase:
-
-                    using (FbConnection cn2 = new FirebirdSql.Data.FirebirdClient.FbConnection(_connectionString))
-                    {
-                        cn2.Open();
-                        this._defaultDatabase = cn2.Database;
-                    }
-
-                    this._driverString = MyMetaDrivers.Interbase;
-					this.StripTrailingNulls = false;
-					this.requiredDatabaseName = false;
-					ClassFactory = new MyMeta.Firebird.ClassFactory();
-					break;
-
-				case dbDriver.SQLite:
-
-                    using (SQLiteConnection sqliteConn = new SQLiteConnection(_connectionString))
-                    {
-                        sqliteConn.Open();
-                        dbName = sqliteConn.Database;
-                    }
-                    this._driverString = MyMetaDrivers.SQLite;
-					this.StripTrailingNulls = false;
-					this.requiredDatabaseName = false;
-					ClassFactory = new MyMeta.SQLite.ClassFactory();
-					break;
-#if !IGNORE_VISTA
-				case dbDriver.VistaDB:
-
-					try
-					{
-						MyMeta.VistaDB.MetaHelper mh = new MyMeta.VistaDB.MetaHelper();
-						dbName = mh.LoadDatabases(_connectionString);
-
-						if(dbName == "") return false;
-
-						this._defaultDatabase = dbName;
-
-                        this._driverString = MyMetaDrivers.VistaDB;
-						this.StripTrailingNulls = false;
-						this.requiredDatabaseName = false;
-						ClassFactory = new MyMeta.VistaDB.ClassFactory();
-					}
-					catch
-					{
-						throw new Exception("Invalid VistaDB connection or VistaDB not installed");
-					}
-
-					break;
-#endif
-				case dbDriver.Advantage:
-
-					ConnectUsingOleDb(_driver, _connectionString);
-                    this._driverString = MyMetaDrivers.Advantage;
-					this.StripTrailingNulls = false;
-					this.requiredDatabaseName = false;
-					ClassFactory = new MyMeta.Advantage.ClassFactory();
-					string[] s = this._defaultDatabase.Split('.');
-					this._defaultDatabase = s[0];
-					break;
-
-                case dbDriver.Plugin:
-
-                    IMyMetaPlugin plugin;
-                    using (IDbConnection connection = this.GetConnectionFromPlugin(pluginName, _connectionString, out plugin))
-                    {
-                        if (connection != null)
-                            connection.Open();
-                        dbName = connection.Database;
-                    }
-                    this._driverString = pluginName;
-                    //this.StripTrailingNulls = plugin.StripTrailingNulls;
-                    //this.requiredDatabaseName = plugin.RequiredDatabaseName;
-                    ClassFactory = new MyMeta.Plugin.ClassFactory(plugin);
-                    break;
-
-				case dbDriver.None:
-
-                    this._driverString = MyMetaDrivers.None;
-					break;
-			}
+                this._lastConnectionException = ex;
+                foreach (OleDbError error in ex.Errors)
+                {
+                    if (this._lastConnectionError != string.Empty) this._lastConnectionError += Environment.NewLine;
+                    this._lastConnectionError += ex;
+                }
+            }
+            catch (Exception ex)
+            {
+                this._lastConnectionException = ex;
+                this._lastConnectionError = ex.Message;
+            }
 
 			_isConnected = true;
 			return true;
 		}
 
-		private void ConnectUsingOleDb(dbDriver driver, string connectionString)
-		{
-			try
-			{
-				OleDbConnection cn = new OleDbConnection(connectionString.Replace("\"", "")); 
-				cn.Open();
-				this._defaultDatabase = GetDefaultDatabase(cn, driver);
-				cn.Close();
-			}
-			catch(OleDbException Ex)
-			{
-				throw Ex;
-			}
-		}
+        private void ConnectUsingOleDb(dbDriver driver, string connectionString)
+        {
+            OleDbConnection cn = new OleDbConnection(connectionString.Replace("\"", ""));
+            cn.Open();
+            this._defaultDatabase = GetDefaultDatabase(cn, driver);
+            cn.Close();
+        }
 
+        public string LastConnectionError
+        {
+            get
+            {
+                return _lastConnectionError;
+            }
+        }
+
+        [ComVisible(false)]
+        public Exception LastConnectionException
+        {
+            get
+            {
+                return _lastConnectionException;
+            }
+        }
 
 		internal OleDbConnection TheConnection
 		{
@@ -1238,6 +1219,8 @@ namespace MyMeta
 		private bool _isConnected = false;
 		private Hashtable _parsedConnectionString = null;
         private bool _domainOverride = true;
+        private string _lastConnectionError = string.Empty;
+        private Exception _lastConnectionException = null;
 
 		private XmlNode _xmlNode = null;
 
