@@ -142,14 +142,14 @@ namespace MyGeneration
 		private void NewAbout_Load(object sender, System.EventArgs e)
 		{
             this.fun1.Start();
-			Assembly asmblyMyGen = System.Reflection.Assembly.GetAssembly(typeof(NewAbout));
+            Assembly asmblyMyGen = System.Reflection.Assembly.GetEntryAssembly();
 			Assembly asmblyZeus = System.Reflection.Assembly.GetAssembly(typeof(Zeus.ZeusTemplate));
 			Assembly asmblyPlugins = System.Reflection.Assembly.GetAssembly(typeof(Zeus.IZeusCodeSegment));
 			Assembly asmblyMyMeta = System.Reflection.Assembly.GetAssembly(typeof(MyMeta.Database));
 			Assembly asmblyScintilla = System.Reflection.Assembly.GetAssembly(typeof(Scintilla.ScintillaControl));
 			Assembly asmblyWinFormsUI = System.Reflection.Assembly.GetAssembly(typeof(DockContent));
 
-			lstBoxProducts.Items.Add("MyGeneration".PadRight(29) + asmblyMyGen.GetName().Version.ToString());
+            lstBoxProducts.Items.Add("MyGeneration".PadRight(29) + asmblyMyGen.GetName().Version.ToString());
 			lstBoxProducts.Items.Add("MyMeta".PadRight(29) + asmblyMyMeta.GetName().Version.ToString());
 			lstBoxProducts.Items.Add("Zeus Parser".PadRight(29) + asmblyZeus.GetName().Version.ToString());
 			lstBoxProducts.Items.Add("Plug-in Interface".PadRight(29) + asmblyPlugins.GetName().Version.ToString());
