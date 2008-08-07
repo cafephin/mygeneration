@@ -380,7 +380,7 @@ namespace MyMeta
 
 #if ENTERPRISE
 		[DispId(0)]
-#endif		
+#endif
 		override public string Alias
 		{
 			get
@@ -410,6 +410,21 @@ namespace MyMeta
 				}
 			}
 		}
+
+        public virtual string XmlMetaDataKey
+        {
+            get 
+            {
+                if (!string.IsNullOrEmpty(_customXmlMetaDataKey))
+                {
+                    return _customXmlMetaDataKey;
+                }
+                else
+                {
+                    return Name;
+                }
+            }
+        }
 
 		override public string Name
 		{
@@ -484,7 +499,7 @@ namespace MyMeta
 		{ 
 			get
 			{
-				return Databases.UserDataXPath + @"/Database[@p='" + this.Name + "']";
+				return Databases.UserDataXPath + @"/Database[@p='" + this.XmlMetaDataKey + "']";
 			} 
 		}
 
@@ -495,7 +510,7 @@ namespace MyMeta
 		{
 			get
 			{
-				return @"//MyMeta/Global/Databases/Database[@p='" + this.Name + "']";
+                return @"//MyMeta/Global/Databases/Database[@p='" + this.XmlMetaDataKey + "']";
 			}
 		}
 
@@ -514,7 +529,7 @@ namespace MyMeta
 				if(this.Databases.GetXmlNode(out parentNode, forceCreate))
 				{
 					// See if our user data already exists
-					string xPath = @"./Database[@p='" + this.Name + "']";
+                    string xPath = @"./Database[@p='" + this.XmlMetaDataKey + "']";
 					if(!GetUserData(xPath, parentNode, out _xmlNode) && forceCreate)
 					{
 						// Create it, and try again
@@ -559,7 +574,7 @@ namespace MyMeta
 			}
 			parentNode = node;
 
-			node = parentNode.SelectSingleNode(@"./Database[@p='" + this.Name + "']");
+			node = parentNode.SelectSingleNode(@"./Database[@p='" + this.XmlMetaDataKey + "']");
 			if(node == null)
 			{
 				node = parentNode.OwnerDocument.CreateNode(XmlNodeType.Element, "Database", null);
@@ -568,7 +583,7 @@ namespace MyMeta
 				XmlAttribute attr;
 
 				attr = node.OwnerDocument.CreateAttribute("p");
-				attr.Value = this.Name;
+                attr.Value = this.XmlMetaDataKey;
 				node.Attributes.Append(attr);
 			}
 
@@ -586,7 +601,7 @@ namespace MyMeta
 			XmlAttribute attr;
 
 			attr = parentNode.OwnerDocument.CreateAttribute("p");
-			attr.Value = this.Name;
+            attr.Value = this.XmlMetaDataKey;
 			myNode.Attributes.Append(attr);
 
 			attr = parentNode.OwnerDocument.CreateAttribute("n");
@@ -621,6 +636,7 @@ namespace MyMeta
 		protected Views _views = null;
 		protected Procedures _procedures = null;
 		protected Domains _domains = null;
+        protected string _customXmlMetaDataKey = null;
 
 		// Global properties are per Database
 		internal PropertyCollection  _columnProperties = null;
