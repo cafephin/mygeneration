@@ -1,7 +1,7 @@
 ﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
-    <ProductVersion>8.0.50727</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{A1D6D035-420C-40A3-9598-9E34F11FB1AA}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -180,6 +180,27 @@
     <Compile Include="Forms\ProjectEditor\ProjectBrowserControl.Designer.cs">
       <DependentUpon>ProjectBrowserControl.cs</DependentUpon>
     </Compile>
+    <None Include="Forms\TemplateBrowser2\TemplateBrowser.cs">
+      <SubType>UserControl</SubType>
+    </None>
+    <None Include="Forms\TemplateBrowser2\TemplateBrowser.designer.cs">
+      <DependentUpon>TemplateBrowser.cs</DependentUpon>
+    </None>
+    <None Include="Forms\TemplateBrowser2\TemplateBrowserNode.cs">
+      <SubType>Code</SubType>
+    </None>
+    <None Include="Forms\TemplateBrowser2\TemplateNamespaceNode.cs">
+      <SubType>Code</SubType>
+    </None>
+    <None Include="Forms\TemplateBrowser2\TemplateNode.cs">
+      <SubType>Code</SubType>
+    </None>
+    <None Include="Forms\TemplateBrowser2\TemplateRepoNode.cs">
+      <SubType>Code</SubType>
+    </None>
+    <None Include="Forms\TemplateBrowser2\TemplateTree.cs">
+      <SubType>Component</SubType>
+    </None>
     <Compile Include="Forms\TemplateBrowser\TemplateBrowser.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -355,6 +376,12 @@
     <EmbeddedResource Include="Forms\ProjectEditor\ViewSavedInput.resx">
       <DependentUpon>ViewSavedInput.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TemplateBrowser2\TemplateBrowser.es.resx">
+      <DependentUpon>TemplateBrowser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TemplateBrowser2\TemplateBrowser.resx">
+      <DependentUpon>TemplateBrowser.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\TemplateBrowser\TemplateBrowser.resx">
       <SubType>Designer</SubType>

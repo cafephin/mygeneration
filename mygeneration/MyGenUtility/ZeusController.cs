@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data;
 using System.IO;
+using System.Diagnostics;
 using Zeus;
 using Zeus.Configuration;
 using Zeus.Projects;
@@ -124,5 +125,44 @@ namespace Zeus
             }
         }
 
+        /*public delegate void ConnectionTestInfo(bool isSuccessful, string resultData);
+        private ConnectionTestInfo testInfo;
+
+        public static void TestMyMetaConnection(string connectionType, string connectionString, ConnectionTestInfo testInfoD)
+        {
+            ThreadStart
+            testInfo = testInfoD;
+            string file = Zeus.FileTools.ApplicationPath + @".\ZeusCmd.exe";
+            if (!File.Exists(file))
+            {
+                file = Zeus.FileTools.ApplicationPath + @"\..\..\..\..\ZeusCmd\bin\debug\ZeusCmd.exe";
+
+                if (!File.Exists(file))
+                {
+                    file = Zeus.FileTools.ApplicationPath + @"\..\..\..\..\ZeusCmd\bin\release\ZeusCmd.exe";
+                }
+            }
+
+            if (File.Exists(file))
+            {
+#if DEBUG
+                string args = string.Format("-tc \"{0}\" \"{1}\" -l \"{2}\"", connectionType.Replace("\"", "\\\""), connectionString.Replace("\"", "\\\""), "ZeusCmd.log");
+#else
+                string args = string.Format("-tc \"{0}\" \"{1}\"", connectionType.Replace("\"", "\\\""), connectionString.Replace("\"", "\\\""));
+#endif
+                ProcessStartInfo psi = new ProcessStartInfo(file, args);
+                psi.CreateNoWindow = true;
+                psi.UseShellExecute = false;
+                psi.RedirectStandardOutput = true;
+
+                process = new Process();
+                process.StartInfo = psi;
+                process.Start();
+            }
+            else
+            {
+                process = null;
+            }
+        }*/
     }
 }

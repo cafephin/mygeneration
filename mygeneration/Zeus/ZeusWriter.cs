@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Text;
+using System.Collections.Generic;
 
 namespace Zeus
 {
@@ -16,6 +17,46 @@ namespace Zeus
 	public class ZeusWriter 
 #endif 
 	{
+
+        public static void UpdateTemplateProperty(string filePath, string key, string newValue)
+        {
+            bool isUpdated = false;
+            string newl = ZeusConstants.START_DIRECTIVE + key + " " + newValue;
+            string[] lines = File.ReadAllLines(filePath);
+            for (int i = 0; i < lines.Length; i++)
+            {
+                string l = lines[i];
+                if (l.StartsWith(ZeusConstants.START_DIRECTIVE + key))
+                {
+                    lines[i] = newl;
+                    isUpdated = true;
+                    break;
+                }
+            }
+
+            if (!isUpdated)
+            {
+                List<string> newLines = new List<string>(lines);
+                for (int i = 0; i < newLines.Count; i++)
+                {
+                    string l = newLines[i];
+                    if (l.StartsWith(ZeusConstants.START_DIRECTIVE + ZeusConstants.Directives.UNIQUEID))
+                    {
+                        if (newLines.Count > (i + 1)) newLines.Insert(i + 1, newl);
+                        else newLines.Insert(i, newl);
+                        isUpdated = true;
+                        lines = newLines.ToArray();
+                        break;
+                    }
+                }
+            }
+
+            if (isUpdated)
+            {
+                File.WriteAllLines(filePath, lines);
+            }
+        }
+
 		public ZeusWriter() {}
 
 		public string Write(ZeusTemplate template) 
