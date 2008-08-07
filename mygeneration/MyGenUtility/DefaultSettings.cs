@@ -52,6 +52,7 @@ namespace MyGeneration
         // reason: improved loading speed, no risk to work with outdated data
         private static DefaultSettings instance;
         private static string applicationPath;
+        private static string settingsFileName = null;
 
         public static string ApplicationPath
         {
@@ -76,6 +77,12 @@ namespace MyGeneration
                 return instance; 
             }
         }
+
+        public static void Refresh()
+        {
+            instance = null;
+        }
+
         public void DiscardChanges()
         {
             _userDataPath = null;
@@ -85,9 +92,27 @@ namespace MyGeneration
             Load();
             // theSettings = null; // force reload
         }
-        public static void Refresh()
+
+        // defaults to user-directy\MyGeneration\DefaultSettings.xml if found 
+        //  else app-directory\Settings\DefaultSettings.xml
+        public static string SettingsFileName
         {
-            instance = null;
+            get
+            {
+                if (settingsFileName == null)
+                {
+                    settingsFileName = UserDataPath + @"\Settings\DefaultSettings.xml";
+                    return settingsFileName;
+                }
+                return settingsFileName;
+            }
+            set 
+            {
+                if (value != settingsFileName)
+                {
+                    settingsFileName = value; DefaultSettings.Refresh();
+                }
+            }
         }
 
 
@@ -138,24 +163,6 @@ namespace MyGeneration
                 Save();
             }
 
-        }
-	
-        private string settingsFileName = null;
-
-        // defaults to user-directy\MyGeneration\DefaultSettings.xml if found 
-        //  else app-directory\Settings\DefaultSettings.xml
-        private string SettingsFileName
-        {
-            get 
-            {
-                if (settingsFileName == null)
-                {
-                    settingsFileName = UserDataPath + @"\Settings\DefaultSettings.xml";
-                    return settingsFileName;
-                }
-                return settingsFileName; 
-            }
-            set { settingsFileName = value; }
         }
 	
         /// <summary>
@@ -627,7 +634,7 @@ namespace MyGeneration
 		}
 
         // k3b: to allow MyGen to run as a non admin it should *not* write into C:\Program Files\
-        private string UserDataPath
+        private static string UserDataPath
         {
             get
             {

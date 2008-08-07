@@ -67,6 +67,26 @@ namespace MyGeneration
         {
             this.startupPath = startupPath;
 
+            // if the command line arguments contain a new location for the config file, set it.
+            List<string> argsList = new List<string>();
+            string lastArg = null;
+            foreach (string arg in args)
+            {
+                if (lastArg == "-configfile")
+                {
+                    string file = Zeus.FileTools.MakeAbsolute(arg, FileTools.AssemblyPath);
+                    if (File.Exists(file))
+                    {
+                        DefaultSettings.SettingsFileName = file;
+                    }
+                }
+                else
+                {
+                    argsList.Add(arg);
+                }
+                lastArg = arg;
+            }
+
             settings = DefaultSettings.Instance;
 
             //Any files that were locked when the TemplateLibrary downloaded and tried to replace them will be replaced now.
@@ -74,7 +94,7 @@ namespace MyGeneration
 
             InitializeComponent();
 
-            startupFiles = args;
+            startupFiles = argsList.ToArray();
 
             EditorManager.AddNewDocumentMenuItems(newFileDynamicToolStripMenuItem_Click,
                 newToolStripMenuItem.DropDownItems,

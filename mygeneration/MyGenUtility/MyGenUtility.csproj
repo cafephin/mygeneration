@@ -180,27 +180,6 @@
     <Compile Include="Forms\ProjectEditor\ProjectBrowserControl.Designer.cs">
       <DependentUpon>ProjectBrowserControl.cs</DependentUpon>
     </Compile>
-    <None Include="Forms\TemplateBrowser2\TemplateBrowser.cs">
-      <SubType>UserControl</SubType>
-    </None>
-    <None Include="Forms\TemplateBrowser2\TemplateBrowser.designer.cs">
-      <DependentUpon>TemplateBrowser.cs</DependentUpon>
-    </None>
-    <None Include="Forms\TemplateBrowser2\TemplateBrowserNode.cs">
-      <SubType>Code</SubType>
-    </None>
-    <None Include="Forms\TemplateBrowser2\TemplateNamespaceNode.cs">
-      <SubType>Code</SubType>
-    </None>
-    <None Include="Forms\TemplateBrowser2\TemplateNode.cs">
-      <SubType>Code</SubType>
-    </None>
-    <None Include="Forms\TemplateBrowser2\TemplateRepoNode.cs">
-      <SubType>Code</SubType>
-    </None>
-    <None Include="Forms\TemplateBrowser2\TemplateTree.cs">
-      <SubType>Component</SubType>
-    </None>
     <Compile Include="Forms\TemplateBrowser\TemplateBrowser.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -376,12 +355,6 @@
     <EmbeddedResource Include="Forms\ProjectEditor\ViewSavedInput.resx">
       <DependentUpon>ViewSavedInput.cs</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\TemplateBrowser2\TemplateBrowser.es.resx">
-      <DependentUpon>TemplateBrowser.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\TemplateBrowser2\TemplateBrowser.resx">
-      <DependentUpon>TemplateBrowser.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\TemplateBrowser\TemplateBrowser.resx">
       <SubType>Designer</SubType>
