@@ -189,27 +189,42 @@ namespace Zeus
 
         private void _ProcessMyMeta()
         {
-            IDbConnection connection = null;
-            try
+            if (_argmgr.MergeMetaFiles)
             {
-                dbRoot mymeta = new dbRoot();
-                connection = mymeta.BuildConnection(_argmgr.ConnectionType, _argmgr.ConnectionString);
-                _log.Write("Beginning test for {0}: {1}", connection.GetType().ToString(), _argmgr.ConnectionString);
-                connection.Open();
-                connection.Close();
-                _log.Write("Test Successful");
+                try 
+                {
+                    dbRoot.MergeUserMetaDataFiles(_argmgr.MetaFile1, _argmgr.MetaDatabase1, _argmgr.MetaFile2, _argmgr.MetaDatabase2, _argmgr.MetaFileMerged);
+                }
+                catch (Exception ex)
+                {
+                    this._log.Write(ex);
+                    this._log.Write("Merge UserMetaData files failed.");
+                }
             }
-            catch (Exception ex)
+            else
             {
-                _log.Write("Test Failed");
-                if (_log != null) _log.Write(ex);
-                _returnValue = -1;
-            }
+                IDbConnection connection = null;
+                try
+                {
+                    dbRoot mymeta = new dbRoot();
+                    connection = mymeta.BuildConnection(_argmgr.ConnectionType, _argmgr.ConnectionString);
+                    _log.Write("Beginning test for {0}: {1}", connection.GetType().ToString(), _argmgr.ConnectionString);
+                    connection.Open();
+                    connection.Close();
+                    _log.Write("Test Successful");
+                }
+                catch (Exception ex)
+                {
+                    _log.Write("Test Failed");
+                    if (_log != null) _log.Write(ex);
+                    _returnValue = -1;
+                }
 
-            if (connection != null)
-            {
-                connection.Close();
-                connection = null;
+                if (connection != null)
+                {
+                    connection.Close();
+                    connection = null;
+                }
             }
         }
 
@@ -328,74 +343,80 @@ namespace Zeus
 
 		#region Help Text
 		public const string HELP_TEXT = @"
-|=======================================================================
+|========================================================================
 | ZeusCmd.exe: Switches, arguments, etc.
-|=======================================================================
+|========================================================================
 | General switches
-|-----------------------------------------------------------------------
+|------------------------------------------------------------------------
 | -?, -h                               | show usage text
 | -s                                   | silent mode (no console output)
 | -r					               | make paths relative to exe
 | -l <logpath>                         | log process events and errors
 | -e <integer>                         | template execution timeout
-|-----------------------------------------------------------------------
+|------------------------------------------------------------------------
 | Project switches
-|-----------------------------------------------------------------------
+|------------------------------------------------------------------------
 | -p <projectpath>                     | generate an entire project
 | -pf <projectfolder>                  | regenerate a project folder
 | -m  <projectfolder>                  | same as -pf above
-|-----------------------------------------------------------------------
+|------------------------------------------------------------------------
 | Template switches
-|-----------------------------------------------------------------------
+|------------------------------------------------------------------------
 | -i <xmldatapath>                     | xml input file
 | -t <templatepath>                    | template file path
 | -o <outputpath>                      | output path
 | -c <saveinputpath>                   | collect input and save to file
-|-----------------------------------------------------------------------
+|------------------------------------------------------------------------
 | Intrinsic Object switches
-|-----------------------------------------------------------------------
+|------------------------------------------------------------------------
 | -aio <dllpath> <classpath> <varname> | add an intrinsic object
 | -rio <varname>                       | remove an intrinsic object
-|-----------------------------------------------------------------------
+|------------------------------------------------------------------------
 | MyMeta switches
-|-----------------------------------------------------------------------
-| -tc <providername> <connectstring>   | test a database connection
-|=======================================================================
+|------------------------------------------------------------------------
+| -tc <providername> <connectstring>               | test a db connection
+| -mumd <file1> <entry1> <file2> <entry2> <result> | merge user meta data
+|========================================================================
 | EXAMPLE 1
 | Execute a template:
-|-----------------------------------------------------------------------
+|------------------------------------------------------------------------
 | ZeusCmd -t c:\template.jgen
 |========================================================================
 | EXAMPLE 2
 | Execute a template, no console output, log to file:
-|-----------------------------------------------------------------------
+|------------------------------------------------------------------------
 | ZeusCmd -s -t c:\template.jgen -l c:\zeuscmd.log
 |========================================================================
 | EXAMPLE 3
 | Execute template, save input to an xml file:
-|-----------------------------------------------------------------------
+|------------------------------------------------------------------------
 | ZeusCmd -t c:\template.jgen -c c:\savedInput.zinp
 |========================================================================
 | EXAMPLE 4
 | Regenerate from the saved input in example 3 above:
-|-----------------------------------------------------------------------
+|------------------------------------------------------------------------
 | ZeusCmd -i c:\savedInput.zinp
-|========================================================================
+|=========================================================================
 | EXAMPLE 5
 | Add an intrinsic object to the Zeus Configuration file.
-|-----------------------------------------------------------------------
+|------------------------------------------------------------------------
 | ZeusCmd -aio TheDLLOfmyDreams.dll Lib.MyGen.Plugin.Utilities myVar
-|========================================================================
+|=========================================================================
 | EXAMPLE 6
 | Remove an intrinsic object to the Zeus Configuration file.
-|-----------------------------------------------------------------------
+|------------------------------------------------------------------------
 | ZeusCmd -rio myVar
-|========================================================================
+|=========================================================================
 | EXAMPLE 7
 | Test a MyMeta Connection
-|-----------------------------------------------------------------------
+|------------------------------------------------------------------------
 | ZeusCmd -tc SQL ""Provider=SQLOLEDB.1;User ID=sa;Data Source=localhost""
-|========================================================================
+|=========================================================================
+| EXAMPLE 8
+| Merge two UserMetaData files into a new one.
+|------------------------------------------------------------------------
+| ZeusCmd -mumd umd1.xml Northwind umd2.xml Northwind22 out.xml
+|=========================================================================
 ";
 		#endregion
 	}

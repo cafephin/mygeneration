@@ -26,6 +26,7 @@ namespace Zeus
         private bool _enableLog = false;
         private bool _makeRelative = false;
         private bool _installVS2005 = false;
+        private bool _metaDataMerge = false;
 		private string _errorMessage = null;
 		private string _pathProject = null;
 		private string _pathTemplate = null;
@@ -35,6 +36,11 @@ namespace Zeus
 		private string _pathLog = null;
         private string _connType = null;
         private string _connString = null;
+        private string _metaDatabase1 = null;
+        private string _metaDataFile1 = null;
+        private string _metaDatabase2 = null;
+        private string _metaDataFile2 = null;
+        private string _metaDataFileMerged = null;
 		private ArrayList _moduleNames = new ArrayList();
 		private ZeusTemplate _template = null;
 		private ZeusProject _project = null;
@@ -157,16 +163,23 @@ namespace Zeus
 							this._errorMessage = "Invalid switch usage: " + arg;
 						}
 						break;
-					case "-cs":
-					case "-connstr":
-						this._mode = ProcessMode.Project;
-						if (numargs > (i+1)) 
-							this._pathProject = args[++i];
-						else 
-						{
-							this._valid = false;
-							this._errorMessage = "Invalid switch usage: " + arg;
-						}
+					case "-mumd":
+                    case "-mergeusermetadata":
+                        this._mode = ProcessMode.MyMeta;
+                        this._metaDataMerge = true;
+                        if (numargs > (i + 5))
+                        {
+                            this._metaDataFile1 = args[++i];
+                            this._metaDatabase1 = args[++i];
+                            this._metaDataFile2 = args[++i];
+                            this._metaDatabase2 = args[++i];
+                            this._metaDataFileMerged = args[++i];
+                        }
+                        else
+                        {
+                            this._valid = false;
+                            this._errorMessage = "Invalid switch usage: " + arg;
+                        }
                         break;
                     case "-m":
                     case "-pf":
@@ -257,13 +270,30 @@ namespace Zeus
                     this._pathTemplate = Zeus.FileTools.MakeAbsolute(this._pathTemplate, FileTools.ApplicationPath);
 				if (this._pathXmlData != null)
                     this._pathXmlData = Zeus.FileTools.MakeAbsolute(this._pathXmlData, FileTools.ApplicationPath);
+                if (this._metaDataFile1 != null)
+                    this._metaDataFile1 = Zeus.FileTools.MakeAbsolute(this._metaDataFile1, FileTools.ApplicationPath);
+                if (this._metaDataFile2 != null)
+                    this._metaDataFile2 = Zeus.FileTools.MakeAbsolute(this._metaDataFile2, FileTools.ApplicationPath);
+                if (this._metaDataFileMerged != null)
+                    this._metaDataFileMerged = Zeus.FileTools.MakeAbsolute(this._metaDataFileMerged, FileTools.ApplicationPath);
 			}
 
 
 			// Validate required fields are filled out for the selected mode.
 			if (_valid) 
 			{
-				if (this._mode == ProcessMode.Project) 
+                if (this.Mode == ProcessMode.MyMeta) 
+                {
+                    if (this._metaDataMerge)
+                    {
+                        if (!System.IO.File.Exists(_metaDataFile1) || !System.IO.File.Exists(_metaDataFile2))
+                        {
+                            _valid = false;
+                            this._errorMessage = "The two source files must exist for the merge to work!";
+                        }
+                    }
+                }
+				else if (this._mode == ProcessMode.Project) 
 				{
 					if (this._pathProject == null)
 					{
@@ -418,5 +448,24 @@ namespace Zeus
 
 		public string ConnectionString
 		{ get { return _connString; } }
+        
+        public bool MergeMetaFiles
+        { get { return _metaDataMerge; } }
+
+		public string MetaFile1
+        { get { return _metaDataFile1; } }
+
+		public string MetaDatabase1
+        { get { return _metaDatabase1; } }
+
+		public string MetaFile2
+		{ get { return _metaDataFile2; } }
+
+		public string MetaDatabase2
+        { get { return _metaDatabase2; } }
+
+        public string MetaFileMerged
+		{ get { return _metaDataFileMerged; } }
+
 	}
 }

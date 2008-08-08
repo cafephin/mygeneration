@@ -1023,6 +1023,78 @@ namespace MyMeta
 
 		private string _userMetaDataFileName = "";
 
+        public static void MergeUserMetaDataFiles(string f1, string db1, string f2, string db2, string fm) 
+        {
+            FileInfo f1Inf = new FileInfo(f1);
+            FileInfo f2Inf = new FileInfo(f2);
+            FileInfo fmInf = new FileInfo(fm);
+            if (fmInf.Exists) fmInf.Delete();
+            fmInf = f1Inf.CopyTo(fmInf.FullName);
+
+            XmlDocument newDoc = new XmlDocument();
+            newDoc.Load(fmInf.FullName);
+            XmlNode newDocRoot = newDoc.SelectSingleNode("//MyMeta/Databases/Database[@p='" + db1 + "']");
+
+            XmlDocument otherDoc = new XmlDocument();
+            otherDoc.Load(f2Inf.FullName);
+            XmlNode otherDocRoot = otherDoc.SelectSingleNode("//MyMeta/Databases/Database[@p='" + db2 + "']");
+
+            MergeXml(newDoc, newDocRoot, "//MyMeta/Databases/Database[@p='" + db1 + "']", otherDoc, otherDocRoot, "//MyMeta/Databases/Database[@p='" + db2 + "']");
+
+            newDoc.Save(fmInf.FullName);
+        }
+
+        private static void MergeXml(XmlDocument d1, XmlNode n1, string xpath1, XmlDocument d2, XmlNode n2, string xpath2)
+        {
+            System.Collections.Generic.Dictionary<string, XmlNode> ch1nodes = new System.Collections.Generic.Dictionary<string,XmlNode>();
+            foreach (XmlNode ch1 in n1.ChildNodes)
+            {
+                ch1nodes[GetXmlNodeKey(ch1)] = ch1;
+            }
+
+            foreach (XmlNode ch2 in n2.ChildNodes)
+            {
+                string ch2Key = GetXmlNodeKey(ch2);
+
+                XmlNode ch1 = null;
+                if (ch1nodes.ContainsKey(ch2Key))
+                {
+                    ch1 = ch1nodes[ch2Key];
+
+                    if (ch2.Attributes["n"] != null && ch1.Attributes["n"] == null)
+                        ch1.Attributes.Append(ch2.Attributes["n"].Clone() as XmlAttribute);
+
+                    else if (ch2.Attributes["v"] != null && ch1.Attributes["v"] == null)
+                        ch1.Attributes.Append(ch2.Attributes["v"].Clone() as XmlAttribute);
+
+                    if (ch2.HasChildNodes)
+                    {
+                        MergeXml(d1, ch1, xpath1 + ch2Key, d2, ch2, xpath2 + ch2Key);
+                    }
+                }
+                else 
+                {
+                    //ch1 = ch2.CloneNode(true);
+                    ch1 = d1.ImportNode(ch2, true);
+                    n1.AppendChild(ch1);
+                }
+            }
+        }
+
+        private static string GetXmlNodeKey(XmlNode n)
+        {
+            string xpathKey = "/" + n.Name;
+            if (n.Attributes["p"] != null)
+            {
+                xpathKey += "[@p='" + n.Attributes["p"].Value + "']";
+            }
+            else if (n.Attributes["k"] != null)
+            {
+                xpathKey += "[@k='" + n.Attributes["k"].Value + "']";
+            }
+            return xpathKey;
+        }
+
 		#endregion
 
 		#region XML Language Mapping
