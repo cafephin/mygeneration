@@ -23,16 +23,20 @@ namespace MyGeneration
         private WebTemplateLibrary _templateLibrary;
         private TemplateTreeBuilder _treeBuilder;
         private object _lastObject = null;
+        private ShowGUIEventHandler _guiHandler;
 
         public event EventHandler TemplateDelete;
         public event EventHandler TemplateOpen;
         public event EventHandler TemplateUpdate;
         public event EventHandler GeneratedFileSaved;
         public event EventHandler ErrorsOccurred;
+        public ExecuteTemplateDelegate ExecuteTemplateOverride;
 
         public TemplateBrowserControl()
         {
             InitializeComponent();
+            this._guiHandler = new ShowGUIEventHandler(this.DynamicGUI_Display);
+
         }
 
         public void Initialize()
@@ -250,162 +254,200 @@ namespace MyGeneration
 
         public void ExecuteTemplate(ZeusTemplate template)
         {
-            Cursor.Current = Cursors.WaitCursor;
-
-            DefaultSettings settings = DefaultSettings.Instance;
-
-            IZeusContext context = new ZeusContext();
-            IZeusGuiControl guiController = context.Gui;
-            IZeusOutput zout = context.Output;
-
-            settings.PopulateZeusContext(context);
-
-            bool exceptionOccurred = false;
-            bool result = false;
-
-            try
+            if (ExecuteTemplateOverride != null)
             {
-                template.GuiSegment.ZeusScriptingEngine.ExecutionHelper.Timeout = settings.ScriptTimeout;
-                template.GuiSegment.ZeusScriptingEngine.ExecutionHelper.SetShowGuiHandler(new ShowGUIEventHandler(DynamicGUI_Display));
-                result = template.GuiSegment.Execute(context);
-                template.GuiSegment.ZeusScriptingEngine.ExecutionHelper.Cleanup();
-
-                if (result)
-                {
-                    template.BodySegment.ZeusScriptingEngine.ExecutionHelper.Timeout = settings.ScriptTimeout;
-                    result = template.BodySegment.Execute(context);
-
-                    foreach (string filePath in context.Output.SavedFiles)
-                    {
-                        this.OnGeneratedFileSaved(filePath);
-                    }
-
-                    template.BodySegment.ZeusScriptingEngine.ExecutionHelper.Cleanup();
-                }
+                ExecuteTemplateOverride(TemplateOperations.Execute, template, null, _guiHandler);
             }
-            catch (Exception ex)
+            else
             {
-                OnErrorsOccurred(ex);
+                Cursor.Current = Cursors.WaitCursor;
 
-                exceptionOccurred = true;
-            }
+                DefaultSettings settings = DefaultSettings.Instance;
 
-            Cursor.Current = Cursors.Default;
+                IZeusContext context = new ZeusContext();
+                IZeusGuiControl guiController = context.Gui;
+                IZeusOutput zout = context.Output;
 
-            if (!exceptionOccurred && result)
-            {
-                if (settings.EnableClipboard)
+                settings.PopulateZeusContext(context);
+
+                bool exceptionOccurred = false;
+                bool result = false;
+
+                try
                 {
-                    try
+                    template.GuiSegment.ZeusScriptingEngine.ExecutionHelper.Timeout = settings.ScriptTimeout;
+                    template.GuiSegment.ZeusScriptingEngine.ExecutionHelper.SetShowGuiHandler(_guiHandler);
+                    result = template.GuiSegment.Execute(context);
+                    template.GuiSegment.ZeusScriptingEngine.ExecutionHelper.Cleanup();
+
+                    if (result)
                     {
-                        Clipboard.SetDataObject(zout.text, true);
-                    }
-                    catch
-                    {
-                        // HACK: For some reason, Clipboard.SetDataObject throws an error on some systems. I'm cathhing it and doing nothing for now.
+                        template.BodySegment.ZeusScriptingEngine.ExecutionHelper.Timeout = settings.ScriptTimeout;
+                        result = template.BodySegment.Execute(context);
+
+                        foreach (string filePath in context.Output.SavedFiles)
+                        {
+                            this.OnGeneratedFileSaved(filePath);
+                        }
+
+                        template.BodySegment.ZeusScriptingEngine.ExecutionHelper.Cleanup();
                     }
                 }
+                catch (Exception ex)
+                {
+                    OnErrorsOccurred(ex);
 
-                MessageBox.Show("Successfully rendered Template: " + template.Title);
+                    exceptionOccurred = true;
+                }
+
+                Cursor.Current = Cursors.Default;
+
+                if (!exceptionOccurred && result)
+                {
+                    if (settings.EnableClipboard)
+                    {
+                        try
+                        {
+                            Clipboard.SetDataObject(zout.text, true);
+                        }
+                        catch
+                        {
+                            // HACK: For some reason, Clipboard.SetDataObject throws an error on some systems. I'm cathhing it and doing nothing for now.
+                        }
+                    }
+
+                    MessageBox.Show("Successfully rendered Template: " + template.Title);
+                }
             }
         }
 
         public void SaveInput(ZeusTemplate template)
         {
-            try
+            if (ExecuteTemplateOverride != null)
             {
-                DefaultSettings settings = DefaultSettings.Instance;
-
-                ZeusSimpleLog log = new ZeusSimpleLog();
-                ZeusContext context = new ZeusContext();
-                context.Log = log;
-
-                ZeusSavedInput collectedInput = new ZeusSavedInput();
-                collectedInput.InputData.TemplateUniqueID = template.UniqueID;
-                collectedInput.InputData.TemplatePath = template.FilePath + template.FileName;
-
-                settings.PopulateZeusContext(context);
-                template.Collect(context, settings.ScriptTimeout, collectedInput.InputData.InputItems);
-
-                if (log.HasExceptions)
+                ExecuteTemplateOverride(TemplateOperations.SaveInput, template, null, _guiHandler);
+            }
+            else
+            {
+                try
                 {
-                    throw log.Exceptions[0];
-                }
-                else
-                {
-                    SaveFileDialog saveFileDialog = new SaveFileDialog();
-                    saveFileDialog.Filter = "Zues Input Files (*.zinp)|*.zinp";
-                    saveFileDialog.FilterIndex = 0;
-                    saveFileDialog.RestoreDirectory = true;
-                    if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                    DefaultSettings settings = DefaultSettings.Instance;
+
+                    ZeusSimpleLog log = new ZeusSimpleLog();
+                    ZeusContext context = new ZeusContext();
+                    context.Log = log;
+
+                    ZeusSavedInput collectedInput = new ZeusSavedInput();
+                    collectedInput.InputData.TemplateUniqueID = template.UniqueID;
+                    collectedInput.InputData.TemplatePath = template.FilePath + template.FileName;
+
+                    settings.PopulateZeusContext(context);
+                    template.Collect(context, settings.ScriptTimeout, collectedInput.InputData.InputItems);
+
+                    if (log.HasExceptions)
                     {
-                        Cursor.Current = Cursors.WaitCursor;
-
-                        collectedInput.FilePath = saveFileDialog.FileName;
-                        collectedInput.Save();
+                        throw log.Exceptions[0];
                     }
+                    else
+                    {
+                        SaveFileDialog saveFileDialog = new SaveFileDialog();
+                        saveFileDialog.Filter = "Zues Input Files (*.zinp)|*.zinp";
+                        saveFileDialog.FilterIndex = 0;
+                        saveFileDialog.RestoreDirectory = true;
+                        if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                        {
+                            Cursor.Current = Cursors.WaitCursor;
+
+                            collectedInput.FilePath = saveFileDialog.FileName;
+                            collectedInput.Save();
+                        }
+                    }
+
+                    MessageBox.Show(this, "Input collected and saved to file: \r\n" + collectedInput.FilePath);
+                }
+                catch (Exception ex)
+                {
+                    OnErrorsOccurred(ex);
                 }
 
-                MessageBox.Show(this, "Input collected and saved to file: \r\n" + collectedInput.FilePath);
+                Cursor.Current = Cursors.Default;
             }
-            catch (Exception ex)
-            {
-                OnErrorsOccurred(ex);
-            }
-
-            Cursor.Current = Cursors.Default;
         }
 
         public void ExecuteLoadedInput()
         {
-            try
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Zues Input Files (*.zinp)|*.zinp";
+            openFileDialog.FilterIndex = 0;
+            openFileDialog.RestoreDirectory = true;
+            openFileDialog.Multiselect = true;
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                DefaultSettings settings = DefaultSettings.Instance;
-                ZeusSimpleLog log = new ZeusSimpleLog();
-
-                OpenFileDialog openFileDialog = new OpenFileDialog();
-                openFileDialog.Filter = "Zues Input Files (*.zinp)|*.zinp";
-                openFileDialog.FilterIndex = 0;
-                openFileDialog.RestoreDirectory = true;
-                openFileDialog.Multiselect = true;
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                if (ExecuteTemplateOverride != null)
                 {
-                    Cursor.Current = Cursors.WaitCursor;
-
-                    foreach (string filename in openFileDialog.FileNames)
+                    try
                     {
-                        ZeusSavedInput savedInput = new ZeusSavedInput(filename);
-                        if (savedInput.Load())
+                        foreach (string filename in openFileDialog.FileNames)
                         {
-                            ZeusContext context = new ZeusContext();
-                            context.Input.AddItems(savedInput.InputData.InputItems);
-                            context.Log = log;
-
-                            ZeusTemplate template = new ZeusTemplate(savedInput.InputData.TemplatePath);
-                            template.Execute(context, settings.ScriptTimeout, true);
-                            
-                            foreach (string filePath in context.Output.SavedFiles) 
+                            ZeusSavedInput savedInput = new ZeusSavedInput(filename);
+                            if (savedInput.Load())
                             {
-                                this.OnGeneratedFileSaved(filePath);
-                            }
+                                ZeusTemplate template = new ZeusTemplate(savedInput.InputData.TemplatePath);
 
-                            if (log.HasExceptions)
-                            {
-                                throw log.Exceptions[0];
+                                ExecuteTemplateOverride(TemplateOperations.ExecuteLoadedInput, template, savedInput, _guiHandler);
                             }
                         }
                     }
+                    catch (Exception ex)
+                    {
+                        OnErrorsOccurred(ex);
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        ZeusSimpleLog log = new ZeusSimpleLog();
+                        DefaultSettings settings = DefaultSettings.Instance;
+
+                        Cursor.Current = Cursors.WaitCursor;
+
+                        foreach (string filename in openFileDialog.FileNames)
+                        {
+                            ZeusSavedInput savedInput = new ZeusSavedInput(filename);
+                            if (savedInput.Load())
+                            {
+                                ZeusContext context = new ZeusContext();
+                                context.Input.AddItems(savedInput.InputData.InputItems);
+                                context.Log = log;
+
+                                ZeusTemplate template = new ZeusTemplate(savedInput.InputData.TemplatePath);
+                                template.Execute(context, settings.ScriptTimeout, true);
+
+                                foreach (string filePath in context.Output.SavedFiles)
+                                {
+                                    this.OnGeneratedFileSaved(filePath);
+                                }
+
+                                if (log.HasExceptions)
+                                {
+                                    throw log.Exceptions[0];
+                                }
+                            }
+                        }
+
+                        Cursor.Current = Cursors.Default;
+                        MessageBox.Show(this, "Selected files have been executed.");
+
+                    }
+                    catch (Exception ex)
+                    {
+                        OnErrorsOccurred(ex);
+                    }
 
                     Cursor.Current = Cursors.Default;
-                    MessageBox.Show(this, "Selected files have been executed.");
                 }
             }
-            catch (Exception ex)
-            {
-                OnErrorsOccurred(ex);
-            }
-
-            Cursor.Current = Cursors.Default;
         }
 
         public void DynamicGUI_Display(IZeusGuiControl gui, IZeusFunctionExecutioner executioner)
@@ -633,4 +675,14 @@ namespace MyGeneration
         }
         #endregion
     }
+
+    public enum TemplateOperations
+    {
+        Execute = 0,
+        SaveInput,
+        ExecuteLoadedInput
+    }
+
+    public delegate void ExecuteTemplateDelegate(TemplateOperations operation, ZeusTemplate template, ZeusSavedInput input, ShowGUIEventHandler guiEventHandler);
+
 }
