@@ -415,9 +415,9 @@ namespace MyMeta
         {
             get 
             {
-                if (!string.IsNullOrEmpty(_customXmlMetaDataKey))
+                if (dbRoot.UserDataDatabaseMappings.ContainsKey(Name))
                 {
-                    return _customXmlMetaDataKey;
+                    return dbRoot.UserDataDatabaseMappings[Name];
                 }
                 else
                 {
@@ -636,7 +636,6 @@ namespace MyMeta
 		protected Views _views = null;
 		protected Procedures _procedures = null;
 		protected Domains _domains = null;
-        protected string _customXmlMetaDataKey = null;
 
 		// Global properties are per Database
 		internal PropertyCollection  _columnProperties = null;

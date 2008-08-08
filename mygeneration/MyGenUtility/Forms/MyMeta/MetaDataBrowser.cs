@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Threading;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows.Forms;
@@ -358,6 +359,12 @@ namespace MyGeneration
                     ali.MyMeta.DomainOverride = settings.DomainOverride;
 
                     ali.MyMeta.ShowSystemData = ali.ShowSystemEntities;
+
+                    ali.MyMeta.UserDataDatabaseMappings.Clear();
+                    foreach (string key in settings.DatabaseUserDataXmlMappings.Keys)
+                    {
+                        ali.MyMeta.UserDataDatabaseMappings[key] = settings.DatabaseUserDataXmlMappings[key];
+                    }
 				}
 			}
 			catch(Exception ex)
@@ -431,7 +438,8 @@ namespace MyGeneration
                         (myMeta.DbTargetMappingFileName != settings.DbTargetMappingFile) ||
                         (myMeta.DbTarget != settings.DbTarget) ||
                         (myMeta.UserMetaDataFileName != settings.UserMetaDataFileName) ||
-                        (myMeta.DomainOverride != settings.DomainOverride))
+                        (myMeta.DomainOverride != settings.DomainOverride) ||
+                        (!CompareUserDataDatabaseMappings(myMeta.UserDataDatabaseMappings, settings.DatabaseUserDataXmlMappings)))
                     {
                         doRefresh = true;
                     }
@@ -444,6 +452,24 @@ namespace MyGeneration
 
             if (doRefresh) this.SetupAsync();
 		}
+
+        private bool CompareUserDataDatabaseMappings(Dictionary<string, string> d1, Dictionary<string, string>  d2)
+        {
+            bool same = false;
+            if (d1.Count == d2.Count) 
+            {
+                same = true;
+                foreach (string key in d1.Keys)
+                {
+                    if (!d2.ContainsKey(key) || (d2[key] != d1[key]))
+                    {
+                        same = false;
+                        break;
+                    }
+                }
+            }
+            return same;
+        }
 
 		private void OpenUserData()
 		{

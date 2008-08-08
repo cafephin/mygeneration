@@ -55,6 +55,9 @@ namespace MyGeneration
             this.btnOleDb = new System.Windows.Forms.Button();
             this.txtConnectionString = new System.Windows.Forms.TextBox();
             this.groupBoxUserMetaData = new System.Windows.Forms.GroupBox();
+            this.label1DbUserMetaMappingsExample = new System.Windows.Forms.Label();
+            this.labellDbUserMetaMappings = new System.Windows.Forms.Label();
+            this.textBoxDbUserMetaMappings = new System.Windows.Forms.TextBox();
             this.btnUserMetaDataFile = new System.Windows.Forms.Button();
             this.txtUserMetaDataFile = new System.Windows.Forms.TextBox();
             this.labelUserMetaData = new System.Windows.Forms.Label();
@@ -128,7 +131,7 @@ namespace MyGeneration
             this.tabControl.Name = "tabControl";
             this.tabControl.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(834, 601);
+            this.tabControl.Size = new System.Drawing.Size(834, 577);
             this.tabControl.TabIndex = 1;
             // 
             // tabConnection
@@ -141,7 +144,7 @@ namespace MyGeneration
             this.tabConnection.Location = new System.Drawing.Point(4, 22);
             this.tabConnection.Name = "tabConnection";
             this.tabConnection.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.tabConnection.Size = new System.Drawing.Size(826, 575);
+            this.tabConnection.Size = new System.Drawing.Size(826, 551);
             this.tabConnection.TabIndex = 0;
             this.tabConnection.Text = "Connection";
             // 
@@ -432,16 +435,53 @@ namespace MyGeneration
             // 
             this.groupBoxUserMetaData.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBoxUserMetaData.Controls.Add(this.label1DbUserMetaMappingsExample);
+            this.groupBoxUserMetaData.Controls.Add(this.labellDbUserMetaMappings);
+            this.groupBoxUserMetaData.Controls.Add(this.textBoxDbUserMetaMappings);
             this.groupBoxUserMetaData.Controls.Add(this.btnUserMetaDataFile);
             this.groupBoxUserMetaData.Controls.Add(this.txtUserMetaDataFile);
             this.groupBoxUserMetaData.Controls.Add(this.labelUserMetaData);
             this.groupBoxUserMetaData.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBoxUserMetaData.Location = new System.Drawing.Point(16, 400);
             this.groupBoxUserMetaData.Name = "groupBoxUserMetaData";
-            this.groupBoxUserMetaData.Size = new System.Drawing.Size(791, 56);
+            this.groupBoxUserMetaData.Size = new System.Drawing.Size(791, 135);
             this.groupBoxUserMetaData.TabIndex = 33;
             this.groupBoxUserMetaData.TabStop = false;
             this.groupBoxUserMetaData.Text = "User Meta-Data";
+            // 
+            // label1DbUserMetaMappingsExample
+            // 
+            this.label1DbUserMetaMappingsExample.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1DbUserMetaMappingsExample.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.label1DbUserMetaMappingsExample.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label1DbUserMetaMappingsExample.Location = new System.Drawing.Point(221, 51);
+            this.label1DbUserMetaMappingsExample.Name = "label1DbUserMetaMappingsExample";
+            this.label1DbUserMetaMappingsExample.Size = new System.Drawing.Size(303, 13);
+            this.label1DbUserMetaMappingsExample.TabIndex = 29;
+            this.label1DbUserMetaMappingsExample.Text = "(comma seperated pairs like \"dbname=alias,dbname2=alias2...)";
+            // 
+            // labellDbUserMetaMappings
+            // 
+            this.labellDbUserMetaMappings.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labellDbUserMetaMappings.Location = new System.Drawing.Point(8, 47);
+            this.labellDbUserMetaMappings.Name = "labellDbUserMetaMappings";
+            this.labellDbUserMetaMappings.Size = new System.Drawing.Size(207, 17);
+            this.labellDbUserMetaMappings.TabIndex = 28;
+            this.labellDbUserMetaMappings.Text = "Database to User Meta-Data Mappings";
+            this.labellDbUserMetaMappings.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            // 
+            // textBoxDbUserMetaMappings
+            // 
+            this.textBoxDbUserMetaMappings.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxDbUserMetaMappings.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxDbUserMetaMappings.Location = new System.Drawing.Point(8, 67);
+            this.textBoxDbUserMetaMappings.Multiline = true;
+            this.textBoxDbUserMetaMappings.Name = "textBoxDbUserMetaMappings";
+            this.textBoxDbUserMetaMappings.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.textBoxDbUserMetaMappings.Size = new System.Drawing.Size(775, 40);
+            this.textBoxDbUserMetaMappings.TabIndex = 21;
             // 
             // btnUserMetaDataFile
             // 
@@ -494,7 +534,7 @@ namespace MyGeneration
             this.tabScript.Controls.Add(this.txtDefaultTemplatePath);
             this.tabScript.Location = new System.Drawing.Point(4, 22);
             this.tabScript.Name = "tabScript";
-            this.tabScript.Size = new System.Drawing.Size(826, 585);
+            this.tabScript.Size = new System.Drawing.Size(826, 558);
             this.tabScript.TabIndex = 1;
             this.tabScript.Text = "Templates";
             // 
@@ -790,7 +830,7 @@ namespace MyGeneration
             this.tabMisc.Controls.Add(this.chkForUpdates);
             this.tabMisc.Location = new System.Drawing.Point(4, 22);
             this.tabMisc.Name = "tabMisc";
-            this.tabMisc.Size = new System.Drawing.Size(826, 585);
+            this.tabMisc.Size = new System.Drawing.Size(826, 558);
             this.tabMisc.TabIndex = 2;
             this.tabMisc.Text = "Misc";
             // 
@@ -884,7 +924,7 @@ namespace MyGeneration
             this.Controls.Add(this.buttonSaveSettings);
             this.Controls.Add(this.tabControl);
             this.Name = "DefaultSettingsControl";
-            this.Size = new System.Drawing.Size(840, 617);
+            this.Size = new System.Drawing.Size(840, 593);
             this.tabControl.ResumeLayout(false);
             this.tabConnection.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
@@ -983,5 +1023,8 @@ namespace MyGeneration
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.Button buttonSaveSettings;
         private System.Windows.Forms.Button buttonCancelSettings;
+        private System.Windows.Forms.Label labellDbUserMetaMappings;
+        private System.Windows.Forms.TextBox textBoxDbUserMetaMappings;
+        private System.Windows.Forms.Label label1DbUserMetaMappingsExample;
     }
 }

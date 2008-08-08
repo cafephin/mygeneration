@@ -81,6 +81,8 @@ namespace MyGeneration
             this.cboLanguage.SelectedItem = settings.Language;
             this.cboDbTarget.SelectedItem = settings.DbTarget;
 
+            this.textBoxDbUserMetaMappings.Text = settings.DatabaseUserDataXmlMappingsString;
+
             this.checkBoxClipboard.Checked = settings.EnableClipboard;
             this.checkBoxLineNumbers.Checked = settings.EnableLineNumbering;
             this.txtTabs.Text = settings.Tabs.ToString();
@@ -162,7 +164,8 @@ namespace MyGeneration
                                             (info.Language != this.cboLanguage.Text) ||
                                             (info.DbTargetPath != this.txtDbTargetFile.Text) ||
                                             (info.DbTarget != this.cboDbTarget.Text) ||
-                                            (info.UserMetaDataPath != this.txtUserMetaDataFile.Text);
+                                            (info.UserMetaDataPath != this.txtUserMetaDataFile.Text) ||
+                                            (info.DatabaseUserDataXmlMappingsString != this.textBoxDbUserMetaMappings.Text);
             }
         }
 
@@ -252,6 +255,8 @@ namespace MyGeneration
             settings.Tabs = Convert.ToInt32(this.txtTabs.Text);
             settings.CheckForNewBuild = this.chkForUpdates.Checked;
             settings.DomainOverride = this.chkDomainOverride.Checked;
+
+            settings.DatabaseUserDataXmlMappingsString = this.textBoxDbUserMetaMappings.Text;
 
             if (this.comboBoxCodePage.SelectedIndex > 0)
             {
@@ -656,6 +661,7 @@ namespace MyGeneration
                 info.DbTarget = this.cboDbTarget.Text;
                 info.LanguagePath = this.txtLanguageFile.Text;
                 info.DbTargetPath = this.txtDbTargetFile.Text;
+                info.DatabaseUserDataXmlMappingsString = this.textBoxDbUserMetaMappings.Text;
 
                 this.rebindSavedConns();
             }
@@ -693,6 +699,14 @@ namespace MyGeneration
 
                 this.cboLanguage.SelectedItem = settings.Language;
                 this.cboDbTarget.SelectedItem = settings.DbTarget;
+
+                this.textBoxDbUserMetaMappings.Text = info.DatabaseUserDataXmlMappingsString;
+
+                settings.DatabaseUserDataXmlMappings.Clear();
+                foreach (string key in info.DatabaseUserDataXmlMappings.Keys)
+                {
+                    settings.DatabaseUserDataXmlMappings[key] = info.DatabaseUserDataXmlMappings[key];
+                }
             }
             else
             {

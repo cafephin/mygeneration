@@ -37,6 +37,7 @@ namespace MyGeneration
         private string _userDataPath = null;
         private Hashtable _savedConnections = null;
 		private ArrayList _recentFiles = null;
+        private Dictionary<string, string> _databaseUserMetaMappings;
         #endregion
 
         private XmlElement settingsRootNode = null;
@@ -88,6 +89,7 @@ namespace MyGeneration
             _userDataPath = null;
             _savedConnections = null;
 		    _recentFiles = null;
+            _databaseUserMetaMappings = null;
 
             Load();
             // theSettings = null; // force reload
@@ -193,7 +195,8 @@ namespace MyGeneration
 
 		public void Save()
 		{
-			this.UpdateSavedConnections();
+            this.UpdateSavedConnections();
+            this.UpdateDatabaseMappings();
 			this.UpdateRecentFiles();
             
 			settingsRootNode.OwnerDocument.Save(SettingsFileName);
@@ -253,13 +256,40 @@ namespace MyGeneration
 		}
 		#endregion
 
-		#region Saved Connections Nodes
-		public void UpdateSavedConnections() 
+        #region Database Mappings
+        public void UpdateDatabaseMappings()
+        {
+            if (this._databaseUserMetaMappings != null)
+            {
+                XmlNode parentNode = settingsRootNode;
+
+                // Cleanup nodes
+                XmlNodeList nodes = settingsRootNode.GetElementsByTagName("XmlUserMetaDatabaseAlias");
+                ArrayList nodesToHack = new ArrayList();
+                foreach (XmlNode node in nodes) nodesToHack.Add(node);
+                foreach (XmlNode node in nodesToHack) parentNode.RemoveChild(node);
+
+                foreach (string dbkey in DatabaseUserDataXmlMappings.Keys)
+                {
+                    XmlNode mapXmlNode = parentNode.AppendChild(settingsRootNode.OwnerDocument.CreateNode(XmlNodeType.Element, "XmlUserMetaDatabaseAlias", null));
+
+                    SetAttribute(mapXmlNode, "database", dbkey);
+                    SetAttribute(mapXmlNode, "alias", this.DatabaseUserDataXmlMappings[dbkey]);
+                }
+
+                _databaseUserMetaMappings = null;
+            }
+        }
+        #endregion
+
+        #region Saved Connections Nodes
+        public void UpdateSavedConnections() 
 		{
 			if (this._savedConnections != null)
 			{
                 XmlNode parentNode = settingsRootNode;
 
+                // Cleanup nodes
                 XmlNodeList nodes = settingsRootNode.GetElementsByTagName("SavedSettings");
                 ArrayList nodesToHack = new ArrayList();
 				foreach (XmlNode node in nodes) 
@@ -268,25 +298,53 @@ namespace MyGeneration
 					{
 						nodesToHack.Add(node);
 					}
-				}
-				foreach (XmlNode node in nodesToHack) parentNode.RemoveChild(node);
+                }
+                foreach (XmlNode node in nodesToHack) parentNode.RemoveChild(node);
 
 				foreach (ConnectionInfo inf in _savedConnections.Values) 
 				{
 					string xPath = @"SavedSettings[@name='" + inf.Name.Replace("'", "&apos;") + "']";
-                    XmlNode node = settingsRootNode.SelectSingleNode(xPath, null);
-                    if (node == null)
-                        node = parentNode.AppendChild(settingsRootNode.OwnerDocument.CreateNode(XmlNodeType.Element, "SavedSettings", null));
+                    XmlNode connectionnNode = settingsRootNode.SelectSingleNode(xPath, null);
+                    if (connectionnNode == null)
+                        connectionnNode = parentNode.AppendChild(settingsRootNode.OwnerDocument.CreateNode(XmlNodeType.Element, "SavedSettings", null));
+                    else
+                    {
+                        if (this._databaseUserMetaMappings != null)
+                        {
+                            nodesToHack.Clear();
+                            foreach (XmlNode childNode in connectionnNode.ChildNodes)
+                            {
+                                if (childNode.Name == "SavedXmlUserMetaAlias")
+                                {
+                                    nodesToHack.Add(childNode);
+                                }
+                            }
+                            foreach (XmlNode node2kill in nodesToHack) connectionnNode.RemoveChild(node2kill);
+                        }
+                    }
 
-					SetAttribute(node, "name", inf.Name) ;
-					SetAttribute(node, "driver", inf.Driver) ;
-					SetAttribute(node, "connstr", inf.ConnectionString) ;
-					SetAttribute(node, "dbtargetpath", inf.DbTargetPath) ;
-					SetAttribute(node, "languagepath", inf.LanguagePath) ;
-					SetAttribute(node, "usermetapath", inf.UserMetaDataPath) ;
-					SetAttribute(node, "language", inf.Language) ;
-					SetAttribute(node, "dbtarget", inf.DbTarget) ;
-				}
+                    SetAttribute(connectionnNode, "name", inf.Name);
+                    SetAttribute(connectionnNode, "driver", inf.Driver);
+                    SetAttribute(connectionnNode, "connstr", inf.ConnectionString);
+                    SetAttribute(connectionnNode, "dbtargetpath", inf.DbTargetPath);
+                    SetAttribute(connectionnNode, "languagepath", inf.LanguagePath);
+                    SetAttribute(connectionnNode, "usermetapath", inf.UserMetaDataPath);
+                    SetAttribute(connectionnNode, "language", inf.Language);
+                    SetAttribute(connectionnNode, "dbtarget", inf.DbTarget);
+
+
+                    if (this._databaseUserMetaMappings != null)
+                    {
+                        foreach (string dbkey in inf.DatabaseUserDataXmlMappings.Keys)
+                        {
+                            XmlNode mapXmlNode = connectionnNode.AppendChild(settingsRootNode.OwnerDocument.CreateNode(XmlNodeType.Element, "SavedXmlUserMetaAlias", null));
+
+                            SetAttribute(mapXmlNode, "database", dbkey);
+                            SetAttribute(mapXmlNode, "alias", inf.DatabaseUserDataXmlMappings[dbkey]);
+                        }
+                    }
+                }
+
 
 				_savedConnections = null;
 			}
@@ -458,7 +516,55 @@ namespace MyGeneration
 		{
 			get { return this.GetSetting("ScriptTimeout",-1); }
 			set { this.SetSetting("ScriptTimeout", value.ToString()); }
-		}
+        }
+        
+        public Dictionary<string, string> DatabaseUserDataXmlMappings
+        {
+            get
+            {
+                if (_databaseUserMetaMappings == null)
+                {
+                    _databaseUserMetaMappings = new Dictionary<string, string>();
+
+                    XmlNodeList nodes = settingsRootNode.GetElementsByTagName("XmlUserMetaDatabaseAlias");
+                    foreach (XmlNode xmlDbAlias in nodes)
+                    {
+                        string db = DefaultSettings.GetAttribute(xmlDbAlias, "database", ""),
+                            alias = DefaultSettings.GetAttribute(xmlDbAlias, "alias", "");
+
+                        DatabaseUserDataXmlMappings[db] = alias;
+                    }
+                }
+
+                return _databaseUserMetaMappings; 
+            }
+        }
+
+        public string DatabaseUserDataXmlMappingsString
+        {
+            get
+            {
+                StringBuilder sb = new StringBuilder();
+                foreach (string key in DatabaseUserDataXmlMappings.Keys)
+                {
+                    if (sb.Length > 0) sb.Append(",");
+                    sb.Append(key).Append("=").Append(DatabaseUserDataXmlMappings[key]);
+                }
+                return sb.ToString();
+            }
+            set
+            {
+                DatabaseUserDataXmlMappings.Clear();
+                string[] combpairs = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (string pair in combpairs)
+                {
+                    string[] keyVal = pair.Split(new char[] { '=' }, StringSplitOptions.RemoveEmptyEntries);
+
+                    if (keyVal.Length == 2)
+                        DatabaseUserDataXmlMappings[keyVal[0]] = keyVal[1];
+                }
+            }
+        }
 
         public string UserTemplateDirectory
         {
@@ -718,6 +824,14 @@ namespace MyGeneration
 
 				if ( (settings.UserMetaDataFileName != string.Empty) && (!input.Contains("__userMetaDataFileName")) )
 					input["__userMetaDataFileName"] = settings.UserMetaDataFileName;
+
+                if (settings.DatabaseUserDataXmlMappings.Count > 0)
+                {
+                    foreach (string key in settings.DatabaseUserDataXmlMappings.Keys)
+                    {
+                        input["__dbmap__" + key] = settings.DatabaseUserDataXmlMappings[key];
+                    }
+                }
 			}
 		}
 
@@ -771,6 +885,14 @@ namespace MyGeneration
 
                 if (settings.UserMetaDataFileName != string.Empty)
                     dict["__userMetaDataFileName"] = settings.UserMetaDataFileName;
+
+                if (settings.DatabaseUserDataXmlMappings.Count > 0)
+                {
+                    foreach (string key in settings.DatabaseUserDataXmlMappings.Keys)
+                    {
+                        dict["__dbmap__" + key] = settings.DatabaseUserDataXmlMappings[key];
+                    }
+                }
             }
         }
 
@@ -847,8 +969,10 @@ namespace MyGeneration
 
     }
 
-	public class ConnectionInfo 
-	{
+	public class ConnectionInfo
+    {
+        private Dictionary<string, string> _databaseUserMetaMappings = null;
+
 		public string Name;
 		public string Driver;
 		public string ConnectionString;
@@ -856,22 +980,74 @@ namespace MyGeneration
 		public string DbTargetPath;
 		public string Language;
 		public string LanguagePath;
-		public string UserMetaDataPath;
+        public string UserMetaDataPath;
 
 		public ConnectionInfo() {}
 
-		public ConnectionInfo(XmlNode node) 
-		{
-            
-			Name = DefaultSettings.GetAttribute(node, "name", ""); 
-			Driver = DefaultSettings.GetAttribute(node, "driver", ""); 
-			ConnectionString = DefaultSettings.GetAttribute(node, "connstr", ""); 
-			DbTargetPath = DefaultSettings.GetAttribute(node, "dbtargetpath", ""); 
-			LanguagePath = DefaultSettings.GetAttribute(node, "languagepath", ""); 
-			UserMetaDataPath = DefaultSettings.GetAttribute(node, "usermetapath", ""); 
-			DbTarget = DefaultSettings.GetAttribute(node, "dbtarget", ""); 
-			Language = DefaultSettings.GetAttribute(node, "language", ""); 
-		}
+        public ConnectionInfo(XmlNode node)
+        {
+            Name = DefaultSettings.GetAttribute(node, "name", "");
+            Driver = DefaultSettings.GetAttribute(node, "driver", "");
+            ConnectionString = DefaultSettings.GetAttribute(node, "connstr", "");
+            DbTargetPath = DefaultSettings.GetAttribute(node, "dbtargetpath", "");
+            LanguagePath = DefaultSettings.GetAttribute(node, "languagepath", "");
+            UserMetaDataPath = DefaultSettings.GetAttribute(node, "usermetapath", "");
+            DbTarget = DefaultSettings.GetAttribute(node, "dbtarget", "");
+            Language = DefaultSettings.GetAttribute(node, "language", "");
+
+            //foreach (node.ChildNodes
+            //XmlNodeList nodes = node.ChildNodes.GetElementsByTagName("XmlUserMetaDatabaseAlias");
+            foreach (XmlNode xmlDbAlias in node.ChildNodes)
+            {
+                if (xmlDbAlias.Name == "SavedXmlUserMetaAlias")
+                {
+                    try
+                    {
+                        string db = DefaultSettings.GetAttribute(xmlDbAlias, "database", ""),
+                            alias = DefaultSettings.GetAttribute(xmlDbAlias, "alias", "");
+
+                        DatabaseUserDataXmlMappings[db] = alias;
+                    }
+                    catch { }
+                }
+            }
+        }
+
+        public string DatabaseUserDataXmlMappingsString
+        {
+            get
+            {
+                StringBuilder sb = new StringBuilder();
+                foreach (string key in DatabaseUserDataXmlMappings.Keys)
+                {
+                    if (sb.Length > 0) sb.Append(",");
+                    sb.Append(key).Append("=").Append(DatabaseUserDataXmlMappings[key]);
+                }
+                return sb.ToString();
+            }
+            set
+            {
+                DatabaseUserDataXmlMappings.Clear();
+                string[] combpairs = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (string pair in combpairs)
+                {
+                    string[] keyVal = pair.Split(new char[] { '=' }, StringSplitOptions.RemoveEmptyEntries);
+                    
+                    if (keyVal.Length == 2)
+                        DatabaseUserDataXmlMappings[keyVal[0]] = keyVal[1];
+                }
+            }
+        }
+
+        public Dictionary<string, string> DatabaseUserDataXmlMappings
+        {
+            get
+            {
+                if (_databaseUserMetaMappings == null)
+                    _databaseUserMetaMappings = new Dictionary<string, string>();
+                return this._databaseUserMetaMappings;
+            }
+        }
 
 		public override string ToString()
 		{

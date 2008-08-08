@@ -170,12 +170,9 @@ namespace MyGeneration
             // 
             // defaultSettingsControl
             // 
-            this.defaultSettingsControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.defaultSettingsControl.Location = new System.Drawing.Point(-2, 1);
+            this.defaultSettingsControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.defaultSettingsControl.Location = new System.Drawing.Point(0, 0);
             this.defaultSettingsControl.Name = "defaultSettingsControl";
-            this.defaultSettingsControl.Size = new System.Drawing.Size(901, 606);
             this.defaultSettingsControl.TabIndex = 40;
             // 
             // DefaultProperties
@@ -196,9 +193,9 @@ namespace MyGeneration
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.TabText = "Default Settings";
             this.Text = "Default Settings";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DefaultProperties_FormClosing);
-            this.Leave += new System.EventHandler(this.DefaultProperties_Leave);
             this.Load += new System.EventHandler(this.DefaultProperties_Load);
+            this.Leave += new System.EventHandler(this.DefaultProperties_Leave);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DefaultProperties_FormClosing);
             this.toolStripOptions.ResumeLayout(false);
             this.toolStripOptions.PerformLayout();
             this.menuStripMain.ResumeLayout(false);

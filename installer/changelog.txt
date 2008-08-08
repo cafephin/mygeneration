@@ -1,4 +1,5 @@
 2008.08.06 - MyGeneration 1.3.0.4
+- Adding features to allow Databases with different names to share the same user meta data. I'm doing this for myself regardless of how useful it is to anyone else. In my dev team there are many developers with different connection strings and different meta data files. ;)
 - Updated DLLs/Drivers/References - SQLite.Data, SciLexer, ScintillaNet, Postgres, MySQL, VistaDB, Firebird.
 - MyMeta change for SQLServer - Added sp_refreshView - thanks Mike (mr_lasseter@users.sourceforge.net)
 - Changed multithreading in MyMeta browser to speed up launch and also make the pain of a hung connection more bearable.

@@ -641,6 +641,18 @@ namespace MyMeta
             }
         }
 
+        [ComVisible(false)]
+        public System.Collections.Generic.Dictionary<string, string> UserDataDatabaseMappings
+        {
+            get
+            {
+                if (_userDataDatabaseMappings == null) 
+                    _userDataDatabaseMappings = new System.Collections.Generic.Dictionary<string,string>();
+
+                return _userDataDatabaseMappings;
+            }
+        }
+
 		internal OleDbConnection TheConnection
 		{
 			get
@@ -1221,8 +1233,8 @@ namespace MyMeta
         private bool _domainOverride = true;
         private string _lastConnectionError = string.Empty;
         private Exception _lastConnectionException = null;
-
-		private XmlNode _xmlNode = null;
+        private XmlNode _xmlNode = null;
+        private System.Collections.Generic.Dictionary<string, string> _userDataDatabaseMappings = null;
 
 		private OleDbConnection _theConnection = new OleDbConnection();
 	}
