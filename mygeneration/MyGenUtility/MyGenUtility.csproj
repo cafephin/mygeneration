@@ -262,6 +262,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="ZeusController.cs" />
+    <Compile Include="ZeusProcessManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Forms\AboutBox\AboutBox.resx">
