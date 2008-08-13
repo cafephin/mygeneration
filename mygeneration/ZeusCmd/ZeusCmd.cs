@@ -74,47 +74,35 @@ namespace Zeus
 			if (_argmgr.IntrinsicObjects.Count > 0) 
 			{
 				ZeusConfig cfg = ZeusConfig.Current;
-				foreach (object obj in _argmgr.IntrinsicObjects) 
-				{
-					ZeusIntrinsicObject io = null;
+                foreach (ZeusIntrinsicObject io in _argmgr.IntrinsicObjects)
+                {
+                    bool exists = false;
+                    foreach (ZeusIntrinsicObject existingObj in cfg.IntrinsicObjects)
+                    {
+                        if (existingObj.VariableName == io.VariableName)
+                        {
+                            exists = true;
+                            break;
+                        }
+                    }
 
-					if (obj is ZeusIntrinsicObject) 
-					{
-						io = obj as ZeusIntrinsicObject;
-						bool exists = false;
-						foreach (ZeusIntrinsicObject existingObj in cfg.IntrinsicObjects) 
-						{
-							if (existingObj.VariableName == io.VariableName) 
-							{
-								exists = true;
-								break;
-							}
-						}
-
-						if (!exists) 
-						{
-							cfg.IntrinsicObjects.Add(io);
-						}
-					}
-					else if (obj is String) 
-					{
-						string varName = (string)obj;
-						foreach (ZeusIntrinsicObject existingObj in cfg.IntrinsicObjects) 
-						{
-							if (existingObj.VariableName == varName) 
-							{
-								io = existingObj;
-								break;
-							}
-						}
-						if (io != null) 
-						{
-							cfg.IntrinsicObjects.Remove(io);
-						}
-					}
-				}
+                    if (!exists)
+                    {
+                        cfg.IntrinsicObjects.Add(io);
+                    }
+                }
 				cfg.Save();
-			}
+            }
+            
+            if (_argmgr.IntrinsicObjectsToRemove.Count > 0)
+            {
+                ZeusConfig cfg = ZeusConfig.Current;
+                foreach (ZeusIntrinsicObject io in _argmgr.IntrinsicObjectsToRemove)
+                {
+                    cfg.IntrinsicObjects.Remove(io);
+                }
+                cfg.Save();
+            }
 			
 			if (_argmgr.IsValid) 
 			{
@@ -231,9 +219,47 @@ namespace Zeus
 		private void _ProcessProject() 
 		{
 			ZeusProject proj = this._argmgr.Project;
-			
-			this._log.Write("Begin Project Processing: " + proj.Name);
-			if (this._argmgr.ModuleNames.Count == 0) 
+
+            this._log.Write("Begin Project Processing: " + proj.Name);
+            if (this._argmgr.ModuleNames.Count > 0)
+            {
+                foreach (string mod in _argmgr.ModuleNames)
+                {
+                    this._log.Write("Executing: " + mod);
+                    try
+                    {
+                        if (!ExecuteModule(proj, mod))
+                        {
+                            this._log.Write("Project Folder not found: {0}.", mod);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        this._log.Write(ex);
+                        this._log.Write("Project Folder execution failed for folder: {0}.", mod);
+                    }
+                }
+            }
+            else if (this._argmgr.ProjectItems.Count > 0)
+            {
+                foreach (string item in _argmgr.ProjectItems)
+                {
+                    this._log.Write("Executing: " + item);
+                    try
+                    {
+                        if (!ExecuteProjectItem(proj, item))
+                        {
+                            this._log.Write("Project Item not found: {0}.", item);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        this._log.Write(ex);
+                        this._log.Write("Project Item execution failed for item: {0}.", item);
+                    }
+                }
+            }
+            else
 			{
 				this._log.Write("Executing: " + proj.Name);
 				try 
@@ -246,39 +272,63 @@ namespace Zeus
 					this._log.Write("Project execution failed.");
 				}
 			}
-			else 
-			{
-				foreach (string mod in _argmgr.ModuleNames) 
-				{
-					this._log.Write("Executing: " + mod);
-					try 
-					{
-						ExecuteModules(proj, _argmgr.ModuleNames);
-					}
-					catch (Exception ex)
-					{
-						this._log.Write(ex);
-						this._log.Write("Project Folder execution failed.");
-					}
-				}
-			}
 			this._log.Write("End Project Processing: " + proj.Name);
 		}
 
-		private void ExecuteModules(ZeusModule parent, ArrayList names) 
+		private bool ExecuteModule(ZeusModule parent, string projectPath) 
 		{
-			foreach (ZeusModule module in parent.ChildModules) 
-			{
-				if (names.Contains(module.Name)) 
-				{
-					module.Execute(this._argmgr.Timeout, this._log);
-				}
-				else 
-				{
-					ExecuteModules(module, names);
-				}
-			}
-		}
+            bool complete = false;
+            ZeusModule m = FindModule(parent, projectPath);
+            if (m != null)
+            {
+                complete = true;
+                m.Execute(this._argmgr.Timeout, this._log);
+            }
+            return complete;
+        }
+
+        private bool ExecuteProjectItem(ZeusModule parent, string projectPath)
+        {
+            bool complete = false;
+            int moduleIndex = projectPath.LastIndexOf('/');
+            if (moduleIndex >= 0)
+            {
+                string modulePath = projectPath.Substring(0, moduleIndex),
+                    objectName = projectPath.Substring(moduleIndex + 1);
+
+                ZeusModule m = FindModule(parent, modulePath);
+                if (m != null)
+                {
+                    if (m.SavedObjects.Contains(objectName))
+                    {
+                        m.SavedObjects[objectName].Execute(this._argmgr.Timeout, this._log);
+                    }
+                    complete = true;
+                    m.Execute(this._argmgr.Timeout, this._log);
+                }
+            }
+            return complete;
+        }
+
+        private ZeusModule FindModule(ZeusModule parent, string projectPath)
+        {
+            ZeusModule m = null;
+            foreach (ZeusModule module in parent.ChildModules)
+            {
+                if (module.ProjectPath.Equals(projectPath, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    m = module;
+                    break;
+                }
+                else
+                {
+                    m = FindModule(module, projectPath);
+                    if (m != null) break;
+                }
+            }
+
+            return m;
+        }
 
 		private void _ProcessTemplate() 
 		{
@@ -356,9 +406,10 @@ namespace Zeus
 |------------------------------------------------------------------------
 | Project switches
 |------------------------------------------------------------------------
-| -p <projectpath>                     | generate an entire project
-| -pf <projectfolder>                  | regenerate a project folder
-| -m  <projectfolder>                  | same as -pf above
+| -p <projectfilepath>                 | generate an entire project
+| -pf <projectlocation>                | regenerate a project folder
+| -m  <projectlocation>                | same as -pf above for modules
+| -ti <projectlocation>                | same as -pf above for templates
 |------------------------------------------------------------------------
 | Template switches
 |------------------------------------------------------------------------

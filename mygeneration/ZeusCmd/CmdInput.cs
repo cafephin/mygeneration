@@ -1,10 +1,12 @@
 using System;
 using System.Text;
 using System.Collections;
+using System.Collections.Generic;
 using Zeus;
 using Zeus.Projects;
 using Zeus.Serializers;
 using Zeus.UserInterface;
+using Zeus.Configuration;
 
 namespace Zeus
 {
@@ -41,12 +43,14 @@ namespace Zeus
         private string _metaDatabase2 = null;
         private string _metaDataFile2 = null;
         private string _metaDataFileMerged = null;
-		private ArrayList _moduleNames = new ArrayList();
+        private List<string> _moduleNames = new List<string>();
+        private List<string> _projectItems = new List<string>();
 		private ZeusTemplate _template = null;
 		private ZeusProject _project = null;
 		private ZeusSavedInput _savedInput = null;
 		private ZeusSavedInput _inputToSave = null;
-		private ArrayList _intrinsicObjects = new ArrayList();
+        private List<ZeusIntrinsicObject> _intrinsicObjects = new List<ZeusIntrinsicObject>();
+        private List<ZeusIntrinsicObject>  _intrinsicObjectsToRemove = new List<ZeusIntrinsicObject>();
 
 		public CmdInput(string[] args)
 		{
@@ -106,17 +110,23 @@ namespace Zeus
 						break;
 					case "-rio":
 					case "-removeintrinsicobject":
-						if (numargs > (i+1)) 
-						{
-							string varname = args[++i];
-
-							this._intrinsicObjects.Add(varname);
-						}
-						else 
-						{
-							this._valid = false;
-							this._errorMessage = "Invalid switch usage: " + arg;
-						}
+                        if (numargs > (i + 1))
+                        {
+                            string varname = args[++i];
+                            foreach (ZeusIntrinsicObject zio in ZeusConfig.Current.IntrinsicObjects)
+                            {
+                                if (zio.VariableName == varname && !_intrinsicObjectsToRemove.Contains(zio))
+                                {
+                                    this._intrinsicObjectsToRemove.Add(zio);
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            this._valid = false;
+                            this._errorMessage = "Invalid switch usage: " + arg;
+                        }
                         break;
 					case "-r":
 					case "-relative":
@@ -196,7 +206,21 @@ namespace Zeus
 							this._valid = false;
 							this._errorMessage = "Invalid switch usage: " + arg;
 						}
-						break;
+                        break;
+                    case "-ti":
+                    case "-templateinstance":
+                        if (numargs > (i + 1))
+                        {
+                            string data = args[++i];
+                            if (!_projectItems.Contains(data))
+                                this._projectItems.Add(data);
+                        }
+                        else
+                        {
+                            this._valid = false;
+                            this._errorMessage = "Invalid switch usage: " + arg;
+                        }
+                        break;
 					case "-i":
 					case "-inputfile":
 						this._mode = ProcessMode.Template;
@@ -423,13 +447,19 @@ namespace Zeus
 		{ get { return _pathOutput; } }
 
 		public string PathLog
-		{ get { return _pathLog; } }
+        { get { return _pathLog; } }
 
-		public ArrayList IntrinsicObjects
-		{ get { return _intrinsicObjects; } }
+        public List<ZeusIntrinsicObject> IntrinsicObjects
+        { get { return _intrinsicObjects; } }
 
-		public ArrayList ModuleNames
+        public List<ZeusIntrinsicObject> IntrinsicObjectsToRemove
+        { get { return _intrinsicObjectsToRemove; } }
+
+        public List<string> ModuleNames
 		{ get { return _moduleNames; } }
+
+        public List<string> ProjectItems
+        { get { return _projectItems; } }
 
 		public ZeusTemplate Template
 		{ get { return _template; } }

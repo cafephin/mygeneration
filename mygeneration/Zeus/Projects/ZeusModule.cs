@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using System.Xml;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,6 +27,28 @@ namespace Zeus.Projects
 		{
 			get { return _name; }
 			set { _name = value; }
+        }
+
+        public string ProjectPath
+        {
+            get 
+            {
+                Stack<string> stack = new Stack<string>();
+                ZeusModule mm = this;
+                do
+                {
+                    stack.Push(mm.Name);
+                    mm = mm.ParentModule;
+                } while (mm != null);
+
+                StringBuilder sb = new StringBuilder();
+                while (stack.Count > 0)
+                {
+                    sb.Append("/").Append(stack.Pop());
+                }
+
+                return sb.ToString(); 
+            }
         }
 
         public string Description
