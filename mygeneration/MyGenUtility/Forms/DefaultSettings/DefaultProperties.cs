@@ -35,6 +35,7 @@ namespace MyGeneration
         private ToolStripMenuItem closeToolStripMenuItem;
         private DefaultSettingsControl defaultSettingsControl;
         private ToolStripSeparator toolStripMenuItem1;
+        private Button buttonTestAsync;
         private IMyGenerationMDI mdi;
 
         public DefaultProperties(IMyGenerationMDI mdi)
@@ -83,6 +84,7 @@ namespace MyGeneration
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.defaultSettingsControl = new MyGeneration.DefaultSettingsControl();
+            this.buttonTestAsync = new System.Windows.Forms.Button();
             this.toolStripOptions.SuspendLayout();
             this.menuStripMain.SuspendLayout();
             this.SuspendLayout();
@@ -173,7 +175,18 @@ namespace MyGeneration
             this.defaultSettingsControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.defaultSettingsControl.Location = new System.Drawing.Point(0, 0);
             this.defaultSettingsControl.Name = "defaultSettingsControl";
+            this.defaultSettingsControl.Size = new System.Drawing.Size(896, 603);
             this.defaultSettingsControl.TabIndex = 40;
+            // 
+            // buttonTestAsync
+            // 
+            this.buttonTestAsync.Location = new System.Drawing.Point(418, 0);
+            this.buttonTestAsync.Name = "buttonTestAsync";
+            this.buttonTestAsync.Size = new System.Drawing.Size(75, 23);
+            this.buttonTestAsync.TabIndex = 41;
+            this.buttonTestAsync.Text = "Test Async";
+            this.buttonTestAsync.UseVisualStyleBackColor = true;
+            this.buttonTestAsync.Click += new System.EventHandler(this.buttonTestAsync_Click);
             // 
             // DefaultProperties
             // 
@@ -181,6 +194,7 @@ namespace MyGeneration
             this.AutoScroll = true;
             this.AutoScrollMinSize = new System.Drawing.Size(590, 531);
             this.ClientSize = new System.Drawing.Size(896, 603);
+            this.Controls.Add(this.buttonTestAsync);
             this.Controls.Add(this.menuStripMain);
             this.Controls.Add(this.defaultSettingsControl);
             this.Controls.Add(this.toolStripOptions);
@@ -328,5 +342,22 @@ namespace MyGeneration
         }
 
         #endregion
+
+        private void buttonTestAsync_Click(object sender, EventArgs e)
+        {
+            ZeusProcessManager.ExecuteTemplate(@"C:\projects\mygeneration\trunk\mygeneration\MyGeneration\bin\Debug\Templates\Samples\GuiTest.zeus", new ZeusProcessStatusDelegate(TestAsyncStuff));
+        }
+
+        private void TestAsyncStuff(ZeusProcessStatusEventArgs args)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new ZeusProcessStatusDelegate(TestAsyncStuff), args);
+            }
+            else
+            {
+                MessageBox.Show(this, (args.IsRunning ? "Running" : "Complete") + " - " + args.Message);
+            }
+        }
     }
 }
