@@ -120,14 +120,22 @@ namespace MyGenVS2005
             {
                 try
                 {
-                    OutputWindow outwin = _application.ToolWindows.OutputWindow;
-                    Application.DoEvents();
-                    outwin.ActivePane.OutputString(message);
-                    outwin.ActivePane.OutputString(Environment.NewLine);
-                    outwin.ActivePane.Activate();
-                    if (isRunning)
+                    if (message.StartsWith("[GENERATED_FILE]"))
                     {
-                        outwin.Parent.Activate();
+                        string filename = message.Substring(16);
+                        _application.ItemOperations.OpenFile(filename, EnvDTE.Constants.vsViewKindPrimary);
+                    }
+                    else
+                    {
+                        OutputWindow outwin = _application.ToolWindows.OutputWindow;
+                        Application.DoEvents();
+                        outwin.ActivePane.OutputString(message);
+                        outwin.ActivePane.OutputString(Environment.NewLine);
+                        outwin.ActivePane.Activate();
+                        if (isRunning)
+                        {
+                            outwin.Parent.Activate();
+                        }
                     }
                 }
                 catch { }

@@ -67,6 +67,8 @@ namespace MyGeneration
                 }
                 else
                 {
+                    if (this._mdi.Console.DockContent.IsHidden) this._mdi.Console.DockContent.Show(_mdi.DockPanel);
+                    if (!this._mdi.Console.DockContent.IsActivated) this._mdi.Console.DockContent.Activate();
                     this._mdi.WriteConsole(args.Message);
                 }
             }

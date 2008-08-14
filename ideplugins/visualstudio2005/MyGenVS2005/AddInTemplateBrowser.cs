@@ -54,7 +54,6 @@ namespace MyGenVS2005
 
         private void templateBrowserControl1_GeneratedFileSaved(object sender, EventArgs e)
         {
-
             if (this.checkBoxOpenFile.Checked)
             {
                 String path = sender as String;
@@ -102,14 +101,22 @@ namespace MyGenVS2005
                 {
                     try
                     {
-                        OutputWindow outwin = _application.ToolWindows.OutputWindow;
-                        Application.DoEvents();
-                        outwin.ActivePane.OutputString(args.Message);
-                        outwin.ActivePane.OutputString(Environment.NewLine);
-                        outwin.ActivePane.Activate();
-                        if (args.IsRunning)
+                        if (args.Message.StartsWith("[GENERATED_FILE]"))
                         {
-                            outwin.Parent.Activate();
+                            string filename = args.Message.Substring(16);
+                            _application.ItemOperations.OpenFile(filename, EnvDTE.Constants.vsViewKindPrimary);
+                        }
+                        else 
+                        {
+                            OutputWindow outwin = _application.ToolWindows.OutputWindow;
+                            Application.DoEvents();
+                            outwin.ActivePane.OutputString(args.Message);
+                            outwin.ActivePane.OutputString(Environment.NewLine);
+                            outwin.ActivePane.Activate();
+                            if (args.IsRunning)
+                            {
+                                outwin.Parent.Activate();
+                            }
                         }
                     }
                     catch { }
