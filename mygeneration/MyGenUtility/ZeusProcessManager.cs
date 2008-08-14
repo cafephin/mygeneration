@@ -309,15 +309,32 @@ namespace MyGeneration
                 Process p = td.SysProcess;
                 try
                 {
+                    string l;
                     p.Start();
                     while (!p.HasExited)
                     {
-                        string l = p.StandardOutput.ReadLine();
+                        l = p.StandardOutput.ReadLine();
                         td.Callback(new ZeusProcessStatusEventArgs(td.ID, true, l));
                         // need to bubble up this line, and the status in a thread safe way.
 
                         // if marked to "kill", break out and kill process!
                     }
+
+                    
+                    do
+                    {
+                        try
+                        {
+                            l = p.StandardOutput.ReadLine();
+                            if (l != null) td.Callback(new ZeusProcessStatusEventArgs(td.ID, true, l));
+                        }
+                        catch
+                        {
+                            l = null;
+                        }
+                    }
+                    while (l != null);
+
                     td.Callback(new ZeusProcessStatusEventArgs(td.ID, false, "Completed"));
                 }
                 catch (ThreadAbortException)
