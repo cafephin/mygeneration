@@ -20,6 +20,20 @@ namespace MyGeneration
             return zp.ID;
         }
 
+        public static Guid ExecuteSavedInput(string filename, ZeusProcessStatusDelegate callback)
+        {
+            ZeusProcess zp = new ZeusProcess(ZeusProcessType.ExecuteSavedInput, GetCallbacks(callback), filename);
+            processes[zp.ID] = zp;
+            return zp.ID;
+        }
+
+        public static Guid RecordTemplateInput(string templateFilename, string saveToFilename, ZeusProcessStatusDelegate callback)
+        {
+            ZeusProcess zp = new ZeusProcess(ZeusProcessType.RecordTemplateInput, GetCallbacks(callback), templateFilename, saveToFilename);
+            processes[zp.ID] = zp;
+            return zp.ID;
+        }
+
         public static Guid ExecuteProject(string filename, ZeusProcessStatusDelegate callback)
         {
             ZeusProcess zp = new ZeusProcess(ZeusProcessType.ExecuteProject, GetCallbacks(callback), filename);

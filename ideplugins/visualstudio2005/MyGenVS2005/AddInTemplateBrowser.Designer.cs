@@ -67,6 +67,7 @@ namespace MyGenVS2005
             this.templateBrowserControl1.ErrorsOccurred += new System.EventHandler(this.templateBrowserControl1_ErrorsOccurred);
             this.templateBrowserControl1.TemplateOpen += new System.EventHandler(this.templateBrowserControl1_TemplateOpen);
             this.templateBrowserControl1.GeneratedFileSaved += new System.EventHandler(this.templateBrowserControl1_GeneratedFileSaved);
+            this.templateBrowserControl1.ExecuteTemplateOverride = new MyGeneration.ExecuteTemplateDelegate(templateBrowserControl1_ExecuteOverride);
             // 
             // checkBoxOpenTemplate
             // 

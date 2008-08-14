@@ -229,6 +229,17 @@ namespace Zeus
 			set { this._filePath = value; }
 		}
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public string FullFileName
+        {
+            get
+            {
+                return Path.Combine(this.FilePath, this.FullFileName);
+            }
+        }
+
 		/// <summary>
 		/// The tempate type. Currently this can only be TemplateGroup or Template.
 		/// </summary>

@@ -329,10 +329,5 @@ namespace MyGeneration
         }
 
         #endregion
-
-        private void buttonTestAsync_Click(object sender, EventArgs e)
-        {
-            ZeusProcessManager.ExecuteTemplate(@"C:\projects\mygen\mygeneration\MyGeneration\bin\Debug\Templates\Samples\GuiTest.zeus", new ZeusProcessStatusDelegate(TestAsyncStuff));
-        }
     }
 }

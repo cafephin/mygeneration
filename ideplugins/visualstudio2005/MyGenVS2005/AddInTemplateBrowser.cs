@@ -12,11 +12,13 @@ using Microsoft.VisualStudio.CommandBars;
 
 using Zeus;
 using Zeus.Configuration;
+using MyGeneration;
 
 namespace MyGenVS2005
 {
     public partial class AddInTemplateBrowser : Form
     {
+        private ZeusProcessStatusDelegate processCallback;
         private DTE2 _application;
 
         public AddInTemplateBrowser(DTE2 application)
@@ -25,6 +27,7 @@ namespace MyGenVS2005
 
             InitializeComponent();
 
+            processCallback = new ZeusProcessStatusDelegate(ProcessOperation);
             this.templateBrowserControl1.Initialize();
         }
 
@@ -60,6 +63,35 @@ namespace MyGenVS2005
                     _application.ItemOperations.OpenFile(path, EnvDTE.Constants.vsViewKindPrimary);
                 }
             }
+        }
+
+
+        private void templateBrowserControl1_ExecuteOverride(TemplateOperations operation, ZeusTemplate template, ZeusSavedInput input, ShowGUIEventHandler guiEventHandler)
+        {
+            switch (operation)
+            {
+                case TemplateOperations.Execute:
+                    ZeusProcessManager.ExecuteTemplate(template.FullFileName, processCallback);
+                    break;
+                case TemplateOperations.ExecuteLoadedInput:
+                    ZeusProcessManager.ExecuteSavedInput(input.FilePath, processCallback);
+                    break;
+                case TemplateOperations.SaveInput:
+                    SaveFileDialog saveFileDialog = new SaveFileDialog();
+                    saveFileDialog.Filter = "Zues Input Files (*.zinp)|*.zinp";
+                    saveFileDialog.FilterIndex = 0;
+                    saveFileDialog.RestoreDirectory = true;
+                    if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        ZeusProcessManager.RecordTemplateInput(template.FullFileName, saveFileDialog.FileName, processCallback);
+                    }
+                    break;
+            }
+        }
+
+        private void ProcessOperation(ZeusProcessStatusEventArgs args)
+        {
+            //
         }
     }
 }
