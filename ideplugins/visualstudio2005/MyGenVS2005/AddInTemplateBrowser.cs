@@ -101,21 +101,40 @@ namespace MyGenVS2005
                 {
                     try
                     {
-                        if (args.Message.StartsWith("[GENERATED_FILE]"))
+                        if (args.Message.StartsWith("[GENERATED_FILE]") && (this.checkBoxOpenFile.Checked))
                         {
                             string filename = args.Message.Substring(16);
                             _application.ItemOperations.OpenFile(filename, EnvDTE.Constants.vsViewKindPrimary);
                         }
-                        else 
+                        else
                         {
-                            OutputWindow outwin = _application.ToolWindows.OutputWindow;
                             Application.DoEvents();
-                            outwin.ActivePane.OutputString(args.Message);
-                            outwin.ActivePane.OutputString(Environment.NewLine);
-                            outwin.ActivePane.Activate();
-                            if (args.IsRunning)
+
+                            OutputWindow outwin = _application.ToolWindows.OutputWindow;
+                            OutputWindowPane pane = null;
+
+                            if (outwin.OutputWindowPanes.Count > 0)
                             {
-                                outwin.Parent.Activate();
+                                foreach (OutputWindowPane tmp in outwin.OutputWindowPanes)
+                                {
+                                    if (tmp.Name == "MyGeneration")
+                                    {
+                                        pane = tmp;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (pane == null)
+                            {
+                                pane = outwin.ActivePane.Collection.Add("MyGeneration");
+                            }
+
+                            if (pane != null)
+                            {
+                                pane.Activate();
+                                pane.OutputString(args.Message);
+                                pane.OutputString(Environment.NewLine);
                             }
                         }
                     }

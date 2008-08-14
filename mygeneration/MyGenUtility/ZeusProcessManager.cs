@@ -217,32 +217,27 @@ namespace MyGeneration
                 string cmdArgs = "-internaluse ";
                 if (type == ZeusProcessType.ExecuteTemplate)
                 {
-                    cmdArgs = "-t \"" + args[0] + "\"";
-                    for (int i = 1; i < args.Length; i++)
-                    {
-                        if (args[i].Equals("silent", StringComparison.CurrentCultureIgnoreCase))
-                            cmdArgs += " -s";
-                    }
+                    cmdArgs += "-t \"" + args[0] + "\"";
                 }
                 else if (type == ZeusProcessType.ExecuteSavedInput)
                 {
-                    cmdArgs = "-i \"" + args[0] + "\"";
+                    cmdArgs += "-i \"" + args[0] + "\"";
                 }
                 else if (type == ZeusProcessType.RecordTemplateInput)
                 {
-                    cmdArgs = "-t \"" + args[0] + "\" -c \"" + args[1] + "\"";
+                    cmdArgs += "-t \"" + args[0] + "\" -c \"" + args[1] + "\"";
                 }
                 else if (type == ZeusProcessType.ExecuteProject)
                 {
-                    cmdArgs = "-p \"" + args[0] + "\"";
+                    cmdArgs += "-p \"" + args[0] + "\"";
                 }
                 else if (type == ZeusProcessType.ExecuteProjectModule)
                 {
-                    cmdArgs = "-p \"" + args[0] + "\" -m \"" + args[1] + "\"";
+                    cmdArgs += "-p \"" + args[0] + "\" -m \"" + args[1] + "\"";
                 }
                 else if (type == ZeusProcessType.ExecuteProjectItem)
                 {
-                    cmdArgs = "-p \"" + args[0] + "\" -ti \"" + args[1] + "\"";
+                    cmdArgs += "-p \"" + args[0] + "\" -ti \"" + args[1] + "\"";
                 }
                 if (!string.IsNullOrEmpty(cmdArgs)) si.Arguments = cmdArgs;
             }

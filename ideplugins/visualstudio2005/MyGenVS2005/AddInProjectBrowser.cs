@@ -127,14 +127,33 @@ namespace MyGenVS2005
                     }
                     else
                     {
-                        OutputWindow outwin = _application.ToolWindows.OutputWindow;
                         Application.DoEvents();
-                        outwin.ActivePane.OutputString(message);
-                        outwin.ActivePane.OutputString(Environment.NewLine);
-                        outwin.ActivePane.Activate();
-                        if (isRunning)
+                        
+                        OutputWindow outwin = _application.ToolWindows.OutputWindow;
+                        OutputWindowPane pane = null;
+
+                        if (outwin.OutputWindowPanes.Count > 0)
                         {
-                            outwin.Parent.Activate();
+                            foreach (OutputWindowPane tmp in outwin.OutputWindowPanes)
+                            {
+                                if (tmp.Name == "MyGeneration")
+                                {
+                                    pane = tmp;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (pane == null)
+                        {
+                            pane = outwin.ActivePane.Collection.Add("MyGeneration");
+                        }
+
+                        if (pane != null)
+                        {
+                            pane.Activate();
+                            pane.OutputString(message);
+                            pane.OutputString(Environment.NewLine);
                         }
                     }
                 }
