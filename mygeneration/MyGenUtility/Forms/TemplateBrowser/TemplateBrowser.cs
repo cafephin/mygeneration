@@ -74,7 +74,8 @@ namespace MyGeneration
 
         private void templateBrowserControl_ExecutionStatusUpdate(bool isRunning, string message)
         {
-            if (!this._mdi.Console.DockContent.Visible) this._mdi.Console.DockContent.Show(_mdi.DockPanel);
+            if (this._mdi.Console.DockContent.IsHidden) this._mdi.Console.DockContent.Show(_mdi.DockPanel);
+            if (!this._mdi.Console.DockContent.IsActivated) this._mdi.Console.DockContent.Activate();
             this._mdi.WriteConsole(message);
         }
 

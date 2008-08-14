@@ -284,6 +284,14 @@ namespace Zeus
             {
                 complete = true;
                 m.Execute(this._argmgr.Timeout, this._log);
+
+                if (this._argmgr.InternalUseOnly)
+                {
+                    foreach (string file in m.SavedFiles)
+                    {
+                        this._log.Write("[GENERATED_FILE]" + file);
+                    }
+                }
             }
             return complete;
         }
@@ -303,9 +311,16 @@ namespace Zeus
                     if (m.SavedObjects.Contains(objectName))
                     {
                         m.SavedObjects[objectName].Execute(this._argmgr.Timeout, this._log);
+
+                        if (this._argmgr.InternalUseOnly)
+                        {
+                            foreach (string file in m.SavedObjects[objectName].SavedFiles)
+                            {
+                                this._log.Write("[GENERATED_FILE]" + file);
+                            }
+                        }
                     }
                     complete = true;
-                    m.Execute(this._argmgr.Timeout, this._log);
                 }
             }
             return complete;
@@ -380,6 +395,14 @@ namespace Zeus
 				this._log.Write(ex);
 				this._log.Write("Template execution failed.");
 			}
+
+            if (context != null && this._argmgr.InternalUseOnly)
+            {
+                foreach (string file in context.Output.SavedFiles)
+                {
+                    this._log.Write("[GENERATED_FILE]" + file);
+                }
+            }
 		}
 
 		/// <summary>
