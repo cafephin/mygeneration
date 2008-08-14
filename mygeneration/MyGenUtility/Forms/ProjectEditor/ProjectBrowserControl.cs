@@ -18,23 +18,34 @@ using WeifenLuo.WinFormsUI.Docking;
 namespace MyGeneration
 {
     public delegate void TextChangedEventHandler(string text, string tabText, string filename);
+    public delegate void ProjectExecutionStatusHandler(bool isRunning, string message);
     public partial class ProjectBrowserControl : UserControl
     {
         private const int INDEX_CLOSED_FOLDER = 0;
         private const int INDEX_OPEN_FOLDER = 1;
 
+        private ZeusProcessStatusDelegate _executionCallback;
         private ProjectTreeNode _rootNode;
         private FormAddEditModule _formEditModule = new FormAddEditModule();
         private FormAddEditSavedObject _formEditSavedObject;
 		private bool _isDirty = false;
 
-        public event TextChangedEventHandler TextChanged;
+        public event TextChangedEventHandler TabTextChanged;
+        public event ProjectExecutionStatusHandler ExecutionStatusUpdate;
         public event EventHandler ErrorsOccurred;
 
         public ProjectBrowserControl()
         {
             InitializeComponent();
+            _executionCallback = new ZeusProcessStatusDelegate(ExecutionCallback);
             _formEditSavedObject = new FormAddEditSavedObject();
+        }
+        protected void OnExecutionStatusUpdate(bool isRunning, string message)
+        {
+            if (ExecutionStatusUpdate != null)
+            {
+                ExecutionStatusUpdate(isRunning, message);
+            }
         }
 
         protected void OnErrorsOccurred(Exception ex)
@@ -47,9 +58,9 @@ namespace MyGeneration
 
         protected void OnTextChanged(string text, string tabText, string filename)
         {
-            if (TextChanged != null)
+            if (TabTextChanged != null)
             {
-                TextChanged(text, tabText, filename);
+                TabTextChanged(text, tabText, filename);
             }
         }
 
@@ -509,30 +520,48 @@ namespace MyGeneration
         #region Execute, Save, SaveAs, Edit
         public void Execute()
         {
+            this.Save();
+            ZeusProject proj = this._rootNode.Project;
+
             Cursor.Current = Cursors.WaitCursor;
 
             TreeNode node = this.treeViewProject.SelectedNode;
             DefaultSettings settings = DefaultSettings.Instance;
 
-            ProjectExecuteStatus log = new ProjectExecuteStatus();
-            log.Show(this);
-
-            if ((node is ModuleTreeNode) || (node is ProjectTreeNode))
+            if (node is ProjectTreeNode)
+            {
+                ZeusProcessManager.ExecuteProject(proj.FilePath, ExecutionCallback);
+            }
+            else if (node is ModuleTreeNode)
             {
                 ZeusModule module = node.Tag as ZeusModule;
-                module.Execute(settings.ScriptTimeout, log);
+                ZeusProcessManager.ExecuteModule(proj.FilePath, module.ProjectPath, ExecutionCallback);
+                //module.Execute(settings.ScriptTimeout, log);
             }
             else if (node is SavedObjectTreeNode)
             {
                 SavedTemplateInput savedinput = node.Tag as SavedTemplateInput;
-                savedinput.Execute(settings.ScriptTimeout, log);
+                ZeusModule module = node.Parent.Tag as ZeusModule;
+                ZeusProcessManager.ExecuteProjectItem(proj.FilePath, module.ProjectPath + "/" + savedinput.SavedObjectName, ExecutionCallback);
+                //savedinput.Execute(settings.ScriptTimeout, log);
             }
+        }
 
-            log.Finished = true;
-            log.BringToFront();
-            log.Activate();
-
-            Cursor.Current = Cursors.Default;
+        private void ExecutionCallback(ZeusProcessStatusEventArgs args)
+        {
+            if (args.Message != null)
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(_executionCallback, args);
+                }
+                else
+                {
+                    this.OnExecutionStatusUpdate(args.IsRunning, args.Message);
+                    if (!args.IsRunning)
+                        Cursor.Current = Cursors.Default;
+                }
+            }
         }
 
         public void Save()

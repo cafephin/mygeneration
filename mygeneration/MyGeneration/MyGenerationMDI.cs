@@ -210,6 +210,7 @@ namespace MyGeneration
 
         private void MyGenerationMDI_FormClosing(object sender, FormClosingEventArgs e)
         {
+
             bool allowPrevent = true, allowSave = true;
             if (e.CloseReason == CloseReason.TaskManagerClosing)
             {
@@ -219,6 +220,20 @@ namespace MyGeneration
                 e.CloseReason == CloseReason.ApplicationExitCall)
             {
                 allowPrevent = false;
+            }
+
+            if (!ZeusProcessManager.IsDormant)
+            {
+                DialogResult r = MessageBox.Show(this, "There are templates currently being executed. Would you like to kill them?", "Warning!!", MessageBoxButtons.YesNo);
+                if (r == DialogResult.Yes)
+                {
+                    ZeusProcessManager.KillAll();
+                }
+                else
+                {
+                    e.Cancel = true;
+                    return;
+                }
             }
 
             if (allowSave && !this.Shutdown(allowPrevent))
@@ -491,6 +506,11 @@ namespace MyGeneration
                 IMyGenContent bw = null;
                 DockContentCollection coll = this.dockPanel.Contents;
                 bool canClose = true;
+
+                if (allowPrevent && !ZeusProcessManager.IsDormant)
+                {
+                    return false;
+                }
 
                 for (int i = 0; i < coll.Count; i++)
                 {

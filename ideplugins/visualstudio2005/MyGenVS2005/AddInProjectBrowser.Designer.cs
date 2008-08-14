@@ -30,8 +30,8 @@ namespace MyGenVS2005
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddInProjectBrowser));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.checkBoxOpenFile = new System.Windows.Forms.CheckBox();
             this.projectBrowserControl1 = new MyGeneration.ProjectBrowserControl();
+            this.checkBoxOpenFile = new System.Windows.Forms.CheckBox();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -52,8 +52,18 @@ namespace MyGenVS2005
             // 
             this.splitContainer1.Panel2.Controls.Add(this.checkBoxOpenFile);
             this.splitContainer1.Size = new System.Drawing.Size(288, 464);
-            this.splitContainer1.SplitterDistance = 430;
+            this.splitContainer1.SplitterDistance = 429;
             this.splitContainer1.TabIndex = 1;
+            // 
+            // projectBrowserControl1
+            // 
+            this.projectBrowserControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.projectBrowserControl1.Location = new System.Drawing.Point(0, 0);
+            this.projectBrowserControl1.Name = "projectBrowserControl1";
+            this.projectBrowserControl1.Size = new System.Drawing.Size(288, 429);
+            this.projectBrowserControl1.TabIndex = 0;
+            this.projectBrowserControl1.ExecutionStatusUpdate += new MyGeneration.ProjectExecutionStatusHandler(this.projectBrowserControl1_ExecutionStatusUpdate);
+            this.projectBrowserControl1.ErrorsOccurred += new System.EventHandler(this.projectBrowserControl1_ErrorsOccurred);
             // 
             // checkBoxOpenFile
             // 
@@ -66,15 +76,6 @@ namespace MyGenVS2005
             this.checkBoxOpenFile.TabIndex = 0;
             this.checkBoxOpenFile.Text = "Open generated files in Visual Studio";
             this.checkBoxOpenFile.UseVisualStyleBackColor = true;
-            // 
-            // projectBrowserControl1
-            // 
-            this.projectBrowserControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.projectBrowserControl1.Location = new System.Drawing.Point(0, 0);
-            this.projectBrowserControl1.Name = "projectBrowserControl1";
-            this.projectBrowserControl1.Size = new System.Drawing.Size(288, 430);
-            this.projectBrowserControl1.TabIndex = 0;
-            this.projectBrowserControl1.ErrorsOccurred += new System.EventHandler(this.projectBrowserControl1_ErrorsOccurred);
             // 
             // AddInProjectBrowser
             // 

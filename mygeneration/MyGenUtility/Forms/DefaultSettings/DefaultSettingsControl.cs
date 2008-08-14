@@ -84,6 +84,7 @@ namespace MyGeneration
             this.textBoxDbUserMetaMappings.Text = settings.DatabaseUserDataXmlMappingsString;
 
             this.checkBoxClipboard.Checked = settings.EnableClipboard;
+            this.checkBoxRunTemplatesAsync.Checked = settings.ExecuteFromTemplateBrowserAsync;
             this.checkBoxLineNumbers.Checked = settings.EnableLineNumbering;
             this.txtTabs.Text = settings.Tabs.ToString();
             this.txtDefaultTemplatePath.Text = settings.DefaultTemplateDirectory;
@@ -251,6 +252,7 @@ namespace MyGeneration
             settings.DbTarget = this.cboDbTarget.SelectedItem as string;
             settings.UserMetaDataFileName = this.txtUserMetaDataFile.Text;
             settings.EnableClipboard = this.checkBoxClipboard.Checked;
+            settings.ExecuteFromTemplateBrowserAsync = this.checkBoxRunTemplatesAsync.Checked;
             settings.EnableLineNumbering = this.checkBoxLineNumbers.Checked;
             settings.Tabs = Convert.ToInt32(this.txtTabs.Text);
             settings.CheckForNewBuild = this.chkForUpdates.Checked;

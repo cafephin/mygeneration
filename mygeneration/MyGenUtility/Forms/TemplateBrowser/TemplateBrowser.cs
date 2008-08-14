@@ -16,15 +16,66 @@ namespace MyGeneration
     public partial class TemplateBrowser : DockContent, IMyGenContent
     {
         private IMyGenerationMDI _mdi;
+        private ZeusProcessStatusDelegate _executionCallback;
 
         public TemplateBrowser(IMyGenerationMDI mdi)
         {
             this._mdi = mdi;
+            this._executionCallback = new ZeusProcessStatusDelegate(ExecutionCallback);
             this.DockPanel = mdi.DockPanel;
 
             InitializeComponent();
 
             this.templateBrowserControl.Initialize();
+            if (DefaultSettings.Instance.ExecuteFromTemplateBrowserAsync)
+            {
+                this.templateBrowserControl.ExecuteTemplateOverride = new ExecuteTemplateDelegate(ExecuteTemplateOverride);
+            }
+        }
+
+        private bool ExecuteTemplateOverride(TemplateOperations operation, ZeusTemplate template, ZeusSavedInput input, ShowGUIEventHandler guiEventHandler)
+        {
+            switch (operation)
+            {
+                case TemplateOperations.Execute:
+                    ZeusProcessManager.ExecuteTemplate(template.FullFileName, _executionCallback);
+                    break;
+                case TemplateOperations.ExecuteLoadedInput:
+                    ZeusProcessManager.ExecuteSavedInput(input.FilePath, _executionCallback);
+                    break;
+                case TemplateOperations.SaveInput:
+                    SaveFileDialog saveFileDialog = new SaveFileDialog();
+                    saveFileDialog.Filter = "Zues Input Files (*.zinp)|*.zinp";
+                    saveFileDialog.FilterIndex = 0;
+                    saveFileDialog.RestoreDirectory = true;
+                    if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        ZeusProcessManager.RecordTemplateInput(template.FullFileName, saveFileDialog.FileName, _executionCallback);
+                    }
+                    break;
+            }
+            return true;
+        }
+
+        private void ExecutionCallback(ZeusProcessStatusEventArgs args)
+        {
+            if (args.Message != null)
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(_executionCallback, args);
+                }
+                else
+                {
+                    this._mdi.WriteConsole(args.Message);
+                }
+            }
+        }
+
+        private void templateBrowserControl_ExecutionStatusUpdate(bool isRunning, string message)
+        {
+            if (!this._mdi.Console.DockContent.Visible) this._mdi.Console.DockContent.Show(_mdi.DockPanel);
+            this._mdi.WriteConsole(message);
         }
 
         private void templateBrowserControl_ErrorsOccurred(object sender, EventArgs e)
@@ -73,12 +124,15 @@ namespace MyGeneration
             {
                 bool doRefresh = false;
 
+                if (DefaultSettings.Instance.ExecuteFromTemplateBrowserAsync)
+                    this.templateBrowserControl.ExecuteTemplateOverride = new ExecuteTemplateDelegate(ExecuteTemplateOverride);
+                else
+                    this.templateBrowserControl.ExecuteTemplateOverride = null;
+
                 try
                 {
                     if (this.templateBrowserControl.TreeBuilder.DefaultTemplatePath != settings.DefaultTemplateDirectory)
-                    {
                         doRefresh = true;
-                    }
                 }
                 catch
                 {

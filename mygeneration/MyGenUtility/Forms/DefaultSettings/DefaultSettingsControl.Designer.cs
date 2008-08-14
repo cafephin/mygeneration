@@ -104,6 +104,7 @@ namespace MyGeneration
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.buttonSaveSettings = new System.Windows.Forms.Button();
             this.buttonCancelSettings = new System.Windows.Forms.Button();
+            this.checkBoxRunTemplatesAsync = new System.Windows.Forms.CheckBox();
             this.tabControl.SuspendLayout();
             this.tabConnection.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -519,6 +520,7 @@ namespace MyGeneration
             // 
             // tabScript
             // 
+            this.tabScript.Controls.Add(this.checkBoxRunTemplatesAsync);
             this.tabScript.Controls.Add(this.groupBox6);
             this.tabScript.Controls.Add(this.groupBox4);
             this.tabScript.Controls.Add(this.groupBoxTimout);
@@ -534,7 +536,7 @@ namespace MyGeneration
             this.tabScript.Controls.Add(this.txtDefaultTemplatePath);
             this.tabScript.Location = new System.Drawing.Point(4, 22);
             this.tabScript.Name = "tabScript";
-            this.tabScript.Size = new System.Drawing.Size(826, 558);
+            this.tabScript.Size = new System.Drawing.Size(826, 551);
             this.tabScript.TabIndex = 1;
             this.tabScript.Text = "Templates";
             // 
@@ -794,7 +796,7 @@ namespace MyGeneration
             // 
             // checkBoxClipboard
             // 
-            this.checkBoxClipboard.Location = new System.Drawing.Point(20, 183);
+            this.checkBoxClipboard.Location = new System.Drawing.Point(20, 171);
             this.checkBoxClipboard.Name = "checkBoxClipboard";
             this.checkBoxClipboard.Size = new System.Drawing.Size(248, 24);
             this.checkBoxClipboard.TabIndex = 1;
@@ -830,7 +832,7 @@ namespace MyGeneration
             this.tabMisc.Controls.Add(this.chkForUpdates);
             this.tabMisc.Location = new System.Drawing.Point(4, 22);
             this.tabMisc.Name = "tabMisc";
-            this.tabMisc.Size = new System.Drawing.Size(826, 558);
+            this.tabMisc.Size = new System.Drawing.Size(826, 551);
             this.tabMisc.TabIndex = 2;
             this.tabMisc.Text = "Misc";
             // 
@@ -915,6 +917,14 @@ namespace MyGeneration
             this.buttonCancelSettings.Text = "Cancel";
             this.buttonCancelSettings.UseVisualStyleBackColor = true;
             this.buttonCancelSettings.Click += new System.EventHandler(this.buttonCancelSettings_Click);
+            // 
+            // checkBoxRunTemplatesAsync
+            // 
+            this.checkBoxRunTemplatesAsync.Location = new System.Drawing.Point(20, 192);
+            this.checkBoxRunTemplatesAsync.Name = "checkBoxRunTemplatesAsync";
+            this.checkBoxRunTemplatesAsync.Size = new System.Drawing.Size(346, 24);
+            this.checkBoxRunTemplatesAsync.TabIndex = 15;
+            this.checkBoxRunTemplatesAsync.Text = "Execute from Template Browser Asynchronously";
             // 
             // DefaultSettingsControl
             // 
@@ -1026,5 +1036,6 @@ namespace MyGeneration
         private System.Windows.Forms.Label labellDbUserMetaMappings;
         private System.Windows.Forms.TextBox textBoxDbUserMetaMappings;
         private System.Windows.Forms.Label label1DbUserMetaMappingsExample;
+        private System.Windows.Forms.CheckBox checkBoxRunTemplatesAsync;
     }
 }

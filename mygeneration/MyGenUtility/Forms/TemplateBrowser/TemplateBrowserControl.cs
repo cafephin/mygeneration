@@ -254,11 +254,13 @@ namespace MyGeneration
 
         public void ExecuteTemplate(ZeusTemplate template)
         {
+            bool overridden = false;
             if (ExecuteTemplateOverride != null)
             {
-                ExecuteTemplateOverride(TemplateOperations.Execute, template, null, _guiHandler);
+                overridden = ExecuteTemplateOverride(TemplateOperations.Execute, template, null, _guiHandler);
             }
-            else
+            
+            if (!overridden)
             {
                 Cursor.Current = Cursors.WaitCursor;
 
@@ -323,11 +325,13 @@ namespace MyGeneration
 
         public void SaveInput(ZeusTemplate template)
         {
+            bool overridden = false;
             if (ExecuteTemplateOverride != null)
             {
-                ExecuteTemplateOverride(TemplateOperations.SaveInput, template, null, _guiHandler);
+                overridden = ExecuteTemplateOverride(TemplateOperations.SaveInput, template, null, _guiHandler);
             }
-            else
+
+            if (!overridden)
             {
                 try
                 {
@@ -376,6 +380,8 @@ namespace MyGeneration
 
         public void ExecuteLoadedInput()
         {
+            bool overridden = false;
+            
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Zues Input Files (*.zinp)|*.zinp";
             openFileDialog.FilterIndex = 0;
@@ -383,18 +389,21 @@ namespace MyGeneration
             openFileDialog.Multiselect = true;
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
+                ZeusSavedInput savedInput = null;
+                ZeusTemplate template = null;
                 if (ExecuteTemplateOverride != null)
                 {
                     try
                     {
                         foreach (string filename in openFileDialog.FileNames)
                         {
-                            ZeusSavedInput savedInput = new ZeusSavedInput(filename);
+                            savedInput = new ZeusSavedInput(filename);
                             if (savedInput.Load())
                             {
-                                ZeusTemplate template = new ZeusTemplate(savedInput.InputData.TemplatePath);
+                                template = new ZeusTemplate(savedInput.InputData.TemplatePath);
 
-                                ExecuteTemplateOverride(TemplateOperations.ExecuteLoadedInput, template, savedInput, _guiHandler);
+                                overridden = ExecuteTemplateOverride(TemplateOperations.ExecuteLoadedInput, template, savedInput, _guiHandler);
+                                if (!overridden) break;
                             }
                         }
                     }
@@ -403,7 +412,9 @@ namespace MyGeneration
                         OnErrorsOccurred(ex);
                     }
                 }
-                else
+                
+
+                if (!overridden)
                 {
                     try
                     {
@@ -414,14 +425,14 @@ namespace MyGeneration
 
                         foreach (string filename in openFileDialog.FileNames)
                         {
-                            ZeusSavedInput savedInput = new ZeusSavedInput(filename);
+                            savedInput = new ZeusSavedInput(filename);
                             if (savedInput.Load())
                             {
                                 ZeusContext context = new ZeusContext();
                                 context.Input.AddItems(savedInput.InputData.InputItems);
                                 context.Log = log;
 
-                                ZeusTemplate template = new ZeusTemplate(savedInput.InputData.TemplatePath);
+                                template = new ZeusTemplate(savedInput.InputData.TemplatePath);
                                 template.Execute(context, settings.ScriptTimeout, true);
 
                                 foreach (string filePath in context.Output.SavedFiles)
@@ -683,6 +694,6 @@ namespace MyGeneration
         ExecuteLoadedInput
     }
 
-    public delegate void ExecuteTemplateDelegate(TemplateOperations operation, ZeusTemplate template, ZeusSavedInput input, ShowGUIEventHandler guiEventHandler);
+    public delegate bool ExecuteTemplateDelegate(TemplateOperations operation, ZeusTemplate template, ZeusSavedInput input, ShowGUIEventHandler guiEventHandler);
 
 }

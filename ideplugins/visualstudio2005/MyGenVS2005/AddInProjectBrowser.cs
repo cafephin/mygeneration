@@ -25,7 +25,7 @@ namespace MyGenVS2005
 
             InitializeComponent();
 
-            this.projectBrowserControl1.TextChanged += new MyGeneration.TextChangedEventHandler(projectBrowserControl1_TextChanged);
+            this.projectBrowserControl1.TabTextChanged += new MyGeneration.TextChangedEventHandler(projectBrowserControl1_TextChanged);
 
             string projectFileToOpen = null;
             UIHierarchy UIH = _application.ToolWindows.SolutionExplorer;
@@ -36,10 +36,9 @@ namespace MyGenVS2005
                 if (name.EndsWith(".zprj", StringComparison.CurrentCultureIgnoreCase))
                 {
                     ProjectItem prj = item.Object as ProjectItem;
-                    for (short i = 0; i < prj.FileCount; i++)
+                    if (prj.FileCount > 0)
                     {
-                        projectFileToOpen = prj.get_FileNames(i);
-                        break;
+                        projectFileToOpen = prj.get_FileNames(0);
                     }
                     if (projectFileToOpen != null) break;
                 }
@@ -103,7 +102,7 @@ namespace MyGenVS2005
 
         private void projectBrowserControl1_TextChanged(string text, string tabText, string filename)
         {
-            //throw new Exception("The method or operation is not implemented.");
+            this.Text = tabText;
         }
 
         private void projectBrowserControl1_ErrorsOccurred(object sender, EventArgs e)
@@ -112,6 +111,26 @@ namespace MyGenVS2005
             {
                 AddInErrorForm errorForm = new AddInErrorForm(sender as Exception);
                 errorForm.ShowDialog(this.ParentForm);
+            }
+        }
+
+        private void projectBrowserControl1_ExecutionStatusUpdate(bool isRunning, string message)
+        {
+            if (message != null)
+            {
+                try
+                {
+                    OutputWindow outwin = _application.ToolWindows.OutputWindow;
+                    Application.DoEvents();
+                    outwin.ActivePane.OutputString(message);
+                    outwin.ActivePane.OutputString(Environment.NewLine);
+                    outwin.ActivePane.Activate();
+                    if (isRunning)
+                    {
+                        outwin.Parent.Activate();
+                    }
+                }
+                catch { }
             }
         }
     }

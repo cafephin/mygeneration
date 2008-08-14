@@ -29,7 +29,6 @@ namespace MyGeneration
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProjectBrowser));
-            this.projectBrowserControl1 = new MyGeneration.ProjectBrowserControl();
             this.menuStripMain = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -45,17 +44,10 @@ namespace MyGeneration
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonExecute = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.projectBrowserControl1 = new MyGeneration.ProjectBrowserControl();
             this.menuStripMain.SuspendLayout();
             this.toolStripOptions.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // projectBrowserControl1
-            // 
-            this.projectBrowserControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.projectBrowserControl1.Location = new System.Drawing.Point(0, 0);
-            this.projectBrowserControl1.Name = "projectBrowserControl1";
-            this.projectBrowserControl1.Size = new System.Drawing.Size(536, 533);
-            this.projectBrowserControl1.TabIndex = 0;
             // 
             // menuStripMain
             // 
@@ -134,7 +126,7 @@ namespace MyGeneration
             // executeToolStripMenuItem
             // 
             this.executeToolStripMenuItem.Name = "executeToolStripMenuItem";
-            this.executeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.executeToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.executeToolStripMenuItem.Text = "E&xecute";
             this.executeToolStripMenuItem.Click += new System.EventHandler(this.executeToolStripMenuItem_Click);
             // 
@@ -209,6 +201,17 @@ namespace MyGeneration
             this.toolStripSeparator3.MergeIndex = 7;
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            // 
+            // projectBrowserControl1
+            // 
+            this.projectBrowserControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.projectBrowserControl1.Location = new System.Drawing.Point(0, 0);
+            this.projectBrowserControl1.Name = "projectBrowserControl1";
+            this.projectBrowserControl1.Size = new System.Drawing.Size(536, 533);
+            this.projectBrowserControl1.TabIndex = 0;
+            this.projectBrowserControl1.ExecutionStatusUpdate += new MyGeneration.ProjectExecutionStatusHandler(this.projectBrowserControl1_ExecutionStatusUpdate);
+            this.projectBrowserControl1.ErrorsOccurred += new System.EventHandler(this.projectBrowserControl1_ErrorsOccurred);
+            this.projectBrowserControl1.TabTextChanged += new TextChangedEventHandler(projectBrowserControl1_TabTextChanged);
             // 
             // ProjectBrowser
             // 

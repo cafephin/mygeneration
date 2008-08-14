@@ -41,11 +41,7 @@ namespace MyGeneration
 		private TemplateTreeBuilder treeBuilder = null;
 		private System.Windows.Forms.Label labelTemplate;
         private IMyGenerationMDI mdi;
-
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.Container components = null;
+        private IContainer components;
 
 		//public FormAddEditSavedObject(IMyGenerationMDI mdi)
 		public FormAddEditSavedObject()
@@ -82,139 +78,142 @@ namespace MyGeneration
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.buttonCollectInput = new System.Windows.Forms.Button();
-			this.labelName = new System.Windows.Forms.Label();
-			this.buttonOK = new System.Windows.Forms.Button();
-			this.buttonCancel = new System.Windows.Forms.Button();
-			this.textBoxName = new System.Windows.Forms.TextBox();
-			this.buttonViewData = new System.Windows.Forms.Button();
-			this.errorProviderRequiredFields = new System.Windows.Forms.ErrorProvider();
-			this.buttonClearInput = new System.Windows.Forms.Button();
-			this.treeViewTemplates = new System.Windows.Forms.TreeView();
-			this.labelTemplate = new System.Windows.Forms.Label();
-			this.SuspendLayout();
-			// 
-			// buttonCollectInput
-			// 
-			this.buttonCollectInput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.buttonCollectInput.Location = new System.Drawing.Point(16, 431);
-			this.buttonCollectInput.Name = "buttonCollectInput";
-			this.buttonCollectInput.Size = new System.Drawing.Size(136, 24);
-			this.buttonCollectInput.TabIndex = 0;
-			this.buttonCollectInput.Text = "Record Template Input";
-			this.buttonCollectInput.Click += new System.EventHandler(this.buttonCollectInput_Click);
-			// 
-			// labelName
-			// 
-			this.labelName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.labelName.Location = new System.Drawing.Point(16, 8);
-			this.labelName.Name = "labelName";
-			this.labelName.Size = new System.Drawing.Size(564, 23);
-			this.labelName.TabIndex = 1;
-			this.labelName.Text = "Name:";
-			this.labelName.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-			// 
-			// buttonOK
-			// 
-			this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.buttonOK.Location = new System.Drawing.Point(456, 431);
-			this.buttonOK.Name = "buttonOK";
-			this.buttonOK.Size = new System.Drawing.Size(56, 23);
-			this.buttonOK.TabIndex = 3;
-			this.buttonOK.Text = "OK";
-			this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
-			// 
-			// buttonCancel
-			// 
-			this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.buttonCancel.CausesValidation = false;
-			this.buttonCancel.Location = new System.Drawing.Point(520, 431);
-			this.buttonCancel.Name = "buttonCancel";
-			this.buttonCancel.Size = new System.Drawing.Size(56, 23);
-			this.buttonCancel.TabIndex = 4;
-			this.buttonCancel.Text = "Cancel";
-			this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
-			// 
-			// textBoxName
-			// 
-			this.textBoxName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.textBoxName.Location = new System.Drawing.Point(16, 32);
-			this.textBoxName.Name = "textBoxName";
-			this.textBoxName.Size = new System.Drawing.Size(560, 20);
-			this.textBoxName.TabIndex = 5;
-			this.textBoxName.Text = "";
-			this.textBoxName.Validating += new System.ComponentModel.CancelEventHandler(this.textBoxName_Validating);
-			// 
-			// buttonViewData
-			// 
-			this.buttonViewData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.buttonViewData.Location = new System.Drawing.Point(304, 431);
-			this.buttonViewData.Name = "buttonViewData";
-			this.buttonViewData.Size = new System.Drawing.Size(72, 23);
-			this.buttonViewData.TabIndex = 6;
-			this.buttonViewData.Text = "View Data";
-			this.buttonViewData.Click += new System.EventHandler(this.buttonViewData_Click);
-			// 
-			// errorProviderRequiredFields
-			// 
-			this.errorProviderRequiredFields.ContainerControl = this;
-			// 
-			// buttonClearInput
-			// 
-			this.buttonClearInput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.buttonClearInput.Location = new System.Drawing.Point(160, 431);
-			this.buttonClearInput.Name = "buttonClearInput";
-			this.buttonClearInput.Size = new System.Drawing.Size(136, 24);
-			this.buttonClearInput.TabIndex = 7;
-			this.buttonClearInput.Text = "Clear Template Input";
-			this.buttonClearInput.Click += new System.EventHandler(this.buttonClearInput_Click);
-			// 
-			// treeViewTemplates
-			// 
-			this.treeViewTemplates.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.treeViewTemplates.ImageIndex = -1;
-			this.treeViewTemplates.Location = new System.Drawing.Point(16, 72);
-			this.treeViewTemplates.Name = "treeViewTemplates";
-			this.treeViewTemplates.SelectedImageIndex = -1;
-			this.treeViewTemplates.Size = new System.Drawing.Size(560, 344);
-			this.treeViewTemplates.TabIndex = 8;
-			this.treeViewTemplates.Validating += new System.ComponentModel.CancelEventHandler(this.treeViewTemplates_Validating);
-			this.treeViewTemplates.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewTemplates_AfterSelect);
-			// 
-			// labelTemplate
-			// 
-			this.labelTemplate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.labelTemplate.Location = new System.Drawing.Point(16, 56);
-			this.labelTemplate.Name = "labelTemplate";
-			this.labelTemplate.Size = new System.Drawing.Size(564, 16);
-			this.labelTemplate.TabIndex = 10;
-			this.labelTemplate.Text = "Template:";
-			this.labelTemplate.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-			// 
-			// FormAddEditSavedObject
-			// 
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(600, 461);
-			this.Controls.Add(this.labelTemplate);
-			this.Controls.Add(this.treeViewTemplates);
-			this.Controls.Add(this.buttonClearInput);
-			this.Controls.Add(this.buttonViewData);
-			this.Controls.Add(this.textBoxName);
-			this.Controls.Add(this.buttonCancel);
-			this.Controls.Add(this.buttonOK);
-			this.Controls.Add(this.labelName);
-			this.Controls.Add(this.buttonCollectInput);
-			this.Name = "FormAddEditSavedObject";
-			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "AddEditSavedObject";
-			this.Load += new System.EventHandler(this.FormAddEditSavedObject_Load);
-			this.Activated += new System.EventHandler(this.FormAddEditSavedObject_Activated);
-			this.ResumeLayout(false);
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAddEditSavedObject));
+            this.buttonCollectInput = new System.Windows.Forms.Button();
+            this.labelName = new System.Windows.Forms.Label();
+            this.buttonOK = new System.Windows.Forms.Button();
+            this.buttonCancel = new System.Windows.Forms.Button();
+            this.textBoxName = new System.Windows.Forms.TextBox();
+            this.buttonViewData = new System.Windows.Forms.Button();
+            this.errorProviderRequiredFields = new System.Windows.Forms.ErrorProvider(this.components);
+            this.buttonClearInput = new System.Windows.Forms.Button();
+            this.treeViewTemplates = new System.Windows.Forms.TreeView();
+            this.labelTemplate = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProviderRequiredFields)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // buttonCollectInput
+            // 
+            this.buttonCollectInput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonCollectInput.Location = new System.Drawing.Point(16, 431);
+            this.buttonCollectInput.Name = "buttonCollectInput";
+            this.buttonCollectInput.Size = new System.Drawing.Size(136, 24);
+            this.buttonCollectInput.TabIndex = 0;
+            this.buttonCollectInput.Text = "Record Template Input";
+            this.buttonCollectInput.Click += new System.EventHandler(this.buttonCollectInput_Click);
+            // 
+            // labelName
+            // 
+            this.labelName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelName.Location = new System.Drawing.Point(16, 8);
+            this.labelName.Name = "labelName";
+            this.labelName.Size = new System.Drawing.Size(564, 23);
+            this.labelName.TabIndex = 1;
+            this.labelName.Text = "Name:";
+            this.labelName.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            // 
+            // buttonOK
+            // 
+            this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonOK.Location = new System.Drawing.Point(456, 431);
+            this.buttonOK.Name = "buttonOK";
+            this.buttonOK.Size = new System.Drawing.Size(56, 23);
+            this.buttonOK.TabIndex = 3;
+            this.buttonOK.Text = "OK";
+            this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
+            // 
+            // buttonCancel
+            // 
+            this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonCancel.CausesValidation = false;
+            this.buttonCancel.Location = new System.Drawing.Point(520, 431);
+            this.buttonCancel.Name = "buttonCancel";
+            this.buttonCancel.Size = new System.Drawing.Size(56, 23);
+            this.buttonCancel.TabIndex = 4;
+            this.buttonCancel.Text = "Cancel";
+            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
+            // 
+            // textBoxName
+            // 
+            this.textBoxName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxName.Location = new System.Drawing.Point(16, 32);
+            this.textBoxName.Name = "textBoxName";
+            this.textBoxName.Size = new System.Drawing.Size(560, 20);
+            this.textBoxName.TabIndex = 5;
+            this.textBoxName.Validating += new System.ComponentModel.CancelEventHandler(this.textBoxName_Validating);
+            // 
+            // buttonViewData
+            // 
+            this.buttonViewData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonViewData.Location = new System.Drawing.Point(304, 431);
+            this.buttonViewData.Name = "buttonViewData";
+            this.buttonViewData.Size = new System.Drawing.Size(72, 23);
+            this.buttonViewData.TabIndex = 6;
+            this.buttonViewData.Text = "View Data";
+            this.buttonViewData.Click += new System.EventHandler(this.buttonViewData_Click);
+            // 
+            // errorProviderRequiredFields
+            // 
+            this.errorProviderRequiredFields.ContainerControl = this;
+            // 
+            // buttonClearInput
+            // 
+            this.buttonClearInput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonClearInput.Location = new System.Drawing.Point(160, 431);
+            this.buttonClearInput.Name = "buttonClearInput";
+            this.buttonClearInput.Size = new System.Drawing.Size(136, 24);
+            this.buttonClearInput.TabIndex = 7;
+            this.buttonClearInput.Text = "Clear Template Input";
+            this.buttonClearInput.Click += new System.EventHandler(this.buttonClearInput_Click);
+            // 
+            // treeViewTemplates
+            // 
+            this.treeViewTemplates.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.treeViewTemplates.Location = new System.Drawing.Point(16, 72);
+            this.treeViewTemplates.Name = "treeViewTemplates";
+            this.treeViewTemplates.Size = new System.Drawing.Size(560, 344);
+            this.treeViewTemplates.TabIndex = 8;
+            this.treeViewTemplates.Validating += new System.ComponentModel.CancelEventHandler(this.treeViewTemplates_Validating);
+            this.treeViewTemplates.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewTemplates_AfterSelect);
+            // 
+            // labelTemplate
+            // 
+            this.labelTemplate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelTemplate.Location = new System.Drawing.Point(16, 56);
+            this.labelTemplate.Name = "labelTemplate";
+            this.labelTemplate.Size = new System.Drawing.Size(564, 16);
+            this.labelTemplate.TabIndex = 10;
+            this.labelTemplate.Text = "Template:";
+            this.labelTemplate.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            // 
+            // FormAddEditSavedObject
+            // 
+            this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
+            this.ClientSize = new System.Drawing.Size(600, 461);
+            this.Controls.Add(this.labelTemplate);
+            this.Controls.Add(this.treeViewTemplates);
+            this.Controls.Add(this.buttonClearInput);
+            this.Controls.Add(this.buttonViewData);
+            this.Controls.Add(this.textBoxName);
+            this.Controls.Add(this.buttonCancel);
+            this.Controls.Add(this.buttonOK);
+            this.Controls.Add(this.labelName);
+            this.Controls.Add(this.buttonCollectInput);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "FormAddEditSavedObject";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "AddEditSavedObject";
+            this.Load += new System.EventHandler(this.FormAddEditSavedObject_Load);
+            this.Activated += new System.EventHandler(this.FormAddEditSavedObject_Activated);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProviderRequiredFields)).EndInit();
+            this.ResumeLayout(false);
+            this.PerformLayout();
 
 		}
 		#endregion

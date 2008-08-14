@@ -66,7 +66,7 @@ namespace MyGenVS2005
         }
 
 
-        private void templateBrowserControl1_ExecuteOverride(TemplateOperations operation, ZeusTemplate template, ZeusSavedInput input, ShowGUIEventHandler guiEventHandler)
+        private bool templateBrowserControl1_ExecuteOverride(TemplateOperations operation, ZeusTemplate template, ZeusSavedInput input, ShowGUIEventHandler guiEventHandler)
         {
             switch (operation)
             {
@@ -87,11 +87,34 @@ namespace MyGenVS2005
                     }
                     break;
             }
+            return true;
         }
 
         private void ProcessOperation(ZeusProcessStatusEventArgs args)
         {
-            //
+            if (this.InvokeRequired)
+            {
+                this.Invoke(processCallback, args);
+            }
+            else
+            {
+                if (args.Message != null)
+                {
+                    try
+                    {
+                        OutputWindow outwin = _application.ToolWindows.OutputWindow;
+                        Application.DoEvents();
+                        outwin.ActivePane.OutputString(args.Message);
+                        outwin.ActivePane.OutputString(Environment.NewLine);
+                        outwin.ActivePane.Activate();
+                        if (args.IsRunning)
+                        {
+                            outwin.Parent.Activate();
+                        }
+                    }
+                    catch { }
+                }
+            }
         }
     }
 }

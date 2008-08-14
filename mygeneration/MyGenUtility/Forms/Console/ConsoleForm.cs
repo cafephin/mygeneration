@@ -108,7 +108,10 @@ namespace MyGeneration.Forms
 
         public void Write(string text, params object[] args)
         {
-            Write(string.Format(text, args));
+            if (args.Length == 0)
+                Write(text);
+            else
+                Write(string.Format(text, args));
         }
 
         public void Write(Exception ex)

@@ -11,92 +11,130 @@ namespace MyGeneration
 {
     public static class ZeusProcessManager
     {
-        private static Dictionary<Guid, ZeusProcess> processes = new Dictionary<Guid,ZeusProcess>();
+        private static Queue<ZeusProcess> processQueue = new Queue<ZeusProcess>();
+        private static ZeusProcess runningProcess;
+        private static Thread monitorThread;
 
         public static Guid ExecuteTemplate(string filename, ZeusProcessStatusDelegate callback)
         {
-            ZeusProcess zp = new ZeusProcess(ZeusProcessType.ExecuteTemplate, GetCallbacks(callback), filename);
-            processes[zp.ID] = zp;
+            ZeusProcess zp = new ZeusProcess(ZeusProcessType.ExecuteTemplate, callback, filename);
+            processQueue.Enqueue(zp);
+            Start();
             return zp.ID;
         }
 
         public static Guid ExecuteSavedInput(string filename, ZeusProcessStatusDelegate callback)
         {
-            ZeusProcess zp = new ZeusProcess(ZeusProcessType.ExecuteSavedInput, GetCallbacks(callback), filename);
-            processes[zp.ID] = zp;
+            ZeusProcess zp = new ZeusProcess(ZeusProcessType.ExecuteSavedInput, callback, filename);
+            processQueue.Enqueue(zp);
+            Start();
             return zp.ID;
         }
 
         public static Guid RecordTemplateInput(string templateFilename, string saveToFilename, ZeusProcessStatusDelegate callback)
         {
-            ZeusProcess zp = new ZeusProcess(ZeusProcessType.RecordTemplateInput, GetCallbacks(callback), templateFilename, saveToFilename);
-            processes[zp.ID] = zp;
+            ZeusProcess zp = new ZeusProcess(ZeusProcessType.RecordTemplateInput, callback, templateFilename, saveToFilename);
+            processQueue.Enqueue(zp);
+            Start();
             return zp.ID;
         }
 
         public static Guid ExecuteProject(string filename, ZeusProcessStatusDelegate callback)
         {
-            ZeusProcess zp = new ZeusProcess(ZeusProcessType.ExecuteProject, GetCallbacks(callback), filename);
-            processes[zp.ID] = zp;
+            ZeusProcess zp = new ZeusProcess(ZeusProcessType.ExecuteProject, callback, filename);
+            processQueue.Enqueue(zp);
+            Start();
             return zp.ID;
         }
 
         public static Guid ExecuteModule(string filename, string modulePath, ZeusProcessStatusDelegate callback)
         {
-            ZeusProcess zp = new ZeusProcess(ZeusProcessType.ExecuteProjectModule, GetCallbacks(callback), filename, modulePath);
-            processes[zp.ID] = zp;
+            ZeusProcess zp = new ZeusProcess(ZeusProcessType.ExecuteProjectModule, callback, filename, modulePath);
+            processQueue.Enqueue(zp);
+            Start();
             return zp.ID;
         }
 
         public static Guid ExecuteProjectItem(string filename, string instancePath, ZeusProcessStatusDelegate callback)
         {
-            ZeusProcess zp = new ZeusProcess(ZeusProcessType.ExecuteProjectItem, GetCallbacks(callback), filename, instancePath);
-            processes[zp.ID] = zp;
+            ZeusProcess zp = new ZeusProcess(ZeusProcessType.ExecuteProjectItem, callback, filename, instancePath);
+            processQueue.Enqueue(zp);
+            Start();
             return zp.ID;
         }
 
-        public static void Kill(Guid pid)
+        public static void Start()
         {
-            lock (processes)
+            if ((monitorThread == null) ||
+                (monitorThread.ThreadState == System.Threading.ThreadState.Aborted) ||
+                (monitorThread.ThreadState == System.Threading.ThreadState.Stopped))
             {
-                if (processes.ContainsKey(pid))
+                monitorThread = new Thread(new ThreadStart(runMonitorThread));
+            }
+
+            if  (monitorThread.ThreadState == System.Threading.ThreadState.Unstarted)
+            {
+                monitorThread.Start();
+            }
+        }
+
+        private static void runMonitorThread()
+        {
+            try
+            {
+                while (processQueue.Count > 0 || runningProcess != null)
                 {
-                    processes[pid].Kill();
-                    processes.Remove(pid);
+                    if (runningProcess == null)
+                    {
+                        runningProcess = processQueue.Dequeue();
+                    }
+
+                    runningProcess.Start();
+                    while (!runningProcess.IsDormant)
+                    {
+                        Thread.Sleep(250);
+                    }
+                    runningProcess.Join();
+                    runningProcess = null;
                 }
+            }
+            catch (ThreadAbortException)
+            {
+                if (runningProcess != null)
+                {
+                    runningProcess.Kill();
+                }
+                processQueue.Clear();
+            }
+        }
+
+        public static bool IsDormant
+        {
+            get
+            {
+                if (monitorThread == null) return true;
+                else
+                {
+                    if (monitorThread.ThreadState == System.Threading.ThreadState.Aborted ||
+                        monitorThread.ThreadState == System.Threading.ThreadState.Stopped ||
+                        monitorThread.ThreadState == System.Threading.ThreadState.Unstarted)
+                    {
+                        return true;
+                    }
+                }
+                return false;
             }
         }
 
         public static void KillAll()
         {
-            lock (processes)
+            if (monitorThread != null)
             {
-                foreach (Guid pid in processes.Keys)
-                {
-                    processes[pid].Kill();
-                }
-                processes.Clear();
+                monitorThread.Abort();
             }
-        }
 
-        private static List<ZeusProcessStatusDelegate> GetCallbacks(ZeusProcessStatusDelegate c)
-        {
-            List<ZeusProcessStatusDelegate> l = new List<ZeusProcessStatusDelegate>();
-            l.Add(new ZeusProcessStatusDelegate(LocalCallback));
-            if (c != null) l.Add(c);
-            return l;
-        }
-
-        private static void LocalCallback(ZeusProcessStatusEventArgs args)
-        {
-            if (!args.IsRunning)
-            {
-                if (processes.ContainsKey(args.ID))
-                {
-                    processes[args.ID].Finalize();
-                    processes.Remove(args.ID);
-                }
-            }
+            monitorThread.Join(10 * 1000);
+            monitorThread = null;
         }
     }
 
@@ -147,12 +185,13 @@ namespace MyGeneration
     {
         private Guid _id = Guid.NewGuid();
         private Thread t;
+        private ThreadData td;
 
         private class ThreadData
         {
-            public ThreadData(List<ZeusProcessStatusDelegate> cbks, Process p, Guid id)
+            public ThreadData(ZeusProcessStatusDelegate cbk, Process p, Guid id)
             {
-                foreach (ZeusProcessStatusDelegate c in cbks) CallbackHandlers += c;
+                CallbackHandlers += cbk;
                 SysProcess = p;
                 ID = id;
             }
@@ -165,7 +204,7 @@ namespace MyGeneration
             public Guid ID;
         }
 
-        public ZeusProcess(ZeusProcessType type, List<ZeusProcessStatusDelegate> callbacks, params string[] args)
+        public ZeusProcess(ZeusProcessType type, ZeusProcessStatusDelegate callback, params string[] args)
         {
             ProcessStartInfo si = new ProcessStartInfo();
 
@@ -175,7 +214,7 @@ namespace MyGeneration
                 si.CreateNoWindow = true;
                 si.UseShellExecute = false;
                 si.RedirectStandardOutput = true;
-                string cmdArgs = string.Empty;
+                string cmdArgs = "-internaluse ";
                 if (type == ZeusProcessType.ExecuteTemplate)
                 {
                     cmdArgs = "-t \"" + args[0] + "\"";
@@ -212,8 +251,12 @@ namespace MyGeneration
             process.StartInfo = si;
             ParameterizedThreadStart ts = new ParameterizedThreadStart(Start);
             t = new Thread(ts);
+            td = new ThreadData(callback, process, _id);
 
-            ThreadData td = new ThreadData(callbacks, process, _id);
+        }
+
+        public void Start()
+        {
             t.Start(td);
         }
 
@@ -222,15 +265,22 @@ namespace MyGeneration
             get { return _id; }
         }
 
-        public bool Finalize()
+        public bool IsDormant
         {
-            bool joinSucceeded = false;
-            if (t != null)
+            get 
             {
-                joinSucceeded = t.Join(5 * 1000); // 5 seconds
-                t = null;
+                if (t == null) return true;
+                else
+                {
+                    if (t.ThreadState == System.Threading.ThreadState.Aborted ||
+                        t.ThreadState == System.Threading.ThreadState.Stopped ||
+                        t.ThreadState == System.Threading.ThreadState.Unstarted)
+                    {
+                        return true;
+                    }
+                }
+                return false;
             }
-            return joinSucceeded;
         }
 
         public bool Kill()
@@ -240,6 +290,17 @@ namespace MyGeneration
             {
                 t.Abort();
                 joinSucceeded = t.Join(5 * 1000); // 5 seconds
+                t = null;
+            }
+            return joinSucceeded;
+        }
+
+        public bool Join()
+        {
+            bool joinSucceeded = false;
+            if (t != null)
+            {
+                joinSucceeded = t.Join(5 * 1000); // 5 seconds max
                 t = null;
             }
             return joinSucceeded;
@@ -266,8 +327,12 @@ namespace MyGeneration
                 }
                 catch (ThreadAbortException)
                 {
-                    p.Kill();
-                    td.Callback(new ZeusProcessStatusEventArgs(td.ID, false, "Killed Process"));
+                    try
+                    {
+                        if (p != null && !p.HasExited) p.Kill();
+                    }
+                    catch { }
+                    //td.Callback(new ZeusProcessStatusEventArgs(td.ID, false, "Killed Process"));
                 }
             }
         }

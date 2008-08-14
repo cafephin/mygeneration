@@ -29,6 +29,7 @@ namespace Zeus
         private bool _makeRelative = false;
         private bool _installVS2005 = false;
         private bool _metaDataMerge = false;
+        private bool _internalUse = true;
 		private string _errorMessage = null;
 		private string _pathProject = null;
 		private string _pathTemplate = null;
@@ -74,6 +75,9 @@ namespace Zeus
 
 				switch (arg)
                 {
+                    case "-internaluse":
+                        this._internalUse = true;
+                        break;
                     case "-installvs2005":
                         this._installVS2005 = true;
                         break;
@@ -406,6 +410,9 @@ namespace Zeus
 
 		public ProcessMode Mode
 		{ get { return _mode; } }
+
+        public bool InternalUseOnly
+        { get { return _internalUse; } }
 
         public bool InstallVS2005
 		{ get { return _installVS2005; } }

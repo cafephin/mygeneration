@@ -236,7 +236,7 @@ namespace Zeus
         {
             get
             {
-                return Path.Combine(this.FilePath, this.FullFileName);
+                return Path.Combine(this.FilePath, this.FileName);
             }
         }
 

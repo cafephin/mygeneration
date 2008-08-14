@@ -144,6 +144,26 @@ namespace MyGeneration
                 }
             }
         }
+
+        private void projectBrowserControl1_ErrorsOccurred(object sender, EventArgs e)
+        {
+            if (sender is Exception)
+            {
+                this._mdi.ErrorsOccurred(sender as Exception);
+            }
+        }
+
+        private void projectBrowserControl1_ExecutionStatusUpdate(bool isRunning, string message)
+        {
+            if (!this._mdi.Console.DockContent.Visible) this._mdi.Console.DockContent.Show(_mdi.DockPanel);
+            this._mdi.WriteConsole(message);
+        }
+
+        void projectBrowserControl1_TabTextChanged(string text, string tabText, string filename)
+        {
+            this.TabText = tabText;
+            this._mdi.SendAlert(this, "UpdateProject", text, filename);
+        }
         #endregion
     }
 }

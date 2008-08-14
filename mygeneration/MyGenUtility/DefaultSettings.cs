@@ -440,6 +440,12 @@ namespace MyGeneration
 		}
         #endregion
 
+        public bool ExecuteFromTemplateBrowserAsync
+        {
+            get { return this.GetSetting("TemplateBrowserExecAsync", true); }
+            set { this.SetSetting("TemplateBrowserExecAsync", value.ToString()); }
+        }
+
         public string FontFamily
         {
             get { return this.GetSetting("FontFamily",""); }

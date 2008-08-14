@@ -15,6 +15,7 @@ namespace Zeus
 		private bool _isOpen = false;
 		private bool _isConsoleEnabled = true;
 		private bool _isLogEnabled = false;
+        private bool _isInternalUseMode = false;
 		private StreamWriter _writer;
 
 		public Log() {}
@@ -65,20 +66,26 @@ namespace Zeus
 			{
 				if(!_isOpen) this.Open();
 
-				if(_isOpen) 
-				{
-					_writer.Write(System.DateTime.Now);
-					_writer.Write(" ");
-					_writer.Write(text);
-					_writer.WriteLine();
-					_writer.Flush();
-				}
+                if (_isOpen)
+                {
+                    if (!_isInternalUseMode)
+                    {
+                        _writer.Write(System.DateTime.Now);
+                        _writer.Write(" ");
+                    }
+                    _writer.Write(text);
+                    _writer.WriteLine();
+                    _writer.Flush();
+                }
 			}
 			
 			if(_isConsoleEnabled)
 			{
-				Console.Write(System.DateTime.Now);
-				Console.Write(" ");
+                if (!_isInternalUseMode)
+                {
+                    Console.Write(System.DateTime.Now);
+                    Console.Write(" ");
+                }
 				Console.Write(text);
 				Console.WriteLine();
 				Console.Out.Flush();
@@ -115,6 +122,12 @@ namespace Zeus
                 Write(nex.StackTrace);
             }
 #endif
+        }
+
+        public bool IsInternalUseMode
+        {
+            get { return _isInternalUseMode; }
+            set { _isInternalUseMode = value; }
         }
 
 		public bool IsConsoleEnabled

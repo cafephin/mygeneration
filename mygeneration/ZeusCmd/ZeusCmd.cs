@@ -30,6 +30,7 @@ namespace Zeus
             _log = new Log();
             if (_ProcessArgs(args))
             {
+                _log.IsInternalUseMode = _argmgr.InternalUseOnly;
                 switch (_argmgr.Mode)
                 {
                     case ProcessMode.Project:
