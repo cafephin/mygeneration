@@ -51,7 +51,8 @@ namespace MyGeneration
 
         private delegate void AddRootNodeCallback();
 
-        private static TreeNode static_rootNode;
+        private static TreeNode static_rootNode, loadingNode;
+        private System.Windows.Forms.Timer timerIconAnimate;
         private static dbRoot static_myMeta;
 
         private class AsyncLoadInfo 
@@ -82,6 +83,8 @@ namespace MyGeneration
 
             this.UserData.MetaDataBrowser = this;
             this.GlobalUserData.MetaDataBrowser = this;
+
+            loadingNode = new TreeNode("Tree Loading...");
 
             MetaDataBrowser_Enter(this, EventArgs.Empty);
         }
@@ -123,6 +126,7 @@ namespace MyGeneration
             this.MyTree = new System.Windows.Forms.TreeView();
             this.TreeImageList = new System.Windows.Forms.ImageList(this.components);
             this.chkSystem = new System.Windows.Forms.CheckBox();
+            this.timerIconAnimate = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // toolBar1
@@ -184,7 +188,7 @@ namespace MyGeneration
             this.MyTree.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MyTree.FullRowSelect = true;
             this.MyTree.HotTracking = true;
-            this.MyTree.ImageIndex = 0;
+            this.MyTree.ImageIndex = 21;
             this.MyTree.ImageList = this.TreeImageList;
             this.MyTree.Location = new System.Drawing.Point(0, 26);
             this.MyTree.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
@@ -225,6 +229,10 @@ namespace MyGeneration
             this.TreeImageList.Images.SetKeyName(23, "");
             this.TreeImageList.Images.SetKeyName(24, "");
             this.TreeImageList.Images.SetKeyName(25, "");
+            this.TreeImageList.Images.SetKeyName(26, "Refresh16x16_1.bmp");
+            this.TreeImageList.Images.SetKeyName(27, "Refresh16x16_2.bmp");
+            this.TreeImageList.Images.SetKeyName(28, "Refresh16x16_3.bmp");
+            this.TreeImageList.Images.SetKeyName(29, "Refresh16x16_4.bmp");
             // 
             // chkSystem
             // 
@@ -234,6 +242,11 @@ namespace MyGeneration
             this.chkSystem.TabIndex = 5;
             this.chkSystem.Text = "Show System Data";
             this.chkSystem.CheckedChanged += new System.EventHandler(this.chkSystem_CheckedChanged);
+            // 
+            // timerIconAnimate
+            // 
+            this.timerIconAnimate.Interval = 75;
+            this.timerIconAnimate.Tick += new System.EventHandler(this.timerIconAnimate_Tick);
             // 
             // MetaDataBrowser
             // 
@@ -249,9 +262,9 @@ namespace MyGeneration
             this.Name = "MetaDataBrowser";
             this.TabText = "MyMeta  Browser";
             this.Text = "MyMeta  Browser";
+            this.Load += new System.EventHandler(this.MetaDataBrowser_Load);
             this.Enter += new System.EventHandler(this.MetaDataBrowser_Enter);
             this.Leave += new System.EventHandler(this.MetaDataBrowser_Leave);
-            this.Load += new System.EventHandler(this.MetaDataBrowser_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -260,6 +273,16 @@ namespace MyGeneration
 
         #region Load Tree Asyncronously
         private IAsyncResult asyncres;
+
+        private void timerIconAnimate_Tick(object sender, EventArgs e)
+        {
+            if (loadingNode != null)
+            {
+                loadingNode.ImageIndex = (loadingNode.ImageIndex >= 29) ? 26 : (loadingNode.ImageIndex + 1);
+                loadingNode.SelectedImageIndex = loadingNode.ImageIndex;
+                MyTree.Invalidate();
+            }
+        }
 
         private bool IsTreeBusy
         {
@@ -277,8 +300,6 @@ namespace MyGeneration
 
             this.Text = "MyMeta Browser (" + DefaultSettings.Instance.DbDriver + ")";
 
-            TreeNode loadingNode = new TreeNode("Tree Loading...");
-
             static_rootNode = new TreeNode();
 
             this.MyTree.BeginUpdate();
@@ -286,6 +307,12 @@ namespace MyGeneration
             this.MyTree.Nodes.Add(loadingNode);
             this.MyTree.EndUpdate();
             this.MyTree.Invalidate();
+
+            loadingNode.ImageIndex = 26;
+            loadingNode.SelectedImageIndex = loadingNode.ImageIndex;
+            this.MyTree.Invalidate();
+
+            timerIconAnimate.Start();
 
             AsyncLoadInfo ali = new AsyncLoadInfo();
             ali.MyMeta = myMeta;
@@ -314,6 +341,8 @@ namespace MyGeneration
             }
             else
             {
+                timerIconAnimate.Stop();
+
                 this.MyTree.BeginUpdate();
                 this.MyTree.Nodes.Clear();
                 if (static_rootNode != null)
@@ -1440,5 +1469,6 @@ namespace MyGeneration
         }
 
         #endregion
+
 	}
 }
