@@ -440,6 +440,12 @@ namespace MyGeneration
 		}
         #endregion
 
+        public string VersionRSSUrl
+        {
+            get { return this.GetSetting("VersionRSSUrl", @"http://sourceforge.net/export/rss2_projfiles.php?group_id=198893"); }
+            set { this.SetSetting("VersionRSSUrl", value); }
+        }
+
         public bool ExecuteFromTemplateBrowserAsync
         {
             get { return this.GetSetting("TemplateBrowserExecAsync", true); }
@@ -681,6 +687,32 @@ namespace MyGeneration
 			}
 			set	{ this.SetSetting("ProxyAuthDomain", value); }
 		}
+
+        public System.Net.WebProxy WebProxy
+        {
+            get
+            {
+                System.Net.WebProxy proxy = null;
+                if (this.UseProxyServer)
+                {
+                    if (this.ProxyAuthUsername != string.Empty)
+                    {
+                        System.Net.NetworkCredential creds = new System.Net.NetworkCredential(this.ProxyAuthUsername, this.ProxyAuthPassword);
+                        if (this.ProxyAuthDomain != string.Empty)
+                        {
+                            creds.Domain = this.ProxyAuthDomain;
+                        }
+                        proxy = new System.Net.WebProxy(this.ProxyServerUri, true, null, creds);
+                    }
+
+                    else
+                    {
+                        proxy = new System.Net.WebProxy(this.ProxyServerUri, true, null);
+                    }
+                }
+                return proxy;
+            }
+        }
 
 		public string WindowState
 		{

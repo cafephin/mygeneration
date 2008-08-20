@@ -12,6 +12,7 @@ using Zeus.Serializers;
 using Zeus.UserInterface;
 using MyGeneration;
 using MyMeta;
+using System.Xml;
 
 namespace Zeus
 {
@@ -125,44 +126,107 @@ namespace Zeus
             }
         }
 
-        /*public delegate void ConnectionTestInfo(bool isSuccessful, string resultData);
-        private ConnectionTestInfo testInfo;
-
-        public static void TestMyMetaConnection(string connectionType, string connectionString, ConnectionTestInfo testInfoD)
+        public List<IAppRelease> ReleaseList
         {
-            ThreadStart
-            testInfo = testInfoD;
-            string file = Zeus.FileTools.ApplicationPath + @".\ZeusCmd.exe";
-            if (!File.Exists(file))
+            get
             {
-                file = Zeus.FileTools.ApplicationPath + @"\..\..\..\..\ZeusCmd\bin\debug\ZeusCmd.exe";
-
-                if (!File.Exists(file))
+                List<IAppRelease> releases = new List<IAppRelease>();
+                XmlDocument xmldoc = Zeus.HttpTools.GetXmlFromUrl(DefaultSettings.Instance.VersionRSSUrl, DefaultSettings.Instance.WebProxy);
+                XmlNodeList nodes = xmldoc.SelectNodes("//item");
+                foreach (XmlNode node in nodes)
                 {
-                    file = Zeus.FileTools.ApplicationPath + @"\..\..\..\..\ZeusCmd\bin\release\ZeusCmd.exe";
+                    AppRelease r = new AppRelease();
+
+                    XmlNode titleNode = node.SelectSingleNode("./title");
+                    XmlNode descriptionNode = node.SelectSingleNode("./description");
+                    XmlNode linkNode = node.SelectSingleNode("./link");
+                    XmlNode authorNode = node.SelectSingleNode("./author");
+                    XmlNode pubDateNode = node.SelectSingleNode("./pubDate");
+
+                    if (titleNode != null)
+                    {
+                        r.Title = titleNode.InnerText;
+                    }
+                    if (descriptionNode != null)
+                    {
+                        r.Title = descriptionNode.InnerText;
+                    }
+                    if (authorNode != null)
+                    {
+                        r.Author = authorNode.InnerText;
+                    }
+                    if (linkNode != null)
+                    {
+                        r.ReleaseNotesLink = new Uri(linkNode.InnerText);
+                        r.DownloadLink = new Uri(FindSourceForgeDownloadUrl(linkNode.InnerText));
+                    }
+                    if (pubDateNode != null)
+                    {
+                        r.Date = DateTime.Parse(pubDateNode.InnerText);
+                    }
+
+                    releases.Add(r);
                 }
+                return releases;
             }
+        }
 
-            if (File.Exists(file))
+        private string FindSourceForgeDownloadUrl(string starturl)
+        {
+            string groupId = DefaultSettings.Instance.VersionRSSUrl.Substring(DefaultSettings.Instance.VersionRSSUrl.IndexOf("group_id"));
+            string newurl = starturl.Replace("shownotes", "showfiles") + "&" + groupId;
+            string tokenToFind = "http://downloads.sourceforge.net/mygeneration/";
+            string u = Zeus.HttpTools.GetTextFromUrl(newurl, DefaultSettings.Instance.WebProxy);
+            int i = 0, i2 = 0, j, k, l;
+            try
             {
-#if DEBUG
-                string args = string.Format("-tc \"{0}\" \"{1}\" -l \"{2}\"", connectionType.Replace("\"", "\\\""), connectionString.Replace("\"", "\\\""), "ZeusCmd.log");
-#else
-                string args = string.Format("-tc \"{0}\" \"{1}\"", connectionType.Replace("\"", "\\\""), connectionString.Replace("\"", "\\\""));
-#endif
-                ProcessStartInfo psi = new ProcessStartInfo(file, args);
-                psi.CreateNoWindow = true;
-                psi.UseShellExecute = false;
-                psi.RedirectStandardOutput = true;
+                do
+                {
+                    i = u.IndexOf(tokenToFind, i);
+                    if (i > 0)
+                    {
+                        j = u.IndexOf('\"', i);
+                        if (j > i)
+                        {
+                            k = u.IndexOf(">", j);
+                            if (k > j)
+                            {
+                                l = u.IndexOf("</a>", k);
 
-                process = new Process();
-                process.StartInfo = psi;
-                process.Start();
+                                string url = u.Substring(i, (j - i));
+                                string filename = u.Substring(k + 1, (l - k-1));
+
+                                i += tokenToFind.Length;
+                                if (!filename.Contains("plugin") && filename.StartsWith("mygen") && filename.EndsWith(".exe"))
+                                {
+                                    newurl = url;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                } while (i >= 0);
             }
-            else
+            catch (Exception ex)
             {
-                process = null;
+                // do something with the exception?
+                throw ex;
             }
-        }*/
+            return newurl;
+        }
+
+    }
+    public class AppRelease : IAppRelease
+    {
+        private string _title, _description, _author;
+        private Uri _downloadLink, _releaseNotesLink;
+        private DateTime _date;
+
+        public string Title { get { return _title;  } set { _title = value; } }
+        public string Description { get { return _description; } set { _description = value; } }
+        public string Author { get { return _author; } set { _author = value; } }
+        public Uri DownloadLink { get { return _downloadLink; } set { _downloadLink = value; } }
+        public Uri ReleaseNotesLink { get { return _releaseNotesLink; } set { _releaseNotesLink = value; } }
+        public DateTime Date { get { return _date; } set { _date = value; } }
     }
 }

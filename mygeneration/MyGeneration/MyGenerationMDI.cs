@@ -758,7 +758,8 @@ namespace MyGeneration
 
         private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            StartVersionCheck();
+            //StartVersionCheck();
+            List<IAppRelease> s = ZeusController.ReleaseList;
         }
         #endregion
 
@@ -1112,7 +1113,7 @@ namespace MyGeneration
                     {
                         this.Update();
 
-                        UpdatesForm form = new UpdatesForm();
+                        /*UpdatesForm form = new UpdatesForm();
                         form.NewVersion = newVersion;
                         form.ThisVersion = currentVersion;
                         form.UpgradeText = versionInfo.GetUpdateText();
@@ -1121,7 +1122,7 @@ namespace MyGeneration
                         if (result == DialogResult.OK)
                         {
                             DownloadLatestVersion();
-                        }
+                        }*/
                     }
                     else if (newVersionObject < currentVersionObject)
                     {

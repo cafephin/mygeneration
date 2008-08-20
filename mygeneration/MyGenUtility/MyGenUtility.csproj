@@ -136,6 +136,18 @@
     <Compile Include="Forms\AboutBox\AboutBoxLogo.Designer.cs">
       <DependentUpon>AboutBoxLogo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ApplicationUpdate\ApplicationReleases.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ApplicationUpdate\ApplicationReleases.Designer.cs">
+      <DependentUpon>ApplicationReleases.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ApplicationUpdate\ApplicationReleasesControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\ApplicationUpdate\ApplicationReleasesControl.Designer.cs">
+      <DependentUpon>ApplicationReleasesControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Console\ConsoleForm.cs">
       <SubType>Form</SubType>
     </Compile>
