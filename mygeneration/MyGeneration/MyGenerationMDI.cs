@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Threading;
+using System.Reflection;
 
 using WeifenLuo.WinFormsUI;
 using WeifenLuo.WinFormsUI.Docking;
@@ -20,12 +21,8 @@ using Scintilla.Configuration;
 using Scintilla.Configuration.SciTE;
 using Scintilla.Configuration.Legacy;
 
-//using Zeus.Projects;
 using Zeus;
 using MyGeneration.Forms;
-
-
-using System.Reflection;
 
 namespace MyGeneration
 {
@@ -201,10 +198,18 @@ namespace MyGeneration
             // Show Default Properties if this is the first load.
             if (settings.FirstLoad)
             {
-                if (this.OptionsDockContent.IsHidden)
-                    this.OptionsDockContent.Show(this.dockPanel);
-
-                this.OptionsDockContent.Activate();
+                if (!settings.EnableDocumentStyleSettings)
+                {
+                    if (options != null) { this.OptionsDockContent.Hide(); this.options = null; }
+                    DefaultSettingsDialog dsd = new DefaultSettingsDialog(this);
+                    dsd.ShowDialog(this);
+                }
+                else
+                {
+                    if (this.OptionsDockContent.IsHidden)
+                        this.OptionsDockContent.Show(this.dockPanel);
+                    this.OptionsDockContent.Activate();
+                }
             }
         }
 
@@ -446,7 +451,7 @@ namespace MyGeneration
                 {
                     content = this.TemplateBrowserDockContent;
                 }
-                else if (type == typeof(DefaultProperties).ToString())
+                else if (type == typeof(DefaultProperties).ToString() && settings.EnableDocumentStyleSettings)
                 {
                     content = this.OptionsDockContent;
                 }
@@ -716,13 +721,22 @@ namespace MyGeneration
 
         private void defaultSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (this.OptionsDockContent.IsHidden)
+            if (!settings.EnableDocumentStyleSettings)
             {
-                this.OptionsDockContent.Show(this.dockPanel);
+                if (options != null) { this.OptionsDockContent.Hide(); this.options = null; }
+                DefaultSettingsDialog dsd = new DefaultSettingsDialog(this);
+                dsd.ShowDialog(this);
             }
             else
             {
-                this.OptionsDockContent.Activate();
+                if (this.OptionsDockContent.IsHidden)
+                {
+                    this.OptionsDockContent.Show(this.dockPanel);
+                }
+                else
+                {
+                    this.OptionsDockContent.Activate();
+                }
             }
         }
 
@@ -783,13 +797,22 @@ namespace MyGeneration
 
         private void toolStripButtonOptions_Click(object sender, EventArgs e)
         {
-            if (this.OptionsDockContent.IsHidden)
+            if (!settings.EnableDocumentStyleSettings)
             {
-                this.OptionsDockContent.Show(this.dockPanel);
+                if (options != null) { this.OptionsDockContent.Hide(); this.options = null; }
+                DefaultSettingsDialog dsd = new DefaultSettingsDialog(this);
+                dsd.ShowDialog(this);
             }
             else
             {
-                this.OptionsDockContent.Hide();
+                if (this.OptionsDockContent.IsHidden)
+                {
+                    this.OptionsDockContent.Show(this.dockPanel);
+                }
+                else
+                {
+                    this.OptionsDockContent.Hide();
+                }
             }
         }
 

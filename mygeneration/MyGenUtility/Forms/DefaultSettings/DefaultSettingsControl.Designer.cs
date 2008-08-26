@@ -62,6 +62,7 @@ namespace MyGeneration
             this.txtUserMetaDataFile = new System.Windows.Forms.TextBox();
             this.labelUserMetaData = new System.Windows.Forms.Label();
             this.tabScript = new System.Windows.Forms.TabPage();
+            this.checkBoxRunTemplatesAsync = new System.Windows.Forms.CheckBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.buttonFont = new System.Windows.Forms.Button();
             this.textBoxFont = new System.Windows.Forms.TextBox();
@@ -104,7 +105,7 @@ namespace MyGeneration
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.buttonSaveSettings = new System.Windows.Forms.Button();
             this.buttonCancelSettings = new System.Windows.Forms.Button();
-            this.checkBoxRunTemplatesAsync = new System.Windows.Forms.CheckBox();
+            this.checkBoxDocumentStyleSettings = new System.Windows.Forms.CheckBox();
             this.tabControl.SuspendLayout();
             this.tabConnection.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -132,7 +133,7 @@ namespace MyGeneration
             this.tabControl.Name = "tabControl";
             this.tabControl.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(834, 577);
+            this.tabControl.Size = new System.Drawing.Size(595, 558);
             this.tabControl.TabIndex = 1;
             // 
             // tabConnection
@@ -145,7 +146,7 @@ namespace MyGeneration
             this.tabConnection.Location = new System.Drawing.Point(4, 22);
             this.tabConnection.Name = "tabConnection";
             this.tabConnection.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.tabConnection.Size = new System.Drawing.Size(826, 551);
+            this.tabConnection.Size = new System.Drawing.Size(587, 532);
             this.tabConnection.TabIndex = 0;
             this.tabConnection.Text = "Connection";
             // 
@@ -160,7 +161,7 @@ namespace MyGeneration
             this.groupBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox5.Location = new System.Drawing.Point(16, 16);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(791, 64);
+            this.groupBox5.Size = new System.Drawing.Size(552, 64);
             this.groupBox5.TabIndex = 32;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Saved Connections";
@@ -171,7 +172,7 @@ namespace MyGeneration
             this.buttonDelete.BackColor = System.Drawing.SystemColors.Control;
             this.buttonDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonDelete.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.buttonDelete.Location = new System.Drawing.Point(732, 24);
+            this.buttonDelete.Location = new System.Drawing.Point(493, 24);
             this.buttonDelete.Name = "buttonDelete";
             this.buttonDelete.Size = new System.Drawing.Size(48, 23);
             this.buttonDelete.TabIndex = 35;
@@ -185,7 +186,7 @@ namespace MyGeneration
             this.buttonLoad.BackColor = System.Drawing.SystemColors.Control;
             this.buttonLoad.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonLoad.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.buttonLoad.Location = new System.Drawing.Point(612, 24);
+            this.buttonLoad.Location = new System.Drawing.Point(373, 24);
             this.buttonLoad.Name = "buttonLoad";
             this.buttonLoad.Size = new System.Drawing.Size(56, 23);
             this.buttonLoad.TabIndex = 34;
@@ -199,7 +200,7 @@ namespace MyGeneration
             this.buttonSave.BackColor = System.Drawing.SystemColors.Control;
             this.buttonSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonSave.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.buttonSave.Location = new System.Drawing.Point(676, 24);
+            this.buttonSave.Location = new System.Drawing.Point(437, 24);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(48, 23);
             this.buttonSave.TabIndex = 33;
@@ -216,7 +217,7 @@ namespace MyGeneration
             this.comboBoxSavedConns.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.comboBoxSavedConns.Location = new System.Drawing.Point(8, 24);
             this.comboBoxSavedConns.Name = "comboBoxSavedConns";
-            this.comboBoxSavedConns.Size = new System.Drawing.Size(596, 21);
+            this.comboBoxSavedConns.Size = new System.Drawing.Size(357, 21);
             this.comboBoxSavedConns.TabIndex = 32;
             // 
             // groupBox2
@@ -231,7 +232,7 @@ namespace MyGeneration
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(16, 304);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(791, 88);
+            this.groupBox2.Size = new System.Drawing.Size(552, 88);
             this.groupBox2.TabIndex = 22;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Database Target Mapping";
@@ -274,17 +275,17 @@ namespace MyGeneration
             this.txtDbTargetFile.Location = new System.Drawing.Point(88, 24);
             this.txtDbTargetFile.Name = "txtDbTargetFile";
             this.txtDbTargetFile.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtDbTargetFile.Size = new System.Drawing.Size(660, 20);
+            this.txtDbTargetFile.Size = new System.Drawing.Size(421, 20);
             this.txtDbTargetFile.TabIndex = 20;
             // 
             // btnDbTargetFile
             // 
             this.btnDbTargetFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDbTargetFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDbTargetFile.Location = new System.Drawing.Point(756, 24);
+            this.btnDbTargetFile.Location = new System.Drawing.Point(513, 24);
             this.btnDbTargetFile.Name = "btnDbTargetFile";
             this.btnDbTargetFile.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnDbTargetFile.Size = new System.Drawing.Size(24, 23);
+            this.btnDbTargetFile.Size = new System.Drawing.Size(28, 23);
             this.btnDbTargetFile.TabIndex = 19;
             this.btnDbTargetFile.Text = "...";
             this.btnDbTargetFile.Click += new System.EventHandler(this.btnDbTargetFile_Click);
@@ -301,7 +302,7 @@ namespace MyGeneration
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(16, 208);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(791, 88);
+            this.groupBox1.Size = new System.Drawing.Size(552, 88);
             this.groupBox1.TabIndex = 21;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Language Mapping";
@@ -334,17 +335,17 @@ namespace MyGeneration
             this.txtLanguageFile.Location = new System.Drawing.Point(88, 24);
             this.txtLanguageFile.Name = "txtLanguageFile";
             this.txtLanguageFile.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtLanguageFile.Size = new System.Drawing.Size(660, 20);
+            this.txtLanguageFile.Size = new System.Drawing.Size(421, 20);
             this.txtLanguageFile.TabIndex = 23;
             // 
             // btnLanguageFile
             // 
             this.btnLanguageFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnLanguageFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLanguageFile.Location = new System.Drawing.Point(756, 24);
+            this.btnLanguageFile.Location = new System.Drawing.Point(513, 24);
             this.btnLanguageFile.Name = "btnLanguageFile";
             this.btnLanguageFile.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnLanguageFile.Size = new System.Drawing.Size(24, 23);
+            this.btnLanguageFile.Size = new System.Drawing.Size(28, 23);
             this.btnLanguageFile.TabIndex = 22;
             this.btnLanguageFile.Text = "...";
             this.btnLanguageFile.Click += new System.EventHandler(this.btnLanguageFile_Click);
@@ -371,7 +372,7 @@ namespace MyGeneration
             this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox3.Location = new System.Drawing.Point(16, 88);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(791, 112);
+            this.groupBox3.Size = new System.Drawing.Size(552, 112);
             this.groupBox3.TabIndex = 23;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Connection String";
@@ -380,7 +381,7 @@ namespace MyGeneration
             // 
             this.btnTestConnection.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnTestConnection.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnTestConnection.Location = new System.Drawing.Point(580, 24);
+            this.btnTestConnection.Location = new System.Drawing.Point(341, 24);
             this.btnTestConnection.Name = "btnTestConnection";
             this.btnTestConnection.Size = new System.Drawing.Size(112, 23);
             this.btnTestConnection.TabIndex = 27;
@@ -411,7 +412,7 @@ namespace MyGeneration
             // 
             this.btnOleDb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOleDb.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnOleDb.Location = new System.Drawing.Point(700, 24);
+            this.btnOleDb.Location = new System.Drawing.Point(461, 24);
             this.btnOleDb.Name = "btnOleDb";
             this.btnOleDb.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.btnOleDb.Size = new System.Drawing.Size(80, 23);
@@ -429,7 +430,7 @@ namespace MyGeneration
             this.txtConnectionString.Multiline = true;
             this.txtConnectionString.Name = "txtConnectionString";
             this.txtConnectionString.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtConnectionString.Size = new System.Drawing.Size(772, 40);
+            this.txtConnectionString.Size = new System.Drawing.Size(533, 40);
             this.txtConnectionString.TabIndex = 20;
             // 
             // groupBoxUserMetaData
@@ -445,20 +446,19 @@ namespace MyGeneration
             this.groupBoxUserMetaData.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBoxUserMetaData.Location = new System.Drawing.Point(16, 400);
             this.groupBoxUserMetaData.Name = "groupBoxUserMetaData";
-            this.groupBoxUserMetaData.Size = new System.Drawing.Size(791, 135);
+            this.groupBoxUserMetaData.Size = new System.Drawing.Size(552, 119);
             this.groupBoxUserMetaData.TabIndex = 33;
             this.groupBoxUserMetaData.TabStop = false;
             this.groupBoxUserMetaData.Text = "User Meta-Data";
             // 
             // label1DbUserMetaMappingsExample
             // 
-            this.label1DbUserMetaMappingsExample.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1DbUserMetaMappingsExample.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1DbUserMetaMappingsExample.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.label1DbUserMetaMappingsExample.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.label1DbUserMetaMappingsExample.Location = new System.Drawing.Point(221, 51);
             this.label1DbUserMetaMappingsExample.Name = "label1DbUserMetaMappingsExample";
-            this.label1DbUserMetaMappingsExample.Size = new System.Drawing.Size(303, 13);
+            this.label1DbUserMetaMappingsExample.Size = new System.Drawing.Size(320, 13);
             this.label1DbUserMetaMappingsExample.TabIndex = 29;
             this.label1DbUserMetaMappingsExample.Text = "(comma seperated pairs like \"dbname=alias,dbname2=alias2...)";
             // 
@@ -481,17 +481,17 @@ namespace MyGeneration
             this.textBoxDbUserMetaMappings.Multiline = true;
             this.textBoxDbUserMetaMappings.Name = "textBoxDbUserMetaMappings";
             this.textBoxDbUserMetaMappings.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.textBoxDbUserMetaMappings.Size = new System.Drawing.Size(775, 40);
+            this.textBoxDbUserMetaMappings.Size = new System.Drawing.Size(536, 40);
             this.textBoxDbUserMetaMappings.TabIndex = 21;
             // 
             // btnUserMetaDataFile
             // 
             this.btnUserMetaDataFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnUserMetaDataFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnUserMetaDataFile.Location = new System.Drawing.Point(756, 24);
+            this.btnUserMetaDataFile.Location = new System.Drawing.Point(513, 24);
             this.btnUserMetaDataFile.Name = "btnUserMetaDataFile";
             this.btnUserMetaDataFile.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnUserMetaDataFile.Size = new System.Drawing.Size(24, 23);
+            this.btnUserMetaDataFile.Size = new System.Drawing.Size(28, 23);
             this.btnUserMetaDataFile.TabIndex = 15;
             this.btnUserMetaDataFile.Text = "...";
             this.btnUserMetaDataFile.Click += new System.EventHandler(this.btnUserMetaDataFile_Click);
@@ -504,7 +504,7 @@ namespace MyGeneration
             this.txtUserMetaDataFile.Location = new System.Drawing.Point(88, 24);
             this.txtUserMetaDataFile.Name = "txtUserMetaDataFile";
             this.txtUserMetaDataFile.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtUserMetaDataFile.Size = new System.Drawing.Size(660, 20);
+            this.txtUserMetaDataFile.Size = new System.Drawing.Size(421, 20);
             this.txtUserMetaDataFile.TabIndex = 17;
             // 
             // labelUserMetaData
@@ -536,9 +536,17 @@ namespace MyGeneration
             this.tabScript.Controls.Add(this.txtDefaultTemplatePath);
             this.tabScript.Location = new System.Drawing.Point(4, 22);
             this.tabScript.Name = "tabScript";
-            this.tabScript.Size = new System.Drawing.Size(826, 551);
+            this.tabScript.Size = new System.Drawing.Size(587, 532);
             this.tabScript.TabIndex = 1;
             this.tabScript.Text = "Templates";
+            // 
+            // checkBoxRunTemplatesAsync
+            // 
+            this.checkBoxRunTemplatesAsync.Location = new System.Drawing.Point(20, 192);
+            this.checkBoxRunTemplatesAsync.Name = "checkBoxRunTemplatesAsync";
+            this.checkBoxRunTemplatesAsync.Size = new System.Drawing.Size(346, 24);
+            this.checkBoxRunTemplatesAsync.TabIndex = 15;
+            this.checkBoxRunTemplatesAsync.Text = "Execute from Template Browser Asynchronously";
             // 
             // groupBox6
             // 
@@ -828,11 +836,12 @@ namespace MyGeneration
             // 
             // tabMisc
             // 
+            this.tabMisc.Controls.Add(this.checkBoxDocumentStyleSettings);
             this.tabMisc.Controls.Add(this.chkDomainOverride);
             this.tabMisc.Controls.Add(this.chkForUpdates);
             this.tabMisc.Location = new System.Drawing.Point(4, 22);
             this.tabMisc.Name = "tabMisc";
-            this.tabMisc.Size = new System.Drawing.Size(826, 551);
+            this.tabMisc.Size = new System.Drawing.Size(587, 532);
             this.tabMisc.TabIndex = 2;
             this.tabMisc.Text = "Misc";
             // 
@@ -898,7 +907,7 @@ namespace MyGeneration
             // 
             this.buttonSaveSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonSaveSettings.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.buttonSaveSettings.Location = new System.Drawing.Point(703, 3);
+            this.buttonSaveSettings.Location = new System.Drawing.Point(464, 3);
             this.buttonSaveSettings.Name = "buttonSaveSettings";
             this.buttonSaveSettings.Size = new System.Drawing.Size(62, 23);
             this.buttonSaveSettings.TabIndex = 2;
@@ -910,7 +919,7 @@ namespace MyGeneration
             // 
             this.buttonCancelSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCancelSettings.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancelSettings.Location = new System.Drawing.Point(771, 3);
+            this.buttonCancelSettings.Location = new System.Drawing.Point(532, 3);
             this.buttonCancelSettings.Name = "buttonCancelSettings";
             this.buttonCancelSettings.Size = new System.Drawing.Size(62, 23);
             this.buttonCancelSettings.TabIndex = 3;
@@ -918,13 +927,13 @@ namespace MyGeneration
             this.buttonCancelSettings.UseVisualStyleBackColor = true;
             this.buttonCancelSettings.Click += new System.EventHandler(this.buttonCancelSettings_Click);
             // 
-            // checkBoxRunTemplatesAsync
+            // checkBoxDocumentStyleSettings
             // 
-            this.checkBoxRunTemplatesAsync.Location = new System.Drawing.Point(20, 192);
-            this.checkBoxRunTemplatesAsync.Name = "checkBoxRunTemplatesAsync";
-            this.checkBoxRunTemplatesAsync.Size = new System.Drawing.Size(346, 24);
-            this.checkBoxRunTemplatesAsync.TabIndex = 15;
-            this.checkBoxRunTemplatesAsync.Text = "Execute from Template Browser Asynchronously";
+            this.checkBoxDocumentStyleSettings.Location = new System.Drawing.Point(24, 86);
+            this.checkBoxDocumentStyleSettings.Name = "checkBoxDocumentStyleSettings";
+            this.checkBoxDocumentStyleSettings.Size = new System.Drawing.Size(216, 24);
+            this.checkBoxDocumentStyleSettings.TabIndex = 2;
+            this.checkBoxDocumentStyleSettings.Text = "Use Document Style Settings Editor";
             // 
             // DefaultSettingsControl
             // 
@@ -933,8 +942,9 @@ namespace MyGeneration
             this.Controls.Add(this.buttonCancelSettings);
             this.Controls.Add(this.buttonSaveSettings);
             this.Controls.Add(this.tabControl);
+            this.MinimumSize = new System.Drawing.Size(601, 574);
             this.Name = "DefaultSettingsControl";
-            this.Size = new System.Drawing.Size(840, 593);
+            this.Size = new System.Drawing.Size(601, 574);
             this.tabControl.ResumeLayout(false);
             this.tabConnection.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
@@ -1037,5 +1047,6 @@ namespace MyGeneration
         private System.Windows.Forms.TextBox textBoxDbUserMetaMappings;
         private System.Windows.Forms.Label label1DbUserMetaMappingsExample;
         private System.Windows.Forms.CheckBox checkBoxRunTemplatesAsync;
+        private System.Windows.Forms.CheckBox checkBoxDocumentStyleSettings;
     }
 }

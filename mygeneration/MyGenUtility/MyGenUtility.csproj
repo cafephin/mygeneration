@@ -164,6 +164,12 @@
     <Compile Include="Forms\DefaultSettings\DefaultSettingsControl.Designer.cs">
       <DependentUpon>DefaultSettingsControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\DefaultSettings\DefaultSettingsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DefaultSettings\DefaultSettingsDialog.Designer.cs">
+      <DependentUpon>DefaultSettingsDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\EditorManager.cs" />
     <Compile Include="Forms\Errors\ErrorDetail.cs">
       <SubType>Form</SubType>
@@ -293,6 +299,10 @@
     <EmbeddedResource Include="Forms\DefaultSettings\DefaultSettingsControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>DefaultSettingsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DefaultSettings\DefaultSettingsDialog.resx">
+      <DependentUpon>DefaultSettingsDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Errors\ErrorDetail.resx">
       <DependentUpon>ErrorDetail.cs</DependentUpon>

@@ -22,6 +22,9 @@ namespace MyGeneration
         public ShowOleDbDialogHandler ShowOLEDBDialog;
         private IMyGenerationMDI mdi;
 
+        public delegate void AfterSaveDelegate();
+        public event EventHandler AfterSave;
+
         public DefaultSettingsControl()
         {
             InitializeComponent();
@@ -85,6 +88,7 @@ namespace MyGeneration
 
             this.checkBoxClipboard.Checked = settings.EnableClipboard;
             this.checkBoxRunTemplatesAsync.Checked = settings.ExecuteFromTemplateBrowserAsync;
+            this.checkBoxDocumentStyleSettings.Checked = settings.EnableDocumentStyleSettings;
             this.checkBoxLineNumbers.Checked = settings.EnableLineNumbering;
             this.txtTabs.Text = settings.Tabs.ToString();
             this.txtDefaultTemplatePath.Text = settings.DefaultTemplateDirectory;
@@ -140,6 +144,11 @@ namespace MyGeneration
                 return true;
             }
             return false;
+        }
+
+        protected void OnAfterSave()
+        {
+            if (AfterSave != null) AfterSave(this, EventArgs.Empty);
         }
 
         public void Cancel()
@@ -253,6 +262,7 @@ namespace MyGeneration
             settings.UserMetaDataFileName = this.txtUserMetaDataFile.Text;
             settings.EnableClipboard = this.checkBoxClipboard.Checked;
             settings.ExecuteFromTemplateBrowserAsync = this.checkBoxRunTemplatesAsync.Checked;
+            settings.EnableDocumentStyleSettings = this.checkBoxDocumentStyleSettings.Checked;
             settings.EnableLineNumbering = this.checkBoxLineNumbers.Checked;
             settings.Tabs = Convert.ToInt32(this.txtTabs.Text);
             settings.CheckForNewBuild = this.chkForUpdates.Checked;
@@ -424,6 +434,7 @@ namespace MyGeneration
             if (Save())
             {
                 mdi.SendAlert(this.ParentForm as IMyGenContent, "UpdateDefaultSettings");
+                this.OnAfterSave();
             }
         }
 
