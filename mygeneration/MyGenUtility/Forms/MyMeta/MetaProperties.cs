@@ -26,7 +26,8 @@ namespace MyGeneration
 		private System.Windows.Forms.DataGridTextBoxColumn col_Value;
 
 		private Type stringType = Type.GetType("System.String");
-		private System.Windows.Forms.LinkLabel lnkHELP;
+        private System.Windows.Forms.LinkLabel lnkHELP;
+        private int _currentHashCode = Int32.MinValue;
 
 		private string helpInterface = "";
 
@@ -184,7 +185,7 @@ namespace MyGeneration
 			this.col_Property.TextBox.Move += new System.EventHandler(this.ColorTextBox);
 			this.col_Value.TextBox.Move    += new System.EventHandler(this.ColorTextBox);
 
-			this.Clear();
+			this.ClearOrRefresh();
 		}
 
 		/*public void DefaultSettingsChanged(DefaultSettings settings)
@@ -197,20 +198,35 @@ namespace MyGeneration
 			this.Clear();
 		}
 
+        public void ClearOrRefresh()
+        {
+            if (_currentHashCode != Int32.MinValue)
+            {
+                this.Refresh();
+            }
+            else
+            {
+                Clear();
+            }
+        }
+
 		public void Clear()
-		{
+        {
+            _currentHashCode = Int32.MinValue;
 			this.Grid.DataSource = emptyTable;
 			this.InitializeGrid();
 			this.Text = "MyMeta Properties";
 			this.lnkHELP.Text = "";
-			this.helpInterface = "";
+            this.helpInterface = "";
 		}
 
 		//===============================================================================
 		// Properties
 		//===============================================================================
 		public void DisplayDatabaseProperties(IDatabase database, TreeNode tableNode)
-		{
+        {
+            if (this._currentHashCode == database.GetHashCode()) return;
+
 			DataTable dt = new DataTable("MyData");
 
 			dt.Columns.Add("Property", stringType);
@@ -231,11 +247,15 @@ namespace MyGeneration
 
 			this.Text = "IDatabase Properties";
 			this.lnkHELP.Text = "IDatabase Help ...";
-			this.helpInterface = "IDatabase";
+            this.helpInterface = "IDatabase";
+
+            this._currentHashCode = database.GetHashCode();
 		}
 
 		public void DisplayColumnProperties(IColumn column, TreeNode columnNode)
-		{
+        {
+            if (this._currentHashCode == column.GetHashCode()) return;
+
 			DataTable dt = new DataTable("MyData");
 
 			dt.Columns.Add("Property", stringType);
@@ -279,11 +299,15 @@ namespace MyGeneration
 
 			this.Text = "IColumn Properties";
 			this.lnkHELP.Text = "IColumn Help ...";
-			this.helpInterface = "IColumn";
+            this.helpInterface = "IColumn";
+
+            this._currentHashCode = column.GetHashCode();
 		}
 
 		public void DisplayTableProperties(ITable table, TreeNode tableNode)
-		{
+        {
+            if (this._currentHashCode == table.GetHashCode()) return;
+
 			DataTable dt = new DataTable("MyData");
 
 			dt.Columns.Add("Property", stringType);
@@ -305,11 +329,15 @@ namespace MyGeneration
 
 			this.Text = "ITable Properties";
 			this.lnkHELP.Text = "ITable Help ...";
-			this.helpInterface = "ITable";
+            this.helpInterface = "ITable";
+
+            this._currentHashCode = table.GetHashCode();
 		}
 
 		public void DisplayViewProperties(IView view, TreeNode tableNode)
-		{
+        {
+            if (this._currentHashCode == view.GetHashCode()) return;
+
 			DataTable dt = new DataTable("MyData");
 
 			dt.Columns.Add("Property", stringType);
@@ -334,11 +362,15 @@ namespace MyGeneration
 
 			this.Text = "IView Properties";
 			this.lnkHELP.Text = "IView Help ...";
-			this.helpInterface = "IView";
+            this.helpInterface = "IView";
+
+            this._currentHashCode = view.GetHashCode();
 		}
 
 		public void DisplayProcedureProperties(IProcedure proc, TreeNode tableNode)
-		{
+        {
+            if (this._currentHashCode == proc.GetHashCode()) return;
+
 			DataTable dt = new DataTable("MyData");
 
 			dt.Columns.Add("Property", stringType);
@@ -359,11 +391,15 @@ namespace MyGeneration
 
 			this.Text = "IProcedure Properties";
 			this.lnkHELP.Text = "IProcedure Help ...";
-			this.helpInterface = "IProcedure";
+            this.helpInterface = "IProcedure";
+
+            this._currentHashCode = proc.GetHashCode();
 		}
 
 		public void DisplayDomainProperties(IDomain domain, TreeNode tableNode)
-		{
+        {
+            if (this._currentHashCode == domain.GetHashCode()) return;
+
 			DataTable dt = new DataTable("MyData");
 
 			dt.Columns.Add("Property", stringType);
@@ -411,11 +447,15 @@ namespace MyGeneration
 
 			this.Text = "IDomain Properties";
 			this.lnkHELP.Text = "IDomain Help ...";
-			this.helpInterface = "IDomain";
+            this.helpInterface = "IDomain";
+
+            this._currentHashCode = domain.GetHashCode();
 		}
 
 		public void DisplayParameterProperties(IParameter parameter, TreeNode parameterNode)
-		{
+        {
+            if (this._currentHashCode == parameter.GetHashCode()) return;
+
 			DataTable dt = new DataTable("MyData");
 
 			dt.Columns.Add("Property", stringType);
@@ -467,10 +507,14 @@ namespace MyGeneration
 			this.Text = "IParameter Properties";
 			this.lnkHELP.Text = "IParameter Help ...";
 			this.helpInterface = "IParameter";
+
+            this._currentHashCode = parameter.GetHashCode();
 		}
 
 		public void DisplayResultColumnProperties(IResultColumn resultColumn, TreeNode resultColumnNode)
-		{
+        {
+            if (this._currentHashCode == resultColumn.GetHashCode()) return;
+
 			DataTable dt = new DataTable("MyData");
 
 			dt.Columns.Add("Property", stringType);
@@ -490,11 +534,15 @@ namespace MyGeneration
 
 			this.Text = "IResultColumn Properties";
 			this.lnkHELP.Text = "IResultColumn Help ...";
-			this.helpInterface = "IResultColumn";
+            this.helpInterface = "IResultColumn";
+
+            this._currentHashCode = resultColumn.GetHashCode();
 		}
 
 		public void DisplayForeignKeyProperties(IForeignKey foreignKey, TreeNode foreignKeyNode)
-		{
+        {
+            if (this._currentHashCode == foreignKey.GetHashCode()) return;
+
 			DataTable dt = new DataTable("MyData");
 
 			dt.Columns.Add("Property", stringType);
@@ -516,11 +564,15 @@ namespace MyGeneration
 
 			this.Text = "IForeignKey Properties";
 			this.lnkHELP.Text = "IForeignKey Help ...";
-			this.helpInterface = "IForeignKey";
+            this.helpInterface = "IForeignKey";
+
+            this._currentHashCode = foreignKey.GetHashCode();
 		}
 
 		public void DisplayIndexProperties(IIndex index, TreeNode indexNode)
-		{
+        {
+            if (this._currentHashCode == index.GetHashCode()) return;
+
 			DataTable dt = new DataTable("MyData");
 
 			dt.Columns.Add("Property", stringType);
@@ -549,11 +601,15 @@ namespace MyGeneration
 
 			this.Text = "IIndex Properties";
 			this.lnkHELP.Text = "IIndex Help ...";
-			this.helpInterface = "IIndex";
+            this.helpInterface = "IIndex";
+
+            this._currentHashCode = index.GetHashCode();
 		}
 
 		public void DisplayProviderTypeProperties(IProviderType type, TreeNode indexNode)
-		{
+        {
+            if (this._currentHashCode == type.GetHashCode()) return;
+
 			DataTable dt = new DataTable("MyData");
 
 			dt.Columns.Add("Property", stringType);
@@ -587,7 +643,9 @@ namespace MyGeneration
 
 			this.Text = "IProviderType Properties";
 			this.lnkHELP.Text = "IProviderType Help ...";
-			this.helpInterface = "IProviderType";
+            this.helpInterface = "IProviderType";
+
+            this._currentHashCode = type.GetHashCode();
 		}
 
 		private void ColorTextBox(object sender, System.EventArgs e)

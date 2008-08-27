@@ -33,15 +33,6 @@ namespace MyGeneration
 		private System.ComponentModel.IContainer components;
 
 		private string startupPath;
-
-        private dbRoot myMeta
-        {
-            get
-            {
-                if (static_myMeta == null) static_myMeta = new dbRoot();
-                return static_myMeta;
-            }
-        }
 		private System.Windows.Forms.ImageList imageList1;
 		private System.Windows.Forms.TreeView MyTree;
 		public System.Windows.Forms.ImageList TreeImageList;
@@ -54,11 +45,27 @@ namespace MyGeneration
         private static TreeNode static_rootNode, loadingNode;
         private System.Windows.Forms.Timer timerIconAnimate;
         private static dbRoot static_myMeta;
+        private static dbRoot StaticMyMeta
+        {
+            get
+            {
+                if (static_myMeta == null) static_myMeta = new dbRoot();
+                return static_myMeta;
+            }
+            set
+            {
+                if (value == null && static_myMeta != null)
+                {
+                    static_myMeta.Dispose();
+                    static_myMeta = null;
+                }
+            }
+        }
 
         private class AsyncLoadInfo 
         {
             public TreeNode RootNode; 
-            public dbRoot MyMeta; 
+            //public dbRoot MyMeta; 
             public bool ShowSystemEntities; 
             public string Error;
             public TreeNode BlankNode
@@ -187,6 +194,7 @@ namespace MyGeneration
             this.MyTree.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MyTree.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MyTree.FullRowSelect = true;
+            this.MyTree.HideSelection = false;
             this.MyTree.HotTracking = true;
             this.MyTree.ImageIndex = 21;
             this.MyTree.ImageList = this.TreeImageList;
@@ -196,6 +204,7 @@ namespace MyGeneration
             this.MyTree.SelectedImageIndex = 21;
             this.MyTree.Size = new System.Drawing.Size(264, 711);
             this.MyTree.TabIndex = 4;
+            this.MyTree.MouseClick += new System.Windows.Forms.MouseEventHandler(this.MyTree_MouseClick);
             this.MyTree.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.MyTree_BeforeExpand);
             this.MyTree.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.MyTree_BeforeSelect);
             // 
@@ -264,10 +273,8 @@ namespace MyGeneration
             this.Text = "MyMeta  Browser";
             this.Load += new System.EventHandler(this.MetaDataBrowser_Load);
             this.Enter += new System.EventHandler(this.MetaDataBrowser_Enter);
-            this.Leave += new System.EventHandler(this.MetaDataBrowser_Leave);
             this.ResumeLayout(false);
             this.PerformLayout();
-
 		}
 		#endregion
 
@@ -314,8 +321,10 @@ namespace MyGeneration
 
             timerIconAnimate.Start();
 
+            // RESET MYMETA!
+            StaticMyMeta = null;
+
             AsyncLoadInfo ali = new AsyncLoadInfo();
-            ali.MyMeta = myMeta;
             ali.RootNode = static_rootNode;
             ali.ShowSystemEntities = this.chkSystem.Checked;
             ali.Error = string.Empty;
@@ -378,21 +387,21 @@ namespace MyGeneration
             {
                 if (string.IsNullOrEmpty(ali.Error)) 
 				{
-                    ali.MyMeta.Connect(settings.DbDriver, settings.ConnectionString);
-                    ali.MyMeta.LanguageMappingFileName = settings.LanguageMappingFile;
-                    ali.MyMeta.Language = settings.Language;
-                    ali.MyMeta.DbTargetMappingFileName = settings.DbTargetMappingFile;
-                    ali.MyMeta.DbTarget = settings.DbTarget;
-                    ali.MyMeta.UserMetaDataFileName = settings.UserMetaDataFileName;
+                    StaticMyMeta.Connect(settings.DbDriver, settings.ConnectionString);
+                    StaticMyMeta.LanguageMappingFileName = settings.LanguageMappingFile;
+                    StaticMyMeta.Language = settings.Language;
+                    StaticMyMeta.DbTargetMappingFileName = settings.DbTargetMappingFile;
+                    StaticMyMeta.DbTarget = settings.DbTarget;
+                    StaticMyMeta.UserMetaDataFileName = settings.UserMetaDataFileName;
 
-                    ali.MyMeta.DomainOverride = settings.DomainOverride;
+                    StaticMyMeta.DomainOverride = settings.DomainOverride;
 
-                    ali.MyMeta.ShowSystemData = ali.ShowSystemEntities;
+                    StaticMyMeta.ShowSystemData = ali.ShowSystemEntities;
 
-                    ali.MyMeta.UserDataDatabaseMappings.Clear();
+                    StaticMyMeta.UserDataDatabaseMappings.Clear();
                     foreach (string key in settings.DatabaseUserDataXmlMappings.Keys)
                     {
-                        ali.MyMeta.UserDataDatabaseMappings[key] = settings.DatabaseUserDataXmlMappings[key];
+                        StaticMyMeta.UserDataDatabaseMappings[key] = settings.DatabaseUserDataXmlMappings[key];
                     }
 				}
 			}
@@ -407,10 +416,10 @@ namespace MyGeneration
 
         private static void InitializeTreeAsync(AsyncLoadInfo ali)
         {
-            string nodeText = string.IsNullOrEmpty(ali.Error) ? ali.MyMeta.DriverString : ali.Error;
+            string nodeText = string.IsNullOrEmpty(ali.Error) ? StaticMyMeta.DriverString : ali.Error;
 
             TreeNode serverNode = new TreeNode("MyMeta (" + nodeText + ")");
-            serverNode.Tag = new NodeData(NodeType.MYMETA, ali.MyMeta);
+            serverNode.Tag = new NodeData(NodeType.MYMETA, StaticMyMeta);
             serverNode.SelectedImageIndex = serverNode.ImageIndex = 21;
             ali.RootNode.Nodes.Add(serverNode);
 
@@ -419,17 +428,18 @@ namespace MyGeneration
                 // There's an error when trying to connect, let's bail with the error text in the node 
                 serverNode.Expand();
             }
-            else if (ali.MyMeta.Databases != null)
+            else if (StaticMyMeta.Databases != null)
             {
                 try
                 {
                     TreeNode databasesNode = new TreeNode("Databases");
-                    databasesNode.Tag = new NodeData(NodeType.DATABASES, ali.MyMeta.Databases);
+                    databasesNode.Tag = new NodeData(NodeType.DATABASES, StaticMyMeta.Databases);
                     databasesNode.SelectedImageIndex = databasesNode.ImageIndex = 0;
 
                     serverNode.Nodes.Add(databasesNode);
 
-                    foreach (IDatabase database in ali.MyMeta.Databases)
+                    //foreach (IDatabase database in ali.MyMeta.Databases)
+                    foreach (IDatabase database in StaticMyMeta.Databases)
                     {
                         TreeNode dbNode = new TreeNode(database.Name);
                         dbNode.Tag = new NodeData(NodeType.DATABASE, database);
@@ -460,15 +470,15 @@ namespace MyGeneration
             {
                 try
                 {
-                    if ((myMeta.DriverString != settings.DbDriver) ||
-                        (myMeta.ConnectionString != settings.ConnectionString) ||
-                        (myMeta.LanguageMappingFileName != settings.LanguageMappingFile) ||
-                        (myMeta.Language != settings.Language) ||
-                        (myMeta.DbTargetMappingFileName != settings.DbTargetMappingFile) ||
-                        (myMeta.DbTarget != settings.DbTarget) ||
-                        (myMeta.UserMetaDataFileName != settings.UserMetaDataFileName) ||
-                        (myMeta.DomainOverride != settings.DomainOverride) ||
-                        (!CompareUserDataDatabaseMappings(myMeta.UserDataDatabaseMappings, settings.DatabaseUserDataXmlMappings)))
+                    if ((StaticMyMeta.DriverString != settings.DbDriver) ||
+                        (StaticMyMeta.ConnectionString != settings.ConnectionString) ||
+                        (StaticMyMeta.LanguageMappingFileName != settings.LanguageMappingFile) ||
+                        (StaticMyMeta.Language != settings.Language) ||
+                        (StaticMyMeta.DbTargetMappingFileName != settings.DbTargetMappingFile) ||
+                        (StaticMyMeta.DbTarget != settings.DbTarget) ||
+                        (StaticMyMeta.UserMetaDataFileName != settings.UserMetaDataFileName) ||
+                        (StaticMyMeta.DomainOverride != settings.DomainOverride) ||
+                        (!CompareUserDataDatabaseMappings(StaticMyMeta.UserDataDatabaseMappings, settings.DatabaseUserDataXmlMappings)))
                     {
                         doRefresh = true;
                     }
@@ -527,8 +537,6 @@ namespace MyGeneration
             
             this.Setup();
 
-            //this.Setup(settings);
-
 		}
         
 #if !DEBUG
@@ -537,65 +545,7 @@ namespace MyGeneration
         private void Setup()
 		{
             SetupAsync();
-           //Setup(DefaultSettings.Instance); 
         }
-        
-        /*private void Setup(DefaultSettings settings)
-		{
-			string error = string.Empty;
-
-			try
-			{
-				//myMeta = new dbRoot();
-				this.Text = "MyMeta Browser (" + settings.DbDriver + ")";
-
-#if !DEBUG
-				if (settings.DbDriver.ToUpper() != "NONE")
-                {
-                    TestConnectionForm tcf = new TestConnectionForm(settings.DbDriver, settings.ConnectionString, true);
-					if (isFirstRun) 
-					{
-						tcf.StartPosition = FormStartPosition.CenterScreen;
-						isFirstRun = false;
-					}
-					tcf.ShowDialog(this.MdiParent);
-					if (TestConnectionForm.State == ConnectionTestState.Error) 
-					{
-						if (TestConnectionForm.LastErrorMsg != null)
-							error = TestConnectionForm.LastErrorMsg;
-						else 
-							error = "Connection Error...";
-					}
-					tcf = null;
-				}
-#endif
-
-                if (error == string.Empty) 
-				{
-					myMeta.Connect(settings.DbDriver, settings.ConnectionString);
-					myMeta.LanguageMappingFileName	= settings.LanguageMappingFile;
-					myMeta.Language					= settings.Language;
-					myMeta.DbTargetMappingFileName	= settings.DbTargetMappingFile;
-					myMeta.DbTarget					= settings.DbTarget;
-					myMeta.UserMetaDataFileName		= settings.UserMetaDataFileName;
-
-					myMeta.DomainOverride			= settings.DomainOverride;
-
-					myMeta.ShowSystemData			= chkSystem.Checked;
-				}
-			}
-			catch(Exception ex)
-			{
-				error = ex.Message;
-			}
-
-			this.InitializeTree(myMeta, error);
-		}*/
-
-        /*private void menuItemClose_Click(object sender, System.EventArgs e)
-        {
-            this.Close();
-        }*/
 
 		private void toolBar1_ButtonClick(object sender, System.Windows.Forms.ToolBarButtonClickEventArgs e)
         {
@@ -623,11 +573,11 @@ namespace MyGeneration
                 case "execute":
                     if (this.mdi.DockPanel.ActiveDocument != null)
                     {
-                        if ((this.mdi.DockPanel.ActiveDocument is IMyGenDocument) && (this.myMeta.IsConnected))
+                        if ((this.mdi.DockPanel.ActiveDocument is IMyGenDocument) && (StaticMyMeta.IsConnected))
                         {
                             IMyGenDocument doc = this.mdi.DockPanel.ActiveDocument as IMyGenDocument;
                             
-                            Recordset rs = this.myMeta.DefaultDatabase.ExecuteSql(doc.TextContent);
+                            Recordset rs = StaticMyMeta.DefaultDatabase.ExecuteSql(doc.TextContent);
                             if ((rs != null) && (rs.State != (int)ADODB.ObjectStateEnum.adStateClosed)) rs.Close();
                         }
                     }
@@ -637,70 +587,8 @@ namespace MyGeneration
 
 		private void chkSystem_CheckedChanged(object sender, System.EventArgs e)
 		{
-			//DefaultSettings settings = DefaultSettings.Instance;
-			//this.Setup(settings);
             this.Setup();
 		}
-
-		/*public void InitializeTree(dbRoot myMeta, string error)
-		{
-			this.MyTree.BeginUpdate();
-
-			this.MyTree.Nodes.Clear();
-			//this.myMeta = myMeta;
-
-			string nodeText = error == "" ? myMeta.DriverString : error;
-
-			TreeNode rootNode = new TreeNode("MyMeta (" + nodeText + ")");
-			rootNode.Tag = new NodeData(NodeType.MYMETA, myMeta);
-			rootNode.SelectedImageIndex = rootNode.ImageIndex = 21;
-			this.MyTree.Nodes.Add(rootNode);
-
-			if(error != "")
-			{
-				// There's an error when trying to connect, let's bail with the error
-				// text in the node 
-				rootNode.Expand();
-				this.MyTree.EndUpdate();
-				return;
-			}
-
-			// This is true for dbDriver = NONE
-			if(myMeta.Databases == null)
-			{
-				this.MyTree.EndUpdate();				
-				return;
-			}
-
-			try
-			{
-				TreeNode databasesNode = new TreeNode("Databases");
-				databasesNode.Tag = new NodeData(NodeType.DATABASES, myMeta.Databases);
-				databasesNode.SelectedImageIndex = databasesNode.ImageIndex = 0;
-
-				rootNode.Nodes.Add(databasesNode);
-
-				foreach(IDatabase database in myMeta.Databases)
-				{
-					TreeNode dbNode = new TreeNode(database.Name);
-					dbNode.Tag =  new NodeData(NodeType.DATABASE, database);
-					dbNode.SelectedImageIndex = dbNode.ImageIndex = 1;
-					dbNode.Nodes.Add(this.BlankNode);
-					databasesNode.Nodes.Add(dbNode);
-				}
-
-				rootNode.Expand();
-				databasesNode.Expand();
-				this.MyTree.EndUpdate();
-			}
-			catch(Exception ex)
-			{
-				if(rootNode != null)
-				{
-					rootNode.Text = "MyMeta (" + ex.Message + " )";
-				}
-			}
-		}*/
 
 		public string ConfigurationPath
 		{
@@ -781,180 +669,204 @@ namespace MyGeneration
 			}
 			else
 				return false;
-		}
+        }
+
+        private void BeforeNodeSelected(TreeNode node)
+        {
+            if (node != null)
+            {
+                if (this.MetaData == null || node.Tag == null) return;
+
+                NodeData data = node.Tag as NodeData;
+                MetaObject obj = null;
+
+                if (data.Type != NodeType.MYMETA)
+                {
+                    obj = data.Meta as MetaObject;
+                }
+
+                if (data != null)
+                {
+                    switch (data.Type)
+                    {
+                        case NodeType.COLUMNS:
+                            UserData.EditNiceNames(data.Meta as Columns);
+                            break;
+
+                        case NodeType.DATABASES:
+                            UserData.EditNiceNames(data.Meta as Databases);
+                            break;
+
+                        case NodeType.TABLES:
+                        case NodeType.SUBTABLES:
+                            UserData.EditNiceNames(data.Meta as Tables);
+                            break;
+
+                        case NodeType.VIEWS:
+                        case NodeType.SUBVIEWS:
+                            UserData.EditNiceNames(data.Meta as Views);
+                            break;
+
+                        case NodeType.FOREIGNKEYS:
+                        case NodeType.INDIRECTFOREIGNKEYS:
+                            UserData.EditNiceNames(data.Meta as ForeignKeys);
+                            break;
+
+                        case NodeType.PARAMETERS:
+                            UserData.EditNiceNames(data.Meta as MyMeta.Parameters);
+                            break;
+
+                        case NodeType.RESULTCOLUMNS:
+                            UserData.EditNiceNames(data.Meta as ResultColumns);
+                            break;
+
+                        case NodeType.INDEXES:
+                            UserData.EditNiceNames(data.Meta as Indexes);
+                            break;
+
+                        case NodeType.PROCEDURES:
+                            UserData.EditNiceNames(data.Meta as Procedures);
+                            break;
+
+                        case NodeType.DOMAINS:
+                            UserData.EditNiceNames(data.Meta as Domains);
+                            break;
+
+                        default:
+                            UserData.Clear();
+                            break;
+                    }
+
+                    switch (data.Type)
+                    {
+                        case NodeType.DATABASE:
+                            {
+                                Database o = obj as Database;
+                                MetaData.DisplayDatabaseProperties(o, node);
+                                UserData.EditSingle(o, o.Alias);
+                                //GlobalUserData.Edit(o);
+                            }
+                            break;
+
+                        case NodeType.COLUMN:
+                            {
+                                Column o = obj as Column;
+                                MetaData.DisplayColumnProperties(o, node);
+                                UserData.EditSingle(o, o.Alias);
+                                GlobalUserData.Edit(o);
+                            }
+                            break;
+
+                        case NodeType.TABLE:
+                            {
+
+                                Table o = obj as Table;
+                                MetaData.DisplayTableProperties(o, node);
+                                UserData.EditSingle(o, o.Alias);
+                                GlobalUserData.Edit(o);
+                            }
+                            break;
+
+                        case NodeType.VIEW:
+                            {
+
+                                MyMeta.View o = obj as MyMeta.View;
+                                MetaData.DisplayViewProperties(o, node);
+                                UserData.EditSingle(o, o.Alias);
+                                GlobalUserData.Edit(o);
+                            }
+                            break;
+
+                        case NodeType.PARAMETER:
+                            {
+
+                                MyMeta.Parameter o = obj as MyMeta.Parameter;
+                                MetaData.DisplayParameterProperties(o, node);
+                                UserData.EditSingle(o, o.Alias);
+                                GlobalUserData.Edit(o);
+                            }
+                            break;
+
+                        case NodeType.RESULTCOLUMN:
+                            {
+
+                                ResultColumn o = obj as ResultColumn;
+                                MetaData.DisplayResultColumnProperties(o, node);
+                                UserData.EditSingle(o, o.Alias);
+                                GlobalUserData.Edit(o);
+                            }
+                            break;
+
+                        case NodeType.FOREIGNKEY:
+                            {
+                                ForeignKey o = obj as ForeignKey;
+                                MetaData.DisplayForeignKeyProperties(o, node);
+                                UserData.EditSingle(o, o.Alias);
+                                GlobalUserData.Edit(o);
+                            }
+                            break;
+
+                        case NodeType.INDEX:
+                            {
+                                Index o = obj as Index;
+                                MetaData.DisplayIndexProperties(o, node);
+                                UserData.EditSingle(o, o.Alias);
+                                GlobalUserData.Edit(o);
+                            }
+                            break;
+
+                        case NodeType.PROCEDURE:
+                            {
+                                Procedure o = obj as Procedure;
+                                MetaData.DisplayProcedureProperties(o, node);
+                                UserData.EditSingle(o, o.Alias);
+                                GlobalUserData.Edit(o);
+                            }
+                            break;
+
+                        case NodeType.DOMAIN:
+                            {
+                                Domain o = obj as Domain;
+                                MetaData.DisplayDomainProperties(o, node);
+                                UserData.EditSingle(o, o.Alias);
+                                GlobalUserData.Edit(o);
+                            }
+                            break;
+
+                        default:
+                            MetaData.Clear();
+                            GlobalUserData.Clear();
+                            break;
+                    }
+                }
+            }
+        }
+
+        private void MyTree_MouseClick(object sender, MouseEventArgs e)
+        {
+            TreeNode node = MyTree.GetNodeAt(e.X, e.Y) as TreeNode;
+            if ((node != null) && (node == MyTree.SelectedNode))
+            {
+                try
+                {
+                    BeforeNodeSelected(node);
+                }
+#if DEBUG
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message, ex);
+                }
+#else
+			catch {}
+#endif
+            }
+        }
 
 		private void MyTree_BeforeSelect(object sender, System.Windows.Forms.TreeViewCancelEventArgs e)
 		{
 			try
 			{
-                if (null == this.MetaData || e.Node.Tag == null) return;
-
-				NodeData data  = (NodeData)e.Node.Tag;
-				MetaObject obj = null;
-			
-				if(data.Type != NodeType.MYMETA)
-				{
-					obj = data.Meta as MetaObject;
-				}
-
-				if(null != data)
-				{
-					switch(data.Type)
-					{
-						case NodeType.COLUMNS:
-							UserData.EditNiceNames(data.Meta as Columns);
-							break;
-
-						case NodeType.DATABASES:
-							UserData.EditNiceNames(data.Meta as Databases);
-							break;
-
-						case NodeType.TABLES:
-						case NodeType.SUBTABLES:
-							UserData.EditNiceNames(data.Meta as Tables);
-							break;
-
-						case NodeType.VIEWS:
-						case NodeType.SUBVIEWS:
-							UserData.EditNiceNames(data.Meta as Views);
-							break;
-
-						case NodeType.FOREIGNKEYS:
-						case NodeType.INDIRECTFOREIGNKEYS:
-							UserData.EditNiceNames(data.Meta as ForeignKeys);
-							break;
-
-						case NodeType.PARAMETERS:
-							UserData.EditNiceNames(data.Meta as MyMeta.Parameters);
-							break;
-
-						case NodeType.RESULTCOLUMNS:
-							UserData.EditNiceNames(data.Meta as ResultColumns);
-							break;
-
-						case NodeType.INDEXES:
-							UserData.EditNiceNames(data.Meta as Indexes);
-							break;
-
-						case NodeType.PROCEDURES:
-							UserData.EditNiceNames(data.Meta as Procedures);
-							break;
-
-						case NodeType.DOMAINS:
-							UserData.EditNiceNames(data.Meta as Domains);
-							break;
-
-						default:
-							UserData.Clear();
-							break;
-					}
-
-					switch(data.Type)
-					{
-						case NodeType.DATABASE:
-						{
-							Database o = obj as Database; 
-							MetaData.DisplayDatabaseProperties(o, e.Node);
-							UserData.EditSingle(o, o.Alias);
-							//GlobalUserData.Edit(o);
-						}
-							break;
-
-						case NodeType.COLUMN:
-						{
-							Column o = obj as Column; 
-							MetaData.DisplayColumnProperties(o, e.Node);
-							UserData.EditSingle(o, o.Alias);
-							GlobalUserData.Edit(o);
-						}
-							break;
-
-						case NodeType.TABLE:
-						{
-
-							Table o = obj as Table; 
-							MetaData.DisplayTableProperties(o, e.Node);
-							UserData.EditSingle(o, o.Alias);
-							GlobalUserData.Edit(o);
-						}
-							break;
-
-						case NodeType.VIEW:
-						{
-
-							MyMeta.View o = obj as MyMeta.View; 
-							MetaData.DisplayViewProperties(o, e.Node);
-							UserData.EditSingle(o, o.Alias);
-							GlobalUserData.Edit(o);
-						}
-							break;
-
-						case NodeType.PARAMETER:
-						{
-
-							MyMeta.Parameter o = obj as MyMeta.Parameter; 
-							MetaData.DisplayParameterProperties(o, e.Node);
-							UserData.EditSingle(o, o.Alias);
-							GlobalUserData.Edit(o);
-						}
-							break;
-
-						case NodeType.RESULTCOLUMN:
-						{
-
-							ResultColumn o = obj as ResultColumn; 
-							MetaData.DisplayResultColumnProperties(o, e.Node);
-							UserData.EditSingle(o, o.Alias);
-							GlobalUserData.Edit(o);
-						}
-							break;
-
-						case NodeType.FOREIGNKEY:
-						{
-							ForeignKey o = obj as ForeignKey; 
-							MetaData.DisplayForeignKeyProperties(o, e.Node);
-							UserData.EditSingle(o, o.Alias);
-							GlobalUserData.Edit(o);
-						}
-							break;
-
-						case NodeType.INDEX:
-						{
-							Index o = obj as Index; 
-							MetaData.DisplayIndexProperties(o, e.Node);
-							UserData.EditSingle(o, o.Alias);
-							GlobalUserData.Edit(o);
-						}
-							break;
-
-						case NodeType.PROCEDURE:
-						{
-							Procedure o = obj as Procedure; 
-							MetaData.DisplayProcedureProperties(o, e.Node);
-							UserData.EditSingle(o, o.Alias);
-							GlobalUserData.Edit(o);
-						}
-							break;
-
-						case NodeType.DOMAIN:
-						{
-							Domain o = obj as Domain; 
-							MetaData.DisplayDomainProperties(o, e.Node);
-							UserData.EditSingle(o, o.Alias);
-							GlobalUserData.Edit(o);
-						}
-							break;
-							//
-							//					case NodeType.PROVIDERTYPE:
-							//						MetaData.DisplayProviderTypeProperties(obj as IProviderType, e.Node);
-							//						break;
-
-						default:
-							MetaData.Clear();
-							GlobalUserData.Clear();
-							break;
-					}
-				}
+                BeforeNodeSelected(e.Node);
 			}
 #if DEBUG
 			catch (Exception ex)
@@ -1067,7 +979,7 @@ namespace MyGeneration
 
 			if(HasBlankNode(dbNode))
 			{
-				IDatabase db = myMeta.Databases[database.Name];
+				IDatabase db = StaticMyMeta.Databases[database.Name];
 			
 				TreeNode node;
 
@@ -1389,7 +1301,7 @@ namespace MyGeneration
         {
             if (IsTreeBusy) return false; 
 
-			bool saved = myMeta.SaveUserMetaData();
+			bool saved = StaticMyMeta.SaveUserMetaData();
 			this.IsUserDataDirty = false;
 			return saved;
 		}
@@ -1423,9 +1335,8 @@ namespace MyGeneration
             if ((this.mdi != null)
                 && (this.mdi.DockPanel != null))
             {
-                if ((myMeta != null) &&
-                        (this.mdi.DockPanel.ActiveDocument is IMyGenDocument) &&
-                        (this.myMeta.IsConnected))
+                if ((this.mdi.DockPanel.ActiveDocument is IMyGenDocument) &&
+                        (StaticMyMeta.IsConnected))
                 {
                     IMyGenDocument doc = this.mdi.DockPanel.ActiveDocument as IMyGenDocument;
                     this.toolBarButtonExecute.Enabled = true;
@@ -1435,12 +1346,6 @@ namespace MyGeneration
                     this.toolBarButtonExecute.Enabled = false;
                 }
             }
-        }
-
-        private void MetaDataBrowser_Leave(object sender, EventArgs e)
-        {
-            /*this.toolBar1.Visible = false;
-            this.chkSystem.Visible = false;*/
         }
 
         #region IMyGenContent Members
@@ -1469,6 +1374,5 @@ namespace MyGeneration
         }
 
         #endregion
-
 	}
 }

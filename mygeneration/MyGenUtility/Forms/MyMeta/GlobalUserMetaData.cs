@@ -26,7 +26,8 @@ namespace MyGeneration
 		private System.Windows.Forms.DataGrid Grid;
 		private System.Windows.Forms.DataGridTableStyle MyStyle;
 		private System.Windows.Forms.DataGridTextBoxColumn colKey;
-		private System.Windows.Forms.DataGridTextBoxColumn colValue;
+        private System.Windows.Forms.DataGridTextBoxColumn colValue;
+        private Type _currentType;
 
 		private Type stringType = Type.GetType("System.String");
 
@@ -104,8 +105,10 @@ namespace MyGeneration
 		}
 
 		public void Edit(Table obj)
-		{
-			BindGrid(obj.GlobalProperties);
+        {
+            if (this._currentType == obj.GetType()) return;
+            BindGrid(obj.GlobalProperties);
+            this._currentType = obj.GetType();
 		}
 
 //		public void Edit(Database obj)
@@ -114,43 +117,59 @@ namespace MyGeneration
 //		}
 
 		public void Edit(Domain obj)
-		{
-			BindGrid(obj.GlobalProperties);
+        {
+            if (this._currentType == obj.GetType()) return;
+            BindGrid(obj.GlobalProperties);
+            this._currentType = obj.GetType();
 		}
 
 		public void Edit(Column obj)
-		{
-			BindGrid(obj.GlobalProperties);
+        {
+            if (this._currentType == obj.GetType()) return;
+            BindGrid(obj.GlobalProperties);
+            this._currentType = obj.GetType();
 		}
 
 		public void Edit(Index obj)
-		{
-			BindGrid(obj.GlobalProperties);
+        {
+            if (this._currentType == obj.GetType()) return;
+            BindGrid(obj.GlobalProperties);
+            this._currentType = obj.GetType();
 		}
 
 		public void Edit(MyMeta.View obj)
-		{
-			BindGrid(obj.GlobalProperties);
+        {
+            if (this._currentType == obj.GetType()) return;
+            BindGrid(obj.GlobalProperties);
+            this._currentType = obj.GetType();
 		}
 
 		public void Edit(ForeignKey obj)
-		{
-			BindGrid(obj.GlobalProperties);
+        {
+            if (this._currentType == obj.GetType()) return;
+            BindGrid(obj.GlobalProperties);
+            this._currentType = obj.GetType();
 		}
 
 		public void Edit(Procedure obj)
-		{
-			BindGrid(obj.GlobalProperties);
+        {
+            if (this._currentType == obj.GetType()) return;
+            BindGrid(obj.GlobalProperties);
+            this._currentType = obj.GetType();
 		}
 
 		public void Edit(ResultColumn obj)
-		{
-			BindGrid(obj.GlobalProperties);
+        {
+            if (this._currentType == obj.GetType()) return;
+            BindGrid(obj.GlobalProperties);
+            this._currentType = obj.GetType();
 		}
 
 		public void Edit(Parameter obj)
-		{
-			BindGrid(obj.GlobalProperties);
+        {
+            if (this._currentType == obj.GetType()) return;
+            BindGrid(obj.GlobalProperties);
+            this._currentType = obj.GetType();
 		}
 
 
@@ -288,10 +307,23 @@ namespace MyGeneration
 		{
 			//PromptForSave(false);
 			//this.Clear();
-		}
+        }
+
+        public void ClearOrRefresh()
+        {
+            if (_currentType != null)
+            {
+                this.Refresh();
+            }
+            else
+            {
+                Clear();
+            }
+        }
 
 		public void Clear()
-		{
+        {
+            _currentType = null;
 			this.Grid.DataSource = null;
 
 			if(gridInitialized)
@@ -300,7 +332,7 @@ namespace MyGeneration
 			}
 		}
 
-		 public bool CanClose(bool allowPrevent)
+		public bool CanClose(bool allowPrevent)
 		{
 			return PromptForSave(allowPrevent);
 		}

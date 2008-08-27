@@ -28,6 +28,7 @@ namespace MyGeneration
 		private System.Windows.Forms.DataGridTextBoxColumn col_0;
 		private System.Windows.Forms.DataGridTextBoxColumn col_1;
 		private System.ComponentModel.IContainer components;
+        private int _currentHashCode = Int32.MinValue;
 
 		private Type stringType = Type.GetType("System.String");
 
@@ -302,10 +303,23 @@ namespace MyGeneration
 		{
 			get	{ return _userMetaDataFileName; }
 			set	{_userMetaDataFileName = value; }
-		}
+        }
+
+        public void ClearOrRefresh()
+        {
+            if (_currentHashCode != Int32.MinValue)
+            {
+                this.Refresh();
+            }
+            else
+            {
+                Clear();
+            }
+        }
 
 		public void Clear()
-		{
+        {
+            _currentHashCode = Int32.MinValue;
 			this.Grid.DataSource = null;
 
 			if(gridInitialized)
@@ -330,7 +344,9 @@ namespace MyGeneration
 		#region MyMeta.Collection Logic
 
 		public void EditNiceNames(Databases coll)
-		{
+        {
+            if (this._currentHashCode == coll.GetHashCode()) return;
+
 			DataTable dt = ProLogForNiceNames(coll);
 			DataRowCollection rows = dt.Rows;
 
@@ -339,11 +355,15 @@ namespace MyGeneration
 				rows.Add(new object[] { o.Name, o.Alias, o } );
 			}
 
-			EpilogForNiceNames(dt);
+            EpilogForNiceNames(dt);
+
+            this._currentHashCode = coll.GetHashCode();
 		}
 
 		public void EditNiceNames(Columns coll)
 		{
+            if (this._currentHashCode == coll.GetHashCode()) return;
+
 			DataTable dt = ProLogForNiceNames(coll);
 			DataRowCollection rows = dt.Rows;
 
@@ -353,10 +373,14 @@ namespace MyGeneration
 			}
 
 			EpilogForNiceNames(dt);
+
+            this._currentHashCode = coll.GetHashCode();
 		}
 
 		public void EditNiceNames(Tables coll)
-		{
+        {
+            if (this._currentHashCode == coll.GetHashCode()) return;
+
 			DataTable dt = ProLogForNiceNames(coll);
 			DataRowCollection rows = dt.Rows;
 
@@ -365,11 +389,15 @@ namespace MyGeneration
 				rows.Add(new object[] { o.Name, o.Alias, o } );
 			}
 
-			EpilogForNiceNames(dt);
+            EpilogForNiceNames(dt);
+
+            this._currentHashCode = coll.GetHashCode();
 		}
 
 		public void EditNiceNames(Views coll)
-		{
+        {
+            if (this._currentHashCode == coll.GetHashCode()) return;
+
 			DataTable dt = ProLogForNiceNames(coll);
 			DataRowCollection rows = dt.Rows;
 
@@ -378,11 +406,15 @@ namespace MyGeneration
 				rows.Add(new object[] { o.Name, o.Alias, o } );
 			}
 
-			EpilogForNiceNames(dt);
+            EpilogForNiceNames(dt);
+
+            this._currentHashCode = coll.GetHashCode();
 		}
 
 		public void EditNiceNames(Procedures coll)
-		{
+        {
+            if (this._currentHashCode == coll.GetHashCode()) return;
+
 			DataTable dt = ProLogForNiceNames(coll);
 			DataRowCollection rows = dt.Rows;
 
@@ -391,11 +423,15 @@ namespace MyGeneration
 				rows.Add(new object[] { o.Name, o.Alias, o } );
 			}
 
-			EpilogForNiceNames(dt);
+            EpilogForNiceNames(dt);
+
+            this._currentHashCode = coll.GetHashCode();
 		}
 
 		public void EditNiceNames(Domains coll)
-		{
+        {
+            if (this._currentHashCode == coll.GetHashCode()) return;
+
 			DataTable dt = ProLogForNiceNames(coll);
 			DataRowCollection rows = dt.Rows;
 
@@ -404,11 +440,15 @@ namespace MyGeneration
 				rows.Add(new object[] { o.Name, o.Alias, o } );
 			}
 
-			EpilogForNiceNames(dt);
+            EpilogForNiceNames(dt);
+
+            this._currentHashCode = coll.GetHashCode();
 		}
 
 		public void EditNiceNames(Parameters coll)
-		{
+        {
+            if (this._currentHashCode == coll.GetHashCode()) return;
+
 			DataTable dt = ProLogForNiceNames(coll);
 			DataRowCollection rows = dt.Rows;
 
@@ -417,11 +457,15 @@ namespace MyGeneration
 				rows.Add(new object[] { o.Name, o.Alias, o } );
 			}
 
-			EpilogForNiceNames(dt);
+            EpilogForNiceNames(dt);
+
+            this._currentHashCode = coll.GetHashCode();
 		}
 
 		public void EditNiceNames(Indexes coll)
-		{
+        {
+            if (this._currentHashCode == coll.GetHashCode()) return;
+
 			DataTable dt = ProLogForNiceNames(coll);
 			DataRowCollection rows = dt.Rows;
 
@@ -430,7 +474,9 @@ namespace MyGeneration
 				rows.Add(new object[] { o.Name, o.Alias, o } );
 			}
 
-			EpilogForNiceNames(dt);
+            EpilogForNiceNames(dt);
+
+            this._currentHashCode = coll.GetHashCode();
 		}
 
 		public void EditNiceNames(ForeignKeys coll)
@@ -443,11 +489,15 @@ namespace MyGeneration
 				rows.Add(new object[] { o.Name, o.Alias, o } );
 			}
 
-			EpilogForNiceNames(dt);
+            EpilogForNiceNames(dt);
+
+            this._currentHashCode = coll.GetHashCode();
 		}
 
 		public void EditNiceNames(ResultColumns coll)
-		{
+        {
+            if (this._currentHashCode == coll.GetHashCode()) return;
+
 			DataTable dt = ProLogForNiceNames(coll);
 			DataRowCollection rows = dt.Rows;
 
@@ -456,11 +506,13 @@ namespace MyGeneration
 				rows.Add(new object[] { o.Name, o.Alias, o } );
 			}
 
-			EpilogForNiceNames(dt);
+            EpilogForNiceNames(dt);
+
+            this._currentHashCode = coll.GetHashCode();
 		}
 
 		private DataTable ProLogForNiceNames(MyMeta.Collection coll)
-		{
+        {
 			this.txtNiceName.Text = "";
 			this.txtNiceName.Tag = null;
 
