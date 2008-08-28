@@ -194,7 +194,6 @@ namespace Zeus
 			ZeusContext context = new ZeusContext(zin, new GuiController(), new Hashtable());
 			context.Log = log;
 
-
 			template.Execute(context, timeout, true);
 
             foreach (string file in context.Output.SavedFiles)

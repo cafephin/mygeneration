@@ -393,8 +393,9 @@ namespace MyGeneration
 				settings.PopulateZeusContext(context);
 				if (_module != null) 
 				{
-					_module.PopulateZeusContext(context);
-				}
+                    _module.PopulateZeusContext(context);
+                    _module.OverrideSavedData(SavedObject.InputItems);
+                }
 
 				if (template.Collect(context, settings.ScriptTimeout, SavedObject.InputItems)) 
 				{

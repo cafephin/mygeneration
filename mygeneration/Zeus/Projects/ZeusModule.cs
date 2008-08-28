@@ -256,9 +256,52 @@ namespace Zeus.Projects
             FillZeusInputWithUserOverridesRecursive(module, input);
         }
 
-        public void PopulateZeusContext(IZeusContext context)
+        private static void OverrideSavedData(ZeusModule module, InputItemCollection items)
         {
+            if (!module.IsParentModule)
+            {
+                OverrideSavedData(module.ParentModule, items);
+            }
+
+            foreach (InputItem item in module.UserSavedItems)
+            {
+                if (items.Contains(item.VariableName))
+                {
+                    items[item.VariableName].DataObject = item.DataObject;
+                }
+                else
+                {
+                    items.Add(new InputItem(item.VariableName, item.DataObject));
+                }
+            }
+        }
+
+
+        public void OverrideSavedData(InputItemCollection items)
+        {
+            OverrideSavedData(this, items);
+        }
+
+        public bool PopulateZeusContext(IZeusContext context)
+        {
+            bool hasChanges = false;
+            ZeusModule m = this;
+            while (m != null)
+            {
+                if ((m.SavedItems.Count > 0) || 
+                    (m.UserSavedItems.Count > 0))
+                {
+                    hasChanges = true;
+                    break;
+                }
+
+                if (m.IsParentModule) break;
+                else m = m.ParentModule;
+            }
+
             FillZeusInputRecursive(this, context.Input);
+
+            return hasChanges;
         }
 
         public void ApplyRuntimeOverrides(IZeusInput input)
