@@ -57,6 +57,12 @@ namespace Zeus
             {
                 _applyOverrideDataDelegate(input);
             }
+#if DEBUG
+            else
+            {
+                throw new Exception("ERROR - ApplyOverrideData not set!!");
+            }
+#endif
         }
 		
 		public string TemplateUniqueID 

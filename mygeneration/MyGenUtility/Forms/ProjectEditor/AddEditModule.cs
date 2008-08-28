@@ -218,6 +218,9 @@ namespace MyGeneration
             // 
             // tabControl1
             // 
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabPageUser);
             this.tabControl1.Controls.Add(this.tabPageCachedData);
             this.tabControl1.Location = new System.Drawing.Point(15, 169);
@@ -294,8 +297,8 @@ namespace MyGeneration
             this.Name = "FormAddEditModule";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add/Edit Project Folder";
-            this.Activated += new System.EventHandler(this.FormAddEditModule_Activated);
             this.Load += new System.EventHandler(this.FormAddEditModule_Load);
+            this.Activated += new System.EventHandler(this.FormAddEditModule_Activated);
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderRequiredFields)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewUserData)).EndInit();
             this.tabControl1.ResumeLayout(false);
