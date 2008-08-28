@@ -193,25 +193,56 @@ namespace Zeus.Projects
             {
                 if (!SavedFiles.Contains(file)) SavedFiles.Add(file);
             }
-		}
+        }
 
-		private static void FillZeusInputRecursive(ZeusModule module, IZeusInput input) 
-		{
-			if (!module.IsParentModule) 
-			{
-				FillZeusInputRecursive(module.ParentModule, input);
-			}
+        private static void FillZeusInputRecursive(ZeusModule module, IZeusInput input)
+        {
+            FillZeusInputRecursive(module, input, 0);
+        }
 
-			foreach (InputItem item in module.SavedItems) 
-			{
-				input[item.VariableName] = item.DataObject;
+        private static void FillZeusInputRecursive(ZeusModule module, IZeusInput input, int depth)
+        {
+            if (!module.IsParentModule)
+            {
+                FillZeusInputRecursive(module.ParentModule, input, (depth + 1));
+            }
+
+            foreach (InputItem item in module.SavedItems)
+            {
+                input[item.VariableName] = item.DataObject;
+            }
+
+            if (depth == 0) 
+            {
+                if (module.RootProject.DefaultSettingsOverride)
+                {
+                    Dictionary<string, string> ds = module.RootProject.GetDefaultSettings();
+
+                    foreach (string key in ds.Keys)
+                    {
+                        input[key] = ds[key];
+                    }
+                }
+
+                FillZeusInputWithUserOverridesRecursive(module, input);
+            }
+        }
+
+        private static void FillZeusInputWithUserOverridesRecursive(ZeusModule module, IZeusInput input)
+        {
+            if (!module.IsParentModule)
+            {
+                FillZeusInputWithUserOverridesRecursive(module.ParentModule, input);
             }
 
             foreach (InputItem item in module.UserSavedItems)
             {
                 input[item.VariableName] = item.DataObject;
             }
+        }
 
+        private static void FillZeusInputRuntimeRecursive(ZeusModule module, IZeusInput input)
+        {
             if (module.RootProject.DefaultSettingsOverride)
             {
                 Dictionary<string, string> ds = module.RootProject.GetDefaultSettings();
@@ -221,37 +252,8 @@ namespace Zeus.Projects
                     input[key] = ds[key];
                 }
             }
-        }
 
-        private static void FillZeusInputRuntimeRecursive(ZeusModule module, IZeusInput input, ref bool hasDoneDefSettings)
-        {
-            bool doSettings = false;
-            if (!module.IsParentModule)
-            {
-                FillZeusInputRuntimeRecursive(module.ParentModule, input, ref hasDoneDefSettings);
-            }
-
-            if (!hasDoneDefSettings)
-            {
-                doSettings = module.DefaultSettingsOverride;
-            }
-
-            if (doSettings)
-            {
-                hasDoneDefSettings = true;
-
-                Dictionary<string, string> ds = module.RootProject.GetDefaultSettings();
-
-                foreach (string key in ds.Keys)
-                {
-                    input[key] = ds[key];
-                }
-            }
-
-            foreach (InputItem item in module.UserSavedItems)
-            {
-                input[item.VariableName] = item.DataObject;
-            }
+            FillZeusInputWithUserOverridesRecursive(module, input);
         }
 
         public void PopulateZeusContext(IZeusContext context)
