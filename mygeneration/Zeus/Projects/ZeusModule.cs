@@ -263,8 +263,7 @@ namespace Zeus.Projects
 
         public void ApplyRuntimeOverrides(IZeusInput input)
         {
-            bool hasDoneDefaults = false;
-            FillZeusInputRuntimeRecursive(this, input, ref hasDoneDefaults);
+            FillZeusInputRuntimeRecursive(this, input);
         }
 
         public void BuildUserXML(XmlTextWriter xml)
