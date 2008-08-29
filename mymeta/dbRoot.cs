@@ -136,7 +136,7 @@ namespace MyMeta
 			_languageMappingFileName = string.Empty;
 			_language = string.Empty;
 			_languageDoc = null;
-			LanguageNode = null;
+			_languageNode = null;
 
 			UserData = new XmlDocument();
 			UserData.AppendChild(UserData.CreateNode(XmlNodeType.Element, "MyMeta", null));
@@ -145,7 +145,7 @@ namespace MyMeta
 			_dbTargetMappingFileName = string.Empty;
 			_dbTarget = string.Empty;
 			_dbTargetDoc = null;
-			DbTargetNode = null;
+			_dbTargetNode = null;
 		}
 
 		#region Properties
@@ -1115,7 +1115,7 @@ namespace MyMeta
 					_languageDoc = new XmlDocument();
 					_languageDoc.Load(_languageMappingFileName);
 					_language = string.Empty;;
-					LanguageNode = null;
+					_languageNode = null;
 				}
 				catch {}
 			}
@@ -1177,15 +1177,24 @@ namespace MyMeta
 				{
 					_language = value;
 					string xPath = @"//Languages/Language[@From='" + _driverString + "' and @To='" + _language + "']";
-					LanguageNode = _languageDoc.SelectSingleNode(xPath, null);
+					_languageNode = _languageDoc.SelectSingleNode(xPath, null);
 				}
 			}
-		}
+        }
+
+        [ComVisible(false)]
+        public XmlNode LanguageNode
+        {
+            get
+            {
+                return _languageNode;
+            }
+        }
 
 		private string _languageMappingFileName = string.Empty;
 		private string _language = string.Empty;
 		private XmlDocument _languageDoc;
-		internal XmlNode LanguageNode = null;
+        private XmlNode _languageNode = null;
 
 		#endregion
 
@@ -1207,7 +1216,7 @@ namespace MyMeta
 					_dbTargetDoc = new XmlDocument();
 					_dbTargetDoc.Load(_dbTargetMappingFileName);
 					_dbTarget = string.Empty;;
-					DbTargetNode = null;
+					_dbTargetNode = null;
 				}
 				catch {}
 			}
@@ -1269,16 +1278,24 @@ namespace MyMeta
 				{
 					_dbTarget = value;
 					string xPath = @"//DbTargets/DbTarget[@From='" + _driverString + "' and @To='" + _dbTarget + "']";
-					DbTargetNode = _dbTargetDoc.SelectSingleNode(xPath, null);
+					_dbTargetNode = _dbTargetDoc.SelectSingleNode(xPath, null);
 				}
 			}
-		}
+        }
+
+        [ComVisible(false)]
+        public XmlNode DbTargetNode
+        {
+            get
+            {
+                return _dbTargetNode;
+            }
+        }
 
 		private string _dbTargetMappingFileName = string.Empty;
 		private string _dbTarget = string.Empty;
 		private XmlDocument _dbTargetDoc;
-		internal XmlNode DbTargetNode = null;
-
+        private XmlNode _dbTargetNode = null;
 		#endregion
 
         public XmlDocument UserData = new XmlDocument();

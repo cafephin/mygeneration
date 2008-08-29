@@ -1,5 +1,6 @@
 using System;
 using System.Xml;
+using System.Collections.Specialized;
 using System.Collections;
 using System.Data;
 using System.Data.OleDb;
@@ -51,6 +52,27 @@ namespace MyMeta
 			}
 		}
 
+        private void BindToColumnsCustom(DataTable metaData, NameValueCollection map)
+        {
+            if (false == _fieldsBound)
+            {
+                if (metaData.Columns.Contains(map["PK_TABLE_CATALOG"])) f_PKTableCatalog = metaData.Columns[map["PK_TABLE_CATALOG"]];
+                if (metaData.Columns.Contains(map["PK_TABLE_SCHEMA"])) f_PKTableSchema = metaData.Columns[map["PK_TABLE_SCHEMA"]];
+                if (metaData.Columns.Contains(map["PK_TABLE_NAME"])) f_PKTableName = metaData.Columns[map["PK_TABLE_NAME"]];
+                if (metaData.Columns.Contains(map["FK_TABLE_CATALOG"])) f_FKTableCatalog = metaData.Columns[map["FK_TABLE_CATALOG"]];
+                if (metaData.Columns.Contains(map["FK_TABLE_SCHEMA"])) f_FKTableSchema = metaData.Columns[map["FK_TABLE_SCHEMA"]];
+                if (metaData.Columns.Contains(map["FK_TABLE_NAME"])) f_FKTableName = metaData.Columns[map["FK_TABLE_NAME"]];
+                if (metaData.Columns.Contains(map["ORDINAL"])) f_Ordinal = metaData.Columns[map["ORDINAL"]];
+                if (metaData.Columns.Contains(map["UPDATE_RULE"])) f_UpdateRule = metaData.Columns[map["UPDATE_RULE"]];
+                if (metaData.Columns.Contains(map["DELETE_RULE"])) f_DeleteRule = metaData.Columns[map["DELETE_RULE"]];
+                if (metaData.Columns.Contains(map["PK_NAME"])) f_PKName = metaData.Columns[map["PK_NAME"]];
+                if (metaData.Columns.Contains(map["FK_NAME"])) f_FKName = metaData.Columns[map["FK_NAME"]];
+                if (metaData.Columns.Contains(map["DEFERRABILITY"])) f_Deferrability = metaData.Columns[map["DEFERRABILITY"]];
+
+                _fieldsBound = true;
+            }
+        }
+
 		virtual internal void LoadAll()
 		{
 
@@ -61,9 +83,17 @@ namespace MyMeta
 
 		}
 
-		internal void PopulateArray(DataTable metaData)
-		{
-			BindToColumns(metaData);
+        internal void PopulateArray(DataTable metaData)
+        {
+            PopulateArray(metaData, null);
+        }
+
+        internal void PopulateArray(DataTable metaData, NameValueCollection map)
+        {
+            if (map != null)
+                BindToColumnsCustom(metaData, map);
+            else
+                BindToColumns(metaData);
 
 			ForeignKey key  = null;
 			string keyName = "";
@@ -74,7 +104,7 @@ namespace MyMeta
 				{
 					DataRow row = rowView.Row;
 
-					keyName = row["FK_NAME"] as string;
+                    keyName = row[f_FKName] as string;
 
 					key = this.GetByName(keyName);
 
@@ -87,42 +117,50 @@ namespace MyMeta
 						this._array.Add(key);
 					}
 
-					string catalog = (DBNull.Value == row["PK_TABLE_CATALOG"]) ? string.Empty : (row["PK_TABLE_CATALOG"] as string);
-					string schema  = (DBNull.Value == row["PK_TABLE_SCHEMA"])  ? string.Empty : (row["PK_TABLE_SCHEMA"] as string);
-					key.AddForeignColumn(catalog, schema, (string)row["PK_TABLE_NAME"], (string)row["PK_COLUMN_NAME"], true);
+                    string catalog = (DBNull.Value == row[f_PKTableCatalog]) ? string.Empty : (row[f_PKTableCatalog] as string);
+                    string schema = (DBNull.Value == row[f_PKTableSchema]) ? string.Empty : (row[f_PKTableSchema] as string);
+                    key.AddForeignColumn(catalog, schema, (string)row[f_PKTableName], (string)row["PK_COLUMN_NAME"], true);
 
-					catalog = (DBNull.Value == row["FK_TABLE_CATALOG"]) ? string.Empty : (row["FK_TABLE_CATALOG"] as string);
-					schema  = (DBNull.Value == row["FK_TABLE_SCHEMA"])  ? string.Empty : (row["FK_TABLE_SCHEMA"] as string);
-					key.AddForeignColumn(catalog, schema, (string)row["FK_TABLE_NAME"], (string)row["FK_COLUMN_NAME"], false);
+                    catalog = (DBNull.Value == row[f_FKTableCatalog]) ? string.Empty : (row[f_FKTableCatalog] as string);
+                    schema = (DBNull.Value == row[f_FKTableSchema]) ? string.Empty : (row[f_FKTableSchema] as string);
+                    key.AddForeignColumn(catalog, schema, (string)row[f_FKTableName], (string)row["FK_COLUMN_NAME"], false);
 				}
 				catch {}
 			}
 		}
 
+        internal void PopulateArrayNoHookup(DataTable metaData, NameValueCollection map)
+        {
+            if (map != null)
+                BindToColumnsCustom(metaData, map);
+            else
+                BindToColumns(metaData);
+
+            ForeignKey key = null;
+            string keyName = "";
+
+            foreach (DataRowView rowView in metaData.DefaultView)
+            {
+                DataRow row = rowView.Row;
+
+                keyName = row[f_FKName] as string;
+
+                key = this.GetByName(keyName);
+
+                if (null == key)
+                {
+                    key = (ForeignKey)this.dbRoot.ClassFactory.CreateForeignKey();
+                    key.dbRoot = this.dbRoot;
+                    key.ForeignKeys = this;
+                    key.Row = row;
+                    this._array.Add(key);
+                }
+            }
+        }
+
 		internal void PopulateArrayNoHookup(DataTable metaData)
 		{
-			BindToColumns(metaData);
-
-			ForeignKey key  = null;
-			string keyName = "";
-
-			foreach(DataRowView rowView in metaData.DefaultView)
-			{
-				DataRow row = rowView.Row;
-
-				keyName = row["FK_NAME"] as string;
-
-				key = this.GetByName(keyName);
-
-				if(null == key)
-				{
-					key = (ForeignKey)this.dbRoot.ClassFactory.CreateForeignKey();
-					key.dbRoot = this.dbRoot;
-					key.ForeignKeys = this;
-					key.Row = row;
-					this._array.Add(key);
-				}
-			}
+            PopulateArrayNoHookup(metaData, null);
 		}
 
 		internal void AddForeignKey(ForeignKey fk)

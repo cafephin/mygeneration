@@ -213,7 +213,7 @@ namespace MyGeneration
 		public void Clear()
         {
             _currentHashCode = Int32.MinValue;
-			this.Grid.DataSource = emptyTable;
+			this.Grid.DataSource = null;
 			this.InitializeGrid();
 			this.Text = "MyMeta Properties";
 			this.lnkHELP.Text = "";
