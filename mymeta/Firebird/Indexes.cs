@@ -20,15 +20,36 @@ namespace MyMeta.Firebird
 		{
 			try
 			{
-				FbConnection cn = new FirebirdSql.Data.FirebirdClient.FbConnection(this._dbRoot.ConnectionString);
-				cn.Open();
-				DataTable metaData = cn.GetSchema("Indexes", new string[] {null, null, this.Table.Name});
-				cn.Close();
+                using (FbConnection cn = new FirebirdSql.Data.FirebirdClient.FbConnection(this._dbRoot.ConnectionString))
+                {
+                    cn.Open();
+                    
+                    DataTable idxMetaData = cn.GetSchema("Indexes", new string[] { null, null, this.Table.Name });
 
-				metaData.Columns["IS_UNIQUE"].ColumnName = "UNIQUE";
-				metaData.Columns["INDEX_TYPE"].ColumnName = "TYPE";
-				metaData.Columns["ORDINAL_POSITION"].ColumnName = "CARDINALITY";
-				PopulateArray(metaData);
+                    if (!idxMetaData.Columns.Contains("CARDINALITY")) idxMetaData.Columns.Add("CARDINALITY");
+                    if (!idxMetaData.Columns.Contains("COLUMN_NAME")) idxMetaData.Columns.Add("COLUMN_NAME");
+
+                    idxMetaData.Columns["IS_UNIQUE"].ColumnName = "UNIQUE";
+                    idxMetaData.Columns["INDEX_TYPE"].ColumnName = "TYPE";
+
+                    DataTable metaData = idxMetaData.Clone();
+                    metaData.Clear();
+                    foreach (DataRow row in idxMetaData.Rows)
+                    {
+                        string indexName = (string)row["INDEX_NAME"];
+                        DataTable metaDataColumns = cn.GetSchema("IndexColumns", new string[] { null, null, null, indexName });
+                        metaDataColumns.DefaultView.Sort = "ORDINAL_POSITION ASC";
+                        foreach (DataRowView vrow in metaDataColumns.DefaultView)
+                        {
+                            DataRow newrow = metaData.Rows.Add(row.ItemArray);
+                            newrow["CARDINALITY"] = vrow["ORDINAL_POSITION"];
+                            newrow["COLUMN_NAME"] = vrow["COLUMN_NAME"];
+                        }
+                    }
+                    cn.Close();
+                 
+                    PopulateArray(metaData);
+                }
 			}
 			catch(Exception ex)
 			{

@@ -33,6 +33,7 @@ namespace MyMeta.Firebird
                         allFkData.Columns.Add("COLUMN_NAME");
                         allFkData.Columns.Add("REFERENCED_COLUMN_NAME");
                         allFkData.Columns.Add("ORDINAL_POSITION");
+                        allFkData.Columns.Add("DEFERRABILITY");
 
                         mappingHash = new NameValueCollection();
                         mappingHash["PK_TABLE_CATALOG"] = "TABLE_CATALOG";
@@ -46,7 +47,7 @@ namespace MyMeta.Firebird
                         mappingHash["DELETE_RULE"] = "DELETE_RULE";
                         mappingHash["PK_NAME"] = "INDEX_NAME";
                         mappingHash["FK_NAME"] = "CONSTRAINT_NAME";
-                        mappingHash["DEFERRABILITY"] = "IS_DEFERRABLE";
+                        mappingHash["DEFERRABILITY"] = "DEFERRABILITY";
                     }
 
                     DataTable metaData = allFkData.Clone();
@@ -58,7 +59,11 @@ namespace MyMeta.Firebird
                         {
                             string indexName = (string)row["INDEX_NAME"];
                             string refTableName = (string)row["REFERENCED_TABLE_NAME"];
+                            string isDef = (string)row["IS_DEFERRABLE"];
+                            string initDef = (string)row["INITIALLY_DEFERRED"];
 
+
+                            row["DEFERRABILITY"] = (isDef == "NO" ? 3 : (initDef == "YES" ? 2 : 1));
                             DataTable metaDataColumns = cn.GetSchema("IndexColumns", new string[] { null, null, null, indexName });
                             metaDataColumns.DefaultView.Sort = "ORDINAL_POSITION ASC";
 
