@@ -87,15 +87,13 @@ namespace MyGeneration
             // Grid
             // 
             this.Grid.AlternatingBackColor = System.Drawing.Color.Wheat;
-            this.Grid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
             this.Grid.BackColor = System.Drawing.SystemColors.Control;
             this.Grid.BackgroundColor = System.Drawing.Color.Wheat;
             this.Grid.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.Grid.CaptionBackColor = System.Drawing.SystemColors.Control;
             this.Grid.CaptionVisible = false;
             this.Grid.DataMember = "";
+            this.Grid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Grid.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
             this.Grid.HeaderForeColor = System.Drawing.SystemColors.ControlText;
             this.Grid.Location = new System.Drawing.Point(0, 0);
@@ -104,7 +102,7 @@ namespace MyGeneration
             this.Grid.ReadOnly = true;
             this.Grid.RowHeadersVisible = false;
             this.Grid.RowHeaderWidth = 0;
-            this.Grid.Size = new System.Drawing.Size(431, 518);
+            this.Grid.Size = new System.Drawing.Size(431, 550);
             this.Grid.TabIndex = 9;
             this.Grid.TableStyles.AddRange(new System.Windows.Forms.DataGridTableStyle[] {
             this.MyStyle});
@@ -680,10 +678,15 @@ namespace MyGeneration
 				if(MyStyle.GridColumnStyles.Count > 0)
 				{
 					gridInitialized = true;
-					gridHelper = new GridLayoutHelper(this.Grid, this.MyStyle,
-						new decimal[] { 0.50M, 0.50M },	new int[] { 130, 130 });
+                    if (gridHelper == null)
+                    {
+                        gridHelper = new GridLayoutHelper(this.Grid, this.MyStyle,
+                            new decimal[] { 0.50M, 0.50M }, new int[] { 130, 130 });
+                    }
+
 				}
-			}
+            }
+            gridHelper.SizeTheGrid();
 		}
 
 

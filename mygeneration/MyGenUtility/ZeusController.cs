@@ -149,7 +149,7 @@ namespace Zeus
                     }
                     if (descriptionNode != null)
                     {
-                        r.Title = descriptionNode.InnerText;
+                        r.Description = descriptionNode.InnerText;
                     }
                     if (authorNode != null)
                     {
@@ -158,7 +158,7 @@ namespace Zeus
                     if (linkNode != null)
                     {
                         r.ReleaseNotesLink = new Uri(linkNode.InnerText);
-                        r.DownloadLink = new Uri(FindSourceForgeDownloadUrl(linkNode.InnerText));
+                        r.DownloadLink = new Uri(FindSourceForgeDownloadUrl(r.Description));
                     }
                     if (pubDateNode != null)
                     {
@@ -171,9 +171,21 @@ namespace Zeus
             }
         }
 
-        private string FindSourceForgeDownloadUrl(string starturl)
+        private string FindSourceForgeDownloadUrl(string description)
         {
-            string groupId = DefaultSettings.Instance.VersionRSSUrl.Substring(DefaultSettings.Instance.VersionRSSUrl.IndexOf("group_id"));
+            string newurl = string.Empty;
+            //"<br />Released at Fri, 29 Aug 2008 07:55:10 GMT by komma8komma1<br />Includes files: mygeneration_1306_20080829.exe (4562185 bytes, 64 downloads to date)<br /><a href=\"http://sourceforge.net/project/showfiles.php?group_id=198893&package_id=249524&release_id=622773\">[Download]</a> <a href=\"http://sourceforge.net/project/shownotes.php?release_id=622773\">[Release Notes]</a>"
+            int start = -1, end = description.IndexOf("\">[Download]</a>");
+            if (end > 0)
+            {
+                start = (description.Substring(0, end)).LastIndexOf("<a href=\"") + 9;
+            }
+            if (start >= 9 && end > start)
+            {
+                newurl = description.Substring(start, (end - start));
+            }
+
+            /*string groupId = DefaultSettings.Instance.VersionRSSUrl.Substring(DefaultSettings.Instance.VersionRSSUrl.IndexOf("group_id"));
             string newurl = starturl.Replace("shownotes", "showfiles") + "&" + groupId;
             string tokenToFind = "http://downloads.sourceforge.net/mygeneration/";
             string u = Zeus.HttpTools.GetTextFromUrl(newurl, DefaultSettings.Instance.WebProxy);
@@ -211,7 +223,7 @@ namespace Zeus
             {
                 // do something with the exception?
                 throw ex;
-            }
+            }*/
             return newurl;
         }
 

@@ -288,6 +288,14 @@
       <DependentUpon>AboutBoxLogo.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ApplicationUpdate\ApplicationReleases.resx">
+      <DependentUpon>ApplicationReleases.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ApplicationUpdate\ApplicationReleasesControl.resx">
+      <DependentUpon>ApplicationReleasesControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Console\ConsoleForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ConsoleForm.cs</DependentUpon>
@@ -431,6 +439,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\error.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\paste_plain.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\release_notes.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\download_arrow.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

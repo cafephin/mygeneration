@@ -1,4 +1,4 @@
-﻿namespace MyGeneration.Forms.ApplicationUpdate
+﻿namespace MyGeneration.Forms
 {
     partial class ApplicationReleasesControl
     {
@@ -28,10 +28,118 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ApplicationReleasesControl));
+            this.dataGridViewUpdates = new System.Windows.Forms.DataGridView();
+            this.labelApplication = new System.Windows.Forms.Label();
+            this.dataGridViewImageColumn1 = new System.Windows.Forms.DataGridViewImageColumn();
+            this.dataGridViewImageColumn2 = new System.Windows.Forms.DataGridViewImageColumn();
+            this.ColumnTitle = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnReleaseNotes = new System.Windows.Forms.DataGridViewImageColumn();
+            this.ColumnDownload = new System.Windows.Forms.DataGridViewImageColumn();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewUpdates)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // dataGridViewUpdates
+            // 
+            this.dataGridViewUpdates.AllowUserToAddRows = false;
+            this.dataGridViewUpdates.AllowUserToDeleteRows = false;
+            this.dataGridViewUpdates.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridViewUpdates.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewUpdates.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            this.dataGridViewUpdates.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewUpdates.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ColumnTitle,
+            this.ColumnReleaseNotes,
+            this.ColumnDownload});
+            this.dataGridViewUpdates.Location = new System.Drawing.Point(3, 28);
+            this.dataGridViewUpdates.Name = "dataGridViewUpdates";
+            this.dataGridViewUpdates.ReadOnly = true;
+            this.dataGridViewUpdates.RowHeadersVisible = false;
+            this.dataGridViewUpdates.RowHeadersWidth = 20;
+            this.dataGridViewUpdates.Size = new System.Drawing.Size(393, 257);
+            this.dataGridViewUpdates.TabIndex = 0;
+            this.dataGridViewUpdates.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewUpdates_CellClick);
+            // 
+            // labelApplication
+            // 
+            this.labelApplication.AutoSize = true;
+            this.labelApplication.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelApplication.Location = new System.Drawing.Point(3, 7);
+            this.labelApplication.Name = "labelApplication";
+            this.labelApplication.Size = new System.Drawing.Size(235, 13);
+            this.labelApplication.TabIndex = 1;
+            this.labelApplication.Text = "MyGeneration Releases on SourceForge";
+            // 
+            // dataGridViewImageColumn1
+            // 
+            this.dataGridViewImageColumn1.FillWeight = 31.24466F;
+            this.dataGridViewImageColumn1.HeaderText = "";
+            this.dataGridViewImageColumn1.Image = global::MyGeneration.Properties.Resources.release_notes;
+            this.dataGridViewImageColumn1.MinimumWidth = 16;
+            this.dataGridViewImageColumn1.Name = "dataGridViewImageColumn1";
+            this.dataGridViewImageColumn1.ReadOnly = true;
+            this.dataGridViewImageColumn1.Width = 28;
+            // 
+            // dataGridViewImageColumn2
+            // 
+            this.dataGridViewImageColumn2.FillWeight = 31.16381F;
+            this.dataGridViewImageColumn2.HeaderText = "";
+            this.dataGridViewImageColumn2.Image = ((System.Drawing.Image)(resources.GetObject("dataGridViewImageColumn2.Image")));
+            this.dataGridViewImageColumn2.MinimumWidth = 16;
+            this.dataGridViewImageColumn2.Name = "dataGridViewImageColumn2";
+            this.dataGridViewImageColumn2.ReadOnly = true;
+            this.dataGridViewImageColumn2.Width = 30;
+            // 
+            // ColumnTitle
+            // 
+            this.ColumnTitle.FillWeight = 215.7641F;
+            this.ColumnTitle.HeaderText = "Title";
+            this.ColumnTitle.Name = "ColumnTitle";
+            this.ColumnTitle.ReadOnly = true;
+            // 
+            // ColumnReleaseNotes
+            // 
+            this.ColumnReleaseNotes.FillWeight = 31.24466F;
+            this.ColumnReleaseNotes.HeaderText = "";
+            this.ColumnReleaseNotes.Image = global::MyGeneration.Properties.Resources.release_notes;
+            this.ColumnReleaseNotes.MinimumWidth = 16;
+            this.ColumnReleaseNotes.Name = "ColumnReleaseNotes";
+            this.ColumnReleaseNotes.ReadOnly = true;
+            // 
+            // ColumnDownload
+            // 
+            this.ColumnDownload.FillWeight = 31.16381F;
+            this.ColumnDownload.HeaderText = "";
+            this.ColumnDownload.Image = ((System.Drawing.Image)(resources.GetObject("ColumnDownload.Image")));
+            this.ColumnDownload.MinimumWidth = 16;
+            this.ColumnDownload.Name = "ColumnDownload";
+            this.ColumnDownload.ReadOnly = true;
+            // 
+            // ApplicationReleasesControl
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.labelApplication);
+            this.Controls.Add(this.dataGridViewUpdates);
+            this.Name = "ApplicationReleasesControl";
+            this.Size = new System.Drawing.Size(399, 288);
+            this.Load += new System.EventHandler(this.ApplicationReleasesControl_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewUpdates)).EndInit();
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
 
         #endregion
+
+        private System.Windows.Forms.DataGridView dataGridViewUpdates;
+        private System.Windows.Forms.Label labelApplication;
+        private System.Windows.Forms.DataGridViewImageColumn dataGridViewImageColumn1;
+        private System.Windows.Forms.DataGridViewImageColumn dataGridViewImageColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnTitle;
+        private System.Windows.Forms.DataGridViewImageColumn ColumnReleaseNotes;
+        private System.Windows.Forms.DataGridViewImageColumn ColumnDownload;
     }
 }

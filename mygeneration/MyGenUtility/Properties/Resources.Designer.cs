@@ -81,6 +81,13 @@ namespace MyGeneration.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap download_arrow {
+            get {
+                object obj = ResourceManager.GetObject("download_arrow", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap error {
             get {
                 object obj = ResourceManager.GetObject("error", resourceCulture);
@@ -126,6 +133,13 @@ namespace MyGeneration.Properties {
         internal static System.Drawing.Bitmap newvbscript {
             get {
                 object obj = ResourceManager.GetObject("newvbscript", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap release_notes {
+            get {
+                object obj = ResourceManager.GetObject("release_notes", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace MyGeneration.Forms.ApplicationUpdate
+namespace MyGeneration.Forms
 {
     public partial class ApplicationReleases : Form
     {

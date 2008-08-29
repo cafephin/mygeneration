@@ -410,16 +410,20 @@ namespace MyGeneration
 		}
 
 		private void InitializeGrid()
-		{
-			if(!gridInitialized)
-			{
-				if(MyStyle.GridColumnStyles.Count > 0)
-				{
-					gridInitialized = true;
-					gridHelper = new GridLayoutHelper(this.Grid, this.MyStyle,
-						new decimal[] { 0.50M, 0.50M },	new int[] { 30, 30 });
-				}
-			}
+        {
+            if (!gridInitialized)
+            {
+                if (MyStyle.GridColumnStyles.Count > 0)
+                {
+                    gridInitialized = true;
+                    if (gridHelper == null)
+                    {
+                        gridHelper = new GridLayoutHelper(this.Grid, this.MyStyle,
+                            new decimal[] { 0.50M, 0.50M }, new int[] { 30, 30 });
+                    }
+                }
+            }
+            gridHelper.SizeTheGrid();
 		}
 
 		private void ColorTextBox(object sender, System.EventArgs e)

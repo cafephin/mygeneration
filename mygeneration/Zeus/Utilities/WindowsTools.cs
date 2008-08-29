@@ -33,7 +33,7 @@ namespace Zeus
                 {
                     Process p = new Process();
                     p.StartInfo.FileName = DefaultBrowser;
-                    p.StartInfo.Arguments = url;
+                    p.StartInfo.Arguments = "\"" + url + "\"";
                     p.StartInfo.CreateNoWindow = createNoWindow;
                     p.StartInfo.WindowStyle = windowStyle;
                     p.Start();

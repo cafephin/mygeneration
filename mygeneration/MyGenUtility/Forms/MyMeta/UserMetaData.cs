@@ -223,12 +223,6 @@ namespace MyGeneration
 			this.toolBarButton_Save.Visible = false;
 		}
 
-		/*public void DefaultSettingsChanged(DefaultSettings settings)
-		{
-			PromptForSave(false);
-			this.Clear();
-		}*/
-
 		public bool CanClose(bool allowPrevent)
 		{
 			return PromptForSave(allowPrevent);
@@ -330,15 +324,20 @@ namespace MyGeneration
 
 		private void InitializeGrid()
 		{
-			if(!gridInitialized)
-			{
-				if(MyStyle.GridColumnStyles.Count > 0)
-				{
-					gridInitialized = true;
-					gridHelper = new GridLayoutHelper(this.Grid, this.MyStyle,
-						new decimal[] { 0.50M, 0.50M },	new int[] { 30, 30 });
-				}
-			}
+			if (!gridInitialized)
+            {
+                if (MyStyle.GridColumnStyles.Count > 0)
+                {
+                    gridInitialized = true;
+                    if (gridHelper == null)
+                    {
+                        gridHelper = new GridLayoutHelper(this.Grid, this.MyStyle,
+                            new decimal[] { 0.50M, 0.50M }, new int[] { 30, 30 });
+                    }
+
+                }
+            }
+            gridHelper.SizeTheGrid();
 		}
 
 		#region MyMeta.Collection Logic
@@ -709,12 +708,18 @@ namespace MyGeneration
 			object o = Grid.DataSource;
 			if(null != o)
 			{
-				this.single.Alias = this.txtNiceName.Text;
-
-				// Setting it to blank changes it back, let's reset in case
-				this.txtNiceName.Text = this.single.Alias;
-
-				MarkAsDirty(true);
+                if (this.single.Alias != this.txtNiceName.Text)
+                {
+                    if (this.txtNiceName.Text == string.Empty)
+                    {
+                        this.txtNiceName.Text = this.single.Alias;
+                    }
+                    else
+                    {
+                        this.single.Alias = this.txtNiceName.Text;
+                        MarkAsDirty(true);
+                    }
+                }
 			}
 		}
 

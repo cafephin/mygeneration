@@ -773,7 +773,9 @@ namespace MyGeneration
         private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //StartVersionCheck();
-            List<IAppRelease> s = ZeusController.ReleaseList;
+            //List<IAppRelease> s = ZeusController.ReleaseList;
+            ApplicationReleases appRel = new ApplicationReleases();
+            appRel.ShowDialog(this);
         }
         #endregion
 
@@ -1166,10 +1168,10 @@ namespace MyGeneration
             }
         }
 
-        private void DownloadLatestVersion()
+        /*private void DownloadLatestVersion()
         {
             Zeus.WindowsTools.LaunchBrowser(URL_LATESTVERSION, System.Diagnostics.ProcessWindowStyle.Minimized, true);
-        }
+        }*/
         #endregion
 
         #region Show OLEDBDialog Dialog
