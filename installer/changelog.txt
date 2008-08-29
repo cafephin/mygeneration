@@ -1,3 +1,9 @@
+2008.08.08 - MyGeneration 1.3.0.6
+- Fixed Indexes and FKs in MyMeta for Firebird
+- Fixed bugs in Project files with cached data, user setting overrides, etc.
+- Fixed UI bugs in Projects
+- Fixed disconnect between MyMeta Tree and MyMeta info windows.
+
 2008.08.08 - MyGeneration 1.3.0.5
 - Added multithreading for the template browser and Project browser. Each template/project is executed in a seperate thread through a queue. 
 - Fixed up the Visual Studio Plugin a bit. Seems to work prettty well in VS 2005.
