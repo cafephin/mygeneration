@@ -30,12 +30,12 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ApplicationReleasesControl));
             this.dataGridViewUpdates = new System.Windows.Forms.DataGridView();
-            this.labelApplication = new System.Windows.Forms.Label();
-            this.dataGridViewImageColumn1 = new System.Windows.Forms.DataGridViewImageColumn();
-            this.dataGridViewImageColumn2 = new System.Windows.Forms.DataGridViewImageColumn();
             this.ColumnTitle = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnReleaseNotes = new System.Windows.Forms.DataGridViewImageColumn();
             this.ColumnDownload = new System.Windows.Forms.DataGridViewImageColumn();
+            this.labelApplication = new System.Windows.Forms.Label();
+            this.dataGridViewImageColumn1 = new System.Windows.Forms.DataGridViewImageColumn();
+            this.dataGridViewImageColumn2 = new System.Windows.Forms.DataGridViewImageColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewUpdates)).BeginInit();
             this.SuspendLayout();
             // 
@@ -49,6 +49,7 @@
             this.dataGridViewUpdates.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViewUpdates.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dataGridViewUpdates.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewUpdates.ColumnHeadersVisible = false;
             this.dataGridViewUpdates.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnTitle,
             this.ColumnReleaseNotes,
@@ -61,6 +62,31 @@
             this.dataGridViewUpdates.Size = new System.Drawing.Size(393, 257);
             this.dataGridViewUpdates.TabIndex = 0;
             this.dataGridViewUpdates.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewUpdates_CellClick);
+            // 
+            // ColumnTitle
+            // 
+            this.ColumnTitle.FillWeight = 215.7641F;
+            this.ColumnTitle.HeaderText = "Title";
+            this.ColumnTitle.Name = "ColumnTitle";
+            this.ColumnTitle.ReadOnly = true;
+            // 
+            // ColumnReleaseNotes
+            // 
+            this.ColumnReleaseNotes.FillWeight = 31.24466F;
+            this.ColumnReleaseNotes.HeaderText = "";
+            this.ColumnReleaseNotes.Image = global::MyGeneration.Properties.Resources.release_notes;
+            this.ColumnReleaseNotes.MinimumWidth = 16;
+            this.ColumnReleaseNotes.Name = "ColumnReleaseNotes";
+            this.ColumnReleaseNotes.ReadOnly = true;
+            // 
+            // ColumnDownload
+            // 
+            this.ColumnDownload.FillWeight = 31.16381F;
+            this.ColumnDownload.HeaderText = "";
+            this.ColumnDownload.Image = ((System.Drawing.Image)(resources.GetObject("ColumnDownload.Image")));
+            this.ColumnDownload.MinimumWidth = 16;
+            this.ColumnDownload.Name = "ColumnDownload";
+            this.ColumnDownload.ReadOnly = true;
             // 
             // labelApplication
             // 
@@ -91,31 +117,6 @@
             this.dataGridViewImageColumn2.Name = "dataGridViewImageColumn2";
             this.dataGridViewImageColumn2.ReadOnly = true;
             this.dataGridViewImageColumn2.Width = 30;
-            // 
-            // ColumnTitle
-            // 
-            this.ColumnTitle.FillWeight = 215.7641F;
-            this.ColumnTitle.HeaderText = "Title";
-            this.ColumnTitle.Name = "ColumnTitle";
-            this.ColumnTitle.ReadOnly = true;
-            // 
-            // ColumnReleaseNotes
-            // 
-            this.ColumnReleaseNotes.FillWeight = 31.24466F;
-            this.ColumnReleaseNotes.HeaderText = "";
-            this.ColumnReleaseNotes.Image = global::MyGeneration.Properties.Resources.release_notes;
-            this.ColumnReleaseNotes.MinimumWidth = 16;
-            this.ColumnReleaseNotes.Name = "ColumnReleaseNotes";
-            this.ColumnReleaseNotes.ReadOnly = true;
-            // 
-            // ColumnDownload
-            // 
-            this.ColumnDownload.FillWeight = 31.16381F;
-            this.ColumnDownload.HeaderText = "";
-            this.ColumnDownload.Image = ((System.Drawing.Image)(resources.GetObject("ColumnDownload.Image")));
-            this.ColumnDownload.MinimumWidth = 16;
-            this.ColumnDownload.Name = "ColumnDownload";
-            this.ColumnDownload.ReadOnly = true;
             // 
             // ApplicationReleasesControl
             // 

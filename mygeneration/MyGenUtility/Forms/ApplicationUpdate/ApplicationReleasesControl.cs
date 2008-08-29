@@ -38,15 +38,18 @@ namespace MyGeneration.Forms
 
         private void dataGridViewUpdates_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == this.ColumnDownload.Index)
+            if (e.RowIndex >= 0)
             {
-                Uri u = this.dataGridViewUpdates.Rows[e.RowIndex].Cells[e.ColumnIndex].Tag as Uri;
-                WindowsTools.LaunchBrowser(u.AbsoluteUri, System.Diagnostics.ProcessWindowStyle.Normal, true);
-            }
-            else if (e.ColumnIndex == this.ColumnReleaseNotes.Index)
-            {
-                Uri u = this.dataGridViewUpdates.Rows[e.RowIndex].Cells[e.ColumnIndex].Tag as Uri;
-                WindowsTools.LaunchBrowser(u.AbsoluteUri, System.Diagnostics.ProcessWindowStyle.Normal, true);
+                if (e.ColumnIndex == this.ColumnDownload.Index)
+                {
+                    Uri u = this.dataGridViewUpdates.Rows[e.RowIndex].Cells[e.ColumnIndex].Tag as Uri;
+                    WindowsTools.LaunchBrowser(u.AbsoluteUri, System.Diagnostics.ProcessWindowStyle.Normal, true);
+                }
+                else if (e.ColumnIndex == this.ColumnReleaseNotes.Index)
+                {
+                    Uri u = this.dataGridViewUpdates.Rows[e.RowIndex].Cells[e.ColumnIndex].Tag as Uri;
+                    WindowsTools.LaunchBrowser(u.AbsoluteUri, System.Diagnostics.ProcessWindowStyle.Normal, true);
+                }
             }
         }
     }
