@@ -28,15 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ApplicationReleasesControl));
             this.dataGridViewUpdates = new System.Windows.Forms.DataGridView();
             this.ColumnTitle = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnReleaseNotes = new System.Windows.Forms.DataGridViewImageColumn();
-            this.ColumnDownload = new System.Windows.Forms.DataGridViewImageColumn();
             this.labelApplication = new System.Windows.Forms.Label();
+            this.timerImgAnimate = new System.Windows.Forms.Timer(this.components);
             this.dataGridViewImageColumn1 = new System.Windows.Forms.DataGridViewImageColumn();
             this.dataGridViewImageColumn2 = new System.Windows.Forms.DataGridViewImageColumn();
+            this.pictureBoxAnimation = new System.Windows.Forms.PictureBox();
+            this.ColumnReleaseNotes = new System.Windows.Forms.DataGridViewImageColumn();
+            this.ColumnDownload = new System.Windows.Forms.DataGridViewImageColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewUpdates)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxAnimation)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridViewUpdates
@@ -70,24 +74,6 @@
             this.ColumnTitle.Name = "ColumnTitle";
             this.ColumnTitle.ReadOnly = true;
             // 
-            // ColumnReleaseNotes
-            // 
-            this.ColumnReleaseNotes.FillWeight = 31.24466F;
-            this.ColumnReleaseNotes.HeaderText = "";
-            this.ColumnReleaseNotes.Image = global::MyGeneration.Properties.Resources.release_notes;
-            this.ColumnReleaseNotes.MinimumWidth = 16;
-            this.ColumnReleaseNotes.Name = "ColumnReleaseNotes";
-            this.ColumnReleaseNotes.ReadOnly = true;
-            // 
-            // ColumnDownload
-            // 
-            this.ColumnDownload.FillWeight = 31.16381F;
-            this.ColumnDownload.HeaderText = "";
-            this.ColumnDownload.Image = ((System.Drawing.Image)(resources.GetObject("ColumnDownload.Image")));
-            this.ColumnDownload.MinimumWidth = 16;
-            this.ColumnDownload.Name = "ColumnDownload";
-            this.ColumnDownload.ReadOnly = true;
-            // 
             // labelApplication
             // 
             this.labelApplication.AutoSize = true;
@@ -97,6 +83,11 @@
             this.labelApplication.Size = new System.Drawing.Size(235, 13);
             this.labelApplication.TabIndex = 1;
             this.labelApplication.Text = "MyGeneration Releases on SourceForge";
+            // 
+            // timerImgAnimate
+            // 
+            this.timerImgAnimate.Interval = 75;
+            this.timerImgAnimate.Tick += new System.EventHandler(this.timerImgAnimate_Tick);
             // 
             // dataGridViewImageColumn1
             // 
@@ -118,16 +109,47 @@
             this.dataGridViewImageColumn2.ReadOnly = true;
             this.dataGridViewImageColumn2.Width = 30;
             // 
+            // pictureBoxAnimation
+            // 
+            this.pictureBoxAnimation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBoxAnimation.Image = global::MyGeneration.Properties.Resources.Refresh16x16_1;
+            this.pictureBoxAnimation.Location = new System.Drawing.Point(378, 3);
+            this.pictureBoxAnimation.Name = "pictureBoxAnimation";
+            this.pictureBoxAnimation.Size = new System.Drawing.Size(18, 19);
+            this.pictureBoxAnimation.TabIndex = 2;
+            this.pictureBoxAnimation.TabStop = false;
+            this.pictureBoxAnimation.Click += new System.EventHandler(this.pictureBoxAnimation_Click);
+            // 
+            // ColumnReleaseNotes
+            // 
+            this.ColumnReleaseNotes.FillWeight = 31.24466F;
+            this.ColumnReleaseNotes.HeaderText = "";
+            this.ColumnReleaseNotes.Image = global::MyGeneration.Properties.Resources.release_notes;
+            this.ColumnReleaseNotes.MinimumWidth = 16;
+            this.ColumnReleaseNotes.Name = "ColumnReleaseNotes";
+            this.ColumnReleaseNotes.ReadOnly = true;
+            // 
+            // ColumnDownload
+            // 
+            this.ColumnDownload.FillWeight = 31.16381F;
+            this.ColumnDownload.HeaderText = "";
+            this.ColumnDownload.Image = ((System.Drawing.Image)(resources.GetObject("ColumnDownload.Image")));
+            this.ColumnDownload.MinimumWidth = 16;
+            this.ColumnDownload.Name = "ColumnDownload";
+            this.ColumnDownload.ReadOnly = true;
+            // 
             // ApplicationReleasesControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.pictureBoxAnimation);
             this.Controls.Add(this.labelApplication);
             this.Controls.Add(this.dataGridViewUpdates);
             this.Name = "ApplicationReleasesControl";
             this.Size = new System.Drawing.Size(399, 288);
             this.Load += new System.EventHandler(this.ApplicationReleasesControl_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewUpdates)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxAnimation)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -142,5 +164,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnTitle;
         private System.Windows.Forms.DataGridViewImageColumn ColumnReleaseNotes;
         private System.Windows.Forms.DataGridViewImageColumn ColumnDownload;
+        private System.Windows.Forms.PictureBox pictureBoxAnimation;
+        private System.Windows.Forms.Timer timerImgAnimate;
     }
 }

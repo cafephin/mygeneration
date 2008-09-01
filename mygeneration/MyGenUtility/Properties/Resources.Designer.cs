@@ -137,6 +137,34 @@ namespace MyGeneration.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap Refresh16x16_1 {
+            get {
+                object obj = ResourceManager.GetObject("Refresh16x16_1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Refresh16x16_2 {
+            get {
+                object obj = ResourceManager.GetObject("Refresh16x16_2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Refresh16x16_3 {
+            get {
+                object obj = ResourceManager.GetObject("Refresh16x16_3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Refresh16x16_4 {
+            get {
+                object obj = ResourceManager.GetObject("Refresh16x16_4", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap release_notes {
             get {
                 object obj = ResourceManager.GetObject("release_notes", resourceCulture);

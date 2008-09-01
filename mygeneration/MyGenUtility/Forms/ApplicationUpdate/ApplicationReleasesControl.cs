@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
+using System.Threading;
 
 using MyGeneration;
 using Zeus;
@@ -13,6 +14,11 @@ namespace MyGeneration.Forms
 {
     public partial class ApplicationReleasesControl : UserControl
     {
+        private static List<IAppRelease> releases;
+        private delegate void AddGridDataCallback();
+        private IAsyncResult asyncres;
+        private int index = -1;
+
         public ApplicationReleasesControl()
         {
             InitializeComponent();
@@ -20,20 +26,7 @@ namespace MyGeneration.Forms
 
         private void ApplicationReleasesControl_Load(object sender, EventArgs e)
         {
-            try
-            {
-                //TODO: need to spin off another thread here at some point
-                foreach (IAppRelease rel in ZeusController.Instance.ReleaseList)
-                {
-                    int i = this.dataGridViewUpdates.Rows.Add();
-
-                    //this.dataGridViewUpdates.Rows[i].Cells[this.ColumnDate.Index].Value = rel.Date;
-                    this.dataGridViewUpdates.Rows[i].Cells[this.ColumnTitle.Index].Value = rel.Title;
-                    this.dataGridViewUpdates.Rows[i].Cells[this.ColumnDownload.Index].Tag = rel.DownloadLink;
-                    this.dataGridViewUpdates.Rows[i].Cells[this.ColumnReleaseNotes.Index].Tag = rel.ReleaseNotesLink;
-                }
-            }
-            catch { }
+            SetupAsync();
         }
 
         private void dataGridViewUpdates_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -51,6 +44,93 @@ namespace MyGeneration.Forms
                     WindowsTools.LaunchBrowser(u.AbsoluteUri, System.Diagnostics.ProcessWindowStyle.Normal, true);
                 }
             }
+        }
+
+        private void timerImgAnimate_Tick(object sender, EventArgs e)
+        {
+            index = (index >= 3) ? 0 : (index + 1);
+            switch (index)
+            {
+                case 0:
+                    this.pictureBoxAnimation.Image = MyGeneration.Properties.Resources.Refresh16x16_1;
+                    break;
+                case 1:
+                    this.pictureBoxAnimation.Image = MyGeneration.Properties.Resources.Refresh16x16_2;
+                    break;
+                case 2:
+                    this.pictureBoxAnimation.Image = MyGeneration.Properties.Resources.Refresh16x16_3;
+                    break;
+                case 3:
+                    this.pictureBoxAnimation.Image = MyGeneration.Properties.Resources.Refresh16x16_4;
+                    break;
+            }
+            pictureBoxAnimation.Invalidate();
+        }
+
+        private bool IsBusy
+        {
+            get
+            {
+                return ((asyncres != null) && !asyncres.IsCompleted);
+            }
+        }
+
+        public void SetupAsync()
+        {
+            if (IsBusy) return;
+
+            this.dataGridViewUpdates.Rows.Clear();
+            releases = null;
+            timerImgAnimate.Start();
+
+            this.Invalidate();
+            this.Refresh();
+
+            ThreadStart ts = new ThreadStart(SetupAndBuildReleaseList);
+            asyncres = ts.BeginInvoke(new AsyncCallback(SetupAsyncCompleted), null);
+        }
+
+        private static void SetupAndBuildReleaseList()
+        {
+            if (releases == null) releases = ZeusController.Instance.ReleaseList;
+        }
+
+        private void SetupAsyncCompleted(IAsyncResult ar)
+        {
+            this.AddToGridThreadSafe();
+        }
+
+        private void AddToGridThreadSafe()
+        {
+            if (this.dataGridViewUpdates.InvokeRequired)
+            {
+                AddGridDataCallback d = new AddGridDataCallback(AddToGridThreadSafe);
+                this.dataGridViewUpdates.Invoke(d, new object[] { });
+            }
+            else
+            {
+                timerImgAnimate.Stop();
+
+                try
+                {
+                    //TODO: need to spin off another thread here at some point
+                    foreach (IAppRelease rel in ZeusController.Instance.ReleaseList)
+                    {
+                        int i = this.dataGridViewUpdates.Rows.Add();
+
+                        //this.dataGridViewUpdates.Rows[i].Cells[this.ColumnDate.Index].Value = rel.Date;
+                        this.dataGridViewUpdates.Rows[i].Cells[this.ColumnTitle.Index].Value = rel.Title;
+                        this.dataGridViewUpdates.Rows[i].Cells[this.ColumnDownload.Index].Tag = rel.DownloadLink;
+                        this.dataGridViewUpdates.Rows[i].Cells[this.ColumnReleaseNotes.Index].Tag = rel.ReleaseNotesLink;
+                    }
+                }
+                catch { }
+            }
+        }
+
+        private void pictureBoxAnimation_Click(object sender, EventArgs e)
+        {
+            SetupAsync();
         }
     }
 }

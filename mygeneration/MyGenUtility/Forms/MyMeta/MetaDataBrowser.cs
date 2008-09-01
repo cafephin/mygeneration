@@ -377,8 +377,6 @@ namespace MyGeneration
 
         private static void SetupAndBuildNodeTree(object parentObj)
         {
-            Thread.Sleep(1000 * 5);
-
             AsyncLoadInfo ali = parentObj as AsyncLoadInfo;
             DefaultSettings settings = DefaultSettings.Instance;
 
