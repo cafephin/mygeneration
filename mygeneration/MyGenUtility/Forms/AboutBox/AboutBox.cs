@@ -237,7 +237,7 @@ namespace MyGeneration
 					txtProductInfo.Text =
                         @"MyGeneration is written in C# and is a tool that combines database meta-data with the power of scripting to generate stored procedures, data objects, business objects, user interfaces, and more.
 
-Copyright © 2004-2007 by Mike Griffin and Justin Greenwood
+Copyright © 2004-2008 by Mike Griffin and Justin Greenwood
 All Rights Reserved";
 					lnkURL.Text = @"http://www.mygenerationsoftware.com";
 					break;
@@ -246,7 +246,7 @@ All Rights Reserved";
 					txtProductInfo.Text =
                         @"MyMeta is C# COM object that serves up database meta-data with plug-in support.
 
-Copyright © 2004-2007 by Mike Griffin and Justin Greenwood
+Copyright © 2004-2008 by Mike Griffin and Justin Greenwood
 All Rights Reserved";
 					lnkURL.Text = @"http://www.mygenerationsoftware.com";
 					break;
@@ -255,7 +255,7 @@ All Rights Reserved";
 					txtProductInfo.Text =
                         @"The Zeus Parser contains the template parser and interpreter for MyGeneration.
 
-Copyright © 2004-2007 by Mike Griffin and Justin Greenwood
+Copyright © 2004-2008 by Mike Griffin and Justin Greenwood
 All Rights Reserved";
 					lnkURL.Text = @"http://www.mygenerationsoftware.com";
 					break;
@@ -264,7 +264,7 @@ All Rights Reserved";
 					txtProductInfo.Text =
                         @"The plug-in Interface contains interfaces allowing third parties to develop MyGeneration plug-ins.
 
-Copyright © 2004-2007 by Mike Griffin and Justin Greenwood
+Copyright © 2004-2008 by Mike Griffin and Justin Greenwood
 All Rights Reserved";
 					lnkURL.Text = @"http://www.mygenerationsoftware.com";
 					break;
