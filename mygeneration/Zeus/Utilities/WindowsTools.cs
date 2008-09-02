@@ -10,6 +10,13 @@ namespace Zeus
     {
 
         #region Browser launch code
+        public static void LaunchFile(string filename)
+        {
+            Process p = new Process();
+            p.StartInfo.FileName = filename;
+            p.Start();
+        }
+
         public static void LaunchBrowser(string url)
         {
             try

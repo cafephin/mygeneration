@@ -14,6 +14,7 @@ namespace MyGeneration
         private static Queue<ZeusProcess> processQueue = new Queue<ZeusProcess>();
         private static ZeusProcess runningProcess;
         private static Thread monitorThread;
+        public const string GENERATED_FILE_TAG = "[GENERATED_FILE]";
 
         public static Guid ExecuteTemplate(string filename, ZeusProcessStatusDelegate callback)
         {

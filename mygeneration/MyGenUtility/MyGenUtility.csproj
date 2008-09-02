@@ -186,6 +186,12 @@
     <Compile Include="Forms\Errors\ErrorsForm.Designer.cs">
       <DependentUpon>ErrorsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\GeneratedFileList\GeneratedFilesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\GeneratedFileList\GeneratedFilesForm.Designer.cs">
+      <DependentUpon>GeneratedFilesForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ProjectEditor\ProjectBrowser.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -322,6 +328,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Errors\ErrorsForm.resx">
       <DependentUpon>ErrorsForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\GeneratedFileList\GeneratedFilesForm.resx">
+      <DependentUpon>GeneratedFilesForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MyMeta\AddDbTargetMappingDialog.resx">

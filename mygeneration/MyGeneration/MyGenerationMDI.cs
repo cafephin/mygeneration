@@ -1354,6 +1354,27 @@ namespace MyGeneration
             {
                 return DefaultSettings.Instance.ConnectionString;
             }
+            else if (function.Equals("openfile", StringComparison.CurrentCultureIgnoreCase) &&
+                args.Length == 1)
+            {
+                if (args[0] is List<FileInfo>)
+                {
+                    List<FileInfo> files = args[0] as List<FileInfo>;
+                    foreach (FileInfo fi in files)
+                    {
+                        Zeus.WindowsTools.LaunchFile(fi.FullName.ToString());
+                    }
+                }
+                else if (args[0] is FileInfo)
+                {
+                    FileInfo file = args[0] as FileInfo;
+                    Zeus.WindowsTools.LaunchFile(file.FullName);
+                }
+                else if (args[0] is String)
+                {
+                    Zeus.WindowsTools.LaunchFile(args[0].ToString());
+                }
+            }
             return null;
         }
 

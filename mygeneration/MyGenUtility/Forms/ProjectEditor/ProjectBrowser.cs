@@ -155,9 +155,22 @@ namespace MyGeneration
 
         private void projectBrowserControl1_ExecutionStatusUpdate(bool isRunning, string message)
         {
-            if (this._mdi.Console.DockContent.IsHidden) this._mdi.Console.DockContent.Show(_mdi.DockPanel);
-            if (!this._mdi.Console.DockContent.IsActivated) this._mdi.Console.DockContent.Activate();
-            this._mdi.WriteConsole(message);
+
+                if (this._mdi.Console.DockContent.IsHidden) this._mdi.Console.DockContent.Show(_mdi.DockPanel);
+                if (!this._mdi.Console.DockContent.IsActivated) this._mdi.Console.DockContent.Activate();
+
+                if (message.StartsWith(ZeusProcessManager.GENERATED_FILE_TAG))
+                {
+                    string generatedFile = message.Substring(ZeusProcessManager.GENERATED_FILE_TAG.Length);
+                    this._mdi.WriteConsole("File Generated: " + generatedFile);
+                    this._mdi.SendAlert(this, "FileGenerated", generatedFile);
+
+                }
+                else
+                {
+                    this._mdi.WriteConsole(message);
+                }
+
         }
 
         void projectBrowserControl1_TabTextChanged(string text, string tabText, string filename)
