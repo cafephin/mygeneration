@@ -21,6 +21,7 @@ namespace Zeus
         string Title { get; }
         string Description { get; }
         string Author { get; }
+        Version AppVersion { get; }
         Uri DownloadLink { get; }
         Uri ReleaseNotesLink { get; }
         DateTime Date { get; }

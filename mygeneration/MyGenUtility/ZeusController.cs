@@ -157,8 +157,40 @@ namespace Zeus
                     }
                     if (linkNode != null)
                     {
+                        string versionInfo;
                         r.ReleaseNotesLink = new Uri(linkNode.InnerText);
-                        r.DownloadLink = new Uri(FindSourceForgeDownloadUrl(r.Description));
+                        r.DownloadLink = new Uri(FindSourceForgeDownloadUrl(r.Description, out versionInfo));
+                        
+                        int ii;
+                        string verString = string.Empty;
+                        if (int.TryParse(versionInfo, out ii))
+                        {
+                            //major.minor[.build[.revision]] 
+                            if (versionInfo.Length > 0)
+                            {
+                                verString += versionInfo[0];
+                                if (versionInfo.Length > 1)
+                                {
+                                    verString += "." + versionInfo[1];
+                                    if (versionInfo.Length > 2)
+                                    {
+                                        verString += "." + versionInfo[2];
+                                        if (versionInfo.Length > 3)
+                                        {
+                                            verString += "." + versionInfo.Substring(3);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (string.IsNullOrEmpty(verString))
+                        {
+                            r.AppVersion = new Version();
+                        }
+                        else
+                        {
+                            r.AppVersion = new Version(verString);
+                        }
                     }
                     if (pubDateNode != null)
                     {
@@ -171,8 +203,9 @@ namespace Zeus
             }
         }
 
-        private string FindSourceForgeDownloadUrl(string description)
+        private string FindSourceForgeDownloadUrl(string description, out string version)
         {
+            version = string.Empty;
             string newurl = string.Empty;
             //"<br />Released at Fri, 29 Aug 2008 07:55:10 GMT by komma8komma1<br />Includes files: mygeneration_1306_20080829.exe (4562185 bytes, 64 downloads to date)<br /><a href=\"http://sourceforge.net/project/showfiles.php?group_id=198893&package_id=249524&release_id=622773\">[Download]</a> <a href=\"http://sourceforge.net/project/shownotes.php?release_id=622773\">[Release Notes]</a>"
             int start = -1, end = description.IndexOf("\">[Download]</a>");
@@ -185,13 +218,12 @@ namespace Zeus
                 newurl = description.Substring(start, (end - start));
             }
 
-            /*string groupId = DefaultSettings.Instance.VersionRSSUrl.Substring(DefaultSettings.Instance.VersionRSSUrl.IndexOf("group_id"));
-            string newurl = starturl.Replace("shownotes", "showfiles") + "&" + groupId;
-            string tokenToFind = "http://downloads.sourceforge.net/mygeneration/";
             string u = Zeus.HttpTools.GetTextFromUrl(newurl, DefaultSettings.Instance.WebProxy);
             int i = 0, i2 = 0, j, k, l;
             try
             {
+                //<td ><a href="http://downloads.sourceforge.net/mygeneration/mygeneration_1306_20080829.exe?modtime=1219979144&amp;big_mirror=0" onClick="window.location='/project/downloading.php?group_id=198893&amp;use_mirror=voxel&amp;filename=mygeneration_1306_20080829.exe&amp;'+Math.floor(Math.random()*100000000); return false;">mygeneration_1306_20080829.exe</a>
+                string tokenToFind = "http://downloads.sourceforge.net/mygeneration/";
                 do
                 {
                     i = u.IndexOf(tokenToFind, i);
@@ -212,6 +244,21 @@ namespace Zeus
                                 if (!filename.Contains("plugin") && filename.StartsWith("mygen") && filename.EndsWith(".exe"))
                                 {
                                     newurl = url;
+
+                                    string[] items = filename.Substring(0, filename.Length-4).Split('_');
+                                    if ((items.Length == 3)|| (items.Length == 3))
+                                    {
+                                        version = items[1];
+                                    }
+                                    else if (items.Length == 2)
+                                    {
+                                        version = items[1];
+                                    }
+                                    else
+                                    {
+                                        version = filename;
+                                    }
+
                                     break;
                                 }
                             }
@@ -223,7 +270,7 @@ namespace Zeus
             {
                 // do something with the exception?
                 throw ex;
-            }*/
+            }
             return newurl;
         }
 
@@ -233,10 +280,12 @@ namespace Zeus
         private string _title, _description, _author;
         private Uri _downloadLink, _releaseNotesLink;
         private DateTime _date;
+        private Version _version;
 
         public string Title { get { return _title;  } set { _title = value; } }
         public string Description { get { return _description; } set { _description = value; } }
         public string Author { get { return _author; } set { _author = value; } }
+        public Version AppVersion { get { return _version; } set { _version = value; } }
         public Uri DownloadLink { get { return _downloadLink; } set { _downloadLink = value; } }
         public Uri ReleaseNotesLink { get { return _releaseNotesLink; } set { _releaseNotesLink = value; } }
         public DateTime Date { get { return _date; } set { _date = value; } }

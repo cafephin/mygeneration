@@ -450,18 +450,6 @@
     <None Include="Resources\download_arrow.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Refresh16x16_4.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Refresh16x16_1.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Refresh16x16_2.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Refresh16x16_3.bmp" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Refresh16x16_1.png" />
   </ItemGroup>
   <ItemGroup>

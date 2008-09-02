@@ -92,7 +92,17 @@ namespace MyGeneration.Forms
 
         private static void SetupAndBuildReleaseList()
         {
-            if (releases == null) releases = ZeusController.Instance.ReleaseList;
+            if (releases == null)
+            {
+                try
+                {
+                    releases = ZeusController.Instance.ReleaseList;
+                }
+                catch (Exception ex)
+                {
+                    releases = null;
+                }
+            }
         }
 
         private void SetupAsyncCompleted(IAsyncResult ar)
@@ -113,18 +123,55 @@ namespace MyGeneration.Forms
 
                 try
                 {
-                    //TODO: need to spin off another thread here at some point
-                    foreach (IAppRelease rel in ZeusController.Instance.ReleaseList)
+                    if (releases != null)
                     {
-                        int i = this.dataGridViewUpdates.Rows.Add();
+                        int newVersionCount = 0;
+                        Version currentVersion = new Version(Application.ProductVersion);
+                        foreach (IAppRelease rel in releases)
+                        {
+                            int i = this.dataGridViewUpdates.Rows.Add();
 
-                        //this.dataGridViewUpdates.Rows[i].Cells[this.ColumnDate.Index].Value = rel.Date;
-                        this.dataGridViewUpdates.Rows[i].Cells[this.ColumnTitle.Index].Value = rel.Title;
-                        this.dataGridViewUpdates.Rows[i].Cells[this.ColumnDownload.Index].Tag = rel.DownloadLink;
-                        this.dataGridViewUpdates.Rows[i].Cells[this.ColumnReleaseNotes.Index].Tag = rel.ReleaseNotesLink;
+                            //this.dataGridViewUpdates.Rows[i].Cells[this.ColumnDate.Index].Value = rel.Date;
+                            this.dataGridViewUpdates.Rows[i].Cells[this.ColumnTitle.Index].Value = rel.Title;
+                            this.dataGridViewUpdates.Rows[i].Cells[this.ColumnDownload.Index].Tag = rel.DownloadLink;
+                            this.dataGridViewUpdates.Rows[i].Cells[this.ColumnReleaseNotes.Index].Tag = rel.ReleaseNotesLink;
+
+                            if (rel.AppVersion == currentVersion)
+                            {
+                                this.dataGridViewUpdates.Rows[i].DefaultCellStyle.BackColor = Color.Yellow;
+                            }
+                            else if (rel.AppVersion < currentVersion)
+                            {
+                                this.dataGridViewUpdates.Rows[i].DefaultCellStyle.ForeColor = Color.Gray;
+                            }
+                            else
+                            {
+                                newVersionCount++;
+                            }
+
+                        }
+                        if (newVersionCount == 0)
+                        {
+                            this.labelApplication.Text = "MyGeneration Releases on SourceForge";
+                            this.labelApplication.ForeColor = Color.Gray;
+                        }
+                        else
+                        {
+                            this.labelApplication.Text = "New MyGeneration Release Available on SourceForge";
+                            this.labelApplication.ForeColor = Color.Black;
+                        }
+                    }
+                    else
+                    {
+                        // There is nothing to bind to the grid due to the connection error
+                        this.labelApplication.Text = "Release information unavailable at this time.";
+                        this.labelApplication.ForeColor = Color.Red;
                     }
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
             }
         }
 
