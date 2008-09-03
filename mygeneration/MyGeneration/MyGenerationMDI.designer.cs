@@ -64,6 +64,7 @@ namespace MyGeneration
             this.toolStripButtonOptions = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonErrors = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonConsole = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonGenFiles = new System.Windows.Forms.ToolStripButton();
             this.menuStripMain.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -242,9 +243,9 @@ namespace MyGeneration
             this.dockPanel.Name = "dockPanel";
             this.dockPanel.Size = new System.Drawing.Size(792, 495);
             this.dockPanel.TabIndex = 6;
-            this.dockPanel.DragEnter += new System.Windows.Forms.DragEventHandler(this.MyGenerationMDI_DragEnter);
             this.dockPanel.ActiveContentChanged += new System.EventHandler(this.dockPanel_ActiveContentChanged);
             this.dockPanel.DragDrop += new System.Windows.Forms.DragEventHandler(this.MyGenerationMDI_DragDrop);
+            this.dockPanel.DragEnter += new System.Windows.Forms.DragEventHandler(this.MyGenerationMDI_DragEnter);
             // 
             // toolStrip1
             // 
@@ -263,7 +264,8 @@ namespace MyGeneration
             this.toolStripSeparator2,
             this.toolStripButtonOptions,
             this.toolStripButtonErrors,
-            this.toolStripButtonConsole});
+            this.toolStripButtonConsole,
+            this.toolStripButtonGenFiles});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(792, 25);
@@ -409,6 +411,17 @@ namespace MyGeneration
             this.toolStripButtonConsole.Text = "Console";
             this.toolStripButtonConsole.Click += new System.EventHandler(this.toolStripButtonConsole_Click);
             // 
+            // toolStripButtonGenFiles
+            // 
+            this.toolStripButtonGenFiles.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonGenFiles.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonGenFiles.Image")));
+            this.toolStripButtonGenFiles.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonGenFiles.Name = "toolStripButtonGenFiles";
+            this.toolStripButtonGenFiles.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonGenFiles.Text = "Console";
+            this.toolStripButtonGenFiles.ToolTipText = "Recently Generated Files";
+            this.toolStripButtonGenFiles.Click += new System.EventHandler(this.toolStripButtonGenFiles_Click);
+            // 
             // MyGenerationMDI
             // 
             this.AllowDrop = true;
@@ -424,10 +437,10 @@ namespace MyGeneration
             this.MainMenuStrip = this.menuStripMain;
             this.Name = "MyGenerationMDI";
             this.Text = "MyGeneration";
-            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.MyGenerationMDI_DragDrop);
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MyGenerationMDI_FormClosing);
-            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.MyGenerationMDI_DragEnter);
             this.Load += new System.EventHandler(this.MyGenerationMDI_Load);
+            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.MyGenerationMDI_DragDrop);
+            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.MyGenerationMDI_DragEnter);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MyGenerationMDI_FormClosing);
             this.menuStripMain.ResumeLayout(false);
             this.menuStripMain.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
@@ -474,5 +487,6 @@ namespace MyGeneration
         private System.Windows.Forms.ToolStripMenuItem checkForUpdatesToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton toolStripButtonOpenGeneratedOutputFolder;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripButton toolStripButtonGenFiles;
     }
 }

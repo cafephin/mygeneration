@@ -26,6 +26,7 @@ namespace MyGeneration.Forms
         {
             if (_generatedFiles.Count == 0) _generatedFiles.Add(finf);
             else _generatedFiles.Insert(0, finf);
+            BindFiles();
         }
 
         private void BindFiles()

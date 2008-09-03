@@ -69,7 +69,17 @@ namespace MyGeneration
                 {
                     if (this._mdi.Console.DockContent.IsHidden) this._mdi.Console.DockContent.Show(_mdi.DockPanel);
                     if (!this._mdi.Console.DockContent.IsActivated) this._mdi.Console.DockContent.Activate();
-                    this._mdi.WriteConsole(args.Message);
+
+                    if (args.Message.StartsWith(ZeusProcessManager.GENERATED_FILE_TAG))
+                    {
+                        string generatedFile = args.Message.Substring(ZeusProcessManager.GENERATED_FILE_TAG.Length);
+                        this._mdi.WriteConsole("File Generated: " + generatedFile);
+                        this._mdi.SendAlert(this, "FileGenerated", generatedFile);
+                    }
+                    else
+                    {
+                        this._mdi.WriteConsole(args.Message);
+                    }
                 }
             }
         }
@@ -79,6 +89,17 @@ namespace MyGeneration
             if (this._mdi.Console.DockContent.IsHidden) this._mdi.Console.DockContent.Show(_mdi.DockPanel);
             if (!this._mdi.Console.DockContent.IsActivated) this._mdi.Console.DockContent.Activate();
             this._mdi.WriteConsole(message);
+
+            if (message.StartsWith(ZeusProcessManager.GENERATED_FILE_TAG))
+            {
+                string generatedFile = message.Substring(ZeusProcessManager.GENERATED_FILE_TAG.Length);
+                this._mdi.WriteConsole("File Generated: " + generatedFile);
+                this._mdi.SendAlert(this, "FileGenerated", generatedFile);
+            }
+            else
+            {
+                this._mdi.WriteConsole(message);
+            }
         }
 
         private void templateBrowserControl_ErrorsOccurred(object sender, EventArgs e)

@@ -61,12 +61,12 @@ namespace MyGeneration.Forms
             // columnHeaderTime
             // 
             this.columnHeaderTime.Text = "Time";
-            this.columnHeaderTime.Width = 81;
+            this.columnHeaderTime.Width = 110;
             // 
             // columnHeaderFile
             // 
             this.columnHeaderFile.Text = "Filename";
-            this.columnHeaderFile.Width = 200;
+            this.columnHeaderFile.Width = 110;
             // 
             // columnHeaderFullFileName
             // 
@@ -116,8 +116,8 @@ namespace MyGeneration.Forms
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "GeneratedFilesForm";
             this.ShowHint = WeifenLuo.WinFormsUI.Docking.DockState.DockBottom;
-            this.TabText = "Generated Files";
-            this.Text = "Generated Files";
+            this.TabText = "Recently Generated Files";
+            this.Text = "Recently Generated Files";
             this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
             this.SizeChanged += new System.EventHandler(this.ErrorsForm_SizeChanged);
             this.toolStrip1.ResumeLayout(false);

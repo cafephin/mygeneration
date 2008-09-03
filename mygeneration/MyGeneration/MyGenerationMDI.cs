@@ -56,6 +56,7 @@ namespace MyGeneration
         private ConsoleForm consoleForm;
         private ErrorsForm errorsForm;
         private ErrorDetail errorDetail;
+        private GeneratedFilesForm generatedFilesForm;
 
         private string startupPath;
         private string[] startupFiles;
@@ -458,6 +459,10 @@ namespace MyGeneration
                 else if (type == typeof(ErrorsForm).ToString())
                 {
                     content = this.ErrorsDockContent;
+                }
+                else if (type == typeof(GeneratedFilesForm).ToString())
+                {
+                    content = this.GeneratedFilesDockContent;
                 }
                 else if (type == typeof(ConsoleForm).ToString())
                 {
@@ -914,6 +919,18 @@ namespace MyGeneration
             }
         }
 
+        private void toolStripButtonGenFiles_Click(object sender, EventArgs e)
+        {
+            if (this.GeneratedFilesDockContent.IsHidden)
+            {
+                this.GeneratedFilesDockContent.Show(this.dockPanel);
+            }
+            else
+            {
+                this.GeneratedFilesDockContent.Activate();
+            }
+        }
+
         private void toolStripButtonOpenGeneratedOutputFolder_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process p = new System.Diagnostics.Process();
@@ -925,6 +942,15 @@ namespace MyGeneration
         #endregion
 
         #region Lazy Load Windows
+        public GeneratedFilesForm GeneratedFilesDockContent
+        {
+            get
+            {
+                if ((generatedFilesForm != null) && generatedFilesForm.IsDisposed) generatedFilesForm = null;
+                if (generatedFilesForm == null) generatedFilesForm = new GeneratedFilesForm(this);
+                return generatedFilesForm;
+            }
+        }
         public ConsoleForm ConsoleDockContent
         {
             get
@@ -1253,7 +1279,6 @@ namespace MyGeneration
             if (windowToolStripMenuItem.DropDownItems.Count == 0)
             {
             }
-
         }
 
         public void SendAlert(IMyGenContent sender, string command, params object[] args)
@@ -1440,6 +1465,5 @@ namespace MyGeneration
             catch { }
         }
         #endregion
-
     }
 }

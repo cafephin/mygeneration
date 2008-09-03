@@ -60,6 +60,13 @@ namespace MyGeneration.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap cogwheels {
+            get {
+                object obj = ResourceManager.GetObject("cogwheels", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap console_network {
             get {
                 object obj = ResourceManager.GetObject("console_network", resourceCulture);
