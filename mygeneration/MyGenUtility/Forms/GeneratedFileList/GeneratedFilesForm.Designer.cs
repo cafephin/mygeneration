@@ -91,7 +91,7 @@ namespace MyGeneration.Forms
             this.toolStripButtonViewDetail.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonViewDetail.Name = "toolStripButtonViewDetail";
             this.toolStripButtonViewDetail.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButtonViewDetail.ToolTipText = "View Error Detail";
+            this.toolStripButtonViewDetail.ToolTipText = "Open Selected File(s)";
             this.toolStripButtonViewDetail.Click += new System.EventHandler(this.toolStripButtonViewDetail_Click);
             // 
             // toolStripButtonClear
@@ -101,7 +101,7 @@ namespace MyGeneration.Forms
             this.toolStripButtonClear.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonClear.Name = "toolStripButtonClear";
             this.toolStripButtonClear.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButtonClear.ToolTipText = "Clear Errors";
+            this.toolStripButtonClear.ToolTipText = "Clear";
             this.toolStripButtonClear.Click += new System.EventHandler(this.toolStripButtonClear_Click);
             // 
             // GeneratedFilesForm
