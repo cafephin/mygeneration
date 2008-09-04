@@ -101,7 +101,7 @@ namespace Zeus
 		{
 			this._input = new ZeusInput();
 			this._output = new ZeusOutput();
-			this._gui = new GuiController();
+			this._gui = new GuiController(this);
 			this._objects = new Hashtable();
 
 			this._objects["ui"] = _gui;
@@ -113,10 +113,11 @@ namespace Zeus
 		/// <param name="input">The ZeusInput object to pass into the template inteface segment.</param>
 		/// <param name="gui">The GuiController object to use in the template inteface segment.</param>
 		/// <param name="objects">A HashTable containing any other objects that need to be included in the template context.</param>
-		public ZeusTemplateContext(IZeusInput input, IGuiController gui, Hashtable objects)
+		public ZeusTemplateContext(IZeusInput input, /*IGuiController gui,*/ Hashtable objects)
 		{
 			this._input = input;
-			this._gui = gui;
+            //this._gui = gui;
+            this._gui = new GuiController(this);
 			this._objects = objects;
 			this._output = new ZeusOutput();
 
@@ -270,7 +271,7 @@ namespace Zeus
 	public class ZeusGuiContext : ZeusTemplateContext
 	{
 		public ZeusGuiContext() : base() {}
-		public ZeusGuiContext(IZeusInput input, IGuiController gui, Hashtable objects) : base(input, gui, objects) {}
+		public ZeusGuiContext(IZeusInput input, /*IGuiController gui,*/ Hashtable objects) : base(input, /*gui,*/ objects) {}
 	}
 	#endregion
 
@@ -281,7 +282,7 @@ namespace Zeus
 	public class ZeusContext : ZeusGuiContext
 	{
 		public ZeusContext() : base() {}
-		public ZeusContext(IZeusInput input, IGuiController gui, Hashtable objects) : base(input, gui, objects) {}
+		public ZeusContext(IZeusInput input, /*IGuiController gui,*/ Hashtable objects) : base(input, /*gui,*/ objects) {}
 	}
 	#endregion
 	

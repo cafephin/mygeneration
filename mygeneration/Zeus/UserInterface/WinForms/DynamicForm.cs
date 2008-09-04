@@ -290,7 +290,18 @@ namespace Zeus.UserInterface.WinForms
                 if (logger != null)
                     logger.LogException(x);
 			}
-		}
+        }
+
+        private void UpdateAutoBinding(GuiControl gcb)
+        {
+            foreach (GuiControl abc in gcb.AutoBindingChildControls)
+            {
+                if (abc is IGuiBindableListControl)
+                {
+                    guiController.UpdateAutoBinding(abc);
+                }
+            }
+        }
 
 		private void listBoxChanged(object sender, System.EventArgs e) 
 		{
@@ -300,6 +311,8 @@ namespace Zeus.UserInterface.WinForms
 				{
 					ListBox lb = sender as ListBox;
 					GuiListBox glb = guiController[lb.Name] as GuiListBox;
+
+                    UpdateAutoBinding(glb);
 
 					foreach (string functionName in glb.GetEventHandlers("onchange")) 
 					{
@@ -326,11 +339,12 @@ namespace Zeus.UserInterface.WinForms
 					ComboBox cb = sender as ComboBox;
 					GuiComboBox gcb = guiController[cb.Name] as GuiComboBox;
 
+                    UpdateAutoBinding(gcb);
+
 					foreach (string functionName in gcb.GetEventHandlers("onchange")) 
 					{
 						this.executioner.ExecuteFunction(functionName, gcb);
 					}
-				
 				}
 			}
 			catch (Exception x)

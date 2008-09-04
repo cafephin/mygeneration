@@ -874,7 +874,7 @@ namespace Zeus.UserInterface.WinForms
 			{
 				Control s = sender as Control;
 				GuiControl gc = guiControls[s.Name] as GuiControl;
-				if (gc.HasEventHandlers("onchange")) 
+                if (gc.HasEventHandlers("onchange") || gc.AutoBindingChildControls.Count > 0) 
 				{
 					UpdateData();
 					ComboBoxChange(sender, e);
@@ -889,7 +889,7 @@ namespace Zeus.UserInterface.WinForms
 			{
 				Control s = sender as Control;
 				GuiControl gc = guiControls[s.Name] as GuiControl;
-				if (gc.HasEventHandlers("onchange")) 
+                if (gc.HasEventHandlers("onchange") || gc.AutoBindingChildControls.Count > 0)  
 				{
 					UpdateData();
 					ListBoxChange(sender, e);

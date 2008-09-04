@@ -191,7 +191,7 @@ namespace Zeus
 
             this.ApplyOverrideData(zin);
 
-			ZeusContext context = new ZeusContext(zin, new GuiController(), new Hashtable());
+			ZeusContext context = new ZeusContext(zin, /*new GuiController(),*/ new Hashtable());
 			context.Log = log;
 
 			template.Execute(context, timeout, true);

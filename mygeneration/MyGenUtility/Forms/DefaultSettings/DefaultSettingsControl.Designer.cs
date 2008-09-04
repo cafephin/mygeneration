@@ -94,6 +94,7 @@ namespace MyGeneration
             this.label8 = new System.Windows.Forms.Label();
             this.txtDefaultTemplatePath = new System.Windows.Forms.TextBox();
             this.tabMisc = new System.Windows.Forms.TabPage();
+            this.checkBoxDocumentStyleSettings = new System.Windows.Forms.CheckBox();
             this.chkDomainOverride = new System.Windows.Forms.CheckBox();
             this.chkForUpdates = new System.Windows.Forms.CheckBox();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
@@ -105,7 +106,7 @@ namespace MyGeneration
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.buttonSaveSettings = new System.Windows.Forms.Button();
             this.buttonCancelSettings = new System.Windows.Forms.Button();
-            this.checkBoxDocumentStyleSettings = new System.Windows.Forms.CheckBox();
+            this.checkBoxShowConsoleOutput = new System.Windows.Forms.CheckBox();
             this.tabControl.SuspendLayout();
             this.tabConnection.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -836,6 +837,7 @@ namespace MyGeneration
             // 
             // tabMisc
             // 
+            this.tabMisc.Controls.Add(this.checkBoxShowConsoleOutput);
             this.tabMisc.Controls.Add(this.checkBoxDocumentStyleSettings);
             this.tabMisc.Controls.Add(this.chkDomainOverride);
             this.tabMisc.Controls.Add(this.chkForUpdates);
@@ -844,6 +846,14 @@ namespace MyGeneration
             this.tabMisc.Size = new System.Drawing.Size(587, 532);
             this.tabMisc.TabIndex = 2;
             this.tabMisc.Text = "Misc";
+            // 
+            // checkBoxDocumentStyleSettings
+            // 
+            this.checkBoxDocumentStyleSettings.Location = new System.Drawing.Point(24, 86);
+            this.checkBoxDocumentStyleSettings.Name = "checkBoxDocumentStyleSettings";
+            this.checkBoxDocumentStyleSettings.Size = new System.Drawing.Size(216, 24);
+            this.checkBoxDocumentStyleSettings.TabIndex = 2;
+            this.checkBoxDocumentStyleSettings.Text = "Use Document Style Settings Editor";
             // 
             // chkDomainOverride
             // 
@@ -927,13 +937,13 @@ namespace MyGeneration
             this.buttonCancelSettings.UseVisualStyleBackColor = true;
             this.buttonCancelSettings.Click += new System.EventHandler(this.buttonCancelSettings_Click);
             // 
-            // checkBoxDocumentStyleSettings
+            // checkBoxShowConsoleOutput
             // 
-            this.checkBoxDocumentStyleSettings.Location = new System.Drawing.Point(24, 86);
-            this.checkBoxDocumentStyleSettings.Name = "checkBoxDocumentStyleSettings";
-            this.checkBoxDocumentStyleSettings.Size = new System.Drawing.Size(216, 24);
-            this.checkBoxDocumentStyleSettings.TabIndex = 2;
-            this.checkBoxDocumentStyleSettings.Text = "Use Document Style Settings Editor";
+            this.checkBoxShowConsoleOutput.Location = new System.Drawing.Point(24, 116);
+            this.checkBoxShowConsoleOutput.Name = "checkBoxShowConsoleOutput";
+            this.checkBoxShowConsoleOutput.Size = new System.Drawing.Size(216, 24);
+            this.checkBoxShowConsoleOutput.TabIndex = 3;
+            this.checkBoxShowConsoleOutput.Text = "Show Template Generation Output in Console";
             // 
             // DefaultSettingsControl
             // 
@@ -1048,5 +1058,6 @@ namespace MyGeneration
         private System.Windows.Forms.Label label1DbUserMetaMappingsExample;
         private System.Windows.Forms.CheckBox checkBoxRunTemplatesAsync;
         private System.Windows.Forms.CheckBox checkBoxDocumentStyleSettings;
+        private System.Windows.Forms.CheckBox checkBoxShowConsoleOutput;
     }
 }

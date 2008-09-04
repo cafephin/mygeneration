@@ -62,9 +62,11 @@ namespace Zeus.UserInterface
 	/// cmbVeggies["t"] = "Tomato";
 	/// </code>
 	/// </example>
-	public class GuiComboBox : GuiControl, IGuiComboBox, IGuiListControl
+    public class GuiComboBox : GuiControl, IGuiComboBox, IGuiBindableListControl
 	{
 		private bool _sorted = false;
+        private string _autoBindingControlParentID = string.Empty;
+        private string _bindingTag = string.Empty;        
 		private string _value = string.Empty;
 		private NameValueCollection _items = new NameValueCollection();
         private List<string> _onclickEvents = new List<string>();
@@ -394,6 +396,36 @@ namespace Zeus.UserInterface
 			{
 				return base.GetEventHandlers(eventType);
 			}
-		}
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string AutoBindingControlParentID
+        {
+            get
+            {
+                return _autoBindingControlParentID;
+            }
+            set
+            {
+                _autoBindingControlParentID = value;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string BindingTag
+        {
+            get
+            {
+                return _bindingTag;
+            }
+            set
+            {
+                _bindingTag = value;
+            }
+        }
 	}
 }

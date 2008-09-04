@@ -452,6 +452,12 @@ namespace MyGeneration
             set { this.SetSetting("TemplateBrowserExecAsync", value.ToString()); }
         }
 
+        public bool ConsoleWriteGeneratedDetails
+        {
+            get { return this.GetSetting("ConsoleWriteGeneratedDetails", false); }
+            set { this.SetSetting("ConsoleWriteGeneratedDetails", value.ToString()); }
+        }
+
         public bool EnableDocumentStyleSettings
         {
             get { return this.GetSetting("DocStyleSettings", false); }

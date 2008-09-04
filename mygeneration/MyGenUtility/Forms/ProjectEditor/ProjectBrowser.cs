@@ -18,11 +18,13 @@ namespace MyGeneration
 {
     public partial class ProjectBrowser : DockContent, IMyGenDocument
     {
+        private bool _consoleWriteGeneratedDetails = false;
         private IMyGenerationMDI _mdi;
 
         public ProjectBrowser(IMyGenerationMDI mdi)
         {
             this._mdi = mdi;
+            this._consoleWriteGeneratedDetails = DefaultSettings.Instance.ConsoleWriteGeneratedDetails;
             InitializeComponent();
         }
 
@@ -111,7 +113,10 @@ namespace MyGeneration
 
         public void ProcessAlert(IMyGenContent sender, string command, params object[] args)
         {
-            //
+            if (command.Equals("UpdateDefaultSettings", StringComparison.CurrentCultureIgnoreCase))
+            {
+                this._consoleWriteGeneratedDetails = DefaultSettings.Instance.ConsoleWriteGeneratedDetails;
+            }
         }
 
         public DockContent DockContent
@@ -155,21 +160,20 @@ namespace MyGeneration
 
         private void projectBrowserControl1_ExecutionStatusUpdate(bool isRunning, string message)
         {
+            if (this._mdi.Console.DockContent.IsHidden) this._mdi.Console.DockContent.Show(_mdi.DockPanel);
+            if (!this._mdi.Console.DockContent.IsActivated) this._mdi.Console.DockContent.Activate();
 
-                if (this._mdi.Console.DockContent.IsHidden) this._mdi.Console.DockContent.Show(_mdi.DockPanel);
-                if (!this._mdi.Console.DockContent.IsActivated) this._mdi.Console.DockContent.Activate();
+            if (message.StartsWith(ZeusProcessManager.GENERATED_FILE_TAG))
+            {
+                string generatedFile = message.Substring(ZeusProcessManager.GENERATED_FILE_TAG.Length);
+                this._mdi.WriteConsole("File Generated: " + generatedFile);
+                this._mdi.SendAlert(this, "FileGenerated", generatedFile);
 
-                if (message.StartsWith(ZeusProcessManager.GENERATED_FILE_TAG))
-                {
-                    string generatedFile = message.Substring(ZeusProcessManager.GENERATED_FILE_TAG.Length);
-                    this._mdi.WriteConsole("File Generated: " + generatedFile);
-                    this._mdi.SendAlert(this, "FileGenerated", generatedFile);
-
-                }
-                else
-                {
-                    this._mdi.WriteConsole(message);
-                }
+            }
+            else
+            {
+                if (_consoleWriteGeneratedDetails) this._mdi.WriteConsole(message);
+            }
 
         }
 

@@ -44,6 +44,7 @@ namespace MyGeneration
         private ReplaceForm replaceDialog = new ReplaceForm();
 
         private Dictionary<string, IMyGenContent> dynamicContentWindows = new Dictionary<string, IMyGenContent>();
+
         private DefaultSettings settings;
         private LanguageMappings languageMappings;
         private DbTargetMappings dbTargetMappings;

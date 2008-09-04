@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 
 namespace Zeus.UserInterface
@@ -74,11 +75,13 @@ namespace Zeus.UserInterface
 	/// lstVeggies["t"] = "Tomato";
 	/// </code>
 	/// </example>
-	public class GuiListBox : GuiControl, IGuiListBox, IGuiListControl
+    public class GuiListBox : GuiControl, IGuiListBox, IGuiBindableListControl
 	{
 		private bool _sorted = false;
 		private int _height = 64;
-		private bool _isMultiSelect = true;
+        private bool _isMultiSelect = true;
+        private string _autoBindingControlParentID = string.Empty;
+        private string _bindingTag = string.Empty;        
 		private ArrayList _selectedItems = new ArrayList();
 		private NameValueCollection _items = new NameValueCollection();
 		private ArrayList _onclickEvents = new ArrayList();
@@ -428,5 +431,35 @@ namespace Zeus.UserInterface
 				return base.GetEventHandlers(eventType);
 			}
 		}
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string AutoBindingControlParentID
+        {
+            get
+            {
+                return _autoBindingControlParentID;
+            }
+            set
+            {
+                _autoBindingControlParentID = value;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string BindingTag
+        {
+            get
+            {
+                return _bindingTag;
+            }
+            set
+            {
+                _bindingTag = value;
+            }
+        }
 	}
 }

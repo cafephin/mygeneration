@@ -88,6 +88,7 @@ namespace MyGeneration
 
             this.checkBoxClipboard.Checked = settings.EnableClipboard;
             this.checkBoxRunTemplatesAsync.Checked = settings.ExecuteFromTemplateBrowserAsync;
+            this.checkBoxShowConsoleOutput.Checked = settings.ConsoleWriteGeneratedDetails;
             this.checkBoxDocumentStyleSettings.Checked = settings.EnableDocumentStyleSettings;
             this.checkBoxLineNumbers.Checked = settings.EnableLineNumbering;
             this.txtTabs.Text = settings.Tabs.ToString();
@@ -262,6 +263,7 @@ namespace MyGeneration
             settings.UserMetaDataFileName = this.txtUserMetaDataFile.Text;
             settings.EnableClipboard = this.checkBoxClipboard.Checked;
             settings.ExecuteFromTemplateBrowserAsync = this.checkBoxRunTemplatesAsync.Checked;
+            settings.ConsoleWriteGeneratedDetails = this.checkBoxShowConsoleOutput.Checked;
             settings.EnableDocumentStyleSettings = this.checkBoxDocumentStyleSettings.Checked;
             settings.EnableLineNumbering = this.checkBoxLineNumbers.Checked;
             settings.Tabs = Convert.ToInt32(this.txtTabs.Text);

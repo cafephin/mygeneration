@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Zeus.UserInterface
 {
@@ -17,7 +18,8 @@ namespace Zeus.UserInterface
 		object Value { get; }
 		void AttachEvent(string eventType, string functionName);
 		bool HasEventHandlers(string eventType);
-		string[] GetEventHandlers(string eventType);
+        string[] GetEventHandlers(string eventType);
+        List<GuiControl> AutoBindingChildControls { get; }
 
 	}
 }

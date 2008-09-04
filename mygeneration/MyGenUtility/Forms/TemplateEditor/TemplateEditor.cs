@@ -2076,6 +2076,11 @@ namespace MyGeneration
                 }
             }
 
+            foreach (string generatedFile in context.Output.SavedFiles)
+            {
+                this.mdi.SendAlert(this, "FileGenerated", generatedFile);
+            }
+
             this.Cursor = Cursors.Default;
         }
         #endregion

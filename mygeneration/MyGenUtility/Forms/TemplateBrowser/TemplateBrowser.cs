@@ -15,6 +15,7 @@ namespace MyGeneration
 {
     public partial class TemplateBrowser : DockContent, IMyGenContent
     {
+        private bool _consoleWriteGeneratedDetails = false;
         private IMyGenerationMDI _mdi;
         private ZeusProcessStatusDelegate _executionCallback;
 
@@ -22,6 +23,7 @@ namespace MyGeneration
         {
             this._mdi = mdi;
             this._executionCallback = new ZeusProcessStatusDelegate(ExecutionCallback);
+            this._consoleWriteGeneratedDetails = DefaultSettings.Instance.ConsoleWriteGeneratedDetails;
             this.DockPanel = mdi.DockPanel;
 
             InitializeComponent();
@@ -67,8 +69,11 @@ namespace MyGeneration
                 }
                 else
                 {
-                    if (this._mdi.Console.DockContent.IsHidden) this._mdi.Console.DockContent.Show(_mdi.DockPanel);
-                    if (!this._mdi.Console.DockContent.IsActivated) this._mdi.Console.DockContent.Activate();
+                    if (_consoleWriteGeneratedDetails)
+                    {
+                        if (this._mdi.Console.DockContent.IsHidden) this._mdi.Console.DockContent.Show(_mdi.DockPanel);
+                        if (!this._mdi.Console.DockContent.IsActivated) this._mdi.Console.DockContent.Activate();
+                    }
 
                     if (args.Message.StartsWith(ZeusProcessManager.GENERATED_FILE_TAG))
                     {
@@ -78,7 +83,7 @@ namespace MyGeneration
                     }
                     else
                     {
-                        this._mdi.WriteConsole(args.Message);
+                        if (_consoleWriteGeneratedDetails) this._mdi.WriteConsole(args.Message);
                     }
                 }
             }
@@ -86,9 +91,11 @@ namespace MyGeneration
 
         private void templateBrowserControl_ExecutionStatusUpdate(bool isRunning, string message)
         {
-            if (this._mdi.Console.DockContent.IsHidden) this._mdi.Console.DockContent.Show(_mdi.DockPanel);
-            if (!this._mdi.Console.DockContent.IsActivated) this._mdi.Console.DockContent.Activate();
-            this._mdi.WriteConsole(message);
+            if (_consoleWriteGeneratedDetails)
+            {
+                if (this._mdi.Console.DockContent.IsHidden) this._mdi.Console.DockContent.Show(_mdi.DockPanel);
+                if (!this._mdi.Console.DockContent.IsActivated) this._mdi.Console.DockContent.Activate();
+            }
 
             if (message.StartsWith(ZeusProcessManager.GENERATED_FILE_TAG))
             {
@@ -98,7 +105,7 @@ namespace MyGeneration
             }
             else
             {
-                this._mdi.WriteConsole(message);
+                if (_consoleWriteGeneratedDetails) this._mdi.WriteConsole(message);
             }
         }
 
@@ -146,6 +153,7 @@ namespace MyGeneration
             DefaultSettings settings = DefaultSettings.Instance;
             if (command.Equals("UpdateDefaultSettings", StringComparison.CurrentCultureIgnoreCase))
             {
+                this._consoleWriteGeneratedDetails = settings.ConsoleWriteGeneratedDetails;
                 bool doRefresh = false;
 
                 if (DefaultSettings.Instance.ExecuteFromTemplateBrowserAsync)

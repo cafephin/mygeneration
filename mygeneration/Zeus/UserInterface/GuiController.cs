@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using MyMeta;
 
 namespace Zeus.UserInterface
 {
@@ -105,14 +106,16 @@ namespace Zeus.UserInterface
 		private bool _forceDisplay = false;
 		private Hashtable _defaults = null;
 		private ArrayList _tabs = new ArrayList();
+        private IZeusContext _context;
 
 		/// <summary>
 		/// Creates a new GuiController object.
 		/// </summary>
-		public GuiController() 
+        public GuiController(IZeusContext context) 
 		{
 			this.Top = Int32.MinValue;
 			this.Left = Int32.MinValue;
+            this._context = context;
 		}
 
 		/// <summary>
@@ -621,5 +624,168 @@ namespace Zeus.UserInterface
 				}
 			}
 		}
+
+        private void BindMyMetaControl(IGuiBindableListControl ctrl)
+        {
+            string parentControlId = ctrl.AutoBindingControlParentID;
+            char entityType = ctrl.BindingTag[0];
+            GuiControl parent = null;
+            if (parentControlId != null && this.controls.ContainsKey(parentControlId))
+            {
+                parent = this[parentControlId];
+
+                if (!parent.AutoBindingChildControls.Contains(ctrl as GuiControl)) parent.AutoBindingChildControls.Add(ctrl as GuiControl);
+            }
+
+            dbRoot mymeta = this._context.Objects["MyMeta"] as dbRoot;
+            if (mymeta.IsConnected)
+            {
+                object entities = null;
+                if (entityType == 'd')
+                {
+                    if (parent == null)
+                    {
+                        entities = mymeta.Databases;
+                    }
+                    else
+                    {
+                        // may address changing connections at some point - not now!
+                        entities = mymeta.Databases;
+                    }
+                }
+                else
+                {
+                    IDatabase db = null;
+
+                    if (parent == null)
+                        db = mymeta.DefaultDatabase;
+                    else
+                    {
+                        if (mymeta.Databases.Count == 1 || string.IsNullOrEmpty(parent.Value as String))
+                        {
+                            db = mymeta.DefaultDatabase;
+                        }
+                        else if (mymeta.Databases[parent.Value] != null)
+                        {
+                            db = mymeta.Databases[parent.Value];
+                        }
+                    }
+
+                    if (db != null)
+                    {
+                        switch (entityType)
+                        {
+                            case 't':
+                                entities = db.Tables;
+                                break;
+                            case 'v':
+                                entities = db.Views;
+                                break;
+                            case 'p':
+                                entities = db.Procedures;
+                                break;
+                        }
+                    }
+                }
+
+                if (entities != null)
+                {
+                    ctrl.BindData(entities);
+                    if (ctrl.Items.Count > 0) ctrl.SelectAtIndex(0);
+                }
+                else
+                {
+                    ctrl.Items.Clear();
+                }
+            }
+        }
+
+        public GuiComboBox AddDatabaseSelector(string id, string tooltip, string parentId)
+        {
+            GuiComboBox combobox = this.AddComboBox(id, tooltip);
+            combobox.AutoBindingControlParentID = parentId;
+            combobox.BindingTag = "database";
+
+            BindMyMetaControl(combobox);
+            return combobox;
+        }
+
+        public GuiComboBox AddTableSelector(string id, string tooltip, string parentId)
+        {
+            GuiComboBox combobox = this.AddComboBox(id, tooltip);
+            combobox.AutoBindingControlParentID = parentId;
+            combobox.BindingTag = "table";
+
+            BindMyMetaControl(combobox);
+            return combobox;
+        }
+
+        public GuiComboBox AddViewSelector(string id, string tooltip, string parentId)
+        {
+            GuiComboBox combobox = this.AddComboBox(id, tooltip);
+            combobox.AutoBindingControlParentID = parentId;
+            combobox.BindingTag = "view";
+
+            BindMyMetaControl(combobox);
+            return combobox;
+        }
+
+        public GuiComboBox AddProcedureSelector(string id, string tooltip, string parentId)
+        {
+            GuiComboBox combobox = this.AddComboBox(id, tooltip);
+            combobox.AutoBindingControlParentID = parentId;
+            combobox.BindingTag = "procedure";
+
+            BindMyMetaControl(combobox);
+            return combobox;
+        }
+
+        public GuiListBox AddDatabaseMultiSelector(string id, string tooltip, string parentId)
+        {
+            GuiListBox listbox = this.AddListBox(id, tooltip);
+            listbox.AutoBindingControlParentID = parentId;
+            listbox.BindingTag = "database";
+
+            BindMyMetaControl(listbox);
+            return listbox;
+        }
+
+        public GuiListBox AddTableMultiSelector(string id, string tooltip, string parentId)
+        {
+            GuiListBox listbox = this.AddListBox(id, tooltip);
+            listbox.AutoBindingControlParentID = parentId;
+            listbox.BindingTag = "table";
+
+            BindMyMetaControl(listbox);
+            return listbox;
+        }
+
+        public GuiListBox AddViewMultiSelector(string id, string tooltip, string parentId)
+        {
+            GuiListBox listbox = this.AddListBox(id, tooltip);
+            listbox.AutoBindingControlParentID = parentId;
+            listbox.BindingTag = "view";
+
+            BindMyMetaControl(listbox);
+            return listbox;
+        }
+
+        public GuiListBox AddProcedureMultiSelector(string id, string tooltip, string parentId)
+        {
+            GuiListBox listbox = this.AddListBox(id, tooltip);
+            listbox.AutoBindingControlParentID = parentId;
+            listbox.BindingTag = "procedure";
+
+            BindMyMetaControl(listbox);
+            return listbox;
+        }
+
+        public void UpdateAutoBinding(GuiControl ctrl)
+        {
+            if (ctrl is IGuiBindableListControl)
+            {
+                BindMyMetaControl(ctrl as IGuiBindableListControl);
+            }
+        }
 	}
 }

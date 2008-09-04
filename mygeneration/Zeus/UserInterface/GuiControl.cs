@@ -24,6 +24,7 @@ namespace Zeus.UserInterface
         private int _tabStripIndex = 0;
         private List<string> _onblurEvents = new List<string>();
         private List<string> _onfocusEvents = new List<string>();
+        private List<GuiControl> _autoBindingChildControls;
         
 
 		/// <summary>
@@ -205,6 +206,19 @@ namespace Zeus.UserInterface
             else
             {
                 return new string[0];
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.Runtime.InteropServices.ComVisible(false)]
+        public List<GuiControl> AutoBindingChildControls
+        {
+            get
+            {
+                if (_autoBindingChildControls == null) _autoBindingChildControls = new List<GuiControl>();
+                return _autoBindingChildControls;
             }
         }
 	}
