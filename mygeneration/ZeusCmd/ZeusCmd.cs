@@ -241,6 +241,25 @@ namespace Zeus
                     }
                 }
             }
+            else if (!string.IsNullOrEmpty(this._argmgr.ProjectItemToRecord) &&
+               !string.IsNullOrEmpty(this._argmgr.PathTemplate))
+            {
+                string item = _argmgr.ProjectItemToRecord;
+                string template = _argmgr.PathTemplate;
+                this._log.Write("Collecting: " + item + " for template " + template);
+                try
+                {
+                    if (!CollectProjectItem(proj, item, template))
+                    {
+                        this._log.Write("Project Item not found: {0}.", item);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    this._log.Write(ex);
+                    this._log.Write("Project Item collection failed for item: {0}.", item);
+                }
+            }
             else if (this._argmgr.ProjectItems.Count > 0)
             {
                 foreach (string item in _argmgr.ProjectItems)
@@ -261,18 +280,18 @@ namespace Zeus
                 }
             }
             else
-			{
-				this._log.Write("Executing: " + proj.Name);
-				try 
-				{
-					proj.Execute(this._argmgr.Timeout, this._log);
-				}
-				catch (Exception ex)
-				{
-					this._log.Write(ex);
-					this._log.Write("Project execution failed.");
-				}
-			}
+            {
+                this._log.Write("Executing: " + proj.Name);
+                try
+                {
+                    proj.Execute(this._argmgr.Timeout, this._log);
+                }
+                catch (Exception ex)
+                {
+                    this._log.Write(ex);
+                    this._log.Write("Project execution failed.");
+                }
+            }
 			this._log.Write("End Project Processing: " + proj.Name);
 		}
 
@@ -319,6 +338,65 @@ namespace Zeus
                                 this._log.Write("[GENERATED_FILE]" + file);
                             }
                         }
+                    }
+                    complete = true;
+                }
+            }
+            return complete;
+        }
+
+        private bool CollectProjectItem(ZeusModule parent, string projectPath, string templatePath)
+        {
+            bool complete = false;
+            int moduleIndex = projectPath.LastIndexOf('/');
+            if (moduleIndex >= 0)
+            {
+                string modulePath = projectPath.Substring(0, moduleIndex),
+                    objectName = projectPath.Substring(moduleIndex + 1);
+
+                ZeusModule m = FindModule(parent, modulePath);
+                if (m != null)
+                {
+                    ZeusTemplate template = new ZeusTemplate(templatePath);
+                    DefaultSettings settings = DefaultSettings.Instance;
+
+                    SavedTemplateInput savedInput = null;
+                    if (m.SavedObjects.Contains(objectName))
+                    {
+                        savedInput = m.SavedObjects[objectName];
+                    }
+                    else
+                    {
+                        savedInput = new SavedTemplateInput();
+                    }
+
+
+                    ZeusContext context = new ZeusContext();
+                    context.Log = this._log;
+
+                    savedInput.TemplateUniqueID = template.UniqueID;
+                    savedInput.TemplatePath = template.FilePath + template.FileName;
+
+                    settings.PopulateZeusContext(context);
+                    if (m != null)
+                    {
+                        m.PopulateZeusContext(context);
+                        m.OverrideSavedData(savedInput.InputItems);
+                    }
+
+                    if (template.Collect(context, settings.ScriptTimeout, savedInput.InputItems))
+                    {
+                        //this._lastRecordedSelectedNode = this.SelectedTemplate;
+                    }
+
+
+                    if (this._argmgr.InternalUseOnly)
+                    {
+                        this._log.Write("[BEGIN_RECORDING]");
+
+                        this._log.Write(savedInput.XML);
+
+                        this._log.Write("[END_RECORDING]");
                     }
                     complete = true;
                 }

@@ -44,6 +44,7 @@ namespace Zeus
         private string _metaDatabase2 = null;
         private string _metaDataFile2 = null;
         private string _metaDataFileMerged = null;
+        private string _projectItemToRecord = null;
         private List<string> _moduleNames = new List<string>();
         private List<string> _projectItems = new List<string>();
 		private ZeusTemplate _template = null;
@@ -211,6 +212,19 @@ namespace Zeus
 							this._errorMessage = "Invalid switch usage: " + arg;
 						}
                         break;
+                    case "-rti":
+                    case "-recordtemplateinstance":
+                        if (numargs > (i + 1))
+                        {
+                            this._projectItemToRecord = args[++i];
+                            this._mode = ProcessMode.Project;
+                        }
+                        else
+                        {
+                            this._valid = false;
+                            this._errorMessage = "Invalid switch usage: " + arg;
+                        }
+                        break;
                     case "-ti":
                     case "-templateinstance":
                         if (numargs > (i + 1))
@@ -342,6 +356,21 @@ namespace Zeus
 							this._errorMessage = ex.Message;
 						}
 					}
+
+
+                    if (this._pathTemplate != null)
+                    {
+                        try
+                        {
+                            this._template = new ZeusTemplate(this._pathTemplate);
+                        }
+                        catch (Exception ex)
+                        {
+                            this._template = null;
+                            this._valid = false;
+                            this._errorMessage = ex.Message;
+                        }
+                    }
 				}
 				else if (this._mode == ProcessMode.Template) 
 				{
@@ -502,7 +531,10 @@ namespace Zeus
         { get { return _metaDatabase2; } }
 
         public string MetaFileMerged
-		{ get { return _metaDataFileMerged; } }
+        { get { return _metaDataFileMerged; } }
+
+        public string ProjectItemToRecord
+        { get { return _projectItemToRecord; } }
 
 	}
 }

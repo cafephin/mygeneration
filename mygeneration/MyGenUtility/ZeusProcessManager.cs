@@ -64,6 +64,14 @@ namespace MyGeneration
             return zp.ID;
         }
 
+        public static Guid RecordProjectItem(string filename, string instancePath, string templateFilename, ZeusProcessStatusDelegate callback)
+        {
+            ZeusProcess zp = new ZeusProcess(ZeusProcessType.RecordProjectItem, callback, filename, instancePath, templateFilename);
+            processQueue.Enqueue(zp);
+            Start();
+            return zp.ID;
+        }
+
         public static void Start()
         {
             if ((monitorThread == null) ||
@@ -147,7 +155,7 @@ namespace MyGeneration
         ExecuteProject,
         ExecuteProjectModule,
         ExecuteProjectItem,
-
+        RecordProjectItem
     }
 
     public class ZeusProcessStatusEventArgs : EventArgs
@@ -239,6 +247,10 @@ namespace MyGeneration
                 else if (type == ZeusProcessType.ExecuteProjectItem)
                 {
                     cmdArgs += "-p \"" + args[0] + "\" -ti \"" + args[1] + "\"";
+                }
+                else if (type == ZeusProcessType.RecordProjectItem)
+                {
+                    cmdArgs += "-p \"" + args[0] + "\" -t \"" + args[2] + "\" -rti \"" + args[1] + "\"";
                 }
                 if (!string.IsNullOrEmpty(cmdArgs)) si.Arguments = cmdArgs;
             }

@@ -121,6 +121,19 @@ namespace Zeus
         }
 
 		#region Xml Related Methods
+        public string XML
+        {
+            get
+            {
+                System.IO.MemoryStream ms = new System.IO.MemoryStream();
+                XmlTextWriter xml = new XmlTextWriter(ms, Encoding.UTF8);
+                BuildXML(xml);
+                ms.Position = 0;
+                System.IO.StreamReader reader = new System.IO.StreamReader(ms);
+                return reader.ReadToEnd();
+            }
+        }
+
 		public void BuildXML(XmlTextWriter xml) 
 		{
 			xml.WriteStartElement("obj");
@@ -176,7 +189,6 @@ namespace Zeus
 			return tagName;
 		}
 		#endregion
-
 
 		public void Execute(int timeout, ILog log)
 		{
