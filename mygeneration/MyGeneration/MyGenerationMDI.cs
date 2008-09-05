@@ -1307,6 +1307,15 @@ namespace MyGeneration
             {
                 return BrowseOleDbConnectionString(args[0].ToString());
             }
+            else if (function.Equals("executionqueuestart", StringComparison.CurrentCultureIgnoreCase))
+            {
+                this.toolStripStatusQueue.Visible = true;
+            }
+            else if (function.Equals("executionqueueupdate", StringComparison.CurrentCultureIgnoreCase))
+            {
+                if (ZeusProcessManager.IsDormant)
+                    this.toolStripStatusQueue.Visible = false;
+            }
             else if (function.Equals("showerrordetail", StringComparison.CurrentCultureIgnoreCase) &&
                 args.Length >= 1)
             {

@@ -120,10 +120,26 @@
   <metadata name="statusStripMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>270, 17</value>
   </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="toolStripStatusQueue.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALEwAA
+        CxMBAJqcGAAAAiBJREFUOE+lk91LU2Ecx49CdBX2H9hl/0KXQRB1JUoXIyxjJJZeiFMhlOFQA3M4X2g5
+        cUs3z1bQXKMpW76c2sagmdXKkjSn0Ua5uVpzOD3b+vY8R87ZnC8FPvDcPC+f38v39y0CwBxrmecSqDaF
+        YPJFzxJYCQXqXEts/aCHrVDZ2Bq1ndVYuHlyfpreFW6mxryOta0sNLPrUE98hdK6hPvcN4z6N2B8s4me
+        6TAUo/OQtT9B35iTghie55lUKiXABMCXzSwCvzKwLvzGy9A2XMFt2Ba3MPYuiWF/Ar3uODpcMdzQzOC8
+        vIP8w0kxEwnwOZGFP5KGO7yD7skgbj3wobzNhsouB5of+tD7PIRWRwxXu5xQDRjb9gGCyRxA+yKMfvt7
+        8OmskOaI4xVqe+zoIxCFNYLLDTr0DxnP7CmBliFmQEu4Yw5g8NlbToxksHuhGuHQOB6F7N4U5I3ttJRc
+        Dz7EM3sAtAdlSqvwSNzXlXoMeeO4qV/ExWuKXYAoo9ywgirdR1QOvIZM7caVTifNQALw6Qxzofou6Pu6
+        Rz9wrqJuF3CQtnlnpw7L4FJV038BpACFPaht6d4PGObI0LCf8NizKlzmqcAVqmCwjAtS5iJ4Inga+Imp
+        leQ/56BTa6YBiiVAiv/D3DatwjIXxcIGj5m1IyfRQD6ekAYpv0km73eobMvQHu4FGrk070/xgSoQN4K4
+        EcSNIG4EcaMoZ1Ghan8BhnfWGHUDRswAAAAASUVORK5CYII=
+</value>
+  </data>
   <metadata name="menuStripMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>398, 17</value>
   </metadata>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="newToolStripMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAPCAYAAADtc08vAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8

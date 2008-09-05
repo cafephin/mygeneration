@@ -40,9 +40,11 @@ namespace MyGeneration
             switch (operation)
             {
                 case TemplateOperations.Execute:
+                    this._mdi.PerformMdiFuntion(this, "ExecutionQueueStart");
                     ZeusProcessManager.ExecuteTemplate(template.FullFileName, _executionCallback);
                     break;
                 case TemplateOperations.ExecuteLoadedInput:
+                    this._mdi.PerformMdiFuntion(this, "ExecutionQueueStart");
                     ZeusProcessManager.ExecuteSavedInput(input.FilePath, _executionCallback);
                     break;
                 case TemplateOperations.SaveInput:
@@ -52,6 +54,7 @@ namespace MyGeneration
                     saveFileDialog.RestoreDirectory = true;
                     if (saveFileDialog.ShowDialog() == DialogResult.OK)
                     {
+                        this._mdi.PerformMdiFuntion(this, "ExecutionQueueStart");
                         ZeusProcessManager.RecordTemplateInput(template.FullFileName, saveFileDialog.FileName, _executionCallback);
                     }
                     break;
@@ -84,6 +87,11 @@ namespace MyGeneration
                     else
                     {
                         if (_consoleWriteGeneratedDetails) this._mdi.WriteConsole(args.Message);
+                    }
+
+                    if (!args.IsRunning)
+                    {
+                        this._mdi.PerformMdiFuntion(this, "ExecutionQueueUpdate");
                     }
                 }
             }

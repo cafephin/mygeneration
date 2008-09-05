@@ -30,6 +30,7 @@ namespace MyGeneration
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MyGenerationMDI));
             this.statusStripMain = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusQueue = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStripMain = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -65,17 +66,28 @@ namespace MyGeneration
             this.toolStripButtonErrors = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonConsole = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonGenFiles = new System.Windows.Forms.ToolStripButton();
+            this.statusStripMain.SuspendLayout();
             this.menuStripMain.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStripMain
             // 
+            this.statusStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusQueue});
             this.statusStripMain.Location = new System.Drawing.Point(0, 544);
             this.statusStripMain.Name = "statusStripMain";
             this.statusStripMain.Padding = new System.Windows.Forms.Padding(1, 0, 10, 0);
             this.statusStripMain.Size = new System.Drawing.Size(792, 22);
             this.statusStripMain.TabIndex = 2;
+            // 
+            // toolStripStatusQueue
+            // 
+            this.toolStripStatusQueue.Image = ((System.Drawing.Image)(resources.GetObject("toolStripStatusQueue.Image")));
+            this.toolStripStatusQueue.Name = "toolStripStatusQueue";
+            this.toolStripStatusQueue.Size = new System.Drawing.Size(16, 17);
+            this.toolStripStatusQueue.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolStripStatusQueue.Visible = false;
             // 
             // menuStripMain
             // 
@@ -441,6 +453,8 @@ namespace MyGeneration
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.MyGenerationMDI_DragDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.MyGenerationMDI_DragEnter);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MyGenerationMDI_FormClosing);
+            this.statusStripMain.ResumeLayout(false);
+            this.statusStripMain.PerformLayout();
             this.menuStripMain.ResumeLayout(false);
             this.menuStripMain.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
@@ -488,5 +502,6 @@ namespace MyGeneration
         private System.Windows.Forms.ToolStripButton toolStripButtonOpenGeneratedOutputFolder;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
         private System.Windows.Forms.ToolStripButton toolStripButtonGenFiles;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusQueue;
     }
 }

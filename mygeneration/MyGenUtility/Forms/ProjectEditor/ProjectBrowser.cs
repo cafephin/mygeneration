@@ -150,12 +150,14 @@ namespace MyGeneration
             }
         }
 
+        private void projectBrowserControl1_ExecutionStarted(object sender, EventArgs e)
+        {
+            this._mdi.PerformMdiFuntion(this, "ExecutionQueueStart");
+        }
+
         private void projectBrowserControl1_ErrorsOccurred(object sender, EventArgs e)
         {
-            if (sender is Exception)
-            {
-                this._mdi.ErrorsOccurred(sender as Exception);
-            }
+            this._mdi.ErrorsOccurred(sender as Exception);
         }
 
         private void projectBrowserControl1_ExecutionStatusUpdate(bool isRunning, string message)
@@ -173,6 +175,11 @@ namespace MyGeneration
             else
             {
                 if (_consoleWriteGeneratedDetails) this._mdi.WriteConsole(message);
+            }
+
+            if (!isRunning)
+            {
+                this._mdi.PerformMdiFuntion(this, "ExecutionQueueUpdate");
             }
 
         }

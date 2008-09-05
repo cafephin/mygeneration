@@ -33,6 +33,7 @@ namespace MyGeneration
         public event TextChangedEventHandler TabTextChanged;
         public event ProjectExecutionStatusHandler ExecutionStatusUpdate;
         public event EventHandler ErrorsOccurred;
+        public event EventHandler ExecutionStarted;
 
         public ProjectBrowserControl()
         {
@@ -45,6 +46,13 @@ namespace MyGeneration
             if (ExecutionStatusUpdate != null)
             {
                 ExecutionStatusUpdate(isRunning, message);
+            }
+        }
+        protected void OnExecutionStarted()
+        {
+            if (ExecutionStarted != null)
+            {
+                ExecutionStarted(this, EventArgs.Empty);
             }
         }
 
@@ -530,11 +538,13 @@ namespace MyGeneration
 
             if (node is ProjectTreeNode)
             {
+                OnExecutionStarted();
                 ZeusProcessManager.ExecuteProject(proj.FilePath, ExecutionCallback);
             }
             else if (node is ModuleTreeNode)
             {
                 ZeusModule module = node.Tag as ZeusModule;
+                OnExecutionStarted();
                 ZeusProcessManager.ExecuteModule(proj.FilePath, module.ProjectPath, ExecutionCallback);
                 //module.Execute(settings.ScriptTimeout, log);
             }
@@ -542,6 +552,7 @@ namespace MyGeneration
             {
                 SavedTemplateInput savedinput = node.Tag as SavedTemplateInput;
                 ZeusModule module = node.Parent.Tag as ZeusModule;
+                OnExecutionStarted();
                 ZeusProcessManager.ExecuteProjectItem(proj.FilePath, module.ProjectPath + "/" + savedinput.SavedObjectName, ExecutionCallback);
                 //savedinput.Execute(settings.ScriptTimeout, log);
             }
@@ -559,7 +570,9 @@ namespace MyGeneration
                 {
                     this.OnExecutionStatusUpdate(args.IsRunning, args.Message);
                     if (!args.IsRunning)
+                    {
                         Cursor.Current = Cursors.Default;
+                    }
                 }
             }
         }
