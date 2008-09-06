@@ -39,20 +39,43 @@ namespace MyMeta.Firebird
 			}
 		}
 
+        public override int CharacterOctetLength
+        {
+            get
+            {
+                if (this.DataTypeName.StartsWith("int", StringComparison.CurrentCultureIgnoreCase) ||
+                    this.DataTypeName.StartsWith("smallint", StringComparison.CurrentCultureIgnoreCase) ||
+                    this.DataTypeName.StartsWith("double", StringComparison.CurrentCultureIgnoreCase) ||
+                    this.DataTypeName.StartsWith("float", StringComparison.CurrentCultureIgnoreCase) ||
+                    this.DataTypeName.StartsWith("bigint", StringComparison.CurrentCultureIgnoreCase) ||
+                    this.DataTypeName.StartsWith("blob", StringComparison.CurrentCultureIgnoreCase))
+				{
+                    return (int)this._row["COLUMN_SIZE"];
+                }
+                else
+                {
+                    return (int)this.CharacterOctetLength;
+                }
+            }
+        }
+
 		override public System.Int32 CharacterMaxLength
 		{
 			get
 			{
-				switch(DataTypeName)
-				{
-					case "VARCHAR":
-					case "CHAR":
-//						return (int)this._row["COLUMN_SIZE"];
-						return this.CharacterOctetLength;
-
-					default:
-						return this.GetInt32(Columns.f_MaxLength);
-				}
+                if (DataTypeName.StartsWith("blob", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    return (int)this._row["COLUMN_SIZE"];
+                }
+                else if (DataTypeName.StartsWith("char", StringComparison.CurrentCultureIgnoreCase) ||
+                    DataTypeName.StartsWith("varchar", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    return this.CharacterOctetLength;
+                }
+                else
+                {
+                    return 0;
+                }
 			}
 		}
 
@@ -60,21 +83,19 @@ namespace MyMeta.Firebird
 		{
 			get
 			{
-				if(this.DataTypeName == "NUMERIC")
-				{
-					switch((int)this._row["COLUMN_SIZE"])
-					{
-						case 2:
-							return 4;
-						case 4:
-							return 9;
-						case 8:
-							return 15;
-						default:
-							return 18;
-					}
-				}
-				return this.GetInt32(Columns.f_NumericScale);
+                if (this.DataTypeName.StartsWith("int", StringComparison.CurrentCultureIgnoreCase) ||
+                    this.DataTypeName.StartsWith("smallint", StringComparison.CurrentCultureIgnoreCase) ||
+                    this.DataTypeName.StartsWith("double", StringComparison.CurrentCultureIgnoreCase) ||
+                    this.DataTypeName.StartsWith("float", StringComparison.CurrentCultureIgnoreCase) ||
+                    this.DataTypeName.StartsWith("bigint", StringComparison.CurrentCultureIgnoreCase) ||
+                    this.DataTypeName.StartsWith("blob", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    return (int)this._row["COLUMN_SIZE"];
+                }
+                else
+                {
+                    return this.GetInt32(Columns.f_NumericScale);
+                }
 			}
 		}
 
