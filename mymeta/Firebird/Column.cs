@@ -48,7 +48,8 @@ namespace MyMeta.Firebird
                     this.DataTypeName.StartsWith("double", StringComparison.CurrentCultureIgnoreCase) ||
                     this.DataTypeName.StartsWith("float", StringComparison.CurrentCultureIgnoreCase) ||
                     this.DataTypeName.StartsWith("bigint", StringComparison.CurrentCultureIgnoreCase) ||
-                    this.DataTypeName.StartsWith("blob", StringComparison.CurrentCultureIgnoreCase))
+                    this.DataTypeName.StartsWith("blob", StringComparison.CurrentCultureIgnoreCase) ||
+                    this.DataTypeName.StartsWith("timestamp", StringComparison.CurrentCultureIgnoreCase))
 				{
                     return (int)this._row["COLUMN_SIZE"];
                 }
@@ -88,7 +89,8 @@ namespace MyMeta.Firebird
                     this.DataTypeName.StartsWith("double", StringComparison.CurrentCultureIgnoreCase) ||
                     this.DataTypeName.StartsWith("float", StringComparison.CurrentCultureIgnoreCase) ||
                     this.DataTypeName.StartsWith("bigint", StringComparison.CurrentCultureIgnoreCase) ||
-                    this.DataTypeName.StartsWith("blob", StringComparison.CurrentCultureIgnoreCase))
+                    this.DataTypeName.StartsWith("blob", StringComparison.CurrentCultureIgnoreCase) ||
+                    this.DataTypeName.StartsWith("timestamp", StringComparison.CurrentCultureIgnoreCase))
                 {
                     return (int)this._row["COLUMN_SIZE"];
                 }
