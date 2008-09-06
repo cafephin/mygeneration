@@ -54,7 +54,7 @@ namespace MyMeta.Firebird
                 }
                 else
                 {
-                    return (int)this.CharacterOctetLength;
+                    return (int)base.CharacterOctetLength;
                 }
             }
         }
