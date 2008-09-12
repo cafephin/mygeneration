@@ -36,12 +36,12 @@ namespace MyMeta.Firebird
                         allFkData.Columns.Add("DEFERRABILITY");
 
                         mappingHash = new NameValueCollection();
-                        mappingHash["PK_TABLE_CATALOG"] = "TABLE_CATALOG";
-                        mappingHash["PK_TABLE_SCHEMA"] = "TABLE_SCHEMA";
-                        mappingHash["PK_TABLE_NAME"] = "TABLE_NAME";
-                        mappingHash["FK_TABLE_CATALOG"] = "REFERENCED_TABLE_CATALOG";
-                        mappingHash["FK_TABLE_SCHEMA"] = "REFERENCED_TABLE_SCHEMA";
-                        mappingHash["FK_TABLE_NAME"] = "REFERENCED_TABLE_NAME";
+                        mappingHash["FK_TABLE_CATALOG"] = "TABLE_CATALOG";
+                        mappingHash["FK_TABLE_SCHEMA"] = "TABLE_SCHEMA";
+                        mappingHash["FK_TABLE_NAME"] = "TABLE_NAME";
+                        mappingHash["PK_TABLE_CATALOG"] = "REFERENCED_TABLE_CATALOG";
+                        mappingHash["PK_TABLE_SCHEMA"] = "REFERENCED_TABLE_SCHEMA";
+                        mappingHash["PK_TABLE_NAME"] = "REFERENCED_TABLE_NAME";
                         mappingHash["ORDINAL"] = "ORDINAL_POSITION";
                         mappingHash["UPDATE_RULE"] = "UPDATE_RULE";
                         mappingHash["DELETE_RULE"] = "DELETE_RULE";
