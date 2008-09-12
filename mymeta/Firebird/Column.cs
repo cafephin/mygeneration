@@ -22,23 +22,6 @@ namespace MyMeta.Firebird
 			return c;
 		}
 
-		override public System.Boolean IsAutoKey
-		{
-			get
-			{
-				if(null != this.Table)
-				{
-					if(this.Table.Properties.ContainsKey("GEN:I:" + this.Name) ||
-					   this.Table.Properties.ContainsKey("GEN:I:T:" + this.Name))
-					{
-						return true;
-					}
-				}
-
-				return false;
-			}
-		}
-
         public override int CharacterOctetLength
         {
             get

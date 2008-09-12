@@ -1,3 +1,14 @@
+2008.09.12- MyGeneration 1.3.0.8
+- More Firebird fixes (Blob, IsAutoKey support and FK fix)
+- While templates are executing in a background process, we have a little progress arrow that shows up. If you choose, in the default settings you can choose to watch all of the output spit through the console.
+- Huge GUI api enhancement that allows one line Table, View, Proc dropdowns/listboxes. Looks like:
+	Finished up the generated files form and also added a great feature to the GuiController - sample code below:
+	ui.AddDatabaseSelector("dbSelection", "Pick a database", null);
+	ui.AddTableMultiSelector("tableSelection", "Pick a table", "dbSelection");
+	ui.AddViewSelector("viewSelection", "Pick a view", "dbSelection");
+	ui.AddProcedureSelector("procSelection", "Pick a procedure", "dbSelection");
+- Added a "Recently Generated Files" window.
+
 2008.09.01 - MyGeneration 1.3.0.7
 - Added Application Updates dialog that hits sourceforge. Lists all builds available, current as yellow, older than current as gray. It's multithreaded so that things can be canced.
 - Removed 5 second sleep from MyMeta browser (was there for thread testing - oops, left it in)

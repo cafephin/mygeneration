@@ -60,31 +60,10 @@ namespace MyGeneration.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap dev01tiny {
-            get {
-                object obj = ResourceManager.GetObject("dev01tiny", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap dev02tiny {
-            get {
-                object obj = ResourceManager.GetObject("dev02tiny", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
         internal static System.Drawing.Icon MyGeneration {
             get {
                 object obj = ResourceManager.GetObject("MyGeneration", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap mygenlogo1 {
-            get {
-                object obj = ResourceManager.GetObject("mygenlogo1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

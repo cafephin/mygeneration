@@ -117,6 +117,15 @@ namespace MyGeneration
             }
         }
 
+        public static int ProcessCount
+        {
+            get
+            {
+                if (monitorThread != null) return processQueue.Count;
+                else return 0;
+            }
+        }
+
         public static bool IsDormant
         {
             get

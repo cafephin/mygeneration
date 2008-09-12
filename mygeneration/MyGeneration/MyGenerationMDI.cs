@@ -61,6 +61,7 @@ namespace MyGeneration
 
         private string startupPath;
         private string[] startupFiles;
+        private int indexImgAnimate = -1;
 
         public MyGenerationMDI(string startupPath, params string[] args)
         {
@@ -309,6 +310,27 @@ namespace MyGeneration
                 }
                 if (!foundDoc) ToolStripManager.RevertMerge(toolStrip1);
             }
+        }
+
+        private void timerImgAnimate_Tick(object sender, EventArgs e)
+        {
+            indexImgAnimate = (indexImgAnimate >= 3) ? 0 : (indexImgAnimate + 1);
+            switch (indexImgAnimate)
+            {
+                case 0:
+                    this.toolStripStatusQueue.Image = Zeus.SharedResources.Refresh16x16_1;
+                    break;
+                case 1:
+                    this.toolStripStatusQueue.Image = Zeus.SharedResources.Refresh16x16_2;
+                    break;
+                case 2:
+                    this.toolStripStatusQueue.Image = Zeus.SharedResources.Refresh16x16_3;
+                    break;
+                case 3:
+                    this.toolStripStatusQueue.Image = Zeus.SharedResources.Refresh16x16_4;
+                    break;
+            }
+            toolStripStatusQueue.Invalidate();
         }
 
         private void PickFiles()
@@ -1310,11 +1332,20 @@ namespace MyGeneration
             else if (function.Equals("executionqueuestart", StringComparison.CurrentCultureIgnoreCase))
             {
                 this.toolStripStatusQueue.Visible = true;
+                timerImgAnimate.Start();
             }
             else if (function.Equals("executionqueueupdate", StringComparison.CurrentCultureIgnoreCase))
             {
-                if (ZeusProcessManager.IsDormant)
+                if (ZeusProcessManager.ProcessCount == 0)
+                {
+                    timerImgAnimate.Stop();
                     this.toolStripStatusQueue.Visible = false;
+                }
+                else if (ZeusProcessManager.ProcessCount > 0)
+                {
+                    this.toolStripStatusQueue.Visible = true;
+                    timerImgAnimate.Start();
+                }
             }
             else if (function.Equals("showerrordetail", StringComparison.CurrentCultureIgnoreCase) &&
                 args.Length >= 1)
@@ -1475,5 +1506,6 @@ namespace MyGeneration
             catch { }
         }
         #endregion
+
     }
 }

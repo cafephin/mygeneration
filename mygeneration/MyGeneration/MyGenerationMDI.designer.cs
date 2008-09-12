@@ -28,6 +28,7 @@ namespace MyGeneration
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MyGenerationMDI));
             this.statusStripMain = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusQueue = new System.Windows.Forms.ToolStripStatusLabel();
@@ -66,6 +67,7 @@ namespace MyGeneration
             this.toolStripButtonErrors = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonConsole = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonGenFiles = new System.Windows.Forms.ToolStripButton();
+            this.timerImgAnimate = new System.Windows.Forms.Timer(this.components);
             this.statusStripMain.SuspendLayout();
             this.menuStripMain.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -87,6 +89,7 @@ namespace MyGeneration
             this.toolStripStatusQueue.Name = "toolStripStatusQueue";
             this.toolStripStatusQueue.Size = new System.Drawing.Size(16, 17);
             this.toolStripStatusQueue.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolStripStatusQueue.ToolTipText = "Background Processes Are Running...";
             this.toolStripStatusQueue.Visible = false;
             // 
             // menuStripMain
@@ -434,6 +437,11 @@ namespace MyGeneration
             this.toolStripButtonGenFiles.ToolTipText = "Recently Generated Files";
             this.toolStripButtonGenFiles.Click += new System.EventHandler(this.toolStripButtonGenFiles_Click);
             // 
+            // timerImgAnimate
+            // 
+            this.timerImgAnimate.Interval = 75;
+            this.timerImgAnimate.Tick += new System.EventHandler(this.timerImgAnimate_Tick);
+            // 
             // MyGenerationMDI
             // 
             this.AllowDrop = true;
@@ -503,5 +511,6 @@ namespace MyGeneration
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
         private System.Windows.Forms.ToolStripButton toolStripButtonGenFiles;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusQueue;
+        private System.Windows.Forms.Timer timerImgAnimate;
     }
 }

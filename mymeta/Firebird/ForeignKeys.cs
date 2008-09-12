@@ -100,8 +100,8 @@ namespace MyMeta.Firebird
 
                         key = this.GetByName(keyName);
 
-                        key.AddForeignColumn(null, null, (string)row["TABLE_NAME"], (string)row["COLUMN_NAME"], true);
-                        key.AddForeignColumn(null, null, (string)row["REFERENCED_TABLE_NAME"], (string)row["REFERENCED_COLUMN_NAME"], false);
+                        key.AddForeignColumn(null, null, (string)row["TABLE_NAME"], (string)row["COLUMN_NAME"], false);
+                        key.AddForeignColumn(null, null, (string)row["REFERENCED_TABLE_NAME"], (string)row["REFERENCED_COLUMN_NAME"], true);
                     }
                 }
             }

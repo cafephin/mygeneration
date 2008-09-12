@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
 using FirebirdSql.Data.FirebirdClient;
 
@@ -17,7 +18,6 @@ namespace MyMeta.Firebird
 
 		internal DataColumn f_TypeName			= null;
 		internal DataColumn f_TypeNameComplete	= null;
-		internal DataColumn f_AutoKey			= null;
 
 		override internal void LoadForTable()
 		{
@@ -25,7 +25,12 @@ namespace MyMeta.Firebird
 			{
 				FbConnection cn = new FirebirdSql.Data.FirebirdClient.FbConnection(this._dbRoot.ConnectionString);
 				cn.Open();
-				DataTable metaData = cn.GetSchema("Columns", new string[] {null, null, this.Table.Name});
+                DataTable metaData = cn.GetSchema("Columns", new string[] { null, null, this.Table.Name });
+
+                DataColumn c;
+                if (!metaData.Columns.Contains("IS_AUTO_KEY")) { c = metaData.Columns.Add("IS_AUTO_KEY", typeof(Boolean)); c.DefaultValue = false; }
+                if (!metaData.Columns.Contains("AUTO_KEY_SEED")) { c = metaData.Columns.Add("AUTO_KEY_SEED"); c.DefaultValue = 0; }
+                if (!metaData.Columns.Contains("AUTO_KEY_INCREMENT")) { c = metaData.Columns.Add("AUTO_KEY_INCREMENT"); c.DefaultValue = 0; }
 
 				PopulateArray(metaData);
 				LoadExtraData(cn, this.Table.Name, "T");
@@ -46,7 +51,7 @@ namespace MyMeta.Firebird
 
 				DataTable metaData = cn.GetSchema("Columns", new string[] {null, null, this.View.Name});
 
-				PopulateArray(metaData);
+                PopulateArray(metaData);
 				LoadExtraData(cn, this.View.Name, "V");
 				cn.Close();				
 			}
@@ -71,9 +76,57 @@ namespace MyMeta.Firebird
 				}
 				catch {}
 
-				string select = "select r.rdb$field_name, f.rdb$field_scale AS SCALE, f.rdb$computed_source AS IsComputed, f.rdb$field_type as FTYPE, f.rdb$field_sub_type AS SUBTYPE, f.rdb$dimensions AS DIM from rdb$relation_fields r, rdb$types t, rdb$fields f where r.rdb$relation_name='" + name + "' and f.rdb$field_name=r.rdb$field_source and t.rdb$field_name='RDB$FIELD_TYPE' and f.rdb$field_type=t.rdb$type order by r.rdb$field_position;";
+				// AutoKey Data
+                Dictionary<string, int[]> autoKeyFields = new Dictionary<string, int[]>();
+                DataTable triggers = cn.GetSchema("Triggers", new string[] {null, null, name});
+                foreach (DataRow row in triggers.Rows)
+                {
+                    int isSystemTrigger = Convert.ToInt32(row["IS_SYSTEM_TRIGGER"]);
+                    int isInactive = Convert.ToInt32(row["IS_INACTIVE"]);
+                    int triggerType = Convert.ToInt32(row["TRIGGER_TYPE"]);
 
-				// Column Data
+                    if ((isSystemTrigger == 0) && (isInactive == 0) && (triggerType == 1))
+                    {
+                        string source = row["SOURCE"].ToString();
+                        int end = 0;
+                        do
+                        {
+                            string field = null;
+                            int tmp, increment = 1, seed = 0;
+
+                            end = source.IndexOf("gen_id(", end, StringComparison.CurrentCultureIgnoreCase);
+                            if (end >= 0)
+                            {
+                                string s = source.Substring(0, end);
+                                int start = s.LastIndexOf(".");
+                                if (start >= 0 && start < end)
+                                {
+                                    field = s.Substring(start).Trim(' ', '.', '=').ToUpper();
+                                }
+
+                                int end2 = source.IndexOf(")", end);
+                                string s2 = source.Substring(0, end2);
+                                int start2 = s2.LastIndexOf(",");
+                                if (start2 >= 0 && start2 < end2)
+                                {
+                                    if (int.TryParse(s2.Substring(start2 + 1).Trim(' ', ','), out tmp))
+                                        increment = tmp;
+                                }
+
+                                if (field != null)
+                                {
+                                    autoKeyFields[field] = new int[] { increment, seed };
+                                }
+
+                                end += 7;
+                            }
+                        } while (end != -1);
+                    }
+                }
+
+                string select = "select r.rdb$field_name, f.rdb$field_scale AS SCALE, f.rdb$computed_source AS IsComputed, f.rdb$field_type as FTYPE, f.rdb$field_sub_type AS SUBTYPE, f.rdb$dimensions AS DIM from rdb$relation_fields r, rdb$types t, rdb$fields f where r.rdb$relation_name='" + name + "' and f.rdb$field_name=r.rdb$field_source and t.rdb$field_name='RDB$FIELD_TYPE' and f.rdb$field_type=t.rdb$type order by r.rdb$field_position;";
+
+                // Column Data
 				FbDataAdapter adapter = new FbDataAdapter(select, cn);
 				DataTable dataTable = new DataTable();
 				adapter.Fill(dataTable);
@@ -108,7 +161,12 @@ namespace MyMeta.Firebird
 					for( int index = 0; index < count; index++)
 					{
 						c = (Column)this[index];
-
+                        if (autoKeyFields.ContainsKey(c.Name.ToUpper()))
+                        {
+                            c._row["IS_AUTO_KEY"] = true;
+                            c._row["AUTO_KEY_INCREMENT"] = autoKeyFields[c.Name][0];
+                            c._row["AUTO_KEY_SEED"] = autoKeyFields[c.Name][1];
+                        }
 						if(!c._row.IsNull("DOMAIN_NAME"))
 						{
 							// Special Hack, if there is a domain 
