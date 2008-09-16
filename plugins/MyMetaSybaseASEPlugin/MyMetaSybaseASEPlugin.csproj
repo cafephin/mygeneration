@@ -4,7 +4,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{33C81FD4-E4A7-4D18-96FC-89EE447004EB}</ProjectGuid>
+    <ProjectGuid>{FED65D0E-038D-4523-A9B4-B4F009778E05}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MyMeta.Plugins</RootNamespace>
@@ -52,7 +52,6 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="VistaDB.NET20, Version=3.20.1.33, Culture=neutral, PublicKeyToken=dfc935afe2125461, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -63,7 +62,6 @@
       <Project>{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}</Project>
       <Name>MyMeta</Name>
     </ProjectReference>
-    <Content Include="Readme.txt" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">

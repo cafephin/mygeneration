@@ -5,10 +5,6 @@ using System.Text;
 using System.Data;
 using MyMeta;
 
-using VistaDB;
-using VistaDB.DDA;
-using VistaDB.Provider;
-
 namespace MyMeta.Plugins
 {
     public class SybaseASEPlugin : IMyMetaPlugin
@@ -77,7 +73,8 @@ DSURL='file://c:\sybase\ini\sql.ini?SQL_MIDOFF_OPC1';Database=myDataBase; UID=my
             {
                 if (IsIntialized)
 				{
-                    VistaDBConnection cn = new VistaDBConnection(this.context.ConnectionString);
+                    IDbConnection cn = null;
+                    //VistaDBConnection cn = new VistaDBConnection(this.context.ConnectionString);
 					return cn as IDbConnection;
 				}
                 else
@@ -98,6 +95,7 @@ DSURL='file://c:\sybase\ini\sql.ini?SQL_MIDOFF_OPC1';Database=myDataBase; UID=my
             get
             {
 				DataTable metaData = new DataTable();
+                /*
 				IVistaDBDatabase db = null;
 
 				try
@@ -116,7 +114,7 @@ DSURL='file://c:\sybase\ini\sql.ini?SQL_MIDOFF_OPC1';Database=myDataBase; UID=my
 				finally
 				{
 					if(db != null) db.Close();
-				}
+				}*/
 
 				return metaData;
             }
@@ -125,7 +123,7 @@ DSURL='file://c:\sybase\ini\sql.ini?SQL_MIDOFF_OPC1';Database=myDataBase; UID=my
         DataTable IMyMetaPlugin.GetTables(string database)
         {
 			DataTable metaData = new DataTable();
-			IVistaDBDatabase db = null;
+			/*IVistaDBDatabase db = null;
 
 			try
 			{
@@ -150,7 +148,7 @@ DSURL='file://c:\sybase\ini\sql.ini?SQL_MIDOFF_OPC1';Database=myDataBase; UID=my
 			finally
 			{
 				if(db != null) db.Close();
-			}
+			}*/
 
 			return metaData;
         }
@@ -160,7 +158,7 @@ DSURL='file://c:\sybase\ini\sql.ini?SQL_MIDOFF_OPC1';Database=myDataBase; UID=my
 			DataTable metaData = new DataTable();
 			//IVistaDBDatabase db = null;
 
-			try
+			/*try
 			{
 				metaData = context.CreateViewsDataTable();
 
@@ -190,7 +188,7 @@ DSURL='file://c:\sybase\ini\sql.ini?SQL_MIDOFF_OPC1';Database=myDataBase; UID=my
 					}
 				}
 			}
-			catch{}
+			catch{}*/
 
 			return metaData;
 		}
@@ -220,7 +218,7 @@ DSURL='file://c:\sybase\ini\sql.ini?SQL_MIDOFF_OPC1';Database=myDataBase; UID=my
 			DataTable metaData = new DataTable();
 			//IVistaDBDatabase db = null;
 
-			try
+			/*try
 			{
 				metaData = context.CreateColumnsDataTable();
 
@@ -307,7 +305,7 @@ DSURL='file://c:\sybase\ini\sql.ini?SQL_MIDOFF_OPC1';Database=myDataBase; UID=my
 					}
 				}
 			}
-			catch{}
+			catch{}*/
 
 			return metaData;
         }
@@ -315,7 +313,7 @@ DSURL='file://c:\sybase\ini\sql.ini?SQL_MIDOFF_OPC1';Database=myDataBase; UID=my
         DataTable IMyMetaPlugin.GetTableColumns(string database, string table)
         {
 			DataTable metaData = new DataTable();
-			IVistaDBDatabase db = null;
+			/*IVistaDBDatabase db = null;
 
 			try
 			{
@@ -428,7 +426,7 @@ DSURL='file://c:\sybase\ini\sql.ini?SQL_MIDOFF_OPC1';Database=myDataBase; UID=my
 			finally
 			{
 				if(db != null) db.Close();
-			}
+			}*/
 
 			return metaData;
         }
@@ -436,7 +434,7 @@ DSURL='file://c:\sybase\ini\sql.ini?SQL_MIDOFF_OPC1';Database=myDataBase; UID=my
         List<string> IMyMetaPlugin.GetPrimaryKeyColumns(string database, string table)
         {
 			List<string> primaryKeys = new List<string>();
-			IVistaDBDatabase db = null;
+			/*IVistaDBDatabase db = null;
 
 			try
 			{
@@ -473,7 +471,7 @@ DSURL='file://c:\sybase\ini\sql.ini?SQL_MIDOFF_OPC1';Database=myDataBase; UID=my
 			finally
 			{
 				if(db != null) db.Close();
-			}
+			}*/
 
 			return primaryKeys;
         }
@@ -491,7 +489,7 @@ DSURL='file://c:\sybase\ini\sql.ini?SQL_MIDOFF_OPC1';Database=myDataBase; UID=my
         DataTable IMyMetaPlugin.GetTableIndexes(string database, string table)
         {
 			DataTable metaData = new DataTable();
-			IVistaDBDatabase db = null;
+			/*IVistaDBDatabase db = null;
 
 			try
 			{
@@ -527,7 +525,7 @@ DSURL='file://c:\sybase\ini\sql.ini?SQL_MIDOFF_OPC1';Database=myDataBase; UID=my
 			finally
 			{
 				if(db != null) db.Close();
-			}
+			}*/
 
 			return metaData;
         }
@@ -535,7 +533,7 @@ DSURL='file://c:\sybase\ini\sql.ini?SQL_MIDOFF_OPC1';Database=myDataBase; UID=my
         DataTable IMyMetaPlugin.GetForeignKeys(string database, string tableName)
         {
 			DataTable metaData = new DataTable();
-			IVistaDBDatabase db = null;
+			/*IVistaDBDatabase db = null;
 
 			try
 			{
@@ -603,7 +601,7 @@ DSURL='file://c:\sybase\ini\sql.ini?SQL_MIDOFF_OPC1';Database=myDataBase; UID=my
 			finally
 			{
 				if(db != null) db.Close();
-			}
+			}*/
 
 			return metaData;
         }
@@ -616,7 +614,7 @@ DSURL='file://c:\sybase\ini\sql.ini?SQL_MIDOFF_OPC1';Database=myDataBase; UID=my
 		#endregion
 
 		#region Internal Methods
-		private IVistaDBDDA DDA = VistaDBEngine.Connections.OpenDDA();
+		//private IVistaDBDDA DDA = VistaDBEngine.Connections.OpenDDA();
 
         private bool IsIntialized 
 		{ 
@@ -628,21 +626,24 @@ DSURL='file://c:\sybase\ini\sql.ini?SQL_MIDOFF_OPC1';Database=myDataBase; UID=my
 
 		public string GetDatabaseName()
 		{
-			VistaDBConnection cn = new VistaDBConnection(this.context.ConnectionString);
+            /*VistaDBConnection cn = new VistaDBConnection(this.context.ConnectionString);
 
-			string dbName = cn.DataSource;
-			int index = dbName.LastIndexOfAny(new char[]{'\\'});
-			if (index >= 0)
-			{
-				dbName = dbName.Substring(index + 1);
-			}
-			return dbName;
+            string dbName = cn.DataSource;
+            int index = dbName.LastIndexOfAny(new char[]{'\\'});
+            if (index >= 0)
+            {
+                dbName = dbName.Substring(index + 1);
+            }
+            return dbName; 
+            */
+            return string.Empty;
 		}
 
 		public string GetFullDatabaseName()
 		{
-			VistaDBConnection cn = new VistaDBConnection(this.context.ConnectionString);
-			return cn.DataSource;
+			/*VistaDBConnection cn = new VistaDBConnection(this.context.ConnectionString);
+			return cn.DataSource;*/
+            return string.Empty;
 		}
 
 		#endregion
