@@ -31,6 +31,7 @@ namespace MyMeta.Firebird
                 if (!metaData.Columns.Contains("IS_AUTO_KEY")) { c = metaData.Columns.Add("IS_AUTO_KEY", typeof(Boolean)); c.DefaultValue = false; }
                 if (!metaData.Columns.Contains("AUTO_KEY_SEED")) { c = metaData.Columns.Add("AUTO_KEY_SEED"); c.DefaultValue = 0; }
                 if (!metaData.Columns.Contains("AUTO_KEY_INCREMENT")) { c = metaData.Columns.Add("AUTO_KEY_INCREMENT"); c.DefaultValue = 0; }
+                if (!metaData.Columns.Contains("AUTO_KEY_SEQUENCE")) { c = metaData.Columns.Add("AUTO_KEY_SEQUENCE"); c.DefaultValue = string.Empty; }
 
 				PopulateArray(metaData);
 				LoadExtraData(cn, this.Table.Name, "T");
@@ -77,7 +78,7 @@ namespace MyMeta.Firebird
 				catch {}
 
 				// AutoKey Data
-                Dictionary<string, int[]> autoKeyFields = new Dictionary<string, int[]>();
+                Dictionary<string, object[]> autoKeyFields = new Dictionary<string, object[]>();
                 DataTable triggers = cn.GetSchema("Triggers", new string[] {null, null, name});
                 foreach (DataRow row in triggers.Rows)
                 {
@@ -91,7 +92,7 @@ namespace MyMeta.Firebird
                         int end = 0;
                         do
                         {
-                            string field = null;
+                            string field = null, generatorName = string.Empty;
                             int tmp, increment = 1, seed = 0;
 
                             end = source.IndexOf("gen_id(", end, StringComparison.CurrentCultureIgnoreCase);
@@ -111,11 +112,15 @@ namespace MyMeta.Firebird
                                 {
                                     if (int.TryParse(s2.Substring(start2 + 1).Trim(' ', ','), out tmp))
                                         increment = tmp;
+                                    
+                                    s2 = s2.Substring(0, start2);
+                                    generatorName = s2.Substring(end + 7).Trim();
                                 }
+
 
                                 if (field != null)
                                 {
-                                    autoKeyFields[field] = new int[] { increment, seed };
+                                    autoKeyFields[field] = new object[] { increment, seed, generatorName };
                                 }
 
                                 end += 7;
@@ -166,6 +171,7 @@ namespace MyMeta.Firebird
                             c._row["IS_AUTO_KEY"] = true;
                             c._row["AUTO_KEY_INCREMENT"] = autoKeyFields[c.Name][0];
                             c._row["AUTO_KEY_SEED"] = autoKeyFields[c.Name][1];
+                            c._row["AUTO_KEY_SEQUENCE"] = autoKeyFields[c.Name][2];
                         }
 						if(!c._row.IsNull("DOMAIN_NAME"))
 						{

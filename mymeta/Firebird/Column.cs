@@ -43,6 +43,18 @@ namespace MyMeta.Firebird
             }
         }
 
+        public string GeneratorName
+        {
+            get
+            {
+                if (_row.Table.Columns.Contains("AUTO_KEY_SEQUENCE"))
+                {
+                    return this._row["AUTO_KEY_SEQUENCE"].ToString();
+                }
+                return string.Empty;
+            }
+        }
+
 		override public System.Int32 CharacterMaxLength
 		{
 			get
@@ -122,6 +134,14 @@ namespace MyMeta.Firebird
 				FirebirdColumns cols = Columns as FirebirdColumns;
 				return this.GetString(cols.f_TypeNameComplete);
 			}
-		}
+        }
+
+        public override object DatabaseSpecificMetaData(string key)
+        {
+            if (key == "GeneratorName")
+                return this.GeneratorName;
+            else
+                return string.Empty;
+        }
 	}
 }
