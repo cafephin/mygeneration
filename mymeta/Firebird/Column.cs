@@ -11,7 +11,7 @@ namespace MyMeta.Firebird
 	public class FirebirdColumn : Column
 	{
 		public FirebirdColumn()
-		{
+		{ 
 
 		}
 
