@@ -64,7 +64,8 @@ DSURL='file://c:\sybase\ini\sql.ini?SQL_MIDOFF_OPC1';Database=myDataBase; UID=my
 */
         string IMyMetaPlugin.SampleConnectionString
         {
-            get { return @""; }
+            get { return @"Data Source=(local);Initial Catalog=myDatabaseName;User ID=myUsername;Password=myPassword"; }
+
         }
 
         IDbConnection IMyMetaPlugin.NewConnection
@@ -73,8 +74,7 @@ DSURL='file://c:\sybase\ini\sql.ini?SQL_MIDOFF_OPC1';Database=myDataBase; UID=my
             {
                 if (IsIntialized)
 				{
-                    IDbConnection cn = null;
-                    //VistaDBConnection cn = new VistaDBConnection(this.context.ConnectionString);
+                    AseConnection cn = new AseConnection(this.context.ConnectionString);
 					return cn as IDbConnection;
 				}
                 else

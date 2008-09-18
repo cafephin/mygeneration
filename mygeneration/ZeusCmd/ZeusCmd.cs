@@ -407,17 +407,24 @@ namespace Zeus
         private ZeusModule FindModule(ZeusModule parent, string projectPath)
         {
             ZeusModule m = null;
-            foreach (ZeusModule module in parent.ChildModules)
+            if (parent.ProjectPath.Equals(projectPath, StringComparison.CurrentCultureIgnoreCase))
             {
-                if (module.ProjectPath.Equals(projectPath, StringComparison.CurrentCultureIgnoreCase))
+                m = parent;
+            }
+            else
+            {
+                foreach (ZeusModule module in parent.ChildModules)
                 {
-                    m = module;
-                    break;
-                }
-                else
-                {
-                    m = FindModule(module, projectPath);
-                    if (m != null) break;
+                    if (module.ProjectPath.Equals(projectPath, StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        m = module;
+                        break;
+                    }
+                    else
+                    {
+                        m = FindModule(module, projectPath);
+                        if (m != null) break;
+                    }
                 }
             }
 
