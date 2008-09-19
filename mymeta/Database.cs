@@ -21,6 +21,17 @@ namespace MyMeta
 
 		}
 
+        virtual public IResultColumns ResultColumnsFromSQL(string sql)
+        {
+            IResultColumns columns = null;
+            OleDbConnection cn = null; 
+			using (OleDbConnection cn = new OleDbConnection(dbRoot.ConnectionString))
+            {
+                columns = ResultColumnsFromSQL(sql, cn);
+            }
+            return columns;
+        }
+
 		virtual public ADODB.Recordset ExecuteSql(string sql)
 		{
 			Recordset oRS = new Recordset();
@@ -112,6 +123,60 @@ namespace MyMeta
 
 			return oRS;
 		}
+
+        protected IResultColumns ResultColumnsFromSQL(string sql, IDbConnection cn)
+        {
+            IResultColumns resultCols = this.dbRoot.ClassFactory.CreateResultColumns();
+            IDataReader reader = null;
+
+            try
+            {
+                IDbCommand command = cn.CreateCommand();
+                command.CommandText = sql;
+                command.CommandType = CommandType.Text;
+
+                using (IDataReader reader = command.ExecuteReader())
+                {
+                    DataTable schema;
+                    //DataTable data;
+                    string dataType, fieldname;
+                    int length;
+
+                    // Skip columns contains the index of any columns that we cannot handle, array types and such ...
+                    Hashtable skipColumns = null;
+
+                    reader.Read();
+                    schema = reader.GetSchemaTable();
+
+                    int colID = 0;
+                    foreach (DataRow row in schema.Rows)
+                    {
+                        fieldname = row["ColumnName"].ToString();
+                        dataType = row["DataType"].ToString();
+                        length = Convert.ToInt32(row["ColumnSize"]);
+
+                        IResultColumn column = this.dbRoot.ClassFactory.CreateResultColumn();
+                        resultCols.Add(row);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                if ((reader != null) && (!reader.IsClosed))
+                {
+                    reader.Close();
+                    reader = null;
+                }
+                if ((cn != null) && (cn.State == ConnectionState.Open))
+                {
+                    cn.Close();
+                    cn = null;
+                }
+                throw ex;
+            }
+
+            return resultCols;
+           }
 
 		protected ADODB.Recordset ExecuteIntoRecordset(string sql, IDbConnection cn)
 		{

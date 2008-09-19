@@ -163,11 +163,19 @@ namespace MyMeta
         ADODB.Recordset ExecuteSql(string sql);
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <returns></returns>
+        IResultColumns ResultColumnsFromSQL(string sql);
+
+        /// <summary>
         /// Fetch any database specific meta data through this generic interface by key. The keys will have to be defined by the specific database provider
         /// </summary>
         /// <param name="key">A key identifying the type of meta data desired.</param>
         /// <returns>A meta-data object or collection.</returns>
         object DatabaseSpecificMetaData(string key);
+
 	}
 }
 
