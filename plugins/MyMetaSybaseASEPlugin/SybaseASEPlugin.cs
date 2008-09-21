@@ -3,78 +3,63 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Data;
+using System.Data.OleDb;
 using MyMeta;
 
 namespace MyMeta.Plugins
 {
     public class SybaseASEPlugin : IMyMetaPlugin
 	{
-		#region IMyMetaPlugin Interface
 
 		private IMyMetaPluginContext context;
 
-        void IMyMetaPlugin.Initialize(IMyMetaPluginContext context)
+        public void Initialize(IMyMetaPluginContext context)
         {
             this.context = context;
         }
 
-        string IMyMetaPlugin.ProviderName
+        public string ProviderName
         {
             get { return @"Sybase ASE"; }
         }
 
-        string IMyMetaPlugin.ProviderUniqueKey
+        public string ProviderUniqueKey
         {
             get { return @"SYBASEASE"; }
         }
 
-        string IMyMetaPlugin.ProviderAuthorInfo
+        public string ProviderAuthorInfo
         {
             get { return @"Sybase ASE MyMeta Plugin Written by komma8komma1"; }
         }
 
-        Uri IMyMetaPlugin.ProviderAuthorUri
+        public Uri ProviderAuthorUri
         {
             get { return new Uri(@"http://www.mygenerationsoftware.com/"); }
         }
 
-        bool IMyMetaPlugin.StripTrailingNulls
+        public bool StripTrailingNulls
         {
             get { return false; }
         }
 
-        bool IMyMetaPlugin.RequiredDatabaseName
+        public bool RequiredDatabaseName
         {
             get { return false; }
         }
 
-/*
-oldedb
-Provider=ASAProv;Data source=myASA;
-Provider=ASAProv.90;Eng=server.database_name;Uid=myUsername;Pwd=myPassword;Links=tcpip(Host=servername);
-Provider=Sybase ASE OLE DB Provider;Data source=myASE; 
-Provider=Sybase.ASEOLEDBProvider;Srvr=myASEserver,5000;Catalog=myDataBase;User Id=myUsername;Password=myPassword;
-Provider=Sybase.ASEOLEDBProvider;Server Name=myASEserver,5000;Initial Catalog=myDataBase;User Id=myUsername;Password=myPassword;
-Provider=ASEOLEDB;Data Source=myASEserver:5000;Catalog=myDataBase;User Id=myUsername;Password=myPassword;
-Provider=ASEOLEDB;Data Source=myASEserver:5000;Initial Catalog=myDataBase;User Id=myUsername;Password=myPassword;
-
-.net
-Data Source='myASEserver';Port=5000;Database=myDataBase;Uid=myUsername;Pwd=myPassword;
-DSURL='file://c:\sybase\ini\sql.ini?SQL_MIDOFF_OPC1';Database=myDataBase; UID=myUsername;PWD=myPassword;APP=myAppName;
-*/
-        string IMyMetaPlugin.SampleConnectionString
+        public string SampleConnectionString
         {
-            get { return @"Data Source=(local);Initial Catalog=myDatabaseName;User ID=myUsername;Password=myPassword"; }
-
+            get { return @"Provider=ASEOLEDB;Data Source=GREENMACHINE:5000;Catalog=pubs2;User Id=sa;Password=;"; }
         }
 
-        IDbConnection IMyMetaPlugin.NewConnection
+        public IDbConnection NewConnection
         {
             get
             {
                 if (IsIntialized)
 				{
-                    AseConnection cn = new AseConnection(this.context.ConnectionString);
+                    OleDbConnection cn = new OleDbConnection(this.context.ConnectionString);
 					return cn as IDbConnection;
 				}
                 else
@@ -82,7 +67,7 @@ DSURL='file://c:\sybase\ini\sql.ini?SQL_MIDOFF_OPC1';Database=myDataBase; UID=my
             }
         }
 
-        string IMyMetaPlugin.DefaultDatabase
+        public string DefaultDatabase
         {
             get
             {
@@ -90,70 +75,34 @@ DSURL='file://c:\sybase\ini\sql.ini?SQL_MIDOFF_OPC1';Database=myDataBase; UID=my
             }
         }
 
-        DataTable IMyMetaPlugin.Databases
+        public DataTable Databases
         {
             get
             {
-				DataTable metaData = new DataTable();
-                /*
-				IVistaDBDatabase db = null;
+                using (OleDbConnection cn = this.NewConnection as OleDbConnection)
+                {
+                    cn.Open();
+                    return cn.GetOleDbSchemaTable(OleDbSchemaGuid.Catalogs, new Object[] { null });
+                }
 
-				try
-				{
-					metaData = context.CreateDatabasesDataTable();
-
-					DataRow row = metaData.NewRow();
-					metaData.Rows.Add(row);
-
-					db = DDA.OpenDatabase(this.GetFullDatabaseName(),
-						VistaDBDatabaseOpenMode.NonexclusiveReadOnly, "");
-
-					row["CATALOG_NAME"] = GetDatabaseName();
-					row["DESCRIPTION"]  = db.Description;
-				}
-				finally
-				{
-					if(db != null) db.Close();
-				}*/
-
-				return metaData;
+                return this.context.CreateDatabasesDataTable();
             }
         }
 
-        DataTable IMyMetaPlugin.GetTables(string database)
+        public DataTable GetTables(string database)
         {
-			DataTable metaData = new DataTable();
-			/*IVistaDBDatabase db = null;
+            using (OleDbConnection cn = this.NewConnection as OleDbConnection)
+            {
+                cn.Open();
+                string type = context.IncludeSystemEntities ? null : "TABLE";
+                return cn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, new Object[] { null, database, null, null, type });
+            }
 
-			try
-			{
-				metaData = context.CreateTablesDataTable();
+            return this.context.CreateTablesDataTable();
 
-				db = DDA.OpenDatabase(this.GetFullDatabaseName(), 
-					VistaDBDatabaseOpenMode.NonexclusiveReadOnly, "");
-
-				ArrayList tables = db.EnumTables(); 
-
-				foreach (string table in tables) 
-				{ 
-					IVistaDBTableSchema tblStructure = db.TableSchema(table);
-
-					DataRow row = metaData.NewRow();
-					metaData.Rows.Add(row);
-
-					row["TABLE_NAME"]  = tblStructure.Name;
-					row["DESCRIPTION"] = tblStructure.Description;
-				}
-			}
-			finally
-			{
-				if(db != null) db.Close();
-			}*/
-
-			return metaData;
         }
 
-		DataTable IMyMetaPlugin.GetViews(string database)
+        public DataTable GetViews(string database)
 		{
 			DataTable metaData = new DataTable();
 			//IVistaDBDatabase db = null;
@@ -193,27 +142,27 @@ DSURL='file://c:\sybase\ini\sql.ini?SQL_MIDOFF_OPC1';Database=myDataBase; UID=my
 			return metaData;
 		}
 
-        DataTable IMyMetaPlugin.GetProcedures(string database)
+        public DataTable GetProcedures(string database)
         {
             return new DataTable();
         }
 
-        DataTable IMyMetaPlugin.GetDomains(string database)
+        public DataTable GetDomains(string database)
         {
             return new DataTable();
         }
 
-        DataTable IMyMetaPlugin.GetProcedureParameters(string database, string procedure)
+        public DataTable GetProcedureParameters(string database, string procedure)
         {
             return new DataTable();
         }
 
-        DataTable IMyMetaPlugin.GetProcedureResultColumns(string database, string procedure)
+        public DataTable GetProcedureResultColumns(string database, string procedure)
         {
             return new DataTable();
         }
 
-        DataTable IMyMetaPlugin.GetViewColumns(string database, string view)
+        public DataTable GetViewColumns(string database, string view)
         {
 			DataTable metaData = new DataTable();
 			//IVistaDBDatabase db = null;
@@ -310,7 +259,7 @@ DSURL='file://c:\sybase\ini\sql.ini?SQL_MIDOFF_OPC1';Database=myDataBase; UID=my
 			return metaData;
         }
 
-        DataTable IMyMetaPlugin.GetTableColumns(string database, string table)
+        public DataTable GetTableColumns(string database, string table)
         {
 			DataTable metaData = new DataTable();
 			/*IVistaDBDatabase db = null;
@@ -431,7 +380,7 @@ DSURL='file://c:\sybase\ini\sql.ini?SQL_MIDOFF_OPC1';Database=myDataBase; UID=my
 			return metaData;
         }
 
-        List<string> IMyMetaPlugin.GetPrimaryKeyColumns(string database, string table)
+        public List<string> GetPrimaryKeyColumns(string database, string table)
         {
 			List<string> primaryKeys = new List<string>();
 			/*IVistaDBDatabase db = null;
@@ -476,17 +425,17 @@ DSURL='file://c:\sybase\ini\sql.ini?SQL_MIDOFF_OPC1';Database=myDataBase; UID=my
 			return primaryKeys;
         }
 
-        List<string> IMyMetaPlugin.GetViewSubViews(string database, string view)
+        public List<string> GetViewSubViews(string database, string view)
         {
             return new List<string>();
         }
 
-        List<string> IMyMetaPlugin.GetViewSubTables(string database, string view)
+        public List<string> GetViewSubTables(string database, string view)
         {
             return new List<string>();
         }
 
-        DataTable IMyMetaPlugin.GetTableIndexes(string database, string table)
+        public DataTable GetTableIndexes(string database, string table)
         {
 			DataTable metaData = new DataTable();
 			/*IVistaDBDatabase db = null;
@@ -530,9 +479,9 @@ DSURL='file://c:\sybase\ini\sql.ini?SQL_MIDOFF_OPC1';Database=myDataBase; UID=my
 			return metaData;
         }
 
-        DataTable IMyMetaPlugin.GetForeignKeys(string database, string tableName)
+        public DataTable GetForeignKeys(string database, string tableName)
         {
-			DataTable metaData = new DataTable();
+            DataTable metaData = this.context.CreateForeignKeysDataTable();
 			/*IVistaDBDatabase db = null;
 
 			try
@@ -611,41 +560,16 @@ DSURL='file://c:\sybase\ini\sql.ini?SQL_MIDOFF_OPC1';Database=myDataBase; UID=my
             return null;
         }
 
-		#endregion
-
-		#region Internal Methods
-		//private IVistaDBDDA DDA = VistaDBEngine.Connections.OpenDDA();
-
-        private bool IsIntialized 
-		{ 
-			get 
-			{ 
-				return (context != null); 
-			} 
-		}
+        private bool IsIntialized { get { return (context != null); } }
 
 		public string GetDatabaseName()
 		{
-            /*VistaDBConnection cn = new VistaDBConnection(this.context.ConnectionString);
-
-            string dbName = cn.DataSource;
-            int index = dbName.LastIndexOfAny(new char[]{'\\'});
-            if (index >= 0)
+            using (OleDbConnection cn = this.NewConnection as OleDbConnection)
             {
-                dbName = dbName.Substring(index + 1);
+                cn.Open();
+                return cn.Database;
             }
-            return dbName; 
-            */
             return string.Empty;
 		}
-
-		public string GetFullDatabaseName()
-		{
-			/*VistaDBConnection cn = new VistaDBConnection(this.context.ConnectionString);
-			return cn.DataSource;*/
-            return string.Empty;
-		}
-
-		#endregion
 	}
 }

@@ -285,6 +285,14 @@ namespace Zeus
                 try
                 {
                     proj.Execute(this._argmgr.Timeout, this._log);
+
+                    if (this._argmgr.InternalUseOnly)
+                    {
+                        foreach (string file in proj.SavedFiles)
+                        {
+                            this._log.Write("[GENERATED_FILE]" + file);
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -293,6 +301,7 @@ namespace Zeus
                 }
             }
 			this._log.Write("End Project Processing: " + proj.Name);
+            if (_argmgr.InternalUseOnly) this._log.Write("[PROJECT_GENERATION_COMPLETE]");
 		}
 
 		private bool ExecuteModule(ZeusModule parent, string projectPath) 
@@ -368,6 +377,7 @@ namespace Zeus
                     else
                     {
                         savedInput = new SavedTemplateInput();
+                        savedInput.SavedObjectName = objectName;
                     }
 
 

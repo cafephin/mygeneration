@@ -76,7 +76,7 @@ namespace Zeus.Projects
 			}
         }
 
-        internal ZeusProject RootProject
+        virtual public ZeusProject RootProject
         {
             get
             {

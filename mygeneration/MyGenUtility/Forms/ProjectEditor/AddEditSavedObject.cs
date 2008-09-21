@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Collections;
+using System.Text;
 using System.ComponentModel;
 using System.Windows.Forms;
 
@@ -25,6 +26,10 @@ namespace MyGeneration
 		private ZeusModule _module = null;
 		private ArrayList _extensions = new ArrayList();
 		private bool _isActivated = false;
+        private bool _collectInChildProcess = false;
+        private bool _insideRecording = false;
+        private ZeusProcessStatusDelegate _executionCallback;
+        private StringBuilder _collectedInput = new StringBuilder();
 
 		private System.Windows.Forms.Button buttonCollectInput;
 		private System.Windows.Forms.Label labelName;
@@ -44,7 +49,7 @@ namespace MyGeneration
         private IContainer components;
 
 		//public FormAddEditSavedObject(IMyGenerationMDI mdi)
-		public FormAddEditSavedObject()
+        public FormAddEditSavedObject(bool collectInChildProcess)
 		{
 			InitializeComponent();
 			treeBuilder = new TemplateTreeBuilder(this.treeViewTemplates);
@@ -54,6 +59,8 @@ namespace MyGeneration
 			_extensions.Add(".vbgen");
 			_extensions.Add(".csgen");
 
+            _executionCallback = new ZeusProcessStatusDelegate(ExecutionCallback);
+            _collectInChildProcess = collectInChildProcess;
 		}
 
 		/// <summary>
@@ -257,6 +264,7 @@ namespace MyGeneration
 				this._lastRecordedSelectedNode = this.treeViewTemplates.SelectedNode;
 
 				this._isActivated = false;
+                this._insideRecording = false;
 			}
 		}
 
@@ -380,33 +388,43 @@ namespace MyGeneration
 		{
 			try 
 			{
-				ZeusTemplate template = new ZeusTemplate(this.SelectedTemplate.Tag.ToString());
-                DefaultSettings settings = DefaultSettings.Instance;
-
-				ZeusSimpleLog log = new ZeusSimpleLog();
-				ZeusContext context = new ZeusContext();
-				context.Log = log;
-
-				SavedObject.TemplateUniqueID = template.UniqueID;
-				SavedObject.TemplatePath = template.FilePath + template.FileName;
-
-				settings.PopulateZeusContext(context);
-				if (_module != null) 
-				{
-                    _module.PopulateZeusContext(context);
-                    _module.OverrideSavedData(SavedObject.InputItems);
+                if (_collectInChildProcess)
+                {
+                    this.buttonCollectInput.Enabled = false;
+                    this.Cursor = Cursors.WaitCursor;
+                    ZeusProcessManager.RecordProjectItem(this._module.RootProject.FilePath, _module.ProjectPath + "/" + SavedObject.SavedObjectName, this.SelectedTemplate.Tag.ToString(), _executionCallback);
                 }
+                else
+                {
+                    //RecordProjectItem
+                    ZeusTemplate template = new ZeusTemplate(this.SelectedTemplate.Tag.ToString());
+                    DefaultSettings settings = DefaultSettings.Instance;
 
-				if (template.Collect(context, settings.ScriptTimeout, SavedObject.InputItems)) 
-				{
-					this._lastRecordedSelectedNode = this.SelectedTemplate;
-				}
-					
-				if (log.HasExceptions) 
-				{
-					throw log.Exceptions[0];
-				}
-			}
+                    ZeusSimpleLog log = new ZeusSimpleLog();
+                    ZeusContext context = new ZeusContext();
+                    context.Log = log;
+
+                    SavedObject.TemplateUniqueID = template.UniqueID;
+                    SavedObject.TemplatePath = template.FilePath + template.FileName;
+
+                    settings.PopulateZeusContext(context);
+                    if (_module != null)
+                    {
+                        _module.PopulateZeusContext(context);
+                        _module.OverrideSavedData(SavedObject.InputItems);
+                    }
+
+                    if (template.Collect(context, settings.ScriptTimeout, SavedObject.InputItems))
+                    {
+                        this._lastRecordedSelectedNode = this.SelectedTemplate;
+                    }
+
+                    if (log.HasExceptions)
+                    {
+                        throw log.Exceptions[0];
+                    }
+                }
+            }
 			catch (Exception ex)
 			{
                 mdi.ErrorsOccurred(ex);
@@ -416,7 +434,47 @@ namespace MyGeneration
 			}
 
 			Cursor.Current = Cursors.Default;
-		}
+        }
+        
+        private void ExecutionCallback(ZeusProcessStatusEventArgs args)
+        {
+            if (args.Message != null)
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(_executionCallback, args);
+                }
+                else
+                {
+                    /*if (_consoleWriteGeneratedDetails)
+                    {
+                        if (this._mdi.Console.DockContent.IsHidden) this._mdi.Console.DockContent.Show(_mdi.DockPanel);
+                        if (!this._mdi.Console.DockContent.IsActivated) this._mdi.Console.DockContent.Activate();
+                    }*/
+
+                    if (args.Message.StartsWith(ZeusProcessManager.BEGIN_RECORDING_TAG)) 
+                    {
+                        _collectedInput = new StringBuilder();
+                        _insideRecording = true;
+                    }
+                    else if (args.Message.StartsWith(ZeusProcessManager.END_RECORDING_TAG)) 
+                    {
+                        this._savedObject.XML = _collectedInput.ToString();
+                        _insideRecording = false;
+                    }
+                    else if (_insideRecording)
+                    {
+                        _collectedInput.AppendLine(args.Message);
+                    }
+
+                    if (!args.IsRunning)
+                    {
+                        this.Cursor = Cursors.Default;
+                        this.buttonCollectInput.Enabled = true;
+                    }
+                }
+            }
+        }
 
 		private void ClearInput() 
 		{

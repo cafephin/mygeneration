@@ -173,6 +173,8 @@ namespace Zeus.UserInterface.WinForms
 			{
 				builder.InitializeControlData(guiController.Defaults);
 			}
+
+            this.BringToFront();
 		}
 
 		private void DynamicForm_Closed(object sender, System.EventArgs e)

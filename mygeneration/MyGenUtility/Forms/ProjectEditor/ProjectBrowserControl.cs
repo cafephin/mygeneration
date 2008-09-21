@@ -28,7 +28,8 @@ namespace MyGeneration
         private ProjectTreeNode _rootNode;
         private FormAddEditModule _formEditModule = new FormAddEditModule();
         private FormAddEditSavedObject _formEditSavedObject;
-		private bool _isDirty = false;
+        private bool _isDirty = false;
+        private bool _collectInChildProcess = false;
 
         public event TextChangedEventHandler TabTextChanged;
         public event ProjectExecutionStatusHandler ExecutionStatusUpdate;
@@ -39,7 +40,7 @@ namespace MyGeneration
         {
             InitializeComponent();
             _executionCallback = new ZeusProcessStatusDelegate(ExecutionCallback);
-            _formEditSavedObject = new FormAddEditSavedObject();
+            _formEditSavedObject = new FormAddEditSavedObject(_collectInChildProcess);
         }
         protected void OnExecutionStatusUpdate(bool isRunning, string message)
         {
@@ -70,6 +71,12 @@ namespace MyGeneration
             {
                 TabTextChanged(text, tabText, filename);
             }
+        }
+
+        public bool CollectInChildProcess
+        {
+            get { return _collectInChildProcess; }
+            set { _collectInChildProcess = value; }
         }
 
         public string GetPersistString()
@@ -655,6 +662,8 @@ namespace MyGeneration
             }
             else if (node is SavedObjectTreeNode)
             {
+                if (_collectInChildProcess) Save();
+
                 SavedTemplateInput input = node.Tag as SavedTemplateInput;
                 ZeusModule parentMod = node.Parent.Tag as ZeusModule;
                 this._formEditSavedObject.Module = parentMod;

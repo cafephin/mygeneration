@@ -128,9 +128,21 @@ namespace Zeus
                 System.IO.MemoryStream ms = new System.IO.MemoryStream();
                 XmlTextWriter xml = new XmlTextWriter(ms, Encoding.UTF8);
                 BuildXML(xml);
+                xml.Flush();
                 ms.Position = 0;
                 System.IO.StreamReader reader = new System.IO.StreamReader(ms);
                 return reader.ReadToEnd();
+            }
+            set
+            {
+                System.IO.MemoryStream ms = new System.IO.MemoryStream();
+                System.IO.StreamWriter sw = new  System.IO.StreamWriter(ms, Encoding.UTF8);
+                sw.Write(value);
+                sw.Flush();
+                ms.Position = 0;
+                XmlTextReader xr = new XmlTextReader(ms);
+                xr.Read();
+                ReadXML(xr);
             }
         }
 

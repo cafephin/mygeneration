@@ -15,6 +15,9 @@ namespace MyGeneration
         private static ZeusProcess runningProcess;
         private static Thread monitorThread;
         public const string GENERATED_FILE_TAG = "[GENERATED_FILE]";
+        public const string BEGIN_RECORDING_TAG = "[BEGIN_RECORDING]";
+        public const string END_RECORDING_TAG = "[END_RECORDING]";
+        public const string PROJECT_GENERATION_COMPLETE = "[PROJECT_GENERATION_COMPLETE]";
 
         public static Guid ExecuteTemplate(string filename, ZeusProcessStatusDelegate callback)
         {
@@ -259,7 +262,9 @@ namespace MyGeneration
                 }
                 else if (type == ZeusProcessType.RecordProjectItem)
                 {
-                    cmdArgs += "-p \"" + args[0] + "\" -t \"" + args[2] + "\" -rti \"" + args[1] + "\"";
+                    //filename, instancePath, templateFilename
+                    //-internaluse  -t "C:\projects\mygeneration\trunk\templates\HTML\HTML_DatabaseReport.csgen" -p "c:\PrjRoot.zprj" -rti "/PrjRoot/testInstance"
+                    cmdArgs += "-t \"" + args[2] + "\" -p \"" + args[0] + "\" -rti \"" + args[1] + "\"";
                 }
                 if (!string.IsNullOrEmpty(cmdArgs)) si.Arguments = cmdArgs;
             }

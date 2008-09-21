@@ -26,6 +26,7 @@ namespace MyGeneration
             this._mdi = mdi;
             this._consoleWriteGeneratedDetails = DefaultSettings.Instance.ConsoleWriteGeneratedDetails;
             InitializeComponent();
+            this.projectBrowserControl1.ExecutionStarted += new EventHandler(projectBrowserControl1_ExecutionStarted);
         }
 
         protected override string GetPersistString()
