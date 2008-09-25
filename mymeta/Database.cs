@@ -26,6 +26,7 @@ namespace MyMeta
             IResultColumns columns = null;
 			using (OleDbConnection cn = new OleDbConnection(dbRoot.ConnectionString))
             {
+                cn.Open();
                 columns = ResultColumnsFromSQL(sql, cn);
             }
             return columns;
@@ -150,6 +151,21 @@ namespace MyMeta
                     fieldname = row["ColumnName"].ToString();
                     dataType = row["DataType"].ToString();
                     length = Convert.ToInt32(row["ColumnSize"]);
+
+                    int ColumnOrdinal = Convert.ToInt32(row["ColumnOrdinal"]);
+                    int NumericPrecision = Convert.ToInt32(row["NumericPrecision"]);
+                    int NumericScale = Convert.ToInt32(row["NumericScale"]);
+                    bool IsLong = Convert.ToBoolean(row["IsLong"]);
+                    /*ColumnOrdinal 
+                        NumericPrecision 
+                        NumericScale 
+                            IsLong (blob)
+                    BaseSchemaName 
+                        BaseTableName 
+                        BaseColumnName 
+                            BaseCatalogName */
+
+
 
                     IResultColumn column = this.dbRoot.ClassFactory.CreateResultColumn();
                     resultCols.Add(row);

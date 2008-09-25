@@ -18,6 +18,17 @@ namespace MyMeta.Firebird
 
 		}
 
+        override public IResultColumns ResultColumnsFromSQL(string sql)
+        {
+            IResultColumns columns = null;
+            using (FbConnection cn = new FbConnection(dbRoot.ConnectionString))
+            {
+                cn.Open();
+                columns = ResultColumnsFromSQL(sql, cn);
+            }
+            return columns;
+        }
+
 		override public ADODB.Recordset ExecuteSql(string sql)
 		{
 			FbConnection cn = new FbConnection(dbRoot.ConnectionString);
