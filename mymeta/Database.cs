@@ -16,6 +16,8 @@ namespace MyMeta
 #endif 
 	public class Database : Single, IDatabase, INameValueItem
 	{
+        public static Hashtable dataTypeTables = new Hashtable();
+
 		public Database()
 		{
 
@@ -126,7 +128,10 @@ namespace MyMeta
 
         protected IResultColumns ResultColumnsFromSQL(string sql, IDbConnection cn)
         {
-            IResultColumns resultCols = this.dbRoot.ClassFactory.CreateResultColumns();
+            MyMetaPluginContext context = new MyMetaPluginContext(null, null);
+            DataTable metaData = context.CreateResultColumnsDataTable();
+            Plugin.PluginResultColumns resultCols = new Plugin.PluginResultColumns(null);
+            resultCols.dbRoot = dbRoot;
 
             IDbCommand command = cn.CreateCommand();
             command.CommandText = sql;
@@ -145,37 +150,92 @@ namespace MyMeta
                 reader.Read();
                 schema = reader.GetSchemaTable();
 
-                int colID = 0;
+                IProviderType provType = null;
+                int columnOrdinal = 0, numericPrecision = 0, numericScale = 0, providerTypeInt = -1, colID = 0;
+                bool isLong = false;
+
                 foreach (DataRow row in schema.Rows)
                 {
+                    DataRow metarow = metaData.NewRow();
                     fieldname = row["ColumnName"].ToString();
                     dataType = row["DataType"].ToString();
                     length = 0;
 
-                    int ColumnOrdinal = 0;
-                    int NumericPrecision = 0;
-                    int NumericScale = 0;
-                    bool IsLong = false;
+                    provType = null;
+                    columnOrdinal = 0; 
+                    numericPrecision = 0; 
+                    numericScale = 0; 
+                    providerTypeInt = -1;
+                    isLong = false;
 
                     if (row["ColumnSize"] != DBNull.Value) length = Convert.ToInt32(row["ColumnSize"]);
-                    if (row["ColumnOrdinal"] != DBNull.Value) ColumnOrdinal = Convert.ToInt32(row["ColumnOrdinal"]);
-                    if (row["NumericPrecision"] != DBNull.Value) NumericPrecision = Convert.ToInt32(row["NumericPrecision"]);
-                    if (row["NumericScale"] != DBNull.Value) NumericScale = Convert.ToInt32(row["NumericScale"]);
-                    if (row["IsLong"] != DBNull.Value) IsLong = Convert.ToBoolean(row["IsLong"]);
-                    /*ColumnOrdinal 
-                        NumericPrecision 
-                        NumericScale 
-                            IsLong (blob)
-                    BaseSchemaName 
-                        BaseTableName 
-                        BaseColumnName 
-                            BaseCatalogName */
+                    if (row["ColumnOrdinal"] != DBNull.Value) columnOrdinal = Convert.ToInt32(row["ColumnOrdinal"]);
+                    if (row["NumericPrecision"] != DBNull.Value) numericPrecision = Convert.ToInt32(row["NumericPrecision"]);
+                    if (row["NumericScale"] != DBNull.Value) numericScale = Convert.ToInt32(row["NumericScale"]);
+                    if (row["IsLong"] != DBNull.Value) isLong = Convert.ToBoolean(row["IsLong"]);
+                    if (row["ProviderType"] != DBNull.Value) providerTypeInt = Convert.ToInt32(row["ProviderType"]);
 
 
+                    if (providerTypeInt >= 0)
+                    {
+                        foreach (IProviderType ptypeLoop in dbRoot.ProviderTypes)
+                        {
+                            if (ptypeLoop.DataType == providerTypeInt)
+                            {
+                                if ((provType == null) ||
+                                    (ptypeLoop.BestMatch && !provType.BestMatch) ||
+                                    (isLong && ptypeLoop.IsLong && !provType.IsLong) ||
+                                    (!ptypeLoop.IsFixedLength && provType.IsFixedLength))
+                                {
+                                    provType = ptypeLoop;
+                                }
+                            }
+                        }
+                    }
 
-                    IResultColumn column = this.dbRoot.ClassFactory.CreateResultColumn();
-                    resultCols.Add(row);
+                    metarow["COLUMN_NAME"] = fieldname;
+                    metarow["ORDINAL_POSITION"] = columnOrdinal;
+
+                    if (provType != null)
+                    {
+                        string dtype = provType.Type;
+                        string[] parms = provType.CreateParams.Split(',');
+                        if (parms.Length > 0) 
+                        {
+                            dtype += "(";
+                            int xx = 0;
+                            for (int i=0; i < parms.Length; i++)
+                            {
+                                switch (parms[i]) 
+                                {
+                                    case "precision":
+                                        dtype += (xx > 0 ? ", " : "") + numericPrecision.ToString();
+                                        xx++;
+                                        break;
+                                    case "scale":
+                                        dtype += (xx > 0 ? ", " : "") + numericScale.ToString();
+                                        xx++;
+                                        break;
+                                    case "length":
+                                    case "max length":
+                                        dtype += (xx > 0 ? ", " : "") + length.ToString();
+                                        xx++;
+                                        break;
+                                }
+                            }
+                            dtype += ")";
+                            if (xx == 0) dtype = dtype.Substring(0, dtype.Length-2);
+                        }
+
+                        metarow["DATA_TYPE"] = providerTypeInt;
+                        metarow["TYPE_NAME"] = provType.Type;
+                        metarow["TYPE_NAME_COMPLETE"] = dtype;
+                    }
+
+                    metaData.Rows.Add(metarow);
                 }
+
+                resultCols.Populate(metaData);
             }
 
             return resultCols;

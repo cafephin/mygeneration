@@ -223,12 +223,11 @@ namespace MyMeta
             //      MyMetaPluginContext.CreateResultColumnsDataTable
             //      ColumnNames were different
             metaData.Columns.Add("COLUMN_NAME", Type.GetType("System.String"));
-			// metaData.Columns.Add("Alias", Type.GetType("System.String"));
             metaData.Columns.Add("ORDINAL_POSITION", Type.GetType("System.Int64"));
             metaData.Columns.Add("TYPE_NAME", Type.GetType("System.String"));
             metaData.Columns.Add("TYPE_NAME_COMPLETE", Type.GetType("System.String"));
-			// metaData.Columns.Add("LanguageType", Type.GetType("System.String"));
-            // metaData.Columns.Add("DbTargetType", Type.GetType("System.String"));
+            metaData.Columns.Add("DATA_TYPE", Type.GetType("System.Int32"));
+            metaData.Columns["DATA_TYPE"].DefaultValue = 0;
 			return metaData;
 		}
 

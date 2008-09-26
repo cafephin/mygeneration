@@ -16,12 +16,15 @@ namespace MyMeta.Plugin
         public PluginResultColumns(IMyMetaPlugin plugin)
         {
             this.plugin = plugin;
-		}
+        }
 
 		override internal void LoadAll()
         {
-            DataTable metaData = this.plugin.GetProcedureResultColumns(this.Procedure.Database.Name, this.Procedure.Name);
-            this.PopulateArray(metaData);
+            if (plugin != null)
+            {
+                DataTable metaData = this.plugin.GetProcedureResultColumns(this.Procedure.Database.Name, this.Procedure.Name);
+                this.PopulateArray(metaData);
+            }
 		}
 
         #region DataColumn Binding Stuff
@@ -61,7 +64,9 @@ namespace MyMeta.Plugin
                 {
                     DataRowView rowView = enumerator.Current as DataRowView;
 
-                    column = this.dbRoot.ClassFactory.CreateResultColumn() as ResultColumn;
+                    if (plugin != null) column = this.dbRoot.ClassFactory.CreateResultColumn() as ResultColumn;
+                    else column = new PluginResultColumn(null);
+
                     column.dbRoot = this.dbRoot;
                     column.ResultColumns = this;
 
@@ -69,6 +74,12 @@ namespace MyMeta.Plugin
                     this._array.Add(column);
                 }
             }
+        }
+
+        [ComVisible(false)]
+        public void Populate(DataTable metaData)
+        {
+            PopulateArray(metaData);
         }
         #endregion
 
