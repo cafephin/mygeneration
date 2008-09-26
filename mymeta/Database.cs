@@ -150,12 +150,18 @@ namespace MyMeta
                 {
                     fieldname = row["ColumnName"].ToString();
                     dataType = row["DataType"].ToString();
-                    length = Convert.ToInt32(row["ColumnSize"]);
+                    length = 0;
 
-                    int ColumnOrdinal = Convert.ToInt32(row["ColumnOrdinal"]);
-                    int NumericPrecision = Convert.ToInt32(row["NumericPrecision"]);
-                    int NumericScale = Convert.ToInt32(row["NumericScale"]);
-                    bool IsLong = Convert.ToBoolean(row["IsLong"]);
+                    int ColumnOrdinal = 0;
+                    int NumericPrecision = 0;
+                    int NumericScale = 0;
+                    bool IsLong = false;
+
+                    if (row["ColumnSize"] != DBNull.Value) length = Convert.ToInt32(row["ColumnSize"]);
+                    if (row["ColumnOrdinal"] != DBNull.Value) ColumnOrdinal = Convert.ToInt32(row["ColumnOrdinal"]);
+                    if (row["NumericPrecision"] != DBNull.Value) NumericPrecision = Convert.ToInt32(row["NumericPrecision"]);
+                    if (row["NumericScale"] != DBNull.Value) NumericScale = Convert.ToInt32(row["NumericScale"]);
+                    if (row["IsLong"] != DBNull.Value) IsLong = Convert.ToBoolean(row["IsLong"]);
                     /*ColumnOrdinal 
                         NumericPrecision 
                         NumericScale 
