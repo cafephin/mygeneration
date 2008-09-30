@@ -16,7 +16,7 @@ namespace MyMeta
 #endif 
 	public class Database : Single, IDatabase, INameValueItem
 	{
-        public static Hashtable dataTypeTables = new Hashtable();
+        protected Hashtable dataTypeTables = new Hashtable();
 
 		public Database()
 		{
@@ -126,6 +126,96 @@ namespace MyMeta
 			return oRS;
 		}
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="oledbType"></param>
+        /// <param name="providerTypeInt"></param>
+        /// <param name="dataType"></param>
+        /// <param name="length"></param>
+        /// <param name="numericPrecision"></param>
+        /// <param name="numericScale"></param>
+        /// <param name="isLong"></param>
+        /// <param name="dbTypeName"></param>
+        /// <param name="dbTypeNameComplete"></param>
+        /// <returns></returns>
+        protected virtual bool GetNativeType(
+            OleDbType oledbType, int providerTypeInt, string dataType, 
+            int length, int numericPrecision, int numericScale, bool isLong,
+            out string dbTypeName, out string dbTypeNameComplete)
+        {
+            bool rval = false;
+
+            IProviderType provType = null;
+            if (providerTypeInt >= 0)
+            {
+                if (!dataTypeTables.ContainsKey(providerTypeInt))
+                {
+                    foreach (IProviderType ptypeLoop in dbRoot.ProviderTypes)
+                    {
+                        if (ptypeLoop.DataType == providerTypeInt)
+                        {
+                            if ((provType == null) ||
+                                (ptypeLoop.BestMatch && !provType.BestMatch) ||
+                                (isLong && ptypeLoop.IsLong && !provType.IsLong) ||
+                                (!ptypeLoop.IsFixedLength && provType.IsFixedLength))
+                            {
+                                provType = ptypeLoop;
+                            }
+                        }
+                    }
+                    dataTypeTables[providerTypeInt] = provType;
+                }
+                else
+                {
+                    provType = dataTypeTables[providerTypeInt] as IProviderType;
+                }
+            }
+
+            if (provType != null)
+            {
+                string dtype = provType.Type;
+                string[] parms = provType.CreateParams.Split(',');
+                if (parms.Length > 0)
+                {
+                    dtype += "(";
+                    int xx = 0;
+                    for (int i = 0; i < parms.Length; i++)
+                    {
+                        switch (parms[i])
+                        {
+                            case "precision":
+                                dtype += (xx > 0 ? ", " : "") + numericPrecision.ToString();
+                                xx++;
+                                break;
+                            case "scale":
+                                dtype += (xx > 0 ? ", " : "") + numericScale.ToString();
+                                xx++;
+                                break;
+                            case "length":
+                            case "max length":
+                                dtype += (xx > 0 ? ", " : "") + length.ToString();
+                                xx++;
+                                break;
+                        }
+                    }
+                    dtype += ")";
+                    if (xx == 0) dtype = dtype.Substring(0, dtype.Length - 2);
+                }
+
+                dbTypeName = provType.Type;
+                dbTypeNameComplete = dtype;
+                rval = true;
+            }
+            else
+            {
+                dbTypeName = string.Empty;
+                dbTypeNameComplete = string.Empty;
+            }
+            return rval;
+        }
+
         protected IResultColumns ResultColumnsFromSQL(string sql, IDbConnection cn)
         {
             MyMetaPluginContext context = new MyMetaPluginContext(null, null);
@@ -153,6 +243,7 @@ namespace MyMeta
                 IProviderType provType = null;
                 int columnOrdinal = 0, numericPrecision = 0, numericScale = 0, providerTypeInt = -1, colID = 0;
                 bool isLong = false;
+                string dbTypeName = string.Empty, dbTypeNameComplete = string.Empty;
 
                 foreach (DataRow row in schema.Rows)
                 {
@@ -175,62 +266,17 @@ namespace MyMeta
                     if (row["IsLong"] != DBNull.Value) isLong = Convert.ToBoolean(row["IsLong"]);
                     if (row["ProviderType"] != DBNull.Value) providerTypeInt = Convert.ToInt32(row["ProviderType"]);
 
+                    OleDbType oledbType;
+                    try { oledbType = (OleDbType)providerTypeInt; }
+                    catch { oledbType = OleDbType.IUnknown; }
 
-                    if (providerTypeInt >= 0)
-                    {
-                        foreach (IProviderType ptypeLoop in dbRoot.ProviderTypes)
-                        {
-                            if (ptypeLoop.DataType == providerTypeInt)
-                            {
-                                if ((provType == null) ||
-                                    (ptypeLoop.BestMatch && !provType.BestMatch) ||
-                                    (isLong && ptypeLoop.IsLong && !provType.IsLong) ||
-                                    (!ptypeLoop.IsFixedLength && provType.IsFixedLength))
-                                {
-                                    provType = ptypeLoop;
-                                }
-                            }
-                        }
-                    }
+                    this.GetNativeType(oledbType, providerTypeInt, dataType, length, numericPrecision, numericScale, isLong, out dbTypeName, out dbTypeNameComplete);
 
                     metarow["COLUMN_NAME"] = fieldname;
                     metarow["ORDINAL_POSITION"] = columnOrdinal;
-
-                    if (provType != null)
-                    {
-                        string dtype = provType.Type;
-                        string[] parms = provType.CreateParams.Split(',');
-                        if (parms.Length > 0) 
-                        {
-                            dtype += "(";
-                            int xx = 0;
-                            for (int i=0; i < parms.Length; i++)
-                            {
-                                switch (parms[i]) 
-                                {
-                                    case "precision":
-                                        dtype += (xx > 0 ? ", " : "") + numericPrecision.ToString();
-                                        xx++;
-                                        break;
-                                    case "scale":
-                                        dtype += (xx > 0 ? ", " : "") + numericScale.ToString();
-                                        xx++;
-                                        break;
-                                    case "length":
-                                    case "max length":
-                                        dtype += (xx > 0 ? ", " : "") + length.ToString();
-                                        xx++;
-                                        break;
-                                }
-                            }
-                            dtype += ")";
-                            if (xx == 0) dtype = dtype.Substring(0, dtype.Length-2);
-                        }
-
-                        metarow["DATA_TYPE"] = providerTypeInt;
-                        metarow["TYPE_NAME"] = provType.Type;
-                        metarow["TYPE_NAME_COMPLETE"] = dtype;
-                    }
+                    metarow["DATA_TYPE"] = providerTypeInt;
+                    metarow["TYPE_NAME"] = dbTypeName;
+                    metarow["TYPE_NAME_COMPLETE"] = dbTypeNameComplete;
 
                     metaData.Rows.Add(metarow);
                 }

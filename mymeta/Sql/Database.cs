@@ -38,6 +38,71 @@ namespace MyMeta.Sql
 			}
 			
 			return retVal;
-		}
+        }
+        protected override bool GetNativeType(OleDbType oledbType, int providerTypeInt, string dataType, int length, int numericPrecision, int numericScale, bool isLong, out string dbTypeName, out string dbTypeNameComplete)
+        {
+            bool rval = base.GetNativeType(oledbType, providerTypeInt, dataType, length, numericPrecision, numericScale, isLong, out dbTypeName, out dbTypeNameComplete);
+
+            if (!rval || (oledbType == OleDbType.Char || oledbType == OleDbType.WChar))
+            {
+                if (oledbType == OleDbType.VarChar)
+                {
+                    dbTypeName = "varchar";
+                    dbTypeNameComplete = dbTypeName + "(" + length + ")";
+                }
+                else if ((oledbType == OleDbType.VarWChar) || (oledbType == OleDbType.BSTR))
+                {
+                    dbTypeName = "nvarchar";
+                    dbTypeNameComplete = dbTypeName + "(" + length + ")";
+                }
+                else if (oledbType == OleDbType.Char)
+                {
+                    dbTypeName = "char";
+                    dbTypeNameComplete = dbTypeName + "(" + length + ")";
+                }
+                else if (oledbType == OleDbType.WChar)
+                {
+                    dbTypeName = "nchar";
+                    dbTypeNameComplete = dbTypeName + "(" + length + ")";
+                }
+                else if (oledbType == OleDbType.LongVarChar)
+                {
+                    dbTypeName = "text";
+                    dbTypeNameComplete = dbTypeName;
+                }
+                else if (oledbType == OleDbType.LongVarWChar)
+                {
+                    dbTypeName = "ntext";
+                    dbTypeNameComplete = dbTypeName;
+                }
+                else if (oledbType == OleDbType.LongVarBinary)
+                {
+                    dbTypeName = "image";
+                    dbTypeNameComplete = dbTypeName;
+                }
+                else if ((oledbType == OleDbType.LongVarBinary) || (oledbType == OleDbType.VarBinary))
+                {
+                    dbTypeName = "varbinary";
+                    dbTypeNameComplete = dbTypeName;
+                }
+                else
+                {
+                    dbTypeName = "sql_variant";
+                    dbTypeNameComplete = dbTypeName;
+                }
+                rval = true;
+
+                foreach (IProviderType ptypeLoop in dbRoot.ProviderTypes)
+                {
+                    if (ptypeLoop.Type.Equals(dbTypeName, StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        dataTypeTables[providerTypeInt] = ptypeLoop;
+                        break;
+                    }
+                }
+            }
+
+            return rval;
+        }
 	}
 }
