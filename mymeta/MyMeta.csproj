@@ -251,6 +251,7 @@
     <Compile Include="IMyMetaPlugin.cs" />
     <Compile Include="Interfaces\IProperty.cs" />
     <Compile Include="Interfaces\IPropertyCollection.cs" />
+    <Compile Include="Interfaces\ITabularEntity.cs" />
     <Compile Include="InternalDriver.cs" />
     <Compile Include="MyMetaPluginContext.cs" />
     <Compile Include="PluginDriver.cs" />

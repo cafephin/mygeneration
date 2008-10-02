@@ -9,7 +9,7 @@ namespace MyMeta
 	using System.Runtime.InteropServices;
 	[ComVisible(false), ClassInterface(ClassInterfaceType.AutoDual)]
 #endif 
-	public class Table : Single, ITable, INameValueItem
+    public class Table : Single, ITable, INameValueItem, ITabularEntity
 	{
 		public Table()
 		{

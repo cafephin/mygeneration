@@ -9,7 +9,7 @@ namespace MyMeta
 	using System.Runtime.InteropServices;
 	[ComVisible(false), ClassInterface(ClassInterfaceType.AutoDual)]
 #endif 
-	public class View : Single, IView, INameValueItem
+	public class View : Single, IView, INameValueItem, ITabularEntity
 	{
 		public View()
 		{

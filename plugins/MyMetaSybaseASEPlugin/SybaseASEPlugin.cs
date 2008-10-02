@@ -104,7 +104,7 @@ namespace MyMeta.Plugins
 
         public DataTable GetViews(string database)
 		{
-			DataTable metaData = new DataTable();
+			//DataTable metaData = new DataTable();
 			//IVistaDBDatabase db = null;
 
 			/*try
@@ -139,17 +139,18 @@ namespace MyMeta.Plugins
 			}
 			catch{}*/
 
-			return metaData;
+            //return metaData;
+            return this.context.CreateViewsDataTable();
 		}
 
         public DataTable GetProcedures(string database)
         {
-            return new DataTable();
+            return this.context.CreateProceduresDataTable();
         }
 
         public DataTable GetDomains(string database)
         {
-            return new DataTable();
+            return this.context.CreateDomainsDataTable();
         }
 
         public DataTable GetProcedureParameters(string database, string procedure)
@@ -159,12 +160,13 @@ namespace MyMeta.Plugins
 
         public DataTable GetProcedureResultColumns(string database, string procedure)
         {
-            return new DataTable();
+            return this.context.CreateResultColumnsDataTable();
         }
 
         public DataTable GetViewColumns(string database, string view)
         {
-			DataTable metaData = new DataTable();
+            return this.context.CreateColumnsDataTable();
+			//DataTable metaData = new DataTable();
 			//IVistaDBDatabase db = null;
 
 			/*try
@@ -256,12 +258,13 @@ namespace MyMeta.Plugins
 			}
 			catch{}*/
 
-			return metaData;
+			//return metaData;
         }
 
         public DataTable GetTableColumns(string database, string table)
         {
-			DataTable metaData = new DataTable();
+            return this.context.CreateColumnsDataTable();
+			//DataTable metaData = new DataTable();
 			/*IVistaDBDatabase db = null;
 
 			try
@@ -377,12 +380,13 @@ namespace MyMeta.Plugins
 				if(db != null) db.Close();
 			}*/
 
-			return metaData;
+			//return metaData;
         }
 
         public List<string> GetPrimaryKeyColumns(string database, string table)
         {
-			List<string> primaryKeys = new List<string>();
+            return new List<string>();
+			//List<string> primaryKeys = new List<string>();
 			/*IVistaDBDatabase db = null;
 
 			try
@@ -422,7 +426,7 @@ namespace MyMeta.Plugins
 				if(db != null) db.Close();
 			}*/
 
-			return primaryKeys;
+			//return primaryKeys;
         }
 
         public List<string> GetViewSubViews(string database, string view)
@@ -437,7 +441,8 @@ namespace MyMeta.Plugins
 
         public DataTable GetTableIndexes(string database, string table)
         {
-			DataTable metaData = new DataTable();
+            return this.context.CreateIndexesDataTable();
+			//DataTable metaData = new DataTable();
 			/*IVistaDBDatabase db = null;
 
 			try
@@ -476,12 +481,13 @@ namespace MyMeta.Plugins
 				if(db != null) db.Close();
 			}*/
 
-			return metaData;
+			//return metaData;
         }
 
         public DataTable GetForeignKeys(string database, string tableName)
         {
-            DataTable metaData = this.context.CreateForeignKeysDataTable();
+            return this.context.CreateForeignKeysDataTable();
+            //DataTable metaData = this.context.CreateForeignKeysDataTable();
 			/*IVistaDBDatabase db = null;
 
 			try
@@ -552,7 +558,7 @@ namespace MyMeta.Plugins
 				if(db != null) db.Close();
 			}*/
 
-			return metaData;
+			//return metaData;
         }
 
         public object GetDatabaseSpecificMetaData(object myMetaObject, string key)
