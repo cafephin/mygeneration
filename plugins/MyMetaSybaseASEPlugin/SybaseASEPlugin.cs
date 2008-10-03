@@ -95,11 +95,9 @@ namespace MyMeta.Plugins
             {
                 cn.Open();
                 string type = context.IncludeSystemEntities ? null : "TABLE";
-                return cn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, new Object[] { database, null, null, type });
+                return cn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, new Object[] { database, null, null, "TABLE" });
             }//this.Database.Name, null, null, type
-
             //return this.context.CreateTablesDataTable();
-
         }
 
         public DataTable GetViews(string database)
