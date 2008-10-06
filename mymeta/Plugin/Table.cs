@@ -35,7 +35,9 @@ namespace MyMeta.Plugin
 					for(int i = 0; i < count; i++)
 					{
 						colName = metaData[i];
-						_primaryKeys.AddColumn((Column)this.Columns[colName]);
+                        Column col = this.Columns[colName] as Column;
+
+                        if (col != null) _primaryKeys.AddColumn(col);
 					}
 				}
 

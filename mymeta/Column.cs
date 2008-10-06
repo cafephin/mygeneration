@@ -341,16 +341,22 @@ namespace MyMeta
 		{
 			get
 			{
-				System.Boolean isPrimaryKey = false;
+				bool isPrimaryKey = false;
 
 				if(null != Columns.Table)
 				{
-					IColumn c = Columns.Table.PrimaryKeys[this.Name];
-
-					if(null != c)
-					{
-						isPrimaryKey = true;
-					}
+                    IColumns keys = Columns.Table.PrimaryKeys;
+                    foreach (IColumn key in keys)
+                    {
+                        if (key != null)
+                        {
+                            if (key.Name == this.Name)
+                            {
+                                isPrimaryKey = true;
+                                break;
+                            }
+                        }
+                    }
 				}
 
 				return isPrimaryKey;

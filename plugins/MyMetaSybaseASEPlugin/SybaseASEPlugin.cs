@@ -84,8 +84,6 @@ namespace MyMeta.Plugins
                     cn.Open();
                     return cn.GetOleDbSchemaTable(OleDbSchemaGuid.Catalogs, new Object[] { null });
                 }
-
-                return this.context.CreateDatabasesDataTable();
             }
         }
 
@@ -94,56 +92,36 @@ namespace MyMeta.Plugins
             using (OleDbConnection cn = this.NewConnection as OleDbConnection)
             {
                 cn.Open();
-                string type = context.IncludeSystemEntities ? null : "TABLE";
-                return cn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, new Object[] { database, null, null, "TABLE" });
-            }//this.Database.Name, null, null, type
-            //return this.context.CreateTablesDataTable();
+                if (cn.Database != database) cn.ChangeDatabase(database);
+                DataTable dt1 = cn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, new Object[] { database, null, null, "TABLE" });
+                if (context.IncludeSystemEntities)
+                {
+                    DataTable dt2 = cn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, new Object[] { database, null, null, "SYSTEM TABLE" });
+                    foreach (DataRow r in dt2.Rows) dt1.ImportRow(r);
+                }
+
+                return dt1;
+            }
         }
 
         public DataTable GetViews(string database)
-		{
-			//DataTable metaData = new DataTable();
-			//IVistaDBDatabase db = null;
-
-			/*try
-			{
-				metaData = context.CreateViewsDataTable();
-
-				using (VistaDBConnection conn = new VistaDBConnection())
-				{
-					conn.ConnectionString = context.ConnectionString;
-					conn.Open();
-
-					using (VistaDBCommand cmd = new VistaDBCommand("SELECT * FROM GetViews()", conn))
-					{
-						using (VistaDBDataAdapter da = new VistaDBDataAdapter(cmd))
-						{
-							DataTable views = new DataTable();
-							da.Fill(views);
-
-							foreach(DataRow vistaRow in views.Rows)
-							{
-								DataRow row = metaData.NewRow();
-								metaData.Rows.Add(row);
-
-								row["TABLE_NAME"]   = vistaRow["VIEW_NAME"];
-								row["DESCRIPTION"]  = vistaRow["DESCRIPTION"];
-								row["VIEW_TEXT"]    = vistaRow["VIEW_DEFINITION"];
-								row["IS_UPDATABLE"] = vistaRow["IS_UPDATABLE"];
-							}
-						}						 
-					}
-				}
-			}
-			catch{}*/
-
-            //return metaData;
-            return this.context.CreateViewsDataTable();
+        {
+            using (OleDbConnection cn = this.NewConnection as OleDbConnection)
+            {
+                cn.Open();
+                if (cn.Database != database) cn.ChangeDatabase(database);
+                return cn.GetOleDbSchemaTable(OleDbSchemaGuid.Views, new Object[] { database, null, null });
+            }
 		}
 
         public DataTable GetProcedures(string database)
         {
-            return this.context.CreateProceduresDataTable();
+            using (OleDbConnection cn = this.NewConnection as OleDbConnection)
+            {
+                cn.Open();
+                if (cn.Database != database) cn.ChangeDatabase(database);
+                return cn.GetOleDbSchemaTable(OleDbSchemaGuid.Procedures, new Object[] { database, null, null });
+            }
         }
 
         public DataTable GetDomains(string database)
@@ -153,7 +131,12 @@ namespace MyMeta.Plugins
 
         public DataTable GetProcedureParameters(string database, string procedure)
         {
-            return new DataTable();
+            using (OleDbConnection cn = this.NewConnection as OleDbConnection)
+            {
+                cn.Open();
+                if (cn.Database != database) cn.ChangeDatabase(database);
+                return cn.GetOleDbSchemaTable(OleDbSchemaGuid.Procedure_Parameters, new Object[] { database, null, procedure });
+            }
         }
 
         public DataTable GetProcedureResultColumns(string database, string procedure)
@@ -163,268 +146,55 @@ namespace MyMeta.Plugins
 
         public DataTable GetViewColumns(string database, string view)
         {
-            return this.context.CreateColumnsDataTable();
-			//DataTable metaData = new DataTable();
-			//IVistaDBDatabase db = null;
-
-			/*try
-			{
-				metaData = context.CreateColumnsDataTable();
-
-				using (VistaDBConnection conn = new VistaDBConnection())
-				{
-					conn.ConnectionString = context.ConnectionString;
-					conn.Open();
-
-					string sql = "SELECT * FROM GetViewColumns('" + view + "')";
-
-					using (VistaDBCommand cmd = new VistaDBCommand(sql, conn))
-					{
-						using (VistaDBDataAdapter da = new VistaDBDataAdapter(cmd))
-						{
-							DataTable views = new DataTable();
-							da.Fill(views);
-
-							foreach(DataRow vistaRow in views.Rows)
-							{
-								DataRow row = metaData.NewRow();
-								metaData.Rows.Add(row);
-
-								int width		= Convert.ToInt32(vistaRow["COLUMN_SIZE"]);
-								int dec			= 0; 
-								int length      = 0;
-								int octLength   = width;
-								bool timestamp  = false;
-
-								string type = vistaRow["DATA_TYPE_NAME"] as string;
-
-								switch(type)
-								{
-									case "Char":
-									case "NChar":
-									case "NText":
-									case "NVarchar":
-									case "Text":
-									case "Varchar":
-										length = width;
-										width  = 0;
-										dec    = 0;
-										break;
-
-									case "Currency":
-									case "Double":
-									case "Decimal":
-									case "Single":
-										break;
-
-									case "Timestamp":
-										timestamp = true;
-										break;
-
-									default:
-										width = 0;
-										dec   = 0;
-										break;
-								}
-
-								string def = Convert.ToString(vistaRow["DEFAULT_VALUE"]);
-
-								row["TABLE_NAME"] = view;
-								row["COLUMN_NAME"] = vistaRow["COLUMN_NAME"];
-								row["ORDINAL_POSITION"] = vistaRow["COLUMN_ORDINAL"];
-								row["IS_NULLABLE"] = vistaRow["ALLOW_NULL"];
-								row["COLUMN_HASDEFAULT"] = def == string.Empty ? false : true;
-								row["COLUMN_DEFAULT"] = def;
-								row["IS_AUTO_KEY"] = vistaRow["IDENTITY_VALUE"];
-								row["AUTO_KEY_SEED"] = vistaRow["IDENTITY_SEED"];
-								row["AUTO_KEY_INCREMENT"] = vistaRow["IDENTITY_STEP"];
-								row["TYPE_NAME"] = type;
-								row["NUMERIC_PRECISION"] = width;
-								row["NUMERIC_SCALE"] = dec;
-								row["CHARACTER_MAXIMUM_LENGTH"] = length;
-								row["CHARACTER_OCTET_LENGTH"] = octLength;
-								row["DESCRIPTION"] = vistaRow["COLUMN_DESCRIPTION"];
-
-								if (timestamp)
-								{
-									row["IS_COMPUTED"] = true;
-								}
-							}
-						}						 
-					}
-				}
-			}
-			catch{}*/
-
-			//return metaData;
+            using (OleDbConnection cn = this.NewConnection as OleDbConnection)
+            {
+                cn.Open();
+                DataTable meta = cn.GetOleDbSchemaTable(OleDbSchemaGuid.Columns, new Object[] { database, null, view });
+                SetDataTypes(cn, database, view, meta, true);
+                return meta;
+            }
         }
 
         public DataTable GetTableColumns(string database, string table)
         {
-            return this.context.CreateColumnsDataTable();
-			//DataTable metaData = new DataTable();
-			/*IVistaDBDatabase db = null;
+            using (OleDbConnection cn = this.NewConnection as OleDbConnection)
+            {
+                cn.Open();
+                if (cn.Database != database) cn.ChangeDatabase(database);
+                DataTable meta = cn.GetOleDbSchemaTable(OleDbSchemaGuid.Columns, new Object[] { database, null, table });
+                SetDataTypes(cn, database, table, meta, false);//COLUMN_NAME
+                return meta;
+            }
+        }
 
-			try
-			{
-				metaData = context.CreateColumnsDataTable();
-
-				db = DDA.OpenDatabase(this.GetFullDatabaseName(), 
-					VistaDBDatabaseOpenMode.NonexclusiveReadOnly, "");
-				ArrayList tables = db.EnumTables();
-
-				IVistaDBTableSchema tblStructure = db.TableSchema(table);
-
-				foreach (IVistaDBColumnAttributes c in tblStructure) 
-				{ 
-					string colName = c.Name;
-
-					string def = "";
-					if(tblStructure.Defaults.Contains(colName))
-					{
-						def = tblStructure.Defaults[colName].Expression;
-					}
-					int width		= c.MaxLength; //c.ColumnWidth;
-					int dec			= 0; //c.ColumnDecimals;
-					int length      = 0;
-					int octLength   = width;
-
-					IVistaDBIdentityInformation identity = null;
-					if(tblStructure.Identities.Contains(colName))
-					{
-						identity = tblStructure.Identities[colName];
-					}
-
-					string[] pks = null;
-					if(tblStructure.Indexes.Contains("PrimaryKey"))
-					{
-						pks = tblStructure.Indexes["PrimaryKey"].KeyExpression.Split(';');
-					}
-					else
-					{
-						foreach(IVistaDBIndexInformation pk in tblStructure.Indexes)
-						{
-							if(pk.Primary)
-							{
-								pks = pk.KeyExpression.Split(';');
-								break;
-							}
-						}
-					}
-
-					System.Collections.Hashtable pkCols = null;
-					if(pks != null)
-					{
-						pkCols = new Hashtable();
-						foreach(string pkColName in pks)
-						{
-							pkCols[pkColName] = true;
-						}
-					}
-
-					switch(c.Type)
-					{
-						case VistaDBType.Char:
-						case VistaDBType.NChar:
-						case VistaDBType.NText:
-						case VistaDBType.NVarChar:
-						case VistaDBType.Text:
-						case VistaDBType.VarChar:
-							length    = width;
-							width     = 0;
-							dec       = 0;
-							break;
-
-						case VistaDBType.Money:
-						case VistaDBType.Float:
-						case VistaDBType.Decimal:
-						case VistaDBType.Real:
-							break;
-
-						default:
-							width = 0;
-							dec   = 0;
-							break;
-					}
-
-					DataRow row = metaData.NewRow();
-					metaData.Rows.Add(row);
-
-					row["TABLE_NAME"] = tblStructure.Name;
-					row["COLUMN_NAME"] = c.Name;
-					row["ORDINAL_POSITION"] = c.RowIndex;
-					row["IS_NULLABLE"] = c.AllowNull;
-					row["COLUMN_HASDEFAULT"] = def == string.Empty ? false : true;
-					row["COLUMN_DEFAULT"] = def;
-					row["IS_AUTO_KEY"] = identity == null ? false : true;
-					row["AUTO_KEY_SEED"] = 1;
-					row["AUTO_KEY_INCREMENT"] = identity == null ? 0 : Convert.ToInt32(identity.StepExpression);
-					row["TYPE_NAME"] = c.Type.ToString();
-					row["NUMERIC_PRECISION"] = width;
-					row["NUMERIC_SCALE"] = dec;
-					row["CHARACTER_MAXIMUM_LENGTH"] = length;
-					row["CHARACTER_OCTET_LENGTH"] = octLength;
-					row["DESCRIPTION"] = c.Description;
-
-					if (c.Type == VistaDBType.Timestamp)
-					{
-						row["IS_COMPUTED"] = true;
-					}
-				} 
-
-			}
-			finally
-			{
-				if(db != null) db.Close();
-			}*/
-
-			//return metaData;
+        public DataTable GetProviderTypes()
+        {
+            using (OleDbConnection cn = this.NewConnection as OleDbConnection)
+            {
+                cn.Open();
+                return cn.GetOleDbSchemaTable(OleDbSchemaGuid.Provider_Types, null);
+            }
         }
 
         public List<string> GetPrimaryKeyColumns(string database, string table)
         {
-            return new List<string>();
-			//List<string> primaryKeys = new List<string>();
-			/*IVistaDBDatabase db = null;
+            List<string> fieldNames = new List<string>();
 
-			try
-			{
-				db = DDA.OpenDatabase(this.GetFullDatabaseName(), 
-					VistaDBDatabaseOpenMode.NonexclusiveReadOnly, "");
+            using (OleDbConnection cn = this.NewConnection as OleDbConnection)
+            {
+                cn.Open();
+                if (cn.Database != database) cn.ChangeDatabase(database);
+                DataTable dt = cn.GetOleDbSchemaTable(OleDbSchemaGuid.Indexes, new Object[] { database, null, null, null, table });
+                foreach (DataRow row in dt.Rows) 
+                {
+                    if (Convert.ToBoolean(row["PRIMARY_KEY"]))
+                    {
+                        fieldNames.Add(row["COLUMN_NAME"].ToString());
+                    }
+                }
+            }
 
-				IVistaDBTableSchema tblStructure = db.TableSchema(table);
-
-				string[] pks = null;
-				if(tblStructure.Indexes.Contains("PrimaryKey"))
-				{
-					pks = tblStructure.Indexes["PrimaryKey"].KeyExpression.Split(';');
-				}
-				else
-				{
-					foreach(IVistaDBIndexInformation pk in tblStructure.Indexes)
-					{
-						if(pk.Primary)
-						{
-							pks = pk.KeyExpression.Split(';');
-							break;
-						}
-					}
-				}
-
-				if(pks != null)
-				{
-					foreach(string pkColName in pks)
-					{
-						primaryKeys.Add(pkColName);
-					}
-				}
-			}
-			finally
-			{
-				if(db != null) db.Close();
-			}*/
-
-			//return primaryKeys;
+            return fieldNames;
         }
 
         public List<string> GetViewSubViews(string database, string view)
@@ -439,47 +209,12 @@ namespace MyMeta.Plugins
 
         public DataTable GetTableIndexes(string database, string table)
         {
-            return this.context.CreateIndexesDataTable();
-			//DataTable metaData = new DataTable();
-			/*IVistaDBDatabase db = null;
-
-			try
-			{
-				metaData = context.CreateIndexesDataTable();
-
-				db = DDA.OpenDatabase(this.GetFullDatabaseName(), 
-					VistaDBDatabaseOpenMode.NonexclusiveReadOnly, "");
-
-				ArrayList tables = db.EnumTables();
-
-				IVistaDBTableSchema tblStructure = db.TableSchema(table);
-
-				foreach (IVistaDBIndexInformation indexInfo in tblStructure.Indexes) 
-				{ 
-					string[] pks = indexInfo.KeyExpression.Split(';');
-
-					int index = 0;
-					foreach(string colName in pks)
-					{
-						DataRow row = metaData.NewRow();
-						metaData.Rows.Add(row);
-
-						row["TABLE_CATALOG"] = GetDatabaseName();
-						row["TABLE_NAME"] = tblStructure.Name;
-						row["INDEX_CATALOG"] = GetDatabaseName();
-						row["INDEX_NAME"] = indexInfo.Name;
-						row["UNIQUE"] = indexInfo.Unique;
-						row["COLLATION"] = indexInfo.KeyStructure[index++].Descending ? 2 : 1;
-						row["COLUMN_NAME"] = colName;
-					}
-				} 
-			}
-			finally
-			{
-				if(db != null) db.Close();
-			}*/
-
-			//return metaData;
+            using (OleDbConnection cn = this.NewConnection as OleDbConnection)
+            {
+                cn.Open();
+                if (cn.Database != database) cn.ChangeDatabase(database);
+                return cn.GetOleDbSchemaTable(OleDbSchemaGuid.Indexes, new Object[] { database, null, null, null, table });
+            }
         }
 
         public DataTable GetForeignKeys(string database, string tableName)
@@ -558,6 +293,97 @@ namespace MyMeta.Plugins
 
 			//return metaData;
         }
+
+        private void SetDataTypes(OleDbConnection conn, string database, string entityName, DataTable metaData, bool isView)
+        {
+            string sql = @"SELECT C.colid, C.name, C.usertype, C.scale, C.prec as precision, 
+							C.length, CONVERT(bit,(C.status & 0x08)) as CanBeNull, T.name as datatype, M.text as RowDefault, CONVERT(bit,(C.status & 0x80)) as IsIdentity
+					FROM syscolumns C, sysobjects O, systypes T, syscomments M  
+					WHERE O.name='" + entityName + @"'
+						AND O.type='" + (isView ? "V" : "U") + @"' 
+						AND C.id = O.id 
+						AND C.usertype*=T.usertype
+						AND M.id=*C.cdefault
+					ORDER by C.colid";
+
+            OleDbCommand cmd = conn.CreateCommand();
+            cmd.CommandText = sql;
+            OleDbDataAdapter adapt = new OleDbDataAdapter(cmd);
+            DataTable extraInfo = new DataTable();
+            adapt.Fill(extraInfo);
+
+            string schema = null;
+            Dictionary<string, DataRow> metaHash = new Dictionary<string, DataRow>();
+            foreach (DataRow row in metaData.Rows)
+            {
+                if (schema == null) schema = row["TABLE_SCHEMA"].ToString();
+                metaHash.Add(row["COLUMN_NAME"].ToString(), row);
+            }
+            if (schema == null) schema = "dbo";
+
+            if (!metaData.Columns.Contains("TYPE_NAME")) metaData.Columns.Add("TYPE_NAME");
+            if (!metaData.Columns.Contains("TYPE_NAME_COMPLETE")) metaData.Columns.Add("TYPE_NAME_COMPLETE");
+            if (!metaData.Columns.Contains("IS_AUTO_KEY"))
+            {
+                DataColumn col = new DataColumn("IS_AUTO_KEY", typeof(bool));
+                col.DefaultValue = false;
+                metaData.Columns.Add(col);
+            }
+            foreach (DataRow extraRow in extraInfo.Rows)
+            {
+                string colName = extraRow["name"].ToString();
+
+                /*
+                C.name, C.usertype, C.scale, C.prec as precision, 
+                C.length, CONVERT(bit,(C.status & 0x08)) as CanBeNull, 
+                T.name as datatype, M.text as RowDefault, CONVERT(bit,(C.status & 0x80)) as IsIdentity
+                */
+
+                string dataType = extraRow["datatype"].ToString();
+                int usertype = Convert.ToInt32(extraRow["usertype"]);
+
+                int? length = null, scale = null, precision = null;
+                if (extraRow["length"] != DBNull.Value) length = Convert.ToInt32(extraRow["length"]);
+                if (extraRow["scale"] != DBNull.Value) scale = Convert.ToInt32(extraRow["scale"]);
+                if (extraRow["precision"] != DBNull.Value) precision = Convert.ToInt32(extraRow["precision"]);
+
+                bool canBeNull = Convert.ToBoolean(extraRow["CanBeNull"]);
+                string rowDefault = extraRow["RowDefault"].ToString();
+                bool isIdentity = Convert.ToBoolean(extraRow["IsIdentity"]);
+                bool hasDefault = (extraRow["RowDefault"] == DBNull.Value);
+                int ordinal = Convert.ToInt32(extraRow["colid"]);
+
+                DataRow row;
+                if (metaHash.ContainsKey(colName))
+                {
+                    row = metaHash[colName];
+                }
+                else
+                {
+                    row = metaData.NewRow();
+
+                    row["TABLE_SCHEMA"] = schema;
+                    row["TABLE_NAME"] = dataType;
+                    row["COLUMN_NAME"] = colName;
+                    row["ORDINAL_POSITION"] = ordinal;
+                    row["IS_NULLABLE"] = canBeNull;
+                    row["DATA_TYPE"] = usertype;
+                    if (length.HasValue) row["CHARACTER_MAXIMUM_LENGTH"] = length;
+                    if (length.HasValue) row["CHARACTER_OCTET_LENGTH"] = length;
+                    if (scale.HasValue) row["NUMERIC_SCALE"] = scale;
+                    if (precision.HasValue) row["NUMERIC_PRECISION"] = precision;
+
+                    metaData.Rows.Add(row);
+                }
+
+                row["TYPE_NAME"] = dataType;
+                row["TYPE_NAME_COMPLETE"] = dataType;
+                row["COLUMN_HASDEFAULT"] = hasDefault;
+                row["COLUMN_DEFAULT"] = rowDefault;
+                row["IS_AUTO_KEY"] = hasDefault;
+            }
+        }
+
 
         public object GetDatabaseSpecificMetaData(object myMetaObject, string key)
         {

@@ -957,5 +957,23 @@
 		<Type From="varchar" To="adVarChar" />
 		<Type From="sql_variant" To="adVariant" />
 	</DbTarget>
-
+	<DbTarget From="INGRES2006ODBC" To="ODBC">
+		<Type From="varchar" To="OdbcType.VarChar" />
+		<Type From="char" To="OdbcType.Char" />
+		<Type From="text" To="OdbcType.VarChar" />
+		<Type From="long varchar" To="OdbcType.VarChar" />
+		<Type From="nvarchar" To="OdbcType.VarChar" />
+		<Type From="nchar" To="OdbcType.Char" />
+		<Type From="long nvarchar" To="OdbcType.VarChar" />
+		<Type From="tinyint" To="OdbcType.Int" />
+		<Type From="smallint" To="OdbcType.Int" />
+		<Type From="integer" To="OdbcType.Int" />
+		<Type From="bigint" To="OdbcType.Int" />
+		<Type From="decimal" To="OdbcType.Decimal" />
+		<Type From="float" To="OdbcType.Decimal" />
+		<Type From="float4" To="OdbcType.Decimal" />
+		<Type From="real" To="OdbcType.Decimal" />
+		<Type From="date" To="OdbcType.DateTime" />
+		<Type From="int" To="OdbcType.Integer" />
+	</DbTarget>
 </DbTargets>

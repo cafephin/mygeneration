@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMetaXsd3bPlugin", "MyMeta
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMetaSybaseASEPlugin", "MyMetaSybaseASEPlugin\MyMetaSybaseASEPlugin.csproj", "{FED65D0E-038D-4523-A9B4-B4F009778E05}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMeta.Plugins.Ingres2006", "MyMetaIngres2006Plugin\MyMeta.Plugins.Ingres2006.csproj", "{BA7AF976-4917-459A-A9E1-6BE44F8F4BDF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +44,10 @@ Global
 		{FED65D0E-038D-4523-A9B4-B4F009778E05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FED65D0E-038D-4523-A9B4-B4F009778E05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FED65D0E-038D-4523-A9B4-B4F009778E05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA7AF976-4917-459A-A9E1-6BE44F8F4BDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA7AF976-4917-459A-A9E1-6BE44F8F4BDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA7AF976-4917-459A-A9E1-6BE44F8F4BDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA7AF976-4917-459A-A9E1-6BE44F8F4BDF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

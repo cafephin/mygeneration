@@ -2059,4 +2059,23 @@
 		<Type From="varchar" To="String" />
 		<Type From="sql_variant" To="Variant" />
 	</Language>
+	<Language From="INGRES2006ODBC" To="VB.NET">
+		<Type From="varchar" To="String" />
+		<Type From="char" To="String" />
+		<Type From="text" To="String" />
+		<Type From="long varchar" To="String" />
+		<Type From="nvarchar" To="String" />
+		<Type From="nchar" To="String" />
+		<Type From="long nvarchar" To="String" />
+		<Type From="tinyint" To="Integer" />
+		<Type From="smallint" To="Integer" />
+		<Type From="integer" To="Integer" />
+		<Type From="bigint" To="Integer" />
+		<Type From="decimal" To="Decimal" />
+		<Type From="float" To="Decimal" />
+		<Type From="float4" To="Decimal" />
+		<Type From="real" To="Decimal" />
+		<Type From="date" To="DateTime" />
+		<Type From="int" To="Integer" />
+	</Language>
 </Languages>
