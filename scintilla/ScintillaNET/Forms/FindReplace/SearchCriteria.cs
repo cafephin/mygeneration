@@ -49,6 +49,11 @@ namespace Scintilla.Forms
             }
         }
 
+        public bool IsValid
+        {
+            get { return !string.IsNullOrEmpty(this.searchText); }
+        }
+
         public bool MatchWholeWordOnly
         {
             get { return matchWholeWordOnly; }

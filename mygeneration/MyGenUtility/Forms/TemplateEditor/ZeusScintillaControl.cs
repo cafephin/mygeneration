@@ -57,6 +57,8 @@ namespace MyGeneration
             this.IsAutoCIgnoreCase = true;
         }
 
+        
+
         private void ZeusScintillaControl_CharAdded(object sender, CharAddedEventArgs e)
         {
             this.Cursor_ = (int)Scintilla.Enums.CursorShape.Wait;

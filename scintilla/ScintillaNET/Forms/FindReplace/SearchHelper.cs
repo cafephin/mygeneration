@@ -126,11 +126,15 @@ namespace Scintilla.Forms
 
         public bool FindNextAndMark(int min, int max)
         {
-            bool foundMatch = FindNextAndHighlight(min, max);
-
-            if (foundMatch)
+            bool foundMatch = false;
+            if (Criteria.IsValid)
             {
-                editControl.MarkerAdd(editControl.LineFromPosition(editControl.CurrentPos), FIND_MARKER);
+                foundMatch = FindNextAndHighlight(min, max);
+
+                if (foundMatch)
+                {
+                    editControl.MarkerAdd(editControl.LineFromPosition(editControl.CurrentPos), FIND_MARKER);
+                }
             }
 
             return foundMatch;
@@ -138,22 +142,26 @@ namespace Scintilla.Forms
 
         public bool FindNextAndHighlight()
         {
-            bool found = FindNextAndHighlight(0, editControl.Length);
-            if (!found && Criteria.Wraparound)
+            bool found = false;
+            if (Criteria.IsValid)
             {
-                int savedPos = editControl.CurrentPos;
-
-                this.editControl.CurrentPos =
-                    this.editControl.SelectionStart =
-                    this.editControl.SelectionEnd = Criteria.SearchDown ? 0 : (editControl.Length - 1);
-
                 found = FindNextAndHighlight(0, editControl.Length);
-
-                if (!found)
+                if (!found && Criteria.Wraparound)
                 {
+                    int savedPos = editControl.CurrentPos;
+
                     this.editControl.CurrentPos =
-                    this.editControl.SelectionStart =
-                    this.editControl.SelectionEnd = savedPos;
+                        this.editControl.SelectionStart =
+                        this.editControl.SelectionEnd = Criteria.SearchDown ? 0 : (editControl.Length - 1);
+
+                    found = FindNextAndHighlight(0, editControl.Length);
+
+                    if (!found)
+                    {
+                        this.editControl.CurrentPos =
+                        this.editControl.SelectionStart =
+                        this.editControl.SelectionEnd = savedPos;
+                    }
                 }
             }
 
@@ -163,70 +171,73 @@ namespace Scintilla.Forms
         public bool FindNextAndHighlight(int min, int max)
         {
             bool foundMatch = false;
-            int flags = 0,
-                lineIndex = 0,
-                startPos = 0,
-                endPos = 0,
-                prevStartPos = (editControl.SelectionStart < editControl.SelectionEnd) ? editControl.SelectionStart : editControl.SelectionEnd,
-                prevEndPos = (editControl.SelectionStart < editControl.SelectionEnd) ? editControl.SelectionEnd : editControl.SelectionStart;
-
-            if (Criteria.IsCaseSensitive)
-                flags = flags | (int)Scintilla.Enums.FindOption.MatchCase;
-            if (Criteria.IsRegularExpression)
-                flags = flags | (int)Scintilla.Enums.FindOption.RegularExpression;
-            if (Criteria.MatchWholeWordOnly)
-                flags = flags | (int)Scintilla.Enums.FindOption.WholeWord;
-
-            if (Criteria.SearchDown)
+            if (Criteria.IsValid)
             {
-                editControl.CurrentPos =
-                editControl.SelectionStart =
-                editControl.SelectionEnd =
-                (editControl.SelectionStart < editControl.SelectionEnd) ? editControl.SelectionEnd : editControl.SelectionStart;
+                int flags = 0,
+                    lineIndex = 0,
+                    startPos = 0,
+                    endPos = 0,
+                    prevStartPos = (editControl.SelectionStart < editControl.SelectionEnd) ? editControl.SelectionStart : editControl.SelectionEnd,
+                    prevEndPos = (editControl.SelectionStart < editControl.SelectionEnd) ? editControl.SelectionEnd : editControl.SelectionStart;
 
-                editControl.SearchAnchor();
+                if (Criteria.IsCaseSensitive)
+                    flags = flags | (int)Scintilla.Enums.FindOption.MatchCase;
+                if (Criteria.IsRegularExpression)
+                    flags = flags | (int)Scintilla.Enums.FindOption.RegularExpression;
+                if (Criteria.MatchWholeWordOnly)
+                    flags = flags | (int)Scintilla.Enums.FindOption.WholeWord;
 
-                startPos = this.editControl.SearchNext(flags, criteria.SearchTextTransformed);
-            }
-            else
-            {
-                editControl.CurrentPos =
-                editControl.SelectionStart =
-                editControl.SelectionEnd =
-                (editControl.SelectionStart < editControl.SelectionEnd) ? editControl.SelectionStart : editControl.SelectionEnd;
-
-                editControl.SearchAnchor();
-
-                startPos = this.editControl.SearchPrevious(flags, criteria.SearchText);
-            }
-
-            foundMatch = (startPos >= 0);
-
-            if (foundMatch)
-            {
-                startPos = (editControl.SelectionStart < editControl.SelectionEnd) ? editControl.SelectionStart : editControl.SelectionEnd;
-                endPos = (editControl.SelectionStart < editControl.SelectionEnd) ? editControl.SelectionEnd : editControl.SelectionStart;
-
-                if (startPos >= min && endPos <= max)
+                if (Criteria.SearchDown)
                 {
-                    lineIndex = editControl.LineFromPosition(editControl.CurrentPos);
-                    if (Criteria.GrabFocusAfterSearch)
-                    {
-                        editControl.GrabFocus();
-                    }
-                    editControl.EnsureVisibleEnforcePolicy(lineIndex);
-                    editControl.ScrollCaret();
+                    editControl.CurrentPos =
+                    editControl.SelectionStart =
+                    editControl.SelectionEnd =
+                    (editControl.SelectionStart < editControl.SelectionEnd) ? editControl.SelectionEnd : editControl.SelectionStart;
 
-                    editControl.CurrentPos = endPos;
-                    editControl.SelectionStart = startPos;
-                    editControl.SelectionEnd = endPos;
+                    editControl.SearchAnchor();
+
+                    startPos = this.editControl.SearchNext(flags, criteria.SearchTextTransformed);
                 }
                 else
                 {
-                    foundMatch = false;
-                    editControl.CurrentPos = prevEndPos;
-                    editControl.SelectionStart = prevStartPos;
-                    editControl.SelectionEnd = prevEndPos;
+                    editControl.CurrentPos =
+                    editControl.SelectionStart =
+                    editControl.SelectionEnd =
+                    (editControl.SelectionStart < editControl.SelectionEnd) ? editControl.SelectionStart : editControl.SelectionEnd;
+
+                    editControl.SearchAnchor();
+
+                    startPos = this.editControl.SearchPrevious(flags, criteria.SearchText);
+                }
+
+                foundMatch = (startPos >= 0);
+
+                if (foundMatch)
+                {
+                    startPos = (editControl.SelectionStart < editControl.SelectionEnd) ? editControl.SelectionStart : editControl.SelectionEnd;
+                    endPos = (editControl.SelectionStart < editControl.SelectionEnd) ? editControl.SelectionEnd : editControl.SelectionStart;
+
+                    if (startPos >= min && endPos <= max)
+                    {
+                        lineIndex = editControl.LineFromPosition(editControl.CurrentPos);
+                        if (Criteria.GrabFocusAfterSearch)
+                        {
+                            editControl.GrabFocus();
+                        }
+                        editControl.EnsureVisibleEnforcePolicy(lineIndex);
+                        editControl.ScrollCaret();
+
+                        editControl.CurrentPos = endPos;
+                        editControl.SelectionStart = startPos;
+                        editControl.SelectionEnd = endPos;
+                    }
+                    else
+                    {
+                        foundMatch = false;
+                        editControl.CurrentPos = prevEndPos;
+                        editControl.SelectionStart = prevStartPos;
+                        editControl.SelectionEnd = prevEndPos;
+                    }
                 }
             }
 

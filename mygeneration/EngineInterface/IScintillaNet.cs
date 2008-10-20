@@ -80,7 +80,7 @@ namespace MyGeneration
         int Indent { get; set; }
         bool IsUseTabs { get; set; }
         bool IsHScrollBar { get; set; }
-        bool IsIndentationGuides { get; set; }
+        Scintilla.Enums.IndentationGuideType IndentationGuide { get; set; }
         int HighlightGuide { get; set; }
         int CaretFore { get; set; }
         bool IsUsePalette { get; set; }

@@ -713,15 +713,15 @@ namespace Scintilla
         /// <include file='..\Help\GeneratedInclude.xml' path='root/Properties/Property[@name="IsIndentationGuides"]/*' />
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public virtual int IndentationGuide
+        public virtual Enums.IndentationGuideType IndentationGuide
         {
             get
             {
-                return this.SendMessageDirect(2133);
+                return (Enums.IndentationGuideType) Enum.ToObject(typeof(Enums.IndentationGuideType), this.SendMessageDirect(2133));
             }
             set
             {
-                this.SendMessageDirect(2132, value);
+                this.SendMessageDirect(2132, (int)value);
             }
         }
         /// <include file='..\Help\GeneratedInclude.xml' path='root/Properties/Property[@name="HighlightGuide"]/*' />

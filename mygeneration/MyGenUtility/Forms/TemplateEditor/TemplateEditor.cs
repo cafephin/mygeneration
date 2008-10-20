@@ -2306,6 +2306,10 @@ namespace MyGeneration
                     e.Cancel = false;
                 }
             }
+
+
+            if (mdi.FindDialog.Visible) mdi.FindDialog.Close();
+            if (mdi.ReplaceDialog.Visible) mdi.ReplaceDialog.Close();
         }
 
         private void tabControlTemplate_SelectedIndexChanged(object sender, System.EventArgs e)
@@ -2455,10 +2459,12 @@ namespace MyGeneration
         private void indentationGuidsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Toggle the state
-            bool on = !this.scintillaTemplateCode.IsIndentationGuides;
+            bool isOn = (this.scintillaTemplateCode.IndentationGuide != Scintilla.Enums.IndentationGuideType.None);
 
-            this.scintillaTemplateCode.IsIndentationGuides = on;
-            this.indentationGuidsToolStripMenuItem.Checked = on;
+            if (isOn) this.scintillaTemplateCode.IndentationGuide = Scintilla.Enums.IndentationGuideType.None;
+            else this.scintillaTemplateCode.IndentationGuide = Scintilla.Enums.IndentationGuideType.Real;
+
+            this.indentationGuidsToolStripMenuItem.Checked = !isOn;
         }
 
         private void endOfLineToolStripMenuItem_Click(object sender, EventArgs e)
