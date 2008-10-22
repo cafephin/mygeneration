@@ -2078,4 +2078,16 @@
 		<Type From="date" To="DateTime" />
 		<Type From="int" To="Integer" />
 	</Language>
+	<Language From="VISUALFOXPRO" To="C#">
+		<Type From="Integer" To="int" />
+		<Type From="Double" To="double" />
+		<Type From="Currency" To="decimal" />
+		<Type From="Logical" To="bool" /> />
+		<Type From="Varbinary" To="Byte()" />
+		<Type From="Varchar" To="string" />
+		<Type From="Float" To="float" />
+		<Type From="Char" To="char" />
+		<Type From="Date" To="DateTime" />
+		<Type From="Date Time" To="DateTime" />
+	</Language>
 </Languages>

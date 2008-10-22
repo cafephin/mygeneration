@@ -976,4 +976,16 @@
 		<Type From="date" To="OdbcType.DateTime" />
 		<Type From="int" To="OdbcType.Integer" />
 	</DbTarget>
+	<DbTarget From="VISUALFOXPRO" To="OleDb">
+		<Type From="Integer" To="OleDbType.Integer" />
+		<Type From="Double" To="OleDbType.Double" />
+		<Type From="Currency" To="OleDbType.Currency" />
+		<Type From="Logical" To="OleDbType.Boolean" />
+		<Type From="Varbinary" To="OleDbType.VarBinary" />
+		<Type From="Varchar" To="OleDbType.VarChar" />
+		<Type From="Float" To="OleDbType.Decimal" />
+		<Type From="Char" To="OleDbType.Char" />
+		<Type From="Date" To="OleDbType.Date" />
+		<Type From="Date Time" To="OleDbType.DBTimeStamp" />
+	</DbTarget>
 </DbTargets>
