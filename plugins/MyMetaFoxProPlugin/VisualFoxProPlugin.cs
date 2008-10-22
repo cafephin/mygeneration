@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.OleDb;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace MyMeta.Plugins
 {
@@ -16,7 +17,7 @@ namespace MyMeta.Plugins
 		private const string AUTHOR_URI = @"http://www.mygenerationsoftware.com/";
 		private const string SAMPLE_CONNECTION = @"Provider=vfpoledb.1;data source=C:\Program Files\Microsoft Visual FoxPro OLE DB Provider\Samples\Northwind\northwind.dbc;";
 		private IMyMetaPluginContext context = null;
-        private Dictionary<int, string> typeLookup = new Dictionary<int, string>()
+        private static Dictionary<int, string> typeLookup = new Dictionary<int, string>()
         {
             {3, "Integer"}
             ,{5, "Double"}
@@ -29,6 +30,30 @@ namespace MyMeta.Plugins
             ,{133, "Date"}
             ,{135, "Date Time"}
         };
+
+        private static Dictionary<string, int> reverseTypeLookup = new Dictionary<string, int>()
+        {
+            {"integer", 3}
+            ,{"double", 5}
+            ,{"Currency", 6}
+            ,{"logical", 11}
+            ,{"varbinary", 128}
+            ,{"varchar", 129}
+            ,{"float", 131}
+            ,{"date", 133}
+            ,{"date time", 135}
+            ,{"string", 129}
+        };
+
+        private const string DATA_TYPE_INTEGER = "Integer";
+        private const string DATA_TYPE_DOUBLE = "Double";
+        private const string DATA_TYPE_CURRENCY = "Currency";
+        private const string DATA_TYPE_LOGICAL = "Logical";
+        private const string DATA_TYPE_VARBINARY = "Varbinary";
+        private const string DATA_TYPE_VARCHAR = "Varchar";
+        private const string DATA_TYPE_FLOAT = "Float";
+        private const string DATA_TYPE_DATE = "Date";
+        private const string DATA_TYPE_DATE_TIME = "Date Time";
 
 		private bool IsIntialized { get { return (context != null); } }
 
@@ -153,8 +178,10 @@ namespace MyMeta.Plugins
 
 		public DataTable GetProcedureParameters(string database, string procedure)
 		{
-            DataTable meta = context.CreateParametersDataTable();
-			return new DataTable();
+            DataTable metaData = context.CreateParametersDataTable();
+            this.ParseProcedureForParameters(metaData, procedure);
+            metaData.AcceptChanges();
+            return metaData;
 		}
 
 		public DataTable GetProcedureResultColumns(string database, string procedure)
@@ -239,6 +266,101 @@ namespace MyMeta.Plugins
 		{
 			return null;
 		}
+
+        private void ParseProcedureForParameters(DataTable meta, string procedure)
+        {
+            DataTable procedures;
+            string procedure_name = string.Empty;
+            string procedure_text = string.Empty;
+
+            using (OleDbConnection c = this.NewConnection as OleDbConnection)
+            {
+                c.Open();
+                procedures = c.GetOleDbSchemaTable(OleDbSchemaGuid.Procedures, new object[] { null, null, null });;
+                c.Close();
+            }
+
+            if (procedures != null)
+            {
+                procedures.PrimaryKey = new DataColumn[] { procedures.Columns["PROCEDURE_NAME"] };
+                DataRow row = procedures.Rows.Find(procedure);
+
+                if (row != null)
+                {
+                    procedure_text = row["PROCEDURE_DEFINITION"].ToString().ToLower();
+                    procedure_name = row["PROCEDURE_NAME"].ToString();
+                    System.Diagnostics.Debug.WriteLine(procedure_text);
+                    System.Diagnostics.Debug.WriteLine(procedure_name);
+
+                    Regex regex_procedure_text = new Regex(procedure_name + @"\(.*?\)");
+                    Match match = regex_procedure_text.Match(procedure_text);
+
+                    if (match.Success)
+                    {
+                        //metaData.Columns.Add("PROCEDURE_CATALOG", Type.GetType("System.String"));
+                        //metaData.Columns.Add("PROCEDURE_SCHEMA", Type.GetType("System.String"));
+                        //metaData.Columns.Add("PROCEDURE_NAME", Type.GetType("System.String"));
+                        //metaData.Columns.Add("PARAMETER_NAME", Type.GetType("System.String"));
+                        //metaData.Columns.Add("ORDINAL_POSITION", Type.GetType("System.Int32"));
+                        //metaData.Columns.Add("PARAMETER_TYPE", Type.GetType("System.Int32"));
+                        //metaData.Columns.Add("PARAMETER_HASDEFAULT", Type.GetType("System.Boolean"));
+                        //metaData.Columns.Add("PARAMETER_DEFAULT", Type.GetType("System.String"));
+                        //metaData.Columns.Add("IS_NULLABLE", Type.GetType("System.Boolean"));
+                        //metaData.Columns.Add("DATA_TYPE", Type.GetType("System.Int32"));
+                        //metaData.Columns.Add("CHARACTER_MAXIMUM_LENGTH", Type.GetType("System.Int64"));
+                        //metaData.Columns.Add("CHARACTER_OCTET_LENGTH", Type.GetType("System.Int64"));
+                        //metaData.Columns.Add("NUMERIC_PRECISION", Type.GetType("System.Int32"));
+                        //metaData.Columns.Add("NUMERIC_SCALE", Type.GetType("System.Int16"));
+                        //metaData.Columns.Add("DESCRIPTION", Type.GetType("System.String"));
+                        //metaData.Columns.Add("TYPE_NAME", Type.GetType("System.String"));
+                        //metaData.Columns.Add("LOCAL_TYPE_NAME", Type.GetType("System.String"));
+
+
+                        string parameter_clause = match.Value;
+                        System.Diagnostics.Debug.WriteLine(parameter_clause);
+                        parameter_clause = parameter_clause.Replace(")", string.Empty);
+                        parameter_clause = parameter_clause.Replace(procedure_name.ToLower() + "(", string.Empty);
+
+                        System.Diagnostics.Debug.WriteLine(parameter_clause);
+
+                        string[] params_list = parameter_clause.Split(',');
+
+                        for (int i = 0; i < params_list.Length; i++)
+                        {
+                            Regex regex_name_type = new Regex("as");
+                            string[] nameAndType = regex_name_type.Split(params_list[i]);
+
+                            foreach (string s in nameAndType)
+                            {
+                                System.Diagnostics.Debug.WriteLine(s);
+                            }
+
+                            if (nameAndType.Length == 2)
+                            {
+                                DataRow new_row = meta.NewRow();
+                                new_row["PROCEDURE_CATALOG"] = string.Empty;
+                                new_row["PROCEDURE_SCHEMA"] = string.Empty;
+                                new_row["PROCEDURE_NAME"] = procedure_name;
+                                new_row["PARAMETER_NAME"] = nameAndType[0].Trim();
+                                new_row["ORDINAL_POSITION"] = i + 1;
+                                new_row["PARAMETER_TYPE"] = reverseTypeLookup[nameAndType[1].Trim()];
+                                new_row["PARAMETER_HASDEFAULT"] = false;
+                                new_row["PARAMETER_DEFAULT"] = string.Empty;
+                                new_row["IS_NULLABLE"] = true;
+                                new_row["DATA_TYPE"] = reverseTypeLookup[nameAndType[1].Trim()];
+                                new_row["CHARACTER_MAXIMUM_LENGTH"] = 0;
+                                new_row["CHARACTER_OCTET_LENGTH"] = 0;
+                                new_row["NUMERIC_PRECISION"] = 0;
+                                new_row["DESCRIPTION"] = string.Empty;
+                                new_row["TYPE_NAME"] = string.Empty;
+                                new_row["LOCAL_TYPE_NAME"] = string.Empty;
+                                meta.Rows.Add(new_row);
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
 		private void SetDataTypes(OleDbConnection conn, string database, string entityName, DataTable metaData)
 		{
