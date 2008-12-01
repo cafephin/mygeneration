@@ -112,12 +112,14 @@ namespace MyMeta.Plugins
 		{
 			get
 			{
-				OleDbConnection c = this.NewConnection as OleDbConnection;
-				c.Open();
-				string defaultDB = c.DataSource;
-				c.Close();
+				using (OleDbConnection c = this.NewConnection as OleDbConnection)
+				{
+					c.Open();
+					string defaultDB = c.DataSource;
+					c.Close();
 
-				return defaultDB;
+					return defaultDB;
+				}
 			}
 		}
 
@@ -125,16 +127,18 @@ namespace MyMeta.Plugins
 		{
 			get
 			{
-				OleDbConnection c = this.NewConnection as OleDbConnection;
-				c.Open();
-				DataTable dt = context.CreateDatabasesDataTable();
-				DataRow row = dt.NewRow();
-				row["CATALOG_NAME"] = c.DataSource;
-				row["DESCRIPTION"] = "The folder where the delimited text files reside.";
-				dt.Rows.Add(row);
-				c.Close();
+				using (OleDbConnection c = this.NewConnection as OleDbConnection)
+				{
+					c.Open();
+					DataTable dt = context.CreateDatabasesDataTable();
+					DataRow row = dt.NewRow();
+					row["CATALOG_NAME"] = c.DataSource;
+					row["DESCRIPTION"] = "The folder where the delimited text files reside.";
+					dt.Rows.Add(row);
+					c.Close();
 
-				return dt;
+					return dt;
+				}
 			}
 		}
 
