@@ -82,7 +82,19 @@ namespace MyMeta.Plugins
                 using (OleDbConnection cn = this.NewConnection as OleDbConnection)
                 {
                     cn.Open();
-                    return cn.GetOleDbSchemaTable(OleDbSchemaGuid.Catalogs, new Object[] { null });
+                    DataTable dt = cn.GetOleDbSchemaTable(OleDbSchemaGuid.Catalogs, new Object[] { null });
+                    /*if (HasDefaultDefined)
+                    {
+                        foreach (DataRow row in dt.Rows)
+                        {
+                            if (row["CATALOG_NAME"].ToString() != DefaultDatabase) 
+                            {
+                                row.Delete();
+                            }
+                        }
+                        dt.AcceptChanges();
+                    }*/
+                    return dt;
                 }
             }
         }
@@ -91,9 +103,8 @@ namespace MyMeta.Plugins
         {
             using (OleDbConnection cn = this.NewConnection as OleDbConnection)
             {
-                cn.Open();
-                if (cn.Database != database) cn.ChangeDatabase(database);
-                DataTable dt1 = cn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, new Object[] { database, null, null, "TABLE" });
+                InitDatabase(cn, database);
+                DataTable dt1 = cn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, new Object[] { database, null, null, null });
                 if (context.IncludeSystemEntities)
                 {
                     DataTable dt2 = cn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, new Object[] { database, null, null, "SYSTEM TABLE" });
@@ -108,8 +119,7 @@ namespace MyMeta.Plugins
         {
             using (OleDbConnection cn = this.NewConnection as OleDbConnection)
             {
-                cn.Open();
-                if (cn.Database != database) cn.ChangeDatabase(database);
+                InitDatabase(cn, database);
                 return cn.GetOleDbSchemaTable(OleDbSchemaGuid.Views, new Object[] { database, null, null });
             }
 		}
@@ -118,8 +128,7 @@ namespace MyMeta.Plugins
         {
             using (OleDbConnection cn = this.NewConnection as OleDbConnection)
             {
-                cn.Open();
-                if (cn.Database != database) cn.ChangeDatabase(database);
+                InitDatabase(cn, database);
                 return cn.GetOleDbSchemaTable(OleDbSchemaGuid.Procedures, new Object[] { database, null, null });
             }
         }
@@ -133,8 +142,7 @@ namespace MyMeta.Plugins
         {
             using (OleDbConnection cn = this.NewConnection as OleDbConnection)
             {
-                cn.Open();
-                if (cn.Database != database) cn.ChangeDatabase(database);
+                InitDatabase(cn, database);
                 return cn.GetOleDbSchemaTable(OleDbSchemaGuid.Procedure_Parameters, new Object[] { database, null, procedure });
             }
         }
@@ -148,7 +156,7 @@ namespace MyMeta.Plugins
         {
             using (OleDbConnection cn = this.NewConnection as OleDbConnection)
             {
-                cn.Open();
+                InitDatabase(cn, database);
                 DataTable meta = cn.GetOleDbSchemaTable(OleDbSchemaGuid.Columns, new Object[] { database, null, view });
                 SetDataTypes(cn, database, view, meta, true);
                 return meta;
@@ -159,8 +167,7 @@ namespace MyMeta.Plugins
         {
             using (OleDbConnection cn = this.NewConnection as OleDbConnection)
             {
-                cn.Open();
-                if (cn.Database != database) cn.ChangeDatabase(database);
+                InitDatabase(cn, database);
                 DataTable meta = cn.GetOleDbSchemaTable(OleDbSchemaGuid.Columns, new Object[] { database, null, table });
                 SetDataTypes(cn, database, table, meta, false);//COLUMN_NAME
                 return meta;
@@ -171,7 +178,7 @@ namespace MyMeta.Plugins
         {
             using (OleDbConnection cn = this.NewConnection as OleDbConnection)
             {
-                cn.Open();
+                InitDatabase(cn, DefaultDatabase);
                 return cn.GetOleDbSchemaTable(OleDbSchemaGuid.Provider_Types, null);
             }
         }
@@ -182,8 +189,7 @@ namespace MyMeta.Plugins
 
             using (OleDbConnection cn = this.NewConnection as OleDbConnection)
             {
-                cn.Open();
-                if (cn.Database != database) cn.ChangeDatabase(database);
+                InitDatabase(cn, database);
                 DataTable dt = cn.GetOleDbSchemaTable(OleDbSchemaGuid.Indexes, new Object[] { database, null, null, null, table });
                 foreach (DataRow row in dt.Rows) 
                 {
@@ -211,8 +217,7 @@ namespace MyMeta.Plugins
         {
             using (OleDbConnection cn = this.NewConnection as OleDbConnection)
             {
-                cn.Open();
-                if (cn.Database != database) cn.ChangeDatabase(database);
+                InitDatabase(cn, database);
                 return cn.GetOleDbSchemaTable(OleDbSchemaGuid.Indexes, new Object[] { database, null, null, null, table });
             }
         }
@@ -392,14 +397,71 @@ namespace MyMeta.Plugins
 
         private bool IsIntialized { get { return (context != null); } }
 
-		public string GetDatabaseName()
+		private string GetDatabaseName()
 		{
-            using (OleDbConnection cn = this.NewConnection as OleDbConnection)
+            string dbname = string.Empty;
+            string connstr = this.context.ConnectionString;
+            int len = 8, idx = connstr.IndexOf("Catalog=", StringComparison.CurrentCultureIgnoreCase);
+            if (idx < 0) 
             {
-                cn.Open();
-                return cn.Database;
+                len = 9;
+                idx = connstr.IndexOf("Catalog =", StringComparison.CurrentCultureIgnoreCase);
             }
-            return string.Empty;
+
+            if (idx >= 0) 
+            {
+                dbname = connstr.Substring(idx + len);
+                idx = dbname.IndexOf(";", StringComparison.CurrentCultureIgnoreCase);
+                if (idx > 0) dbname = dbname.Substring(0, idx);
+            }
+            return dbname;
 		}
+
+        private bool HasDefaultDefined
+        {
+            get
+            {
+                if ((this.context.ConnectionString.IndexOf("Catalog=", StringComparison.CurrentCultureIgnoreCase) >= 0) ||
+                    (this.context.ConnectionString.IndexOf("Catalog = ", StringComparison.CurrentCultureIgnoreCase) >= 0))
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        private void InitDatabase(OleDbConnection connection, string dbName)
+        {
+            if (string.IsNullOrEmpty(dbName)) return;
+
+            string newconnstr, connstr = connection.ConnectionString;
+            int len = 8, idx = connstr.IndexOf("Catalog=", StringComparison.CurrentCultureIgnoreCase);
+            if (idx < 0)
+            {
+                len = 9;
+                idx = connstr.IndexOf("Catalog =", StringComparison.CurrentCultureIgnoreCase);
+            }
+
+            if (idx < 0)
+            {
+                newconnstr = connstr;
+                if (!connstr.EndsWith(";")) newconnstr += ";";
+                newconnstr += "Catalog=" + dbName;
+            }
+            else
+            {
+                idx += len;
+                newconnstr = connstr.Substring(0, idx) + dbName;
+                
+                int end = connstr.IndexOf(";", idx);
+                if (end > 0) newconnstr += connstr.Substring(end);
+            }
+
+            connection.ConnectionString = newconnstr;
+            connection.Open();
+            OleDbCommand cmd = connection.CreateCommand();
+            cmd.CommandText = "use [" + dbName + "];";
+            cmd.ExecuteNonQuery();
+        }
 	}
 }
