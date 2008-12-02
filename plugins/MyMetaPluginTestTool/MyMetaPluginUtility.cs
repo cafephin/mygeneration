@@ -215,6 +215,108 @@ namespace MyMetaPluginTestTool
                         }
                     }
                 }
+
+
+                //--------------------------------------------------------
+                if (!hasErroredOut)
+                {
+                    foreach (IDatabase db in root.Databases)
+                    {
+                        try
+                        {
+                            DataTable dt = plugin.GetViews(db.Name);
+                            this.AppendLog(dt.Rows.Count + " views in database " + db.Name + " found through Plugin.");
+                        }
+                        catch (Exception ex)
+                        {
+                            hasErroredOut = true;
+                            this.AppendLog("Plugin views error in database " + db.Name, ex);
+                        }
+                    }
+                }
+
+                //--------------------------------------------------------
+                if (!hasErroredOut)
+                {
+                    foreach (IDatabase db in root.Databases)
+                    {
+                        try
+                        {
+                            foreach (IView view in db.Views)
+                            {
+
+                                garbage = view.Name;
+                                garbage = view.Schema;
+                                garbage = view.DateCreated.ToString();
+                                garbage = view.DateModified.ToString();
+                                garbage = view.Description;
+                                garbage = view.Guid.ToString();
+                                garbage = view.PropID.ToString();
+                                garbage = view.Type;
+                                garbage = view.IsUpdateable.ToString();
+                                garbage = view.CheckOption.ToString();
+                                garbage = view.ViewText;
+                            }
+
+                            this.AppendLog(db.Views.Count + " views in database " + db.Name + " traversed successfully in MyMeta.");
+
+                        }
+                        catch (Exception ex)
+                        {
+                            hasErroredOut = true;
+                            this.AppendLog("Error traversing views in database " + db.Name + " in MyMeta", ex);
+                        }
+                    }
+                }
+
+
+                //--------------------------------------------------------
+                if (!hasErroredOut)
+                {
+                    foreach (IDatabase db in root.Databases)
+                    {
+                        try
+                        {
+                            DataTable dt = plugin.GetProcedures(db.Name);
+                            this.AppendLog(dt.Rows.Count + " procedures in database " + db.Name + " found through Plugin.");
+                        }
+                        catch (Exception ex)
+                        {
+                            hasErroredOut = true;
+                            this.AppendLog("Plugin procedures error in database " + db.Name, ex);
+                        }
+                    }
+                }
+
+                //--------------------------------------------------------
+                if (!hasErroredOut)
+                {
+                    foreach (IDatabase db in root.Databases)
+                    {
+                        try
+                        {
+                            foreach (IProcedure procedure in db.Procedures)
+                            {
+
+                                garbage = procedure.Name;
+                                garbage = procedure.Schema;
+                                garbage = procedure.DateCreated.ToString();
+                                garbage = procedure.DateModified.ToString();
+                                garbage = procedure.Description;
+                                garbage = procedure.ProcedureText;
+                                garbage = procedure.Type.ToString();
+                            }
+
+                            this.AppendLog(db.Procedures.Count + " procedures in database " + db.Name + " traversed successfully in MyMeta.");
+
+                        }
+                        catch (Exception ex)
+                        {
+                            hasErroredOut = true;
+                            this.AppendLog("Error traversing procedures in database " + db.Name + " in MyMeta", ex);
+                        }
+                    }
+                }
             }
         }
 
