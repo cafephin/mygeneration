@@ -36,6 +36,8 @@
             this.textBoxConnectionString = new System.Windows.Forms.TextBox();
             this.tabPageData = new System.Windows.Forms.TabPage();
             this.comboBoxPlugins = new System.Windows.Forms.ComboBox();
+            this.checkBoxAPI = new System.Windows.Forms.CheckBox();
+            this.checkBoxPlugin = new System.Windows.Forms.CheckBox();
             this.tabControlPluginStuff.SuspendLayout();
             this.tabPageTest.SuspendLayout();
             this.SuspendLayout();
@@ -55,6 +57,8 @@
             // 
             // tabPageTest
             // 
+            this.tabPageTest.Controls.Add(this.checkBoxPlugin);
+            this.tabPageTest.Controls.Add(this.checkBoxAPI);
             this.tabPageTest.Controls.Add(this.textBoxResults);
             this.tabPageTest.Controls.Add(this.buttonTest);
             this.tabPageTest.Controls.Add(this.label1);
@@ -130,6 +134,30 @@
             this.comboBoxPlugins.TabIndex = 1;
             this.comboBoxPlugins.SelectedIndexChanged += new System.EventHandler(this.comboBoxPlugins_SelectedIndexChanged);
             // 
+            // checkBoxAPI
+            // 
+            this.checkBoxAPI.AutoSize = true;
+            this.checkBoxAPI.Checked = true;
+            this.checkBoxAPI.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxAPI.Location = new System.Drawing.Point(388, 3);
+            this.checkBoxAPI.Name = "checkBoxAPI";
+            this.checkBoxAPI.Size = new System.Drawing.Size(95, 17);
+            this.checkBoxAPI.TabIndex = 4;
+            this.checkBoxAPI.Text = "Do API Tests?";
+            this.checkBoxAPI.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxPlugin
+            // 
+            this.checkBoxPlugin.AutoSize = true;
+            this.checkBoxPlugin.Checked = true;
+            this.checkBoxPlugin.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxPlugin.Location = new System.Drawing.Point(277, 3);
+            this.checkBoxPlugin.Name = "checkBoxPlugin";
+            this.checkBoxPlugin.Size = new System.Drawing.Size(107, 17);
+            this.checkBoxPlugin.TabIndex = 5;
+            this.checkBoxPlugin.Text = "Do Plugin Tests?";
+            this.checkBoxPlugin.UseVisualStyleBackColor = true;
+            // 
             // MyMetaPluginUtility
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -158,6 +186,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button buttonTest;
         private System.Windows.Forms.TextBox textBoxResults;
+        private System.Windows.Forms.CheckBox checkBoxAPI;
+        private System.Windows.Forms.CheckBox checkBoxPlugin;
     }
 }
 

@@ -255,7 +255,10 @@ namespace MyMeta.Plugins
 
         public DataTable GetForeignKeys(string database, string tableName)
         {
-            return this.context.CreateForeignKeysDataTable();
+            OleDbConnection cn = this.OpenConnection;
+            InitDatabase(cn, database);
+            return cn.GetOleDbSchemaTable(OleDbSchemaGuid.Foreign_Keys, new Object[] { database, null, null, null, tableName });
+            //return this.context.CreateForeignKeysDataTable();
             //DataTable metaData = this.context.CreateForeignKeysDataTable();
             /*IVistaDBDatabase db = null;
 

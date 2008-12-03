@@ -43,6 +43,12 @@ namespace MyMetaPluginTestTool
                     this.comboBoxPlugins.Items.Add(plugin.ProviderUniqueKey);
                 }
             }
+            dbRoot root = new dbRoot();
+            foreach (string dbd in Enum.GetNames(typeof(dbDriver)))
+            {
+                if (!dbd.Equals("Plugin", StringComparison.CurrentCultureIgnoreCase))
+                    this.comboBoxPlugins.Items.Add(dbd.ToUpper());
+            }
 
             if (ConfigFile.Exists)
             {
@@ -63,7 +69,16 @@ namespace MyMetaPluginTestTool
                 IMyMetaPlugin plugin = dbRoot.Plugins[this.comboBoxPlugins.SelectedItem.ToString()] as IMyMetaPlugin;
                 if (plugin != null)
                 {
+                    this.checkBoxPlugin.Enabled = true;
+                    this.checkBoxPlugin.Checked = true;
                     this.textBoxConnectionString.Text = plugin.SampleConnectionString;
+                }
+                else
+                {
+                    //dbRoot root = new dbRoot();
+                    this.checkBoxPlugin.Checked = false;
+                    this.checkBoxPlugin.Enabled = false;
+                    this.textBoxConnectionString.Text = string.Empty;
                 }
             }
         }
@@ -84,53 +99,61 @@ namespace MyMetaPluginTestTool
 
         private void buttonTest_Click(object sender, EventArgs e)
         {
+            bool doPluginTests = this.checkBoxPlugin.Checked;
+            bool doAPITests = this.checkBoxAPI.Checked;
             bool hasErroredOut = false;
             this.textBoxResults.Clear();
             IMyMetaPlugin plugin = null;
-            try
+            dbRoot root = null;
+
+            if (doPluginTests)
             {
-                plugin = dbRoot.Plugins[this.comboBoxPlugins.SelectedItem.ToString()] as IMyMetaPlugin;
-
-                IMyMetaPluginContext context = new MyMetaPluginContext(plugin.ProviderUniqueKey, this.textBoxConnectionString.Text);
-
-                plugin.Initialize(context);
-                using (IDbConnection conn = plugin.NewConnection)
-                {
-                    conn.Open();
-                    conn.Close();
-                }
-                this.textBoxConnectionString.BackColor = Color.LightGreen;
-                this.AppendLog("Connection Test Successful.");
-            }
-            catch (Exception ex)
-            {
-                hasErroredOut = true;
-                this.textBoxConnectionString.BackColor = Color.Red;
-                this.AppendLog("Error testing connection", ex);
-            }
-
-            if (!hasErroredOut)
-            {
-                Application.DoEvents();
-
-                dbRoot root = new dbRoot();
-
                 try
                 {
-                    root.Connect(this.comboBoxPlugins.SelectedItem.ToString(), textBoxConnectionString.Text);
-                    this.AppendLog("MyMeta dbRoot Connection Successful.");
+                    plugin = dbRoot.Plugins[this.comboBoxPlugins.SelectedItem.ToString()] as IMyMetaPlugin;
+
+                    IMyMetaPluginContext context = new MyMetaPluginContext(plugin.ProviderUniqueKey, this.textBoxConnectionString.Text);
+
+                    plugin.Initialize(context);
+                    using (IDbConnection conn = plugin.NewConnection)
+                    {
+                        conn.Open();
+                        conn.Close();
+                    }
+                    this.textBoxConnectionString.BackColor = Color.LightGreen;
+                    this.AppendLog("Connection Test Successful.");
                 }
                 catch (Exception ex)
                 {
                     hasErroredOut = true;
-                    this.AppendLog("Error connecting to dbRoot", ex);
+                    this.textBoxConnectionString.BackColor = Color.Red;
+                    this.AppendLog("Error testing connection", ex);
                 }
-
-                TestDatabases(plugin, root, ref hasErroredOut);
-                //TestTables(plugin, root, ref hasErroredOut);
-                TestViews(plugin, root, ref hasErroredOut);
-                TestProcedures(plugin, root, ref hasErroredOut);
             }
+
+            if (doAPITests)
+            {
+                if (!hasErroredOut)
+                {
+                    Application.DoEvents();
+                    root = new dbRoot();
+                    try
+                    {
+                        root.Connect(this.comboBoxPlugins.SelectedItem.ToString(), textBoxConnectionString.Text);
+                        this.AppendLog("MyMeta dbRoot Connection Successful.");
+                    }
+                    catch (Exception ex)
+                    {
+                        hasErroredOut = true;
+                        this.AppendLog("Error connecting to dbRoot", ex);
+                    }
+                }
+            }
+
+            TestDatabases(plugin, root, ref hasErroredOut, ref doAPITests, ref doPluginTests);
+            TestTables(plugin, root, ref hasErroredOut, ref doAPITests, ref doPluginTests);
+            TestViews(plugin, root, ref hasErroredOut, ref doAPITests, ref doPluginTests);
+            TestProcedures(plugin, root, ref hasErroredOut, ref doAPITests, ref doPluginTests);
         }
 
         /// <summary>
@@ -139,12 +162,12 @@ namespace MyMetaPluginTestTool
         /// <param name="plugin"></param>
         /// <param name="root"></param>
         /// <param name="hasErroredOut"></param>
-        private void TestDatabases(IMyMetaPlugin plugin, dbRoot root, ref bool hasErroredOut)
+        private void TestDatabases(IMyMetaPlugin plugin, dbRoot root, ref bool hasErroredOut, ref bool doAPITests, ref bool doPluginTests)
         {
             string garbage;
 
             //--------------------------------------------------------
-            if (!hasErroredOut)
+            if (doPluginTests && !hasErroredOut)
             {
                 try
                 {
@@ -161,7 +184,7 @@ namespace MyMetaPluginTestTool
             }
 
             //--------------------------------------------------------
-            if (!hasErroredOut)
+            if (doAPITests && !hasErroredOut)
             {
                 try
                 {
@@ -188,30 +211,40 @@ namespace MyMetaPluginTestTool
         /// <param name="plugin"></param>
         /// <param name="root"></param>
         /// <param name="hasErroredOut"></param>
-        private void TestTables(IMyMetaPlugin plugin, dbRoot root, ref bool hasErroredOut)
+        private void TestTables(IMyMetaPlugin plugin, dbRoot root, ref bool hasErroredOut, ref bool doAPITests, ref bool doPluginTests)
         {
             string garbage;
+            DataTable dbDt = null;
+            if (doPluginTests && !hasErroredOut)
+            {
+                try
+                {
+                    dbDt = plugin.Databases;
+                }
+                catch { dbDt = new DataTable(); }
+            }
 
             //--------------------------------------------------------
-            if (!hasErroredOut)
+            if (doPluginTests && !hasErroredOut)
             {
-                foreach (IDatabase db in root.Databases)
+                foreach (DataRow dbRow in dbDt.Rows)
                 {
+                    string dbname = dbRow["CATALOG_NAME"].ToString();
                     try
                     {
-                        DataTable dt = plugin.GetTables(db.Name);
-                        this.AppendLog(dt.Rows.Count + " tables in database " + db.Name + " found through Plugin.");
+                        DataTable dt = plugin.GetTables(dbname);
+                        this.AppendLog(dt.Rows.Count + " tables in database " + dbname + " found through Plugin.");
                     }
                     catch (Exception ex)
                     {
                         hasErroredOut = true;
-                        this.AppendLog("Plugin tables error in database " + db.Name, ex);
+                        this.AppendLog("Plugin tables error in database " + dbname, ex);
                     }
                 }
             }
 
             //--------------------------------------------------------
-            if (!hasErroredOut)
+            if (doAPITests && !hasErroredOut)
             {
                 foreach (IDatabase db in root.Databases)
                 {
@@ -242,28 +275,53 @@ namespace MyMetaPluginTestTool
 
 
             //--------------------------------------------------------
-            if (!hasErroredOut)
+            if (doPluginTests && !hasErroredOut)
             {
-                foreach (IDatabase db in root.Databases)
+                foreach (DataRow dbRow in dbDt.Rows)
                 {
-                    foreach (ITable table in db.Tables)
+                    string dbname = dbRow["CATALOG_NAME"].ToString();
+                    DataTable tblDt = plugin.GetTables(dbname);
+                    foreach (DataRow tblRow in tblDt.Rows)
                     {
+                        string tblname = tblRow["TABLE_NAME"].ToString();
                         try
                         {
-                            DataTable dt = plugin.GetTableColumns(db.Name, table.Name);
-                            this.AppendLog(dt.Rows.Count + " columns in table " + db.Name + "." + table.Name + " found through Plugin.");
+                            DataTable dt = plugin.GetTableColumns(dbname, tblname);
+                            this.AppendLog(dt.Rows.Count + " columns in table " + dbname + "." + tblname + " found through Plugin.");
                         }
                         catch (Exception ex)
                         {
                             hasErroredOut = true;
-                            this.AppendLog("Plugin table column error in " + db.Name + "." + table.Name, ex);
+                            this.AppendLog("Plugin table column error in " + dbname + "." + tblname, ex);
+                        }
+
+                        try
+                        {
+                            List<string> pks = plugin.GetPrimaryKeyColumns(dbname, tblname);
+                            this.AppendLog(pks.Count + " PK columns in table " + dbname + "." + tblname + " found through Plugin.");
+                        }
+                        catch (Exception ex)
+                        {
+                            hasErroredOut = true;
+                            this.AppendLog("Plugin table PK column error in " + dbname + "." + tblname, ex);
+                        }
+
+                        try
+                        {
+                            DataTable dt = plugin.GetForeignKeys(dbname, tblname);
+                            this.AppendLog(dt.Rows.Count + " FKs in table " + dbname + "." + tblname + " found through Plugin.");
+                        }
+                        catch (Exception ex)
+                        {
+                            hasErroredOut = true;
+                            this.AppendLog("Plugin table FK error in " + dbname + "." + tblname, ex);
                         }
                     }
                 }
             }
 
             //--------------------------------------------------------
-            if (!hasErroredOut)
+            if (doAPITests && !hasErroredOut)
             {
                 foreach (IDatabase db in root.Databases)
                 {
@@ -330,30 +388,40 @@ namespace MyMetaPluginTestTool
         /// <param name="plugin"></param>
         /// <param name="root"></param>
         /// <param name="hasErroredOut"></param>
-        private void TestViews(IMyMetaPlugin plugin, dbRoot root, ref bool hasErroredOut)
+        private void TestViews(IMyMetaPlugin plugin, dbRoot root, ref bool hasErroredOut, ref bool doAPITests, ref bool doPluginTests)
         {
             string garbage;
+            DataTable dbDt = null;
+            if (doPluginTests && !hasErroredOut)
+            {
+                try
+                {
+                    dbDt = plugin.Databases;
+                }
+                catch { dbDt = new DataTable(); }
+            }
 
             //--------------------------------------------------------
-            if (!hasErroredOut)
+            if (doPluginTests && !hasErroredOut)
             {
-                foreach (IDatabase db in root.Databases)
+                foreach (DataRow dbRow in dbDt.Rows)
                 {
+                    string dbname = dbRow["CATALOG_NAME"].ToString();
                     try
                     {
-                        DataTable dt = plugin.GetViews(db.Name);
-                        this.AppendLog(dt.Rows.Count + " views in database " + db.Name + " found through Plugin.");
+                        DataTable dt = plugin.GetViews(dbname);
+                        this.AppendLog(dt.Rows.Count + " views in database " + dbname + " found through Plugin.");
                     }
                     catch (Exception ex)
                     {
                         hasErroredOut = true;
-                        this.AppendLog("Plugin views error in database " + db.Name, ex);
+                        this.AppendLog("Plugin views error in database " + dbname, ex);
                     }
                 }
             }
 
             //--------------------------------------------------------
-            if (!hasErroredOut)
+            if (doAPITests && !hasErroredOut)
             {
                 foreach (IDatabase db in root.Databases)
                 {
@@ -387,50 +455,54 @@ namespace MyMetaPluginTestTool
             }
 
             //--------------------------------------------------------
-            if (!hasErroredOut)
+            if (doPluginTests && !hasErroredOut)
             {
-                foreach (IDatabase db in root.Databases)
+                foreach (DataRow dbRow in dbDt.Rows)
                 {
-                    foreach (IView view in db.Views)
+                    string dbname = dbRow["CATALOG_NAME"].ToString();
+                    DataTable viewDt = plugin.GetViews(dbname);
+                    foreach (DataRow viewRow in viewDt.Rows)
                     {
+                        string viewname = viewRow["TABLE_NAME"].ToString();
+               
                         try
                         {
-                            DataTable dt = plugin.GetViewColumns(db.Name, view.Name);
-                            this.AppendLog(dt.Rows.Count + " columns in view " + db.Name + "." + view.Name + " found through Plugin.");
+                            DataTable dt = plugin.GetViewColumns(dbname, viewname);
+                            this.AppendLog(dt.Rows.Count + " columns in view " + dbname + "." + viewname + " found through Plugin.");
                         }
                         catch (Exception ex)
                         {
                             hasErroredOut = true;
-                            this.AppendLog("Plugin view column error in " + db.Name + "." + view.Name, ex);
+                            this.AppendLog("Plugin view column error in " + dbname + "." + viewname, ex);
                         }
 
                         try
                         {
-                            List<string> list = plugin.GetViewSubTables(db.Name, view.Name);
-                            this.AppendLog(list.Count + " sub-tables in view " + db.Name + "." + view.Name + " found through Plugin.");
+                            List<string> list = plugin.GetViewSubTables(dbname, viewname);
+                            this.AppendLog(list.Count + " sub-tables in view " + dbname + "." + viewname + " found through Plugin.");
                         }
                         catch (Exception ex)
                         {
                             hasErroredOut = true;
-                            this.AppendLog("Plugin view sub-tables error in " + db.Name + "." + view.Name, ex);
+                            this.AppendLog("Plugin view sub-tables error in " + dbname + "." + viewname, ex);
                         }
 
                         try
                         {
-                            List<string> list = plugin.GetViewSubViews(db.Name, view.Name);
-                            this.AppendLog(list.Count + " sub-views in view " + db.Name + "." + view.Name + " found through Plugin.");
+                            List<string> list = plugin.GetViewSubViews(dbname, viewname);
+                            this.AppendLog(list.Count + " sub-views in view " + dbname + "." + viewname + " found through Plugin.");
                         }
                         catch (Exception ex)
                         {
                             hasErroredOut = true;
-                            this.AppendLog("Plugin view sub-views error in " + db.Name + "." + view.Name, ex);
+                            this.AppendLog("Plugin view sub-views error in " + dbname + "." + viewname, ex);
                         }
                     }
                 }
             }
 
             //--------------------------------------------------------
-            if (!hasErroredOut)
+            if (doAPITests && !hasErroredOut)
             {
                 foreach (IDatabase db in root.Databases)
                 {
@@ -541,30 +613,40 @@ namespace MyMetaPluginTestTool
         /// <param name="plugin"></param>
         /// <param name="root"></param>
         /// <param name="hasErroredOut"></param>
-        private void TestProcedures(IMyMetaPlugin plugin, dbRoot root, ref bool hasErroredOut)
+        private void TestProcedures(IMyMetaPlugin plugin, dbRoot root, ref bool hasErroredOut, ref bool doAPITests, ref bool doPluginTests)
         {
             string garbage;
+            DataTable dbDt = null;
+            if (doPluginTests && !hasErroredOut)
+            {
+                try
+                {
+                    dbDt = plugin.Databases;
+                }
+                catch { dbDt = new DataTable(); }
+            }
 
             //--------------------------------------------------------
-            if (!hasErroredOut)
+            if (doPluginTests && !hasErroredOut)
             {
-                foreach (IDatabase db in root.Databases)
+                foreach (DataRow dbRow in dbDt.Rows)
                 {
+                    string dbname = dbRow["CATALOG_NAME"].ToString();
                     try
                     {
-                        DataTable dt = plugin.GetProcedures(db.Name);
-                        this.AppendLog(dt.Rows.Count + " procedures in database " + db.Name + " found through Plugin.");
+                        DataTable dt = plugin.GetProcedures(dbname);
+                        this.AppendLog(dt.Rows.Count + " procedures in database " + dbname + " found through Plugin.");
                     }
                     catch (Exception ex)
                     {
                         hasErroredOut = true;
-                        this.AppendLog("Plugin procedures error in database " + db.Name, ex);
+                        this.AppendLog("Plugin procedures error in database " + dbname, ex);
                     }
                 }
             }
 
             //--------------------------------------------------------
-            if (!hasErroredOut)
+            if (doAPITests && !hasErroredOut)
             {
                 foreach (IDatabase db in root.Databases)
                 {
@@ -595,39 +677,42 @@ namespace MyMetaPluginTestTool
 
 
             //--------------------------------------------------------
-            if (!hasErroredOut)
+            if (doPluginTests && !hasErroredOut)
             {
-                foreach (IDatabase db in root.Databases)
+                foreach (DataRow dbRow in dbDt.Rows)
                 {
-                    foreach (IProcedure procedure in db.Procedures)
+                    string dbname = dbRow["CATALOG_NAME"].ToString();
+                    DataTable procDt = plugin.GetProcedures(dbname);
+                    foreach (DataRow procRow in procDt.Rows)
                     {
+                        string procedurename = procRow["PROCEDURE_NAME"].ToString();
                         try
                         {
-                            DataTable dt = plugin.GetProcedureParameters(db.Name, procedure.Name);
-                            this.AppendLog(dt.Rows.Count + " parameters in procedure " + db.Name + "." + procedure.Name + " found through Plugin.");
+                            DataTable dt = plugin.GetProcedureParameters(dbname, procedurename);
+                            this.AppendLog(dt.Rows.Count + " parameters in procedure " + dbname + "." + procedurename + " found through Plugin.");
                         }
                         catch (Exception ex)
                         {
                             hasErroredOut = true;
-                            this.AppendLog("Plugin procedure parameter error in " + db.Name + "." + procedure.Name, ex);
+                            this.AppendLog("Plugin procedure parameter error in " + dbname + "." + procedurename, ex);
                         }
 
                         try
                         {
-                            DataTable dt = plugin.GetProcedureResultColumns(db.Name, procedure.Name);
-                            this.AppendLog(dt.Rows.Count + " result columns in procedure " + db.Name + "." + procedure.Name + " found through Plugin.");
+                            DataTable dt = plugin.GetProcedureResultColumns(dbname, procedurename);
+                            this.AppendLog(dt.Rows.Count + " result columns in procedure " + dbname + "." + procedurename + " found through Plugin.");
                         }
                         catch (Exception ex)
                         {
                             hasErroredOut = true;
-                            this.AppendLog("Plugin procedure result columns error in " + db.Name + "." + procedure.Name, ex);
+                            this.AppendLog("Plugin procedure result columns error in " + dbname + "." + procedurename, ex);
                         }
                     }
                 }
             }
 
             //--------------------------------------------------------
-            if (!hasErroredOut)
+            if (doAPITests && !hasErroredOut)
             {
                 foreach (IDatabase db in root.Databases)
                 {
