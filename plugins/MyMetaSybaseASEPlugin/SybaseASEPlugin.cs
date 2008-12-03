@@ -161,7 +161,33 @@ namespace MyMeta.Plugins
 
         public DataTable GetProcedureResultColumns(string database, string procedure)
         {
-            return this.context.CreateResultColumnsDataTable();
+            DataTable dt = this.context.CreateResultColumnsDataTable();
+
+            OleDbConnection cn = this.OpenConnection;
+            InitDatabase(cn, database);
+            try
+            {
+                OleDbCommand cmd = cn.CreateCommand();
+                cmd.CommandText = "exec " + procedure + ";";
+                OleDbDataReader reader = cmd.ExecuteReader(CommandBehavior.SchemaOnly);
+
+                DataTable metaData = reader.GetSchemaTable();
+                foreach (DataRow metaRow in metaData.Rows)
+                {
+                    // NumericScale NumericPrecision ColumnSize ColumnOrdinal DataTypeName ColumnName
+                    DataRow row = dt.NewRow();
+                    row["COLUMN_NAME"] = metaRow["ColumnName"];
+                    row["ORDINAL_POSITION"] = metaRow["ColumnOrdinal"];
+                    row["TYPE_NAME"] = metaRow["DataTypeName"];
+                    row["TYPE_NAME_COMPLETE"] = metaRow["DataTypeName"];
+                    //row["DATA_TYPE"] = metaRow["DataTypeName"];
+                    dt.Rows.Add(row);
+                }
+            }
+            catch { }
+
+
+            return dt;
         }
 
         public DataTable GetViewColumns(string database, string view)

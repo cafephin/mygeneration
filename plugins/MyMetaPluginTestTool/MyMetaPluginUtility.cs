@@ -127,7 +127,7 @@ namespace MyMetaPluginTestTool
                 }
 
                 TestDatabases(plugin, root, ref hasErroredOut);
-                TestTables(plugin, root, ref hasErroredOut);
+                //TestTables(plugin, root, ref hasErroredOut);
                 TestViews(plugin, root, ref hasErroredOut);
                 TestProcedures(plugin, root, ref hasErroredOut);
             }
@@ -219,7 +219,6 @@ namespace MyMetaPluginTestTool
                     {
                         foreach (ITable tbl in db.Tables)
                         {
-
                             garbage = tbl.Name;
                             garbage = tbl.Schema;
                             garbage = tbl.DateCreated.ToString();
@@ -404,6 +403,28 @@ namespace MyMetaPluginTestTool
                             hasErroredOut = true;
                             this.AppendLog("Plugin view column error in " + db.Name + "." + view.Name, ex);
                         }
+
+                        try
+                        {
+                            List<string> list = plugin.GetViewSubTables(db.Name, view.Name);
+                            this.AppendLog(list.Count + " sub-tables in view " + db.Name + "." + view.Name + " found through Plugin.");
+                        }
+                        catch (Exception ex)
+                        {
+                            hasErroredOut = true;
+                            this.AppendLog("Plugin view sub-tables error in " + db.Name + "." + view.Name, ex);
+                        }
+
+                        try
+                        {
+                            List<string> list = plugin.GetViewSubViews(db.Name, view.Name);
+                            this.AppendLog(list.Count + " sub-views in view " + db.Name + "." + view.Name + " found through Plugin.");
+                        }
+                        catch (Exception ex)
+                        {
+                            hasErroredOut = true;
+                            this.AppendLog("Plugin view sub-views error in " + db.Name + "." + view.Name, ex);
+                        }
                     }
                 }
             }
@@ -415,7 +436,6 @@ namespace MyMetaPluginTestTool
                 {
                     foreach (IView view in db.Views)
                     {
-
                         try
                         {
                             foreach (IColumn column in view.Columns)
@@ -465,6 +485,51 @@ namespace MyMetaPluginTestTool
                             hasErroredOut = true;
                             this.AppendLog("Error traversing view columns in " + db.Name + "." + view.Name + " through MyMeta", ex);
                         }
+
+                        try
+                        {
+                            foreach (ITable subtable in view.SubTables)
+                            {
+                                garbage = subtable.Name;
+                                garbage = subtable.Schema;
+                                garbage = subtable.DateCreated.ToString();
+                                garbage = subtable.DateModified.ToString();
+                                garbage = subtable.Description;
+                                garbage = subtable.Guid.ToString();
+                                garbage = subtable.PropID.ToString();
+                                garbage = subtable.Type;
+                            }
+                            this.AppendLog(view.SubTables.Count + " view sub-tables in database " + db.Name + "." + view.Name + " traversed successfully through MyMeta.");
+                        }
+                        catch (Exception ex)
+                        {
+                            hasErroredOut = true;
+                            this.AppendLog("Error traversing view sub-tables in " + db.Name + "." + view.Name + " through MyMeta", ex);
+                        }
+
+                        try
+                        {
+                            foreach (IView subview in view.SubViews)
+                            {
+                                garbage = subview.Name;
+                                garbage = subview.Schema;
+                                garbage = subview.DateCreated.ToString();
+                                garbage = subview.DateModified.ToString();
+                                garbage = subview.Description;
+                                garbage = subview.Guid.ToString();
+                                garbage = subview.PropID.ToString();
+                                garbage = subview.Type;
+                                garbage = subview.IsUpdateable.ToString();
+                                garbage = subview.CheckOption.ToString();
+                                garbage = subview.ViewText;
+                            }
+                            this.AppendLog(view.SubViews.Count + " view sub-views in database " + db.Name + "." + view.Name + " traversed successfully through MyMeta.");
+                        }
+                        catch (Exception ex)
+                        {
+                            hasErroredOut = true;
+                            this.AppendLog("Error traversing view sub-views in " + db.Name + "." + view.Name + " through MyMeta", ex);
+                        }
                     }
                 }
             }
@@ -507,7 +572,6 @@ namespace MyMetaPluginTestTool
                     {
                         foreach (IProcedure procedure in db.Procedures)
                         {
-
                             garbage = procedure.Name;
                             garbage = procedure.Schema;
                             garbage = procedure.DateCreated.ToString();
@@ -524,6 +588,100 @@ namespace MyMetaPluginTestTool
                     {
                         hasErroredOut = true;
                         this.AppendLog("Error traversing procedures in database " + db.Name + " through MyMeta", ex);
+                    }
+                }
+            }
+
+
+
+            //--------------------------------------------------------
+            if (!hasErroredOut)
+            {
+                foreach (IDatabase db in root.Databases)
+                {
+                    foreach (IProcedure procedure in db.Procedures)
+                    {
+                        try
+                        {
+                            DataTable dt = plugin.GetProcedureParameters(db.Name, procedure.Name);
+                            this.AppendLog(dt.Rows.Count + " parameters in procedure " + db.Name + "." + procedure.Name + " found through Plugin.");
+                        }
+                        catch (Exception ex)
+                        {
+                            hasErroredOut = true;
+                            this.AppendLog("Plugin procedure parameter error in " + db.Name + "." + procedure.Name, ex);
+                        }
+
+                        try
+                        {
+                            DataTable dt = plugin.GetProcedureResultColumns(db.Name, procedure.Name);
+                            this.AppendLog(dt.Rows.Count + " result columns in procedure " + db.Name + "." + procedure.Name + " found through Plugin.");
+                        }
+                        catch (Exception ex)
+                        {
+                            hasErroredOut = true;
+                            this.AppendLog("Plugin procedure result columns error in " + db.Name + "." + procedure.Name, ex);
+                        }
+                    }
+                }
+            }
+
+            //--------------------------------------------------------
+            if (!hasErroredOut)
+            {
+                foreach (IDatabase db in root.Databases)
+                {
+                    foreach (IProcedure procedure in db.Procedures)
+                    {
+                        try
+                        {
+                            foreach (IParameter parameter in procedure.Parameters)
+                            {
+                                garbage = parameter.CharacterMaxLength.ToString();
+                                garbage = parameter.CharacterOctetLength.ToString();
+                                garbage = parameter.DataType.ToString();
+                                garbage = parameter.DataTypeNameComplete;
+                                garbage = parameter.DbTargetType;
+                                garbage = parameter.Default;
+                                garbage = parameter.Description;
+                                garbage = parameter.Direction.ToString();
+                                garbage = parameter.LocalTypeName.ToString();
+                                garbage = parameter.HasDefault.ToString();
+                                garbage = parameter.IsNullable.ToString();
+                                garbage = parameter.LanguageType;
+                                garbage = parameter.Name;
+                                garbage = parameter.NumericPrecision.ToString();
+                                garbage = parameter.NumericScale.ToString();
+                                garbage = parameter.Ordinal.ToString();
+                                garbage = parameter.TypeName.ToString();
+                            }
+                            this.AppendLog(procedure.Parameters.Count + " procedure parameters in " + db.Name + "." + procedure.Name + " traversed successfully through MyMeta.");
+                        }
+                        catch (Exception ex)
+                        {
+                            hasErroredOut = true;
+                            this.AppendLog("Error traversing procedure parameters in " + db.Name + "." + procedure.Name + " through MyMeta", ex);
+                        }
+
+                        try
+                        {
+                            foreach (IResultColumn column in procedure.ResultColumns)
+                            {
+                                garbage = column.DataType.ToString();
+                                garbage = column.DataTypeName;
+                                garbage = column.DataTypeNameComplete;
+                                garbage = column.DbTargetType;
+                                garbage = column.LanguageType;
+                                garbage = column.Name;
+                                garbage = column.Ordinal.ToString();
+                            }
+                            this.AppendLog(procedure.ResultColumns.Count + " procedure result columns in " + db.Name + "." + procedure.Name + " traversed successfully through MyMeta.");
+                        }
+                        catch (Exception ex)
+                        {
+                            hasErroredOut = true;
+                            this.AppendLog("Error traversing procedure result columns in " + db.Name + "." + procedure.Name + " through MyMeta", ex);
+                        }
                     }
                 }
             }
