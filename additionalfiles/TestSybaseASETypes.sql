@@ -58,6 +58,130 @@ sp_placeobject 'default', 'dbo.DataTypeTest.tDataTypeTest'
 go 
 
 
+-----------------------------------------------------------------------------
+-- DDL for Table 'pubs2.dbo.Region'
+-----------------------------------------------------------------------------
+print '<<<<< CREATING Table - "pubs2.dbo.Region" >>>>>'
+go
+
+use pubs2
+go 
+
+setuser 'dbo'
+go 
+
+IF EXISTS (SELECT 1 FROM sysobjects o, sysusers u WHERE o.uid=u.uid AND o.name = 'Region' AND u.name = 'dbo' AND o.type = 'U')
+	drop table Region
+
+IF (@@error != 0)
+BEGIN
+	PRINT "Error CREATING table 'pubs2.dbo.Region'"
+	SELECT syb_quit()
+END
+go
+
+create table Region (
+	RegionID                        int                              not null  ,
+	RegionDescription               nchar(50)                        not null  ,
+		CONSTRAINT PK_Region PRIMARY KEY NONCLUSTERED ( RegionID )  on 'default' 
+)
+lock allpages
+ on 'default'
+go 
+
+
 setuser
 go 
+
+
+
+-----------------------------------------------------------------------------
+
+-- DDL for Table 'pubs2.dbo.Territories'
+
+-----------------------------------------------------------------------------
+
+print '<<<<< CREATING Table - "pubs2.dbo.Territories" >>>>>'
+
+go
+
+
+
+use pubs2
+
+go 
+
+
+
+setuser 'dbo'
+
+go 
+
+
+
+IF EXISTS (SELECT 1 FROM sysobjects o, sysusers u WHERE o.uid=u.uid AND o.name = 'Territories' AND u.name = 'dbo' AND o.type = 'U')
+
+	drop table Territories
+
+
+
+IF (@@error != 0)
+
+BEGIN
+
+	PRINT "Error CREATING table 'pubs2.dbo.Territories'"
+
+	SELECT syb_quit()
+
+END
+
+go
+
+
+
+create table Territories (
+
+	TerritoryID                     nvarchar(20)                     not null  ,
+
+	TerritoryDescription            nchar(50)                        not null  ,
+
+	RegionID                        int                              not null  ,
+
+		CONSTRAINT PK_Territories PRIMARY KEY NONCLUSTERED ( TerritoryID )  on 'default' 
+
+)
+
+lock allpages
+
+ on 'default'
+
+go 
+
+
+
+
+
+setuser
+
+go 
+
+
+
+-----------------------------------------------------------------------------
+
+-- Dependent DDL for Object(s)
+
+-----------------------------------------------------------------------------
+
+alter table pubs2.dbo.Territories
+
+add constraint FK_Territories_Region FOREIGN KEY (RegionID) REFERENCES pubs2.dbo.Region(RegionID)
+
+go
+
+
+
+
+
+
 

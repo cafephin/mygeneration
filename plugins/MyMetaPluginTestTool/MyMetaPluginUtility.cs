@@ -377,6 +377,30 @@ namespace MyMetaPluginTestTool
                             hasErroredOut = true;
                             this.AppendLog("Error traversing table columns in " + db.Name + "." + table.Name + " through MyMeta", ex);
                         }
+
+                        try
+                        {
+                            foreach (IForeignKey fk in table.ForeignKeys)
+                            {
+                                garbage = fk.Deferrability;
+                                garbage = fk.DeleteRule;
+                                garbage = fk.Name;
+                                garbage = fk.PrimaryKeyName;
+                                garbage = fk.UpdateRule;
+                                garbage = fk.ForeignColumns.Count.ToString();
+                                garbage = fk.PrimaryColumns.Count.ToString();
+                                garbage = fk.ForeignTable.Name;
+                                garbage = fk.PrimaryTable.Name;
+                            }
+
+                            this.AppendLog(table.ForeignKeys.Count + " FKs in table " + db.Name + "." + table.Name + " traversed successfully through MyMeta.");
+
+                        }
+                        catch (Exception ex)
+                        {
+                            hasErroredOut = true;
+                            this.AppendLog("Error traversing FKs in table " + db.Name + "." + table.Name + " through MyMeta", ex);
+                        }
                     }
                 }
             }
