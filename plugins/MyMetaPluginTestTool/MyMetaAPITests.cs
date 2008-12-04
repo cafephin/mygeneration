@@ -24,6 +24,7 @@ namespace MyMetaPluginTestTool
                 try
                 {
                     root.Connect(criteria.ProviderType, criteria.ConnectionString);
+                    root.ShowDefaultDatabaseOnly = true;
                     criteria.AppendLog("MyMeta dbRoot Connection Successful.");
                 }
                 catch (Exception ex)

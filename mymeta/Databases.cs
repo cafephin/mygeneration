@@ -133,20 +133,24 @@ namespace MyMeta
         internal virtual void LoadDefault()
         {
             LoadAll();
-            ArrayList dbsToRemove = new ArrayList();
-            foreach (Database db in this)
-            {
-                if (!db.Name.Equals(dbRoot.DefaultDatabaseName))
-                {
-                    dbsToRemove.Add(db);
-                }
-            }
 
-            for (int i=0; i < dbsToRemove.Count; i++)
+            if (_array.Count > 1)
             {
-                if ((dbsToRemove.Count != this.Count) || (i > 0))
+                ArrayList dbsToRemove = new ArrayList();
+                foreach (Database db in this)
                 {
-                    this.Remove(dbsToRemove[i]);
+                    if (!db.Name.Equals(dbRoot.DefaultDatabaseName))
+                    {
+                        dbsToRemove.Add(db);
+                    }
+                }
+
+                for (int i = 0; i < dbsToRemove.Count; i++)
+                {
+                    if ((dbsToRemove.Count != this.Count) || (i > 0))
+                    {
+                        _array.Remove(dbsToRemove[i]);
+                    }
                 }
             }
         }
