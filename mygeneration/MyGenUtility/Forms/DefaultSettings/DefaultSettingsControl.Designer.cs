@@ -94,6 +94,7 @@ namespace MyGeneration
             this.label8 = new System.Windows.Forms.Label();
             this.txtDefaultTemplatePath = new System.Windows.Forms.TextBox();
             this.tabMisc = new System.Windows.Forms.TabPage();
+            this.checkBoxShowConsoleOutput = new System.Windows.Forms.CheckBox();
             this.checkBoxDocumentStyleSettings = new System.Windows.Forms.CheckBox();
             this.chkDomainOverride = new System.Windows.Forms.CheckBox();
             this.chkForUpdates = new System.Windows.Forms.CheckBox();
@@ -106,7 +107,7 @@ namespace MyGeneration
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.buttonSaveSettings = new System.Windows.Forms.Button();
             this.buttonCancelSettings = new System.Windows.Forms.Button();
-            this.checkBoxShowConsoleOutput = new System.Windows.Forms.CheckBox();
+            this.checkBoxDefaultDBOnly = new System.Windows.Forms.CheckBox();
             this.tabControl.SuspendLayout();
             this.tabConnection.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -365,6 +366,7 @@ namespace MyGeneration
             // 
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.Controls.Add(this.checkBoxDefaultDBOnly);
             this.groupBox3.Controls.Add(this.btnTestConnection);
             this.groupBox3.Controls.Add(this.label6);
             this.groupBox3.Controls.Add(this.cboDbDriver);
@@ -382,9 +384,9 @@ namespace MyGeneration
             // 
             this.btnTestConnection.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnTestConnection.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnTestConnection.Location = new System.Drawing.Point(341, 24);
+            this.btnTestConnection.Location = new System.Drawing.Point(386, 24);
             this.btnTestConnection.Name = "btnTestConnection";
-            this.btnTestConnection.Size = new System.Drawing.Size(112, 23);
+            this.btnTestConnection.Size = new System.Drawing.Size(99, 23);
             this.btnTestConnection.TabIndex = 27;
             this.btnTestConnection.Text = "Test Connection";
             this.btnTestConnection.Click += new System.EventHandler(this.btnTestConnection_Click);
@@ -392,9 +394,9 @@ namespace MyGeneration
             // label6
             // 
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(8, 23);
+            this.label6.Location = new System.Drawing.Point(8, 24);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(72, 23);
+            this.label6.Size = new System.Drawing.Size(42, 23);
             this.label6.TabIndex = 26;
             this.label6.Text = "Driver:";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -402,7 +404,7 @@ namespace MyGeneration
             // cboDbDriver
             // 
             this.cboDbDriver.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cboDbDriver.Location = new System.Drawing.Point(88, 24);
+            this.cboDbDriver.Location = new System.Drawing.Point(56, 24);
             this.cboDbDriver.Name = "cboDbDriver";
             this.cboDbDriver.Size = new System.Drawing.Size(192, 21);
             this.cboDbDriver.TabIndex = 24;
@@ -413,12 +415,12 @@ namespace MyGeneration
             // 
             this.btnOleDb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOleDb.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnOleDb.Location = new System.Drawing.Point(461, 24);
+            this.btnOleDb.Location = new System.Drawing.Point(485, 24);
             this.btnOleDb.Name = "btnOleDb";
             this.btnOleDb.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnOleDb.Size = new System.Drawing.Size(80, 23);
+            this.btnOleDb.Size = new System.Drawing.Size(56, 23);
             this.btnOleDb.TabIndex = 21;
-            this.btnOleDb.Text = "OLEDB ...";
+            this.btnOleDb.Text = "OLEDB";
             this.btnOleDb.Click += new System.EventHandler(this.btnOleDb_Click);
             // 
             // txtConnectionString
@@ -847,6 +849,14 @@ namespace MyGeneration
             this.tabMisc.TabIndex = 2;
             this.tabMisc.Text = "Misc";
             // 
+            // checkBoxShowConsoleOutput
+            // 
+            this.checkBoxShowConsoleOutput.Location = new System.Drawing.Point(24, 116);
+            this.checkBoxShowConsoleOutput.Name = "checkBoxShowConsoleOutput";
+            this.checkBoxShowConsoleOutput.Size = new System.Drawing.Size(216, 24);
+            this.checkBoxShowConsoleOutput.TabIndex = 3;
+            this.checkBoxShowConsoleOutput.Text = "Show Template Generation Output in Console";
+            // 
             // checkBoxDocumentStyleSettings
             // 
             this.checkBoxDocumentStyleSettings.Location = new System.Drawing.Point(24, 86);
@@ -937,13 +947,16 @@ namespace MyGeneration
             this.buttonCancelSettings.UseVisualStyleBackColor = true;
             this.buttonCancelSettings.Click += new System.EventHandler(this.buttonCancelSettings_Click);
             // 
-            // checkBoxShowConsoleOutput
+            // checkBoxDefaultDBOnly
             // 
-            this.checkBoxShowConsoleOutput.Location = new System.Drawing.Point(24, 116);
-            this.checkBoxShowConsoleOutput.Name = "checkBoxShowConsoleOutput";
-            this.checkBoxShowConsoleOutput.Size = new System.Drawing.Size(216, 24);
-            this.checkBoxShowConsoleOutput.TabIndex = 3;
-            this.checkBoxShowConsoleOutput.Text = "Show Template Generation Output in Console";
+            this.checkBoxDefaultDBOnly.AutoSize = true;
+            this.checkBoxDefaultDBOnly.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxDefaultDBOnly.Location = new System.Drawing.Point(254, 26);
+            this.checkBoxDefaultDBOnly.Name = "checkBoxDefaultDBOnly";
+            this.checkBoxDefaultDBOnly.Size = new System.Drawing.Size(108, 17);
+            this.checkBoxDefaultDBOnly.TabIndex = 28;
+            this.checkBoxDefaultDBOnly.Text = "Default DB Only?";
+            this.checkBoxDefaultDBOnly.UseVisualStyleBackColor = true;
             // 
             // DefaultSettingsControl
             // 
@@ -1059,5 +1072,6 @@ namespace MyGeneration
         private System.Windows.Forms.CheckBox checkBoxRunTemplatesAsync;
         private System.Windows.Forms.CheckBox checkBoxDocumentStyleSettings;
         private System.Windows.Forms.CheckBox checkBoxShowConsoleOutput;
+        private System.Windows.Forms.CheckBox checkBoxDefaultDBOnly;
     }
 }

@@ -386,6 +386,7 @@ namespace MyGeneration
                 if (string.IsNullOrEmpty(ali.Error)) 
 				{
                     StaticMyMeta.Connect(settings.DbDriver, settings.ConnectionString);
+                    StaticMyMeta.ShowDefaultDatabaseOnly = settings.ShowDefaultDatabaseOnly;
                     StaticMyMeta.LanguageMappingFileName = settings.LanguageMappingFile;
                     StaticMyMeta.Language = settings.Language;
                     StaticMyMeta.DbTargetMappingFileName = settings.DbTargetMappingFile;
@@ -470,6 +471,7 @@ namespace MyGeneration
                 {
                     if ((StaticMyMeta.DriverString != settings.DbDriver) ||
                         (StaticMyMeta.ConnectionString != settings.ConnectionString) ||
+                        (StaticMyMeta.ShowDefaultDatabaseOnly != settings.ShowDefaultDatabaseOnly) ||
                         (StaticMyMeta.LanguageMappingFileName != settings.LanguageMappingFile) ||
                         (StaticMyMeta.Language != settings.Language) ||
                         (StaticMyMeta.DbTargetMappingFileName != settings.DbTargetMappingFile) ||

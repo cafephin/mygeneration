@@ -331,7 +331,7 @@ namespace MyGeneration
                     SetAttribute(connectionnNode, "usermetapath", inf.UserMetaDataPath);
                     SetAttribute(connectionnNode, "language", inf.Language);
                     SetAttribute(connectionnNode, "dbtarget", inf.DbTarget);
-
+                    SetAttribute(connectionnNode, "defaultdatabaseonly", inf.ShowDefaultDatabaseOnly.ToString());
 
                     if (this._databaseUserMetaMappings != null)
                     {
@@ -450,6 +450,12 @@ namespace MyGeneration
         {
             get { return this.GetSetting("TemplateBrowserExecAsync", true); }
             set { this.SetSetting("TemplateBrowserExecAsync", value.ToString()); }
+        }
+
+        public bool ShowDefaultDatabaseOnly
+        {
+            get { return this.GetSetting("ShowDefaultDatabaseOnly", false); }
+            set { this.SetSetting("ShowDefaultDatabaseOnly", value.ToString()); }
         }
 
         public bool ConsoleWriteGeneratedDetails
@@ -856,6 +862,9 @@ namespace MyGeneration
 				
 				if (!input.Contains("__dbConnectionString"))
 					input["__dbConnectionString"] = settings.ConnectionString;
+
+                if (!input.Contains("__showDefaultDatabaseOnly"))
+                    input["__showDefaultDatabaseOnly"] = settings.ShowDefaultDatabaseOnly.ToString();
 			
 				if (!input.Contains("__domainOverride"))
 					input["__domainOverride"] = settings.DomainOverride;
@@ -920,6 +929,8 @@ namespace MyGeneration
                 dict["__dbConnectionString"] = settings.ConnectionString;
 
                 dict["__domainOverride"] = settings.DomainOverride.ToString();
+
+                dict["__showDefaultDatabaseOnly"] = settings.ShowDefaultDatabaseOnly.ToString();
 
                 if (settings.DbTarget != string.Empty)
                     dict["__dbTarget"] = settings.DbTarget;
@@ -1029,8 +1040,9 @@ namespace MyGeneration
 		public string DbTarget;
 		public string DbTargetPath;
 		public string Language;
-		public string LanguagePath;
+        public string LanguagePath;
         public string UserMetaDataPath;
+        public bool ShowDefaultDatabaseOnly;
 
 		public ConnectionInfo() {}
 
@@ -1044,6 +1056,7 @@ namespace MyGeneration
             UserMetaDataPath = DefaultSettings.GetAttribute(node, "usermetapath", "");
             DbTarget = DefaultSettings.GetAttribute(node, "dbtarget", "");
             Language = DefaultSettings.GetAttribute(node, "language", "");
+            ShowDefaultDatabaseOnly = Convert.ToBoolean(DefaultSettings.GetAttribute(node, "defaultdatabaseonly", "True"));
 
             //foreach (node.ChildNodes
             //XmlNodeList nodes = node.ChildNodes.GetElementsByTagName("XmlUserMetaDatabaseAlias");

@@ -47,6 +47,9 @@ namespace Zeus
 					{
 						myMeta.Connect(driver, connectionString);
 
+                        if (input.Contains("__showDefaultDatabaseOnly"))
+                            myMeta.ShowDefaultDatabaseOnly = ((string)input["__showDefaultDatabaseOnly"] == bool.TrueString);
+
 						if (input.Contains("__dbTargetMappingFileName"))
 							myMeta.DbTargetMappingFileName = (string)input["__dbTargetMappingFileName"];
 

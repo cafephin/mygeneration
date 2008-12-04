@@ -72,6 +72,7 @@ namespace MyGeneration
             this.txtDbTargetFile.Text = settings.DbTargetMappingFile;
             this.txtUserMetaDataFile.Text = settings.UserMetaDataFileName;
 
+            myMeta.ShowDefaultDatabaseOnly = settings.ShowDefaultDatabaseOnly;
             myMeta.LanguageMappingFileName = settings.LanguageMappingFile;
             myMeta.DbTargetMappingFileName = settings.DbTargetMappingFile;
 
@@ -88,6 +89,7 @@ namespace MyGeneration
 
             this.checkBoxClipboard.Checked = settings.EnableClipboard;
             this.checkBoxRunTemplatesAsync.Checked = settings.ExecuteFromTemplateBrowserAsync;
+            this.checkBoxDefaultDBOnly.Checked = settings.ShowDefaultDatabaseOnly;
             this.checkBoxShowConsoleOutput.Checked = settings.ConsoleWriteGeneratedDetails;
             this.checkBoxDocumentStyleSettings.Checked = settings.EnableDocumentStyleSettings;
             this.checkBoxLineNumbers.Checked = settings.EnableLineNumbering;
@@ -263,6 +265,7 @@ namespace MyGeneration
             settings.UserMetaDataFileName = this.txtUserMetaDataFile.Text;
             settings.EnableClipboard = this.checkBoxClipboard.Checked;
             settings.ExecuteFromTemplateBrowserAsync = this.checkBoxRunTemplatesAsync.Checked;
+            settings.ShowDefaultDatabaseOnly = this.checkBoxDefaultDBOnly.Checked;
             settings.ConsoleWriteGeneratedDetails = this.checkBoxShowConsoleOutput.Checked;
             settings.EnableDocumentStyleSettings = this.checkBoxDocumentStyleSettings.Checked;
             settings.EnableLineNumbering = this.checkBoxLineNumbers.Checked;
