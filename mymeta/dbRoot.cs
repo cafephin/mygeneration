@@ -119,7 +119,8 @@ namespace MyMeta
 
 			ClassFactory = null;
 
-			_showSystemData = false;
+            _showSystemData = false;
+            _showDefaultDatabaseOnly = false;
 
 			_driver = dbDriver.None;
 			_driverString = "NONE";
@@ -160,16 +161,32 @@ namespace MyMeta
 				if(null == _databases)
 				{
 					if(this.ClassFactory != null)
-					{
-						_databases = (Databases)ClassFactory.CreateDatabases();
-						_databases.dbRoot = this;
-						_databases.LoadAll();
+                    {
+                        _databases = ClassFactory.CreateDatabases() as Databases;
+                        _databases.dbRoot = this;
+
+                        if (this.ShowDefaultDatabaseOnly)
+                        {
+                            _databases.LoadDefault();
+                        }
+                        else
+                        {
+                            _databases.LoadAll();
+                        }
 					}
 				}
 
 				return _databases;
 			}
 		}
+
+        public string DefaultDatabaseName
+        {
+            get
+            {
+                return _defaultDatabase;
+            }
+        }
 
 		/// <summary>
 		/// This is the default database as defined in your connection string, or if not provided your DBMS system may provide one.
@@ -535,6 +552,8 @@ namespace MyMeta
                         {
                             sqliteConn.Open();
                             dbName = sqliteConn.Database;
+
+                            if (!string.IsNullOrEmpty(dbName)) this._defaultDatabase = dbName;
                         }
                         this._driverString = MyMetaDrivers.SQLite;
                         this.StripTrailingNulls = false;
@@ -584,6 +603,8 @@ namespace MyMeta
                             if (connection != null)
                                 connection.Open();
                             dbName = connection.Database;
+                            if (string.IsNullOrEmpty(dbName)) dbName = plugin.DefaultDatabase;
+                            if (!string.IsNullOrEmpty(dbName)) this._defaultDatabase = dbName;
                         }
                         this._driverString = pluginName;
                         //this.StripTrailingNulls = plugin.StripTrailingNulls;
@@ -792,7 +813,23 @@ namespace MyMeta
 		{
 			get	{ return _showSystemData;   }
 			set	{ _showSystemData = value ; }
-		}
+        }
+
+        /// <summary>
+        /// Only show the default database in the databases collection.
+        /// </summary>
+        public bool ShowDefaultDatabaseOnly
+        {
+            get { return _showDefaultDatabaseOnly; }
+            set 
+            {
+                if (_showDefaultDatabaseOnly != value)
+                {
+                    this._databases = null;
+                }
+                _showDefaultDatabaseOnly = value; 
+            }
+        }
 
 		/// <summary>
 		/// If this is true then four IColumn properties are actually supplied by the Domain, if the Column has an IDomain. 
@@ -1309,7 +1346,8 @@ namespace MyMeta
 
         public IClassFactory ClassFactory = null;
 
-		private bool _showSystemData = false;
+        private bool _showSystemData = false;
+        private bool _showDefaultDatabaseOnly = false;
 
 		private dbDriver _driver = dbDriver.None;
 		private string _driverString = "NONE";

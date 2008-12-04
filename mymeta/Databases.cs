@@ -128,7 +128,28 @@ namespace MyMeta
 		internal virtual void LoadAll()
 		{
 
-		}
+        }
+
+        internal virtual void LoadDefault()
+        {
+            LoadAll();
+            ArrayList dbsToRemove = new ArrayList();
+            foreach (Database db in this)
+            {
+                if (!db.Name.Equals(dbRoot.DefaultDatabaseName))
+                {
+                    dbsToRemove.Add(db);
+                }
+            }
+
+            for (int i=0; i < dbsToRemove.Count; i++)
+            {
+                if ((dbsToRemove.Count != this.Count) || (i > 0))
+                {
+                    this.Remove(dbsToRemove[i]);
+                }
+            }
+        }
 
 		internal void PopulateArray(DataTable metaData)
 		{

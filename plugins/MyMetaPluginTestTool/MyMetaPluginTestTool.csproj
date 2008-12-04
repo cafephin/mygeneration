@@ -49,12 +49,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IMyMetaTestContext.cs" />
+    <Compile Include="MyMetaPluginTests.cs" />
     <Compile Include="MyMetaPluginUtility.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MyMetaPluginUtility.Designer.cs">
       <DependentUpon>MyMetaPluginUtility.cs</DependentUpon>
     </Compile>
+    <Compile Include="MyMetaAPITests.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="MyMetaPluginUtility.resx">
