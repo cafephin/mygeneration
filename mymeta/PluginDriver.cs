@@ -38,8 +38,5 @@ namespace MyMeta
         {
             return (null != plugin.GetDatabaseSpecificMetaData(null, "CanBrowseDatabase"));
         }
-
-
-
     }
 }

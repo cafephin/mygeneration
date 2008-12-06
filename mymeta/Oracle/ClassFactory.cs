@@ -138,5 +138,10 @@ namespace MyMeta.Oracle
         {
             return new System.Data.OleDb.OleDbConnection();
         }
+
+        public void ChangeDatabase(System.Data.IDbConnection connection, string database)
+        {
+            connection.ChangeDatabase(database);
+        }
     }
 }

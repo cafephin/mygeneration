@@ -153,5 +153,9 @@ namespace MyMeta.Advantage
             return null;
         }
 
+        public void ChangeDatabase(System.Data.IDbConnection connection, string database)
+        {
+            connection.ChangeDatabase(database);
+        }
     }
 }

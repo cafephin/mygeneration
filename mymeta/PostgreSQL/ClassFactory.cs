@@ -139,5 +139,10 @@ namespace MyMeta.PostgreSQL
             return new Npgsql.NpgsqlConnection();
         }
 
+        public void ChangeDatabase(System.Data.IDbConnection connection, string database)
+        {
+            connection.ChangeDatabase(database);
+        }
+
     }
 }

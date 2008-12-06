@@ -63,11 +63,19 @@ namespace MyGeneration.UI.Plugins.SqlTool
 
         public IDbConnection NewConnection()
         {
+            return NewConnection(null);
+        }
+
+        public IDbConnection NewConnection(string database)
+        {
             dbRoot mymeta = new dbRoot();
             IDbConnection _connection = null;
             try
             {
                 _connection = mymeta.BuildConnection(DbDriver, ConnectionString);
+                
+                if (!string.IsNullOrEmpty(database))
+                    mymeta.ChangeDatabase(_connection, database);
             }
             catch (Exception ex)
             {
@@ -375,7 +383,7 @@ namespace MyGeneration.UI.Plugins.SqlTool
             int resultSetIndex = 0, numRows = 0, gridIndex = 1;
             try
             {
-                conn = NewConnection();
+                conn = NewConnection(_databaseName);
                 conn.Open();
 
                 List<string> sqlCommands = this.SqlToExecute;
@@ -383,15 +391,12 @@ namespace MyGeneration.UI.Plugins.SqlTool
                 {
                     if (conn == null)
                     {
-                        conn = NewConnection();
+                        conn = NewConnection(_databaseName);
                     }
                     if (conn.State != ConnectionState.Open)
                     {
                         conn.Open();
                     }
-
-                    if (!string.IsNullOrEmpty(_databaseName))
-                        conn.ChangeDatabase(_databaseName);
 
                     IDbCommand db = conn.CreateCommand();
                     db.CommandText = sql;

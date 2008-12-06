@@ -8,7 +8,7 @@ using MyMeta;
 
 namespace MyMeta.Plugins
 {
-    public class SybaseASEPlugin : IMyMetaPlugin, IDisposable
+    public class SybaseASEPlugin : IMyMetaPlugin, IMyMetaPluginExt, IDisposable
     {
         private OleDbConnection _connection;
         private IMyMetaPluginContext context;
@@ -284,7 +284,8 @@ namespace MyMeta.Plugins
                     AND OI.keycnt > 0
                     AND R.refkey").Append(i).Append(@" > 0
                     AND R.pmrydbname IS NULL
-				    AND OBJECT_NAME(R.tableid) = '").Append(tableName).Append(@"'");
+				    AND (OBJECT_NAME(R.tableid) = '").Append(tableName).Append(@"'
+                        OR OBJECT_NAME(R.reftabid) = '").Append(tableName).Append(@"')");
             }
 
             OleDbCommand cmd = cn.CreateCommand();
@@ -477,6 +478,28 @@ namespace MyMeta.Plugins
                 }
             }
             catch { }
+        }
+
+        #endregion
+
+        #region IMyMetaPluginExt Members
+
+        public void ChangeDatabase(IDbConnection conn, string dbName)
+        {
+            if (conn is OleDbConnection)
+            {
+                OleDbConnection connection = conn as OleDbConnection;
+                if (connection.State != ConnectionState.Open) connection.Open();
+
+                OleDbCommand cmd = connection.CreateCommand();
+                cmd.CommandText = "use [" + dbName + "];";
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public DataTable GetProviderTypes(string database)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

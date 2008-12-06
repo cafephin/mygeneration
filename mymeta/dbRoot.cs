@@ -674,6 +674,13 @@ namespace MyMeta
             }
         }
 
+        [ComVisible(false)]
+        public void ChangeDatabase(IDbConnection connection, string database)
+        {
+            if (this.ClassFactory != null)
+                this.ClassFactory.ChangeDatabase(connection, database);
+        }
+
 		internal OleDbConnection TheConnection
 		{
 			get

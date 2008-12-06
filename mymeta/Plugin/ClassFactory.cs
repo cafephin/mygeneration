@@ -118,14 +118,26 @@ namespace MyMeta.Plugin
             return new Plugin.PluginDomains(plugin);
 		}
 
-		public IProviderType CreateProviderType()
-		{
-            return new ProviderType();
-		}
+        public IProviderType CreateProviderType()
+        {
+            /*if (plugin is IMyMetaPluginExt)
+            {
+            }
+            else
+            {*/
+                return new ProviderType();
+            //}
+        }
 
 		public IProviderTypes CreateProviderTypes()
 		{
-            return new ProviderTypes();
+            /*if (plugin is IMyMetaPluginExt)
+            {
+            }
+            else
+            {*/
+                return new ProviderTypes();
+           // }
 		}
 
         public System.Data.IDbConnection CreateConnection()
@@ -133,5 +145,17 @@ namespace MyMeta.Plugin
             return plugin.NewConnection;
         }
 
+        public void ChangeDatabase(System.Data.IDbConnection connection, string database)
+        {
+            if (plugin is IMyMetaPluginExt)
+            {
+                IMyMetaPluginExt pluginext = plugin as IMyMetaPluginExt;
+                pluginext.ChangeDatabase(connection, database);
+            }
+            else
+            {
+                connection.ChangeDatabase(database);
+            }
+        }
 	}
 }

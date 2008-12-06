@@ -156,7 +156,12 @@ namespace MyMeta.Firebird
 		public IProviderTypes CreateProviderTypes()
 		{
 			return new ProviderTypes();
-		}
+        }
+
+        public void ChangeDatabase(System.Data.IDbConnection connection, string database)
+        {
+            connection.ChangeDatabase(database);
+        }
 
         #region IClassFactory Members
 

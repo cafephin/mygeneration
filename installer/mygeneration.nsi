@@ -178,7 +178,7 @@ Section "-Install Mygeneration and Register Shell Extensions"
   File /nonfatal /oname=MyMeta.Plugins.SybaseASE.dll ..\plugins\MyMetaSybaseASEPlugin\bin\Release\MyMeta.Plugins.SybaseASE.dll
   File /nonfatal /oname=MyMeta.Plugins.SybaseASA.dll ..\plugins\MyMetaSybaseASAPlugin\bin\Release\MyMeta.Plugins.SybaseASA.dll
   File /nonfatal /oname=MyMeta.Plugins.Ingres2006.dll ..\plugins\MyMetaIngres2006Plugin\bin\Release\MyMeta.Plugins.Ingres2006.dll
-  File /nonfatal /oname=MyMeta.Plugins.VisualFoxPro.dll ..\plugins\MyMetaVisualFoxProPlugin\bin\Release\MyMeta.Plugins.VisualFoxPro.dll
+  File /nonfatal /oname=MyMeta.Plugins.VisualFoxPro.dll ..\plugins\MyMetaFoxProPlugin\bin\Release\MyMeta.Plugins.VisualFoxPro.dll
   File /nonfatal /oname=MyGeneration.UI.Plugins.SqlTool.dll ..\plugins\MyGeneration.UI.Plugins.SqlTool\bin\Release\MyGeneration.UI.Plugins.SqlTool.dll
   
   Delete $INSTDIR\WeifenLuo.WinFormsUI.dll

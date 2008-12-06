@@ -11,6 +11,7 @@ namespace MyMeta
 	public interface IClassFactory 
 	{
         IDbConnection CreateConnection();
+        void ChangeDatabase(IDbConnection connection, string database);
 
 		IDatabase		CreateDatabase();
 		IDatabases		CreateDatabases();

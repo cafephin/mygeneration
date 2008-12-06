@@ -139,5 +139,10 @@ namespace MyMeta.SQLite
         {
             return new System.Data.SQLite.SQLiteConnection();
         }
+
+        public void ChangeDatabase(System.Data.IDbConnection connection, string database)
+        {
+            connection.ChangeDatabase(database);
+        }
     }
 }

@@ -246,6 +246,7 @@
     <Compile Include="Columns.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="IMyMetaPluginExt.cs" />
     <Compile Include="FileDbDriver.cs" />
     <Compile Include="IMyMetaPluginContext.cs" />
     <Compile Include="IMyMetaPlugin.cs" />
