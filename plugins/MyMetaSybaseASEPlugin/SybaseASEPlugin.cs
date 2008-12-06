@@ -122,7 +122,7 @@ namespace MyMeta.Plugins
 
             OleDbConnection cn = this.OpenConnection;
             InitDatabase(cn, database);
-            DataTable dt1 = cn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, new Object[] { database, null, null, null });
+            DataTable dt1 = cn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, new Object[] { database, null, null, "TABLE" });
             if (context.IncludeSystemEntities)
             {
                 DataTable dt2 = cn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, new Object[] { database, null, null, "SYSTEM TABLE" });
@@ -257,80 +257,42 @@ namespace MyMeta.Plugins
         {
             OleDbConnection cn = this.OpenConnection;
             InitDatabase(cn, database);
-            return cn.GetOleDbSchemaTable(OleDbSchemaGuid.Foreign_Keys, new Object[] { database, null, null, null, tableName });
-            //return this.context.CreateForeignKeysDataTable();
-            //DataTable metaData = this.context.CreateForeignKeysDataTable();
-            /*IVistaDBDatabase db = null;
+            DataTable fks = context.CreateForeignKeysDataTable();
+            StringBuilder sql = new StringBuilder();
 
-            try
+            for (int i = 1; i < 7; i++)
             {
-                metaData = context.CreateForeignKeysDataTable();
-
-                db = DDA.OpenDatabase(this.GetFullDatabaseName(), 
-                    VistaDBDatabaseOpenMode.NonexclusiveReadOnly, "");
-
-                ArrayList tables = db.EnumTables(); 
-
-                foreach (string table in tables) 
-                {
-                    IVistaDBTableSchema tblStructure = db.TableSchema(table);
-
-                    foreach (IVistaDBRelationshipInformation relInfo in tblStructure.ForeignKeys) 
-                    { 
-                        if(relInfo.ForeignTable != tableName && relInfo.PrimaryTable != tableName)
-                            continue;
-
-                        string fCols = relInfo.ForeignKey; 
-                        string pCols = String.Empty; 
-
-                        string primaryTbl  = relInfo.PrimaryTable; 
-                        string pkName = "";
-
-                        using (IVistaDBTableSchema pkTableStruct = db.TableSchema(primaryTbl)) 
-                        { 
-                            foreach (IVistaDBIndexInformation idxInfo in pkTableStruct.Indexes) 
-                            { 
-                                if (!idxInfo.Primary) 
-                                continue; 
-								        
-                                pkName = idxInfo.Name;
-                                pCols = idxInfo.KeyExpression; 
-                                break; 
-                            } 
-                        } 
-
-                        string [] fColumns = fCols.Split(';'); 
-                        string [] pColumns = pCols.Split(';'); 
-
-                        for(int i = 0; i < fColumns.GetLength(0); i++)
-                        {
-                            DataRow row = metaData.NewRow();
-                            metaData.Rows.Add(row);
-
-                            row["PK_TABLE_CATALOG"] = GetDatabaseName();
-                            row["PK_TABLE_SCHEMA"]  = DBNull.Value;
-                            row["FK_TABLE_CATALOG"] = DBNull.Value;
-                            row["FK_TABLE_SCHEMA"]  = DBNull.Value;
-                            row["FK_TABLE_NAME"]    = tblStructure.Name;
-                            row["PK_TABLE_NAME"]    = relInfo.PrimaryTable;
-                            row["ORDINAL"]          = 0;
-                            row["FK_NAME"]          = relInfo.Name;
-                            row["PK_NAME"]          = pkName;
-                            row["PK_COLUMN_NAME"]   = pColumns[i]; 
-                            row["FK_COLUMN_NAME"]   = fColumns[i];
-
-                            row["UPDATE_RULE"]		= relInfo.UpdateIntegrity;
-                            row["DELETE_RULE"]		= relInfo.DeleteIntegrity;
-                        }
-                    } 
-                }
+                if (i > 1) sql.Append("\r\nunion\r\n");
+                sql.Append(@"SELECT 
+                    USER_NAME(OT.uid) as FK_TABLE_SCHEMA,
+                    db_name() as FK_TABLE_CATALOG,
+					OBJECT_NAME(R.tableid) as FK_TABLE_NAME,  
+					COL_NAME(R.tableid,R.fokey").Append(i).Append(@",DB_ID(R.frgndbname)) as FK_COLUMN_NAME,
+                    USER_NAME(O.uid) as PK_TABLE_SCHEMA,
+                    db_name() as PK_TABLE_CATALOG,   
+					OBJECT_NAME(R.reftabid) as PK_TABLE_NAME, 
+					COL_NAME(R.reftabid,R.refkey").Append(i).Append(@",DB_ID(R.pmrydbname)) as PK_COLUMN_NAME,
+					OBJECT_NAME(R.constrid) as CONSTRAINT_NAME,
+					OBJECT_NAME(R.constrid) as FK_NAME,
+					").Append(i).Append(@" as ORDINAL,
+                    OI.name as PK_NAME
+				FROM sysreferences R, sysobjects O, sysobjects OT, sysindexes OI
+                WHERE R.reftabid=O.id 
+                    AND R.tableid=OT.id  
+                    AND R.reftabid=O.id 
+                    AND R.reftabid=OI.id 
+                    AND OI.keycnt > 0
+                    AND R.refkey").Append(i).Append(@" > 0
+                    AND R.pmrydbname IS NULL
+				    AND OBJECT_NAME(R.tableid) = '").Append(tableName).Append(@"'");
             }
-            finally
-            {
-                if(db != null) db.Close();
-            }*/
 
-            //return metaData;
+            OleDbCommand cmd = cn.CreateCommand();
+            cmd.CommandText = sql.ToString();
+            OleDbDataAdapter adapt = new OleDbDataAdapter(cmd);
+            adapt.Fill(fks);
+
+            return fks;
         }
 
         private void SetDataTypes(OleDbConnection conn, string database, string entityName, DataTable metaData, bool isView)

@@ -1,4 +1,4 @@
-if "%DEVENV%"=="" set DEVENV="%PROGRAMFILES%\Microsoft Visual Studio 9.0\Common7\IDE\VCSExpress.exe"  /rebuild release
+if "%DEVENV%"=="" set DEVENV="%PROGRAMFILES%\Microsoft Visual Studio 9.0\Common7\IDE\devenv.exe"  /rebuild release
 
 %DEVENV% "..\..\..\plugins\MyMetaPlugins.sln"
 %DEVENV% "..\..\..\plugins\ZeusPlugins.sln"

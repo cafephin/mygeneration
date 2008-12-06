@@ -30,6 +30,7 @@
         {
             this.tabControlPluginStuff = new System.Windows.Forms.TabControl();
             this.tabPageTest = new System.Windows.Forms.TabPage();
+            this.checkBoxDefaultDb = new System.Windows.Forms.CheckBox();
             this.checkBoxProcOther = new System.Windows.Forms.CheckBox();
             this.checkBoxViewOther = new System.Windows.Forms.CheckBox();
             this.checkBoxViewColumns = new System.Windows.Forms.CheckBox();
@@ -47,7 +48,6 @@
             this.textBoxConnectionString = new System.Windows.Forms.TextBox();
             this.tabPageData = new System.Windows.Forms.TabPage();
             this.comboBoxPlugins = new System.Windows.Forms.ComboBox();
-            this.checkBoxDefaultDb = new System.Windows.Forms.CheckBox();
             this.tabControlPluginStuff.SuspendLayout();
             this.tabPageTest.SuspendLayout();
             this.SuspendLayout();
@@ -90,6 +90,18 @@
             this.tabPageTest.TabIndex = 0;
             this.tabPageTest.Text = "Test";
             this.tabPageTest.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxDefaultDb
+            // 
+            this.checkBoxDefaultDb.AutoSize = true;
+            this.checkBoxDefaultDb.Checked = true;
+            this.checkBoxDefaultDb.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxDefaultDb.Location = new System.Drawing.Point(219, 48);
+            this.checkBoxDefaultDb.Name = "checkBoxDefaultDb";
+            this.checkBoxDefaultDb.Size = new System.Drawing.Size(139, 17);
+            this.checkBoxDefaultDb.TabIndex = 14;
+            this.checkBoxDefaultDb.Text = "Default Database Only?";
+            this.checkBoxDefaultDb.UseVisualStyleBackColor = true;
             // 
             // checkBoxProcOther
             // 
@@ -253,8 +265,10 @@
             this.textBoxResults.MaxLength = 999999;
             this.textBoxResults.Multiline = true;
             this.textBoxResults.Name = "textBoxResults";
+            this.textBoxResults.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.textBoxResults.Size = new System.Drawing.Size(702, 326);
             this.textBoxResults.TabIndex = 3;
+            this.textBoxResults.WordWrap = false;
             // 
             // buttonTest
             // 
@@ -306,18 +320,6 @@
             this.comboBoxPlugins.Size = new System.Drawing.Size(716, 21);
             this.comboBoxPlugins.TabIndex = 1;
             this.comboBoxPlugins.SelectedIndexChanged += new System.EventHandler(this.comboBoxPlugins_SelectedIndexChanged);
-            // 
-            // checkBoxDefaultDb
-            // 
-            this.checkBoxDefaultDb.AutoSize = true;
-            this.checkBoxDefaultDb.Checked = true;
-            this.checkBoxDefaultDb.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxDefaultDb.Location = new System.Drawing.Point(219, 48);
-            this.checkBoxDefaultDb.Name = "checkBoxDefaultDb";
-            this.checkBoxDefaultDb.Size = new System.Drawing.Size(139, 17);
-            this.checkBoxDefaultDb.TabIndex = 14;
-            this.checkBoxDefaultDb.Text = "Default Database Only?";
-            this.checkBoxDefaultDb.UseVisualStyleBackColor = true;
             // 
             // MyMetaPluginUtility
             // 

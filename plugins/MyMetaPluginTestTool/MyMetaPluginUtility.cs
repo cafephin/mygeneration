@@ -168,7 +168,7 @@ namespace MyMetaPluginTestTool
 
         public bool IncludeTableColumns
         {
-            get { return this.checkBoxViewColumns.Checked; }
+            get { return this.checkBoxTableColumns.Checked; }
         }
 
         public bool IncludeTableOther

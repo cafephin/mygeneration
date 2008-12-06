@@ -181,7 +181,58 @@ go
 
 
 
+IF EXISTS (SELECT 1 FROM sysobjects o, sysusers u WHERE o.uid=u.uid AND o.name = 'CompositeKeyTest' AND u.name = 'dbo' AND o.type = 'U')
+	drop table CompositeKeyTest
+
+IF (@@error != 0)
+BEGIN
+	PRINT "Error CREATING table 'pubs2.dbo.CompositeKeyTest'"
+	SELECT syb_quit()
+END
+go
+
+create table CompositeKeyTest (
+	GroupID                        int                              not null  ,
+	IndyID                        int                              not null  ,
+	IndyDescription               nchar(50)                        not null  ,
+		CONSTRAINT PK_CompositeKeyTest PRIMARY KEY NONCLUSTERED ( GroupID, IndyID )  on 'default' 
+)
+lock allpages
+ on 'default'
+go 
 
 
+setuser
+go 
 
+IF EXISTS (SELECT 1 FROM sysobjects o, sysusers u WHERE o.uid=u.uid AND o.name = 'CompositeKeyReferenceTest' AND u.name = 'dbo' AND o.type = 'U')
+	drop table CompositeKeyReferenceTest
+
+IF (@@error != 0)
+BEGIN
+	PRINT "Error CREATING table 'pubs2.dbo.CompositeKeyReferenceTest'"
+	SELECT syb_quit()
+END
+go
+
+create table CompositeKeyReferenceTest (
+	RefPKID                        int                              not null  ,
+	GroupID                        int                              not null  ,
+	IndyID                        int                              not null  ,
+	IndyDescription               nchar(50)                        not null  ,
+		CONSTRAINT PK_CompositeKeyReferenceTest PRIMARY KEY NONCLUSTERED ( RefPKID )  on 'default' 
+)
+lock allpages
+ on 'default'
+go 
+
+
+setuser
+go
+
+alter table pubs2.dbo.CompositeKeyReferenceTest
+
+add constraint FK_CompositeKeyReferenceTest_CompositeKeyTest FOREIGN KEY (GroupID, IndyID) REFERENCES pubs2.dbo.CompositeKeyTest(GroupID, IndyID)
+
+go
 
