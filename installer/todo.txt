@@ -12,6 +12,7 @@ Tasks:
 - Keyboard shortcuts for code collapse/expand feature;
 - Enhanced Intellisense-like feature that shows method overloads and their signatures;
 - Keyboard shortcut for inserting predefined code snippets;
+- operation Completed message after project regen.
 
 Q/A:
 - Test in Windows Vista.
