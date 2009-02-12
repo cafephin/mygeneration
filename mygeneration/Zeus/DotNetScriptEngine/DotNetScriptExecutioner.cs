@@ -127,7 +127,7 @@ namespace Zeus.DotNetScript
             get
             {
                 if (string.IsNullOrEmpty(_compilerVersion))
-                    return "v3.0";
+                    return "v3.5";
                 else
                     return _compilerVersion;
             }
@@ -339,24 +339,22 @@ namespace Zeus.DotNetScript
 			//Create an instance whichever code provider that is needed
 			CodeDomProvider codeProvider = null;
 
-            Dictionary<string, string> providerParams = new Dictionary<string, string>();
-            providerParams["CompilerVersion"] = compilerVersion;
-
             // string extraParams;
-			if (language == DotNetLanguage.VBNet)
-			{
+            if (language == DotNetLanguage.VBNet)
+            {
                 lang = "VB";
-				ext = ".vb";
-			}
+                ext = ".vb";
+                codeProvider = new VBCodeProvider(new Dictionary<string, string>() { { "CompilerVersion", compilerVersion } });
+            }
+            else
+            {
+                codeProvider = new CSharpCodeProvider(new Dictionary<string, string>() { { "CompilerVersion", compilerVersion } });
+            }
 
-            codeProvider = CodeDomProvider.CreateProvider(lang);
-            CompilerInfo langCompilerInfo = CodeDomProvider.GetCompilerInfo(lang);
-            CompilerParameters compilerParams = langCompilerInfo.CreateDefaultCompilerParameters();
-
-			//add compiler parameters
-			//CompilerParameters compilerParams = new CompilerParameters();
+            //add compiler parameters
+            CompilerParameters compilerParams = new CompilerParameters();
             compilerParams.CompilerOptions = "/target:library /optimize"; // + extraParams;
-			CompilerResults results = null; 
+            CompilerResults results = null; 
 
 			// Add References
 			if (!references.Contains("mscorlib.dll")) references.Add("mscorlib.dll");

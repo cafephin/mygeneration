@@ -120,7 +120,7 @@ namespace Zeus.Configuration
 			get 
 			{
                 if (string.IsNullOrEmpty(_compilerVersion))
-                    return "v3.0";
+                    return "v3.5";
                 else 
 				    return _compilerVersion;
 			}
