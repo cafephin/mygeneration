@@ -13,8 +13,10 @@ namespace Zeus.DotNetScript
 		protected const string INCLUDE_REFERENCE = "REFERENCE ";
 		protected const string INCLUDE_REFERENCE_ALT = "REF ";
 		protected const string INCLUDE_NAMESPACE = "NAMESPACE ";
-		protected const string INCLUDE_NAMESPACE_ALT = "NS ";
-		protected const string INCLUDE_DEBUG = "DEBUG";
+        protected const string INCLUDE_NAMESPACE_ALT = "NS ";
+        protected const string INCLUDE_DEBUG = "DEBUG";
+        protected const string COMPILER_VERSION = "COMPILERVERSION";
+        protected const string COMPILER_VERSION_ALT = "VERSION";
 		protected const string WRITE = "output.write";
 		protected const string WRITELN = "output.writeln";
 
@@ -38,7 +40,17 @@ namespace Zeus.DotNetScript
 				data = text.Substring(INCLUDE_FILE.Length).Trim();
 				path = DotNetScriptEngine.MakeAbsolute(data, segment.ITemplate.FilePath);
 				returnValue = this.IncludeFile(path);
-			}
+            }
+            else if (text.StartsWith(COMPILER_VERSION))
+            {
+                data = text.Substring(COMPILER_VERSION.Length).Trim();
+                this.SetCompilerVersion(data, extraData);
+            }
+            else if (text.StartsWith(COMPILER_VERSION_ALT))
+            {
+                data = text.Substring(COMPILER_VERSION_ALT.Length).Trim();
+                this.SetCompilerVersion(data, extraData);
+            }
 			else if (text.StartsWith(INCLUDE_REFERENCE))
 			{
 				data = text.Substring(INCLUDE_REFERENCE.Length).Trim();
@@ -130,7 +142,12 @@ namespace Zeus.DotNetScript
 			if (isGui) 
 			{
 					imports.Add("Zeus.UserInterface");
-			}
+            }
+
+            foreach (string tns in Zeus.Configuration.ZeusConfig.Current.TemplateNamespaces)
+            {
+                if (!imports.Contains(tns)) imports.Add(tns);
+            }
 
 			foreach (IZeusIntrinsicObject obj in iobjs) 
 			{
@@ -189,21 +206,30 @@ namespace Zeus.DotNetScript
 			}
 
 			return returnval;
-		}
+        }
 
-		private void IncludeReference(string dllrefs, ArrayList extraData) 
-		{
-			string[] refs = dllrefs.Split(',');
+        private void SetCompilerVersion(string ver, ArrayList extraData)
+        {
+            ver = ver.Trim();
+            if (ver.Trim() != string.Empty)
+            {
+                extraData.Add(new string[2] { DotNetScriptEngine.VERSION, ver });
+            }
+        }
 
-			foreach (string r in refs) 
-			{
-				string dllref = r.Trim();
-				if (dllref != string.Empty) 
-				{
-					extraData.Add(new string[2] { DotNetScriptEngine.DLLREF, dllref } );
-				}
-			}
-		}
+        private void IncludeReference(string dllrefs, ArrayList extraData)
+        {
+            string[] refs = dllrefs.Split(',');
+
+            foreach (string r in refs)
+            {
+                string dllref = r.Trim();
+                if (dllref != string.Empty)
+                {
+                    extraData.Add(new string[2] { DotNetScriptEngine.DLLREF, dllref });
+                }
+            }
+        }
 
 		private void IncludeNamespace(string namespaceRefs, ArrayList extraData) 
 		{

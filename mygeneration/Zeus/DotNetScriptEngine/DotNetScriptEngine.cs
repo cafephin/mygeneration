@@ -25,6 +25,7 @@ namespace Zeus.DotNetScript
 		internal const string DLLREF = "DLLREF";
 		internal const string USE_NAMESPACE = "USE";
 		internal const string DEBUG = "DEBUG";
+        internal const string VERSION = "VERSION";
 
 		protected string[] _supportedLanguages = new string[] 
 			   { 

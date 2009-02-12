@@ -26,8 +26,9 @@ namespace Zeus.Configuration
         private List<string> _projectRoots = null;
         private List<string> _templateRoots = null;
         private List<string> _scriptingEngines = null;
-        private List<ZeusIntrinsicObject> _intrinsicObjects = null;
         private List<string> _templateNamespaces = null;
+        private List<string> _templateReferences = null;
+        private List<ZeusIntrinsicObject> _intrinsicObjects = null;
 
 		#region Static Accessor for config File!
 		private static ZeusConfig _zeusConfig;
@@ -170,6 +171,18 @@ namespace Zeus.Configuration
 			}
 		}
 
+        public List<string> TemplateReferences
+		{
+			get 
+			{
+                if (_templateReferences == null) 
+				{
+                    _templateReferences = new List<string>();
+				}
+                return _templateReferences;
+			}
+		}
+        
         public List<string> TemplateNamespaces
 		{
 			get 
@@ -241,6 +254,15 @@ namespace Zeus.Configuration
 								path = attr.Value;
 								this.Serializers.Add(path);
 							}
+                        }
+                        else if (configname == "templatereference")
+                        {
+                            attr = confignode.Attributes["add"];
+                            if (attr != null)
+                            {
+                                path = attr.Value;
+                                this.TemplateReferences.Add(path);
+                            }
                         }
                         else if (configname == "templatenamespace")
                         {
@@ -375,6 +397,12 @@ namespace Zeus.Configuration
             {
                 xml.WriteStartElement("Serializer");
                 xml.WriteAttributeString("assembly", assembly);
+                xml.WriteEndElement();
+            }
+            foreach (string reference in this.TemplateReferences)
+            {
+                xml.WriteStartElement("TemplateReference");
+                xml.WriteAttributeString("add", reference);
                 xml.WriteEndElement();
             }
             foreach (string ns in this.TemplateNamespaces)

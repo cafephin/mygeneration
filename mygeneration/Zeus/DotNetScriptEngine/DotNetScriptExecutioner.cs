@@ -26,6 +26,7 @@ namespace Zeus.DotNetScript
 		protected List<DotNetScriptError> _errors;
 		protected int _timeout = -1;
         protected bool _compiledInMemory = true;
+        protected string _compilerVersion = null;
         protected Stack<Assembly> _assemblyStack = new Stack<Assembly>();
 
 		protected event ShowGUIEventHandler ShowGUI;
@@ -119,7 +120,27 @@ namespace Zeus.DotNetScript
 				this.Cleanup( assemblyLoaded );
 				throw ex;
 			}
-		}
+        }
+
+        protected string CompilerVersion
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_compilerVersion))
+                    return "v3.0";
+                else
+                    return _compilerVersion;
+            }
+            set
+            {
+                if ((value == "v2.0") ||
+                    (value == "v3.0") ||
+                    (value == "v3.5"))
+                {
+                    _compilerVersion = value;
+                }
+            }
+        }
 
 		public Assembly CurrentAssembly 
 		{
@@ -206,6 +227,8 @@ namespace Zeus.DotNetScript
                 List<string> references = new List<string>();
                 List<string> namespaces = new List<string>();
 
+                CompilerVersion = Zeus.Configuration.ZeusConfig.Current.CompilerVersion;
+
 				string[] array;
 				foreach (object obj in _codeSegment.ExtraData) 
 				{
@@ -216,11 +239,15 @@ namespace Zeus.DotNetScript
 						{
 							if (!references.Contains(array[1]))
 								references.Add(array[1]);
-						}
-						if ((array.Length == 2) && (array[0] == DotNetScriptEngine.DEBUG))
-						{
-							this._compiledInMemory = false;
-						}
+                        }
+                        if ((array.Length == 2) && (array[0] == DotNetScriptEngine.DEBUG))
+                        {
+                            this._compiledInMemory = false;
+                        }
+                        if ((array.Length == 2) && (array[0] == DotNetScriptEngine.VERSION))
+                        {
+                            this.CompilerVersion = array[1];
+                        }
 					}
 				}
 				foreach (string reference in _engine.BuildDLLNames(context)) 
@@ -234,7 +261,7 @@ namespace Zeus.DotNetScript
 				}
 
 				DotNetLanguage lang = (_codeSegment.Language == ZeusConstants.Languages.CSHARP) ? DotNetLanguage.CSharp : DotNetLanguage.VBNet;
-				newAssembly = CreateAssembly(_codeSegment.Code, lang, _compiledInMemory, references, out errors, context);
+                newAssembly = CreateAssembly(_codeSegment.Code, CompilerVersion, lang, _compiledInMemory, references, out errors, context);
 
 				if (cacheAssembly && (newAssembly != null))
 				{
@@ -300,36 +327,34 @@ namespace Zeus.DotNetScript
 		}
 
 		#region Methods For Dynamic Loading
-        public static Assembly CreateAssembly(string code, DotNetLanguage language, bool compileInMemory, List<string> references, out List<DotNetScriptError> errors, IZeusContext context)
+        public static Assembly CreateAssembly(string code, string compilerVersion, DotNetLanguage language, bool compileInMemory, List<string> references, out List<DotNetScriptError> errors, IZeusContext context)
 		{
 			string tmpDirectory = System.Environment.CurrentDirectory;
 			System.Environment.CurrentDirectory = RootFolder;
 
 			Assembly generatedAssembly = null;
-			string ext = null;
+			string ext = ".cs", lang = "C#";
 			errors = null;
 
 			//Create an instance whichever code provider that is needed
 			CodeDomProvider codeProvider = null;
 
-            string version = Zeus.Configuration.ZeusConfig.Current.CompilerVersion;
             Dictionary<string, string> providerParams = new Dictionary<string, string>();
-            providerParams["CompilerVersion"] = version;
+            providerParams["CompilerVersion"] = compilerVersion;
 
             // string extraParams;
 			if (language == DotNetLanguage.VBNet)
 			{
-                codeProvider = new VBCodeProvider(providerParams);
+                lang = "VB";
 				ext = ".vb";
 			}
-			else
-			{
-                codeProvider = new CSharpCodeProvider(providerParams);
-				ext = ".cs";
-            }
+
+            codeProvider = CodeDomProvider.CreateProvider(lang);
+            CompilerInfo langCompilerInfo = CodeDomProvider.GetCompilerInfo(lang);
+            CompilerParameters compilerParams = langCompilerInfo.CreateDefaultCompilerParameters();
 
 			//add compiler parameters
-			CompilerParameters compilerParams = new CompilerParameters();
+			//CompilerParameters compilerParams = new CompilerParameters();
             compilerParams.CompilerOptions = "/target:library /optimize"; // + extraParams;
 			CompilerResults results = null; 
 
@@ -338,7 +363,13 @@ namespace Zeus.DotNetScript
 			if (!references.Contains("System.dll")) references.Add("System.dll");
 			if (!references.Contains("System.EnterpriseServices.dll")) references.Add("System.EnterpriseServices.dll");
 			if (!references.Contains("Zeus.dll")) references.Add("Zeus.dll");
-			if (!references.Contains("PluginInterfaces.dll")) references.Add("PluginInterfaces.dll");
+            if (!references.Contains("PluginInterfaces.dll")) references.Add("PluginInterfaces.dll");
+
+            foreach (string reference in Zeus.Configuration.ZeusConfig.Current.TemplateReferences)
+            {
+                if (!references.Contains(reference)) references.Add(reference);
+            }
+
 			foreach (string reference in references) 
 			{
 				compilerParams.ReferencedAssemblies.Add(reference);
