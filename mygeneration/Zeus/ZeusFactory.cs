@@ -185,7 +185,7 @@ namespace Zeus
 		{
 			get 
 			{
-				return (IZeusIntrinsicObject[])ZeusConfig.Current.IntrinsicObjects.ToArray(typeof(IZeusIntrinsicObject));
+				return (IZeusIntrinsicObject[])ZeusConfig.Current.IntrinsicObjects.ToArray();
 			}
 		}
 

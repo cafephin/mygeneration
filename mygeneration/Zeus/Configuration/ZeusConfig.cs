@@ -3,7 +3,7 @@ using System.IO;
 using System.Xml;
 using System.Text;
 using System.Reflection;
-using System.Collections;
+using System.Collections.Generic;
 using System.Globalization;
 
 namespace Zeus.Configuration
@@ -18,14 +18,16 @@ namespace Zeus.Configuration
 		private const string CONFIG_LOCATION = SETTINGS_FOLDER + @"\ZeusConfig.xml";
 		private const string CONFIG_RESOURCE_PATH = "Zeus.Configuration.DefaultZeusConfig.xml";
 
+        private string _compilerVersion = null;
 		private string _filename = null;
 		private string _webupdateurl = "http://www.mygenerationsoftware.com/webupdate/";
-		private ArrayList _serializers = null;
-		private ArrayList _preprocessors = null;
-		private ArrayList _projectRoots = null;
-		private ArrayList _templateRoots = null;
-		private ArrayList _scriptingEngines = null;
-		private ArrayList _intrinsicObjects = null;
+        private List<string> _serializers = null;
+        private List<string> _preprocessors = null;
+        private List<string> _projectRoots = null;
+        private List<string> _templateRoots = null;
+        private List<string> _scriptingEngines = null;
+        private List<ZeusIntrinsicObject> _intrinsicObjects = null;
+        private List<string> _templateNamespaces = null;
 
 		#region Static Accessor for config File!
 		private static ZeusConfig _zeusConfig;
@@ -112,73 +114,105 @@ namespace Zeus.Configuration
 			}
 		}
 
-		public ArrayList Preprocessors 
+		public string CompilerVersion 
+		{
+			get 
+			{
+                if (string.IsNullOrEmpty(_compilerVersion))
+                    return "v3.0";
+                else 
+				    return _compilerVersion;
+			}
+            set 
+            {
+                if ((value == "v2.0") || 
+                    (value == "v3.0") ||
+                    (value == "v3.5")) 
+                {
+                    _compilerVersion = value;
+                }
+            }
+		}
+
+        public List<string> Preprocessors 
 		{
 			get 
 			{
 				if (_preprocessors == null) 
 				{
-					_preprocessors = new ArrayList();
+                    _preprocessors = new List<string>();
 				}
 				return _preprocessors;
 			}
 		}
 
-		public ArrayList ProjectRoots 
+        public List<string> ProjectRoots 
 		{
 			get 
 			{
 				if (_projectRoots == null) 
 				{
-					_projectRoots = new ArrayList();
+                    _projectRoots = new List<string>();
 				}
 				return _projectRoots;
 			}
 		}
 
-		public ArrayList TemplateRoots 
+        public List<string> TemplateRoots 
 		{
 			get 
 			{
 				if (_templateRoots == null) 
 				{
-					_templateRoots = new ArrayList();
+                    _templateRoots = new List<string>();
 				}
 				return _templateRoots;
 			}
 		}
 
-		public ArrayList ScriptingEngines 
+        public List<string> TemplateNamespaces
+		{
+			get 
+			{
+				if (_templateNamespaces == null) 
+				{
+                    _templateNamespaces = new List<string>();
+				}
+				return _templateNamespaces;
+			}
+		}
+
+        public List<string> ScriptingEngines 
 		{
 			get 
 			{
 				if (_scriptingEngines == null) 
 				{
-					_scriptingEngines = new ArrayList();
+                    _scriptingEngines = new List<string>();
 				}
 				return _scriptingEngines;
 			}
 		}
-		
-		public ArrayList Serializers 
+
+        public List<string> Serializers 
 		{
 			get 
 			{
 				if (_serializers == null) 
 				{
-					_serializers = new ArrayList();
+                    _serializers = new List<string>();
 				}
 				return _serializers;
 			}
 		}
-		
-		public ArrayList IntrinsicObjects 
+
+        public List<ZeusIntrinsicObject> IntrinsicObjects 
 		{
 			get 
 			{
 				if (_intrinsicObjects == null) 
 				{
-					_intrinsicObjects = new ArrayList();
+                    _intrinsicObjects = new List<ZeusIntrinsicObject>();
 				}
 				return _intrinsicObjects;
 			}
@@ -207,16 +241,25 @@ namespace Zeus.Configuration
 								path = attr.Value;
 								this.Serializers.Add(path);
 							}
-						}
-						else if (configname == "preprocessor") 
-						{
-							attr = confignode.Attributes["assembly"];
-							if (attr != null) 
-							{
-								path = attr.Value;
-								this.Preprocessors.Add(path);
-							}
-						}
+                        }
+                        else if (configname == "templatenamespace")
+                        {
+                            attr = confignode.Attributes["add"];
+                            if (attr != null)
+                            {
+                                path = attr.Value;
+                                this.TemplateNamespaces.Add(path);
+                            }
+                        }
+                        else if (configname == "preprocessor")
+                        {
+                            attr = confignode.Attributes["assembly"];
+                            if (attr != null)
+                            {
+                                path = attr.Value;
+                                this.Preprocessors.Add(path);
+                            }
+                        }
 						else if (configname == "templateroot") 
 						{
 							attr = confignode.Attributes["path"];
@@ -268,15 +311,23 @@ namespace Zeus.Configuration
 							{
 								this.IntrinsicObjects.Add(new ZeusIntrinsicObject(path, classpath, varname));
 							}
-						}
-						else if (configname == "webupdate") 
-						{
-							attr = confignode.Attributes["url"];
-							if (attr != null) 
-							{
-								this._webupdateurl = attr.Value;
-							}
-						}
+                        }
+                        else if (configname == "webupdate")
+                        {
+                            attr = confignode.Attributes["url"];
+                            if (attr != null)
+                            {
+                                this._webupdateurl = attr.Value;
+                            }
+                        }
+                        else if (configname == "compilerparams")
+                        {
+                            attr = confignode.Attributes["version"];
+                            if (attr != null)
+                            {
+                                this.CompilerVersion = attr.Value;
+                            }
+                        }
 					}
 				}
 			}
@@ -287,11 +338,18 @@ namespace Zeus.Configuration
 		protected void BuildXML(XmlWriter xml) 
 		{
 			xml.WriteStartElement("Configuration");
-
+            
 			if (_webupdateurl != null) 
 			{
 				xml.WriteStartElement("WebUpdate");
 				xml.WriteAttributeString("url", _webupdateurl);
+				xml.WriteEndElement();
+			}
+
+            if (_compilerVersion != null) 
+			{
+				xml.WriteStartElement("CompilerParams");
+				xml.WriteAttributeString("version", _compilerVersion);
 				xml.WriteEndElement();
 			}
 
@@ -312,13 +370,19 @@ namespace Zeus.Configuration
 				xml.WriteStartElement("Preprocessor");
 				xml.WriteAttributeString("assembly", assembly);
 				xml.WriteEndElement();
-			}
-			foreach (string assembly in this.Serializers) 
-			{
-				xml.WriteStartElement("Serializer");
-				xml.WriteAttributeString("assembly", assembly);
-				xml.WriteEndElement();
-			}
+            }
+            foreach (string assembly in this.Serializers)
+            {
+                xml.WriteStartElement("Serializer");
+                xml.WriteAttributeString("assembly", assembly);
+                xml.WriteEndElement();
+            }
+            foreach (string ns in this.TemplateNamespaces)
+            {
+                xml.WriteStartElement("TemplateNamespace");
+                xml.WriteAttributeString("add", ns);
+                xml.WriteEndElement();
+            }
 			foreach (string assembly in this.ScriptingEngines) 
 			{
 				xml.WriteStartElement("ScriptingEngine");

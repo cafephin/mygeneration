@@ -1,6 +1,7 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <configuration>
-	<ProjectRoot path="%ZEUSHOME%\Projects" />
+  <CompilerParams version="v3.0" />
+  <ProjectRoot path="%ZEUSHOME%\Projects" />
 	<TemplateRoot path="%ZEUSHOME%\Templates" />
 	<WebUpdate url="http://www.mygenerationsoftware.com/webupdate/" />
 	<IntrinsicObject assembly="%ZEUSHOME%\Zeus.dll" classpath="Zeus.UserInterface.GuiController" varname="ui" />

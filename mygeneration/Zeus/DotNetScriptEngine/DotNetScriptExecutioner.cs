@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using System.Text;
-using System.Collections;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
@@ -23,10 +23,10 @@ namespace Zeus.DotNetScript
 		protected _DotNetScriptTemplate _primaryObject;
 		protected DotNetScriptEngine _engine;
 		protected IZeusCodeSegment _codeSegment;
-		protected ArrayList _errors;
+		protected List<DotNetScriptError> _errors;
 		protected int _timeout = -1;
-		protected bool _compiledInMemory = true;
-		protected Stack _assemblyStack = new Stack();
+        protected bool _compiledInMemory = true;
+        protected Stack<Assembly> _assemblyStack = new Stack<Assembly>();
 
 		protected event ShowGUIEventHandler ShowGUI;
 
@@ -167,7 +167,7 @@ namespace Zeus.DotNetScript
 			get 
 			{ 
 				if (_errors != null)
-					return (IZeusExecutionError[])_errors.ToArray(typeof(IZeusExecutionError)); 
+					return (IZeusExecutionError[])_errors.ToArray(); 
 				else
 					return null;
 			}
@@ -193,7 +193,7 @@ namespace Zeus.DotNetScript
 			bool assemblyLoaded = false;
 			bool cacheAssembly = (_codeSegment.ITemplate.SourceType == ZeusConstants.SourceTypes.COMPILED);
 			Assembly newAssembly = null;
-			ArrayList errors = null;
+            List<DotNetScriptError> errors = null;
 
 			if ((cacheAssembly) && (_codeSegment.CachedAssembly != null))
 			{
@@ -203,8 +203,8 @@ namespace Zeus.DotNetScript
 			{
 				this._compiledInMemory = true;
 
-				ArrayList references = new ArrayList();
-				ArrayList namespaces = new ArrayList();
+                List<string> references = new List<string>();
+                List<string> namespaces = new List<string>();
 
 				string[] array;
 				foreach (object obj in _codeSegment.ExtraData) 
@@ -294,13 +294,13 @@ namespace Zeus.DotNetScript
 
 		protected void AddError(DotNetScriptError error) 
 		{
-			if (_errors == null) _errors = new ArrayList();
+            if (_errors == null) _errors = new List<DotNetScriptError>();
  
 			this._errors.Add(error);
 		}
 
 		#region Methods For Dynamic Loading
-		public static Assembly CreateAssembly(string code, DotNetLanguage language, bool compileInMemory, ArrayList references, out ArrayList errors, IZeusContext context)
+        public static Assembly CreateAssembly(string code, DotNetLanguage language, bool compileInMemory, List<string> references, out List<DotNetScriptError> errors, IZeusContext context)
 		{
 			string tmpDirectory = System.Environment.CurrentDirectory;
 			System.Environment.CurrentDirectory = RootFolder;
@@ -312,22 +312,21 @@ namespace Zeus.DotNetScript
 			//Create an instance whichever code provider that is needed
 			CodeDomProvider codeProvider = null;
 
+            string version = Zeus.Configuration.ZeusConfig.Current.CompilerVersion;
+            Dictionary<string, string> providerParams = new Dictionary<string, string>();
+            providerParams["CompilerVersion"] = version;
+
             // string extraParams;
 			if (language == DotNetLanguage.VBNet)
 			{
-				codeProvider = new VBCodeProvider();
+                codeProvider = new VBCodeProvider(providerParams);
 				ext = ".vb";
-                // extraParams = " /libpath:plugins";
 			}
 			else
 			{
-				codeProvider = new CSharpCodeProvider();
+                codeProvider = new CSharpCodeProvider(providerParams);
 				ext = ".cs";
-                // extraParams = @" /lib:Plugins"; // does not work to allow dll-s outside main-dir see "#define PLUGINS_FROM_SUBDIRS" for details
             }
-
-			//create the language specific code compiler
-			ICodeCompiler compiler = codeProvider.CreateCompiler();
 
 			//add compiler parameters
 			CompilerParameters compilerParams = new CompilerParameters();
@@ -351,7 +350,7 @@ namespace Zeus.DotNetScript
 				compilerParams.IncludeDebugInformation = false;
 				compilerParams.GenerateInMemory = true;
 
-				results = compiler.CompileAssemblyFromSource(compilerParams, code);
+                results = codeProvider.CompileAssemblyFromSource(compilerParams, code);
 			}
 			else 
 			{
@@ -369,13 +368,13 @@ namespace Zeus.DotNetScript
 				compilerParams.GenerateInMemory = false;
 				compilerParams.OutputAssembly = assemblyname;
 
-				results = compiler.CompileAssemblyFromFile(compilerParams, codefilename);
+                results = codeProvider.CompileAssemblyFromFile(compilerParams, codefilename);
 			}
 
 			//Do we have any compiler errors
 			if (results.Errors.HasErrors)
 			{
-				errors = new ArrayList();
+                errors = new List<DotNetScriptError>();
 				foreach (CompilerError compileError in results.Errors) 
 				{
 					errors.Add(new DotNetScriptError(compileError, context));

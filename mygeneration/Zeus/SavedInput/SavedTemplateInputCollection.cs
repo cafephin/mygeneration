@@ -150,7 +150,6 @@ namespace Zeus
                 SavedTemplateInput item = _hash[key] as SavedTemplateInput;
                 item.ApplyOverrideDataDelegate = this._applyOverrideDataDelegate;
                 return item;
-                return _hash[key]; 
             }
 			set 
             {
