@@ -736,6 +736,9 @@ Function MDAC27Exists
 
 		StrCmp $2 "2.7" MDAC27Found
 		StrCmp $2 "2.8" MDAC27Found
+		StrCmp $2 "6.0" MDAC27Found
+		StrCmp $2 "6.1" MDAC27Found
+		StrCmp $2 "6.2" MDAC27Found
 		Goto MDACNotFound
 		
 	MDAC27Found:
