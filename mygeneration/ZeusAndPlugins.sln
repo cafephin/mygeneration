@@ -16,8 +16,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnp.Utils", "..\plugins\Dnp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyGeneration.UI.Plugins.SqlTool", "..\plugins\MyGeneration.UI.Plugins.SqlTool\MyGeneration.UI.Plugins.SqlTool.csproj", "{6D58CFD6-E000-4927-94C9-4EDB34AE3E9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMetaVistaDB3xPlugin", "..\plugins\MyMetaVistaDB3xPlugin\MyMetaVistaDB3xPlugin.csproj", "{33C81FD4-E4A7-4D18-96FC-89EE447004EB}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMetaTextFilePlugin", "..\plugins\MyMetaTextFilePlugin\MyMetaTextFilePlugin.csproj", "{ECEA8844-E331-4833-AF62-25482AEFC9E9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMetaSqlCePlugin", "..\plugins\MyMetaSqlCePlugin\MyMetaSqlCePlugin.csproj", "{E172F96C-2642-42DA-AC44-873123D6970F}"
@@ -25,6 +23,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMetaXsd3bPlugin", "..\plugins\MyMetaXsd3bPlugin\MyMetaXsd3bPlugin.csproj", "{17CC8224-460F-4990-8031-F23BF808075E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMetaSybaseASEPlugin", "..\plugins\MyMetaSybaseASEPlugin\MyMetaSybaseASEPlugin.csproj", "{FED65D0E-038D-4523-A9B4-B4F009778E05}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMetaEffiProzPlugin", "..\plugins\MyMetaEffiProzPlugin\MyMetaEffiProzPlugin.csproj", "{38F07F67-08C1-48E4-AF0B-9550157F9460}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,8 +62,6 @@ Global
 		{DA60C3C4-E2D9-4AF4-8083-4661FD40C5AC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6D58CFD6-E000-4927-94C9-4EDB34AE3E9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6D58CFD6-E000-4927-94C9-4EDB34AE3E9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{33C81FD4-E4A7-4D18-96FC-89EE447004EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{33C81FD4-E4A7-4D18-96FC-89EE447004EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ECEA8844-E331-4833-AF62-25482AEFC9E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ECEA8844-E331-4833-AF62-25482AEFC9E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E172F96C-2642-42DA-AC44-873123D6970F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -72,6 +70,10 @@ Global
 		{17CC8224-460F-4990-8031-F23BF808075E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FED65D0E-038D-4523-A9B4-B4F009778E05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FED65D0E-038D-4523-A9B4-B4F009778E05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38F07F67-08C1-48E4-AF0B-9550157F9460}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38F07F67-08C1-48E4-AF0B-9550157F9460}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38F07F67-08C1-48E4-AF0B-9550157F9460}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38F07F67-08C1-48E4-AF0B-9550157F9460}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

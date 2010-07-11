@@ -113,10 +113,6 @@
       <Project>{ECEA8844-E331-4833-AF62-25482AEFC9E9}</Project>
       <Name>MyMetaTextFilePlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MyMetaVistaDB3xPlugin\MyMetaVistaDB3xPlugin.csproj">
-      <Project>{33C81FD4-E4A7-4D18-96FC-89EE447004EB}</Project>
-      <Name>MyMetaVistaDB3xPlugin</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MyMetaXsd3bPlugin\MyMetaXsd3bPlugin.csproj">
       <Project>{17CC8224-460F-4990-8031-F23BF808075E}</Project>
       <Name>MyMetaXsd3bPlugin</Name>

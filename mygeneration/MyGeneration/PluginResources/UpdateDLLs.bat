@@ -8,11 +8,12 @@ COPY "..\..\..\plugins\ContextProcessor\bin\release\*.dll" .
 COPY "..\..\..\plugins\Dnp.Utils\bin\release\*.dll" .
 COPY "..\..\..\plugins\MyMetaSqlCePlugin\bin\release\*.dll" .
 COPY "..\..\..\plugins\MyMetaTextFilePlugin\bin\release\*.dll" .
-COPY "..\..\..\plugins\MyMetaVistaDB3xPlugin\bin\release\*.dll" .
+rem COPY "..\..\..\plugins\MyMetaVistaDB3xPlugin\bin\release\*.dll" .
 COPY "..\..\..\plugins\MyMetaXsd3bPlugin\bin\release\*.dll" .
 COPY "..\..\..\plugins\MyMetaSybaseASEPlugin\bin\release\*.dll" .
 COPY "..\..\..\plugins\MyMetaSybaseASAPlugin\bin\release\*.dll" .
 COPY "..\..\..\plugins\MyMetaIngres2006Plugin\bin\release\*.dll" .
+COPY "..\..\..\plugins\MyMetaEffiprozPlugin\bin\release\*.dll" .
 COPY "..\..\..\plugins\MyMetaFoxProPlugin\bin\release\*.dll" .
 COPY "..\..\..\plugins\TypeSerializer\bin\release\*.dll" .
 COPY "..\..\..\plugins\SampleUIPlugin\bin\release\*.dll" .
