@@ -6,13 +6,17 @@ using System.Text;
 using System.Data;
 using MyMeta;
 
-using System.Data.SqlServerCe;
+using System.Data.EffiProz;
 
 namespace MyMeta.Plugins
 {
     public class EffiProzPlugin : IMyMetaPlugin
 	{
-		#region IMyMetaPlugin Interface
+        private const string PROVIDER_KEY = @"EFFIPROZ";
+        private const string PROVIDER_NAME = @"EffiProz";
+        private const string AUTHOR_INFO = @"EffiProz MyMeta plugin written by MyGeneration Software.";
+		private const string AUTHOR_URI = @"http://www.mygenerationsoftware.com/";
+        private const string SAMPLE_CONNECTION = @"Connection Type=File ; Initial Catalog=Test/Data/SampleDB; User=sa; Password=;";
 
 		private IMyMetaPluginContext context;
 
@@ -23,22 +27,22 @@ namespace MyMeta.Plugins
 
         string IMyMetaPlugin.ProviderName
         {
-            get { return @"Microsoft SQL CE"; }
+            get { return PROVIDER_NAME; }
         }
 
         string IMyMetaPlugin.ProviderUniqueKey
         {
-            get { return @"SQLCE"; }
+            get { return PROVIDER_KEY; }
         }
 
         string IMyMetaPlugin.ProviderAuthorInfo
         {
-            get { return @"Microsoft SQL CE Plugin Written by MyGeneration Software"; }
+            get { return AUTHOR_INFO; }
         }
 
         Uri IMyMetaPlugin.ProviderAuthorUri
         {
-            get { return new Uri(@"http://www.mygenerationsoftware.com/"); }
+            get { return new Uri(AUTHOR_URI); }
         }
 
         bool IMyMetaPlugin.StripTrailingNulls
@@ -53,7 +57,7 @@ namespace MyMeta.Plugins
 
         string IMyMetaPlugin.SampleConnectionString
         {
-            get { return @"Data Source=C:\Program Files\Microsoft SQL Server Compact Edition\v3.1\SDK\Samples\Northwind.sdf"; }
+            get { return SAMPLE_CONNECTION; }
         }
 
         IDbConnection IMyMetaPlugin.NewConnection
@@ -62,7 +66,7 @@ namespace MyMeta.Plugins
             {
                 if (IsIntialized)
 				{
-                    EffiProzConnection cn = new EffiProzConnection(this.context.ConnectionString);
+                    EfzConnection cn = new EfzConnection(this.context.ConnectionString);
 					return cn as IDbConnection;
 				}
                 else
@@ -111,15 +115,15 @@ namespace MyMeta.Plugins
 			{
 				metaData = context.CreateTablesDataTable();
 
-                EffiProzConnection conn = new EffiProzConnection();
+                EfzConnection conn = new EfzConnection();
                 conn.ConnectionString = context.ConnectionString;
 
-                EffiProzCommand cmd = new EffiProzCommand();
+                EfzCommand cmd = new EfzCommand();
                 cmd.CommandText = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='TABLE'";
                 cmd.Connection = conn;
 
                 DataTable dt = new DataTable();
-                EffiProzDataAdapter adapter = new EffiProzDataAdapter();
+                EfzDataAdapter adapter = new EfzDataAdapter();
                 adapter.SelectCommand = cmd;
                 adapter.Fill(dt);
 
@@ -150,15 +154,15 @@ namespace MyMeta.Plugins
             //{
             //    metaData = context.CreateTablesDataTable();
 
-            //    EffiProzConnection conn = new EffiProzConnection();
+            //    EfzConnection conn = new EfzConnection();
             //    conn.ConnectionString = context.ConnectionString;
 
-            //    EffiProzCommand cmd = new EffiProzCommand();
+            //    EfzCommand cmd = new EfzCommand();
             //    cmd.CommandText = "SELECT * FROM INFORMATION_SCHEMA.VIEWS";
             //    cmd.Connection = conn;
 
             //    DataTable dt = new DataTable();
-            //    EffiProzDataAdapter adapter = new EffiProzDataAdapter();
+            //    EfzDataAdapter adapter = new EfzDataAdapter();
             //    adapter.SelectCommand = cmd;
             //    adapter.Fill(dt);
 
@@ -209,16 +213,16 @@ namespace MyMeta.Plugins
             {
                 metaData = context.CreateColumnsDataTable();
 
-                EffiProzConnection conn = new EffiProzConnection();
+                EfzConnection conn = new EfzConnection();
                 conn.ConnectionString = context.ConnectionString;
 
-                EffiProzCommand cmd = new EffiProzCommand();
+                EfzCommand cmd = new EfzCommand();
                 cmd.CommandText = "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='" +
                     view + "'";
                 cmd.Connection = conn;
 
                 DataTable dt = new DataTable();
-                EffiProzDataAdapter adapter = new EffiProzDataAdapter();
+                EfzDataAdapter adapter = new EfzDataAdapter();
                 adapter.SelectCommand = cmd;
                 adapter.Fill(dt);
 
@@ -301,16 +305,16 @@ namespace MyMeta.Plugins
             {
                 metaData = context.CreateColumnsDataTable();
 
-                EffiProzConnection conn = new EffiProzConnection();
+                EfzConnection conn = new EfzConnection();
                 conn.ConnectionString = context.ConnectionString;
 
-                EffiProzCommand cmd = new EffiProzCommand();
+                EfzCommand cmd = new EfzCommand();
                 cmd.CommandText = "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='" +
                     table + "'";
                 cmd.Connection = conn;
 
                 DataTable dt = new DataTable();
-                EffiProzDataAdapter adapter = new EffiProzDataAdapter();
+                EfzDataAdapter adapter = new EfzDataAdapter();
                 adapter.SelectCommand = cmd;
                 adapter.Fill(dt);
 
@@ -391,17 +395,17 @@ namespace MyMeta.Plugins
 
             try
             {
-                EffiProzConnection conn = new EffiProzConnection();
+                EfzConnection conn = new EfzConnection();
                 conn.ConnectionString = context.ConnectionString;
 
-                EffiProzCommand cmd = new EffiProzCommand();
+                EfzCommand cmd = new EfzCommand();
 
                 cmd.CommandText =
 "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.INDEXES where Table_Name='" + table + "' AND PRIMARY_KEY=1";
                 cmd.Connection = conn;
 
                 DataTable dt = new DataTable();
-                EffiProzDataAdapter adapter = new EffiProzDataAdapter();
+                EfzDataAdapter adapter = new EfzDataAdapter();
                 adapter.SelectCommand = cmd;
                 adapter.Fill(dt);
 
@@ -434,16 +438,16 @@ namespace MyMeta.Plugins
             {
                 metaData = context.CreateIndexesDataTable();
 
-                EffiProzConnection conn = new EffiProzConnection();
+                EfzConnection conn = new EfzConnection();
                 conn.ConnectionString = context.ConnectionString;
 
-                EffiProzCommand cmd = new EffiProzCommand();
+                EfzCommand cmd = new EfzCommand();
                 cmd.CommandText = "SELECT * FROM INFORMATION_SCHEMA.INDEXES WHERE TABLE_NAME='" +
                     table + "'";
                 cmd.Connection = conn;
 
                 DataTable dt = new DataTable();
-                EffiProzDataAdapter adapter = new EffiProzDataAdapter();
+                EfzDataAdapter adapter = new EfzDataAdapter();
                 adapter.SelectCommand = cmd;
                 adapter.Fill(dt);
 
@@ -494,10 +498,10 @@ namespace MyMeta.Plugins
 
         private void LoadForeignKeysPartOne(DataTable metaData, string table)
         {
-            EffiProzConnection conn = new EffiProzConnection();
+            EfzConnection conn = new EfzConnection();
             conn.ConnectionString = context.ConnectionString;
 
-            EffiProzCommand cmd = new EffiProzCommand();
+            EfzCommand cmd = new EfzCommand();
             cmd.CommandText =
 "SELECT tc.*, rc.UPDATE_RULE, rc.DELETE_RULE, rc.UNIQUE_CONSTRAINT_NAME FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc " +
 "JOIN INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS rc ON tc.CONSTRAINT_NAME = rc.CONSTRAINT_NAME " +
@@ -506,7 +510,7 @@ namespace MyMeta.Plugins
             cmd.Connection = conn;
 
             DataTable dt = new DataTable();
-            EffiProzDataAdapter adapter = new EffiProzDataAdapter();
+            EfzDataAdapter adapter = new EfzDataAdapter();
             adapter.SelectCommand = cmd;
             adapter.Fill(dt);
 
@@ -515,26 +519,26 @@ namespace MyMeta.Plugins
                 //---------------------------------------
                 // Get the Primary Key and Columns
                 //---------------------------------------
-                cmd = new EffiProzCommand();
+                cmd = new EfzCommand();
                 cmd.CommandText =
 "SELECT * FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE CONSTRAINT_NAME='" + fk["UNIQUE_CONSTRAINT_NAME"] + "'";
                 cmd.Connection = conn;
 
                 DataTable pCols = new DataTable();
-                adapter = new EffiProzDataAdapter();
+                adapter = new EfzDataAdapter();
                 adapter.SelectCommand = cmd;
                 adapter.Fill(pCols);
 
                 //---------------------------------------
                 // Get the Foreign Key Columns
                 //---------------------------------------
-                cmd = new EffiProzCommand();
+                cmd = new EfzCommand();
                 cmd.CommandText =
 "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE CONSTRAINT_NAME = '" + fk["CONSTRAINT_NAME"] + "'";
                 cmd.Connection = conn;
 
                 DataTable fCols = new DataTable();
-                adapter = new EffiProzDataAdapter();
+                adapter = new EfzDataAdapter();
                 adapter.SelectCommand = cmd;
                 adapter.Fill(fCols);
 
@@ -580,10 +584,10 @@ namespace MyMeta.Plugins
         private void LoadForeignKeysPartTwo(DataTable metaData, string table)
         {
             // Get primary key name
-            EffiProzConnection conn = new EffiProzConnection();
+            EfzConnection conn = new EfzConnection();
             conn.ConnectionString = context.ConnectionString;
 
-            EffiProzCommand cmd = new EffiProzCommand();
+            EfzCommand cmd = new EfzCommand();
             cmd.CommandText = "SELECT INDEX_NAME FROM INFORMATION_SCHEMA.INDEXES WHERE TABLE_NAME='" + table + "' AND PRIMARY_KEY=1";
             cmd.Connection = conn;
 
@@ -601,10 +605,10 @@ namespace MyMeta.Plugins
 
             // Got it
             
-            conn = new EffiProzConnection();
+            conn = new EfzConnection();
             conn.ConnectionString = context.ConnectionString;
 
-            cmd = new EffiProzCommand();
+            cmd = new EfzCommand();
             cmd.CommandText =
 "SELECT tc.*, rc.UPDATE_RULE, rc.DELETE_RULE, rc.UNIQUE_CONSTRAINT_NAME FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc " +
 "JOIN INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS rc ON tc.CONSTRAINT_NAME = rc.CONSTRAINT_NAME " +
@@ -613,7 +617,7 @@ namespace MyMeta.Plugins
             cmd.Connection = conn;
 
             DataTable dt = new DataTable();
-            EffiProzDataAdapter adapter = new EffiProzDataAdapter();
+            EfzDataAdapter adapter = new EfzDataAdapter();
             adapter.SelectCommand = cmd;
             adapter.Fill(dt);
 
@@ -622,26 +626,26 @@ namespace MyMeta.Plugins
                 //---------------------------------------
                 // Get the Primary Key and Columns
                 //---------------------------------------
-                cmd = new EffiProzCommand();
+                cmd = new EfzCommand();
                 cmd.CommandText =
 "SELECT * FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE CONSTRAINT_NAME='" + fk["UNIQUE_CONSTRAINT_NAME"] + "'";
                 cmd.Connection = conn;
 
                 DataTable pCols = new DataTable();
-                adapter = new EffiProzDataAdapter();
+                adapter = new EfzDataAdapter();
                 adapter.SelectCommand = cmd;
                 adapter.Fill(pCols);
 
                 //---------------------------------------
                 // Get the Foreign Key Columns
                 //---------------------------------------
-                cmd = new EffiProzCommand();
+                cmd = new EfzCommand();
                 cmd.CommandText =
 "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE CONSTRAINT_NAME = '" + fk["CONSTRAINT_NAME"] + "'";
                 cmd.Connection = conn;
 
                 DataTable fCols = new DataTable();
-                adapter = new EffiProzDataAdapter();
+                adapter = new EfzDataAdapter();
                 adapter.SelectCommand = cmd;
                 adapter.Fill(fCols);
 
@@ -689,8 +693,6 @@ namespace MyMeta.Plugins
             return null;
         }
 
-		#endregion
-
 		#region Internal Methods
 
         private bool IsIntialized 
@@ -703,7 +705,7 @@ namespace MyMeta.Plugins
 
 		public string GetDatabaseName()
 		{
-            EffiProzConnection cn = new EffiProzConnection();
+            EfzConnection cn = new EfzConnection();
             cn.ConnectionString = context.ConnectionString;
 
 			string dbName = cn.DataSource;
@@ -717,7 +719,7 @@ namespace MyMeta.Plugins
 
 		public string GetFullDatabaseName()
 		{
-            EffiProzConnection cn = new EffiProzConnection(this.context.ConnectionString);
+            EfzConnection cn = new EfzConnection(this.context.ConnectionString);
             return cn.DataSource;
 		}
 
