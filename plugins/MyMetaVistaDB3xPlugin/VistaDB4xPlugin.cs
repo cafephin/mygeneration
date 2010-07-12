@@ -12,7 +12,7 @@ using VistaDB.Provider;
 
 namespace MyMeta.Plugins
 {
-    public class VistaDB3xPlugin : IMyMetaPlugin
+    public class VistaDB4xPlugin : IMyMetaPlugin
 	{
 		#region IMyMetaPlugin Interface
 
@@ -64,6 +64,7 @@ namespace MyMeta.Plugins
             {
                 if (IsIntialized)
 				{
+                    //TODO: This is what we need to use: VistaDB.MetaHelper mh = new VistaDB.MetaHelper();
                     VistaDBConnection cn = new VistaDBConnection(this.context.ConnectionString);
 					return cn as IDbConnection;
 				}
