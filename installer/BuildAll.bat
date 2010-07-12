@@ -3,13 +3,11 @@ del ".\installbuild_mygen.log"
 del ".\installbuild_mymeta.log"
 del ".\installbuild_doodads.log"
 
-if "%DEVENV%"=="" set DEVENV="%PROGRAMFILES%\Microsoft Visual Studio 9.0\Common7\IDE\devenv.exe"  /out ".\build.log" /rebuild release
-
+if "%DEVENV%"=="" set DEVENV="%PROGRAMFILES%\Microsoft Visual Studio 10.0\Common7\IDE\devenv.exe"  /out ".\build.log" /rebuild release
 
 %DEVENV% "..\plugins\MyMetaPlugins.sln"
 %DEVENV% "..\plugins\ZeusPlugins.sln"
 %DEVENV% "..\mygeneration\Zeus.sln"
-%DEVENV% "..\ideplugins\visualstudio2005\MyGenVS2005.sln"
 set DEVENV=
 
 if "%MAKENSIS%"=="" set MAKENSIS=%PROGRAMFILES%\NSIS\makensis.exe
