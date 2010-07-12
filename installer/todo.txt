@@ -15,7 +15,7 @@ Tasks:
 - operation Completed message after project regen.
 
 Q/A:
-- Test in Windows Vista.
+- Test in Windows Vista/Windows 7.
 - Full Application Wide Test. Build test suite?
 
 Docs/Press/Other:

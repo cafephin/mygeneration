@@ -1,3 +1,12 @@
+2010.07.11 - MyGeneration 1.3.0.11
+- Upgraded to .net 4.0
+- Added the shell files for Effiproz DB
+- Adding Compiler Version options for suiden@gmail.com. You can now set the compiler version in the ZeusConfig. You can also add additional namespaces there that will always be included in all template compilations.
+- Added the ability to set the compiler version in the template with the tag: <%#VERSION 3.5%>
+- Fixed MDAC check in the installer for windows 7.
+- Updated drivers for Npgsql, MySql, Firebird, and SQLite
+- Updated Scintilla and WinFormsUI dlls.
+
 2008.12.05 - MyGeneration 1.3.0.10
 - *Almost* complete MyMeta Sybase ASE Support
 - Basic MyMeta Sybase ASA Support (Thanks to Tim Moriarty)
