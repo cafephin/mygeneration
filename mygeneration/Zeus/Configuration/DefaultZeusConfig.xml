@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <configuration>
-  <CompilerParams version="v3.0" />
+  <CompilerParams version="v4.0" />
   <ProjectRoot path="%ZEUSHOME%\Projects" />
 	<TemplateRoot path="%ZEUSHOME%\Templates" />
 	<WebUpdate url="http://www.mygenerationsoftware.com/webupdate/" />

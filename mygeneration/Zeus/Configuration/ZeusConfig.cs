@@ -120,15 +120,16 @@ namespace Zeus.Configuration
 			get 
 			{
                 if (string.IsNullOrEmpty(_compilerVersion))
-                    return "v3.5";
+                    return "v4.0";
                 else 
 				    return _compilerVersion;
 			}
             set 
             {
-                if ((value == "v2.0") || 
+                if ((value == "v2.0") ||
                     (value == "v3.0") ||
-                    (value == "v3.5")) 
+                    (value == "v3.5") ||
+                    (value == "v4.0")) 
                 {
                     _compilerVersion = value;
                 }

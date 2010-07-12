@@ -9,6 +9,8 @@
 ;			Fixed installer for xsd3b plugin
 ;-----------------------------------------
 
+!define DNF4_URL "http://download.microsoft.com/download/1/B/E/1BE39E79-7E39-46A3-96FF-047F95396215/dotNetFx40_Full_setup.exe"
+
 ; Set the compressions to lzma, which is always the best compression!
 SetCompressor lzma 
 
@@ -56,19 +58,41 @@ DirText "Choose an install directory for MyGeneration 1.3."
 ;	FrameworkDone:
 ;SectionEnd
 
-; Install .Net Framework 3.5
-Section "Detect .Net Framework 3.5"
-  Call DotNet35Exists
-  Pop $1
-  IntCmp $1 0 SkipFramework
-    MessageBox MB_OK|MB_ICONINFORMATION "You cannot run MyGeneration without having the .Net Framework 3.5 installed. It is not included $\r$\nin the installer because the file is huge and most people already have it installed." IDOK
-    ExecShell open http://www.microsoft.com/downloads/details.aspx?FamilyId=333325FD-AE52-4E35-B531-508D977D32A6&displaylang=en
-    DetailPrint ".Net Framework 3.5 not installed... Aborting Installation."
-    Abort
-    Goto FrameworkDone
-	SkipFramework:
-		DetailPrint ".Net Framework 3.5 found... Continuing."
-	FrameworkDone:
+;--------------------------------------------------------
+; Download and install the .Net Framework 4
+;--------------------------------------------------------
+Section "-.Net Framework 4" net4_section_id
+	Call DotNet4Exists
+	Pop $1
+	IntCmp $1 1 SkipDotNet4
+
+	StrCpy $1 "dotNetFx40_Full_setup.exe"
+	StrCpy $2 "$EXEDIR\$1"
+	IfFileExists $2 FileExistsAlready FileMissing
+
+	FileMissing:
+		DetailPrint ".Net Framework 4 not installed... Downloading file."
+		StrCpy $2 "$TEMP\$1"
+		NSISdl::download "${DNF4_URL}" $2
+
+	FileExistsAlready:
+		DetailPrint "Installing the .Net Framework 4."
+		;ExecWait '"$SYSDIR\msiexec.exe" "$2" /quiet'
+		ExecWait '"$2" /quiet'
+
+		Call DotNet4Exists
+		Pop $1
+		IntCmp $1 1 DotNet4Done DotNet4Failed
+
+	DotNet4Failed:
+		DetailPrint ".Net Framework 4 install failed... Aborting Install"
+		MessageBox MB_OK ".Net Framework 4 install failed... Aborting Install"
+		Abort
+
+	SkipDotNet4:
+		DetailPrint ".Net Framework 4 found... Continuing."
+
+	DotNet4Done:
 SectionEnd
 
 ; Install MDAC 2.7
@@ -153,6 +177,8 @@ Section "-Install Mygeneration and Register Shell Extensions"
   ; Get latest DLLs and EXE
   File /oname=ZeusCmd.exe ..\mygeneration\ZeusCmd\bin\Release\ZeusCmd.exe
   File /oname=MyGeneration.exe ..\mygeneration\MyGeneration\bin\Release\MyGeneration.exe
+  File /oname=ZeusCmd.exe.config ..\mygeneration\ZeusCmd\bin\Release\ZeusCmd.exe.config
+  File /oname=MyGeneration.exe.config ..\mygeneration\MyGeneration\bin\Release\MyGeneration.exe.config
 
   File /oname=Interop.ADOX.dll ..\mygeneration\MyGeneration\bin\Release\Interop.ADOX.dll
   File /oname=Interop.MSDASC.dll ..\mygeneration\MyGeneration\bin\Release\Interop.MSDASC.dll
@@ -166,6 +192,7 @@ Section "-Install Mygeneration and Register Shell Extensions"
   File /oname=Mono.Security.dll ..\mymeta\ThirdParty\Mono.Security.dll
   File /oname=FirebirdSql.Data.FirebirdClient.dll ..\mymeta\ThirdParty\FirebirdSql.Data.FirebirdClient.dll
   File /oname=MySql.Data.dll ..\mymeta\ThirdParty\MySql.Data.dll
+  File /oname=EffiProz.dll ..\mygeneration\MyGeneration\PluginResources\EffiProz.dll
   
   File /oname=ScintillaNET.dll ..\mygeneration\MyGeneration\PluginResources\ScintillaNET.dll
   File /oname=SciLexer.dll ..\mygeneration\MyGeneration\PluginResources\SciLexer.dll
@@ -173,11 +200,12 @@ Section "-Install Mygeneration and Register Shell Extensions"
 
 ; Plugins nonfatal means create installer even if the filese do not exist
   File /nonfatal /oname=MyMeta.Plugins.DelimitedText.dll ..\plugins\MyMetaTextFilePlugin\bin\Release\MyMeta.Plugins.DelimitedText.dll
-  File /nonfatal /oname=MyMeta.Plugins.VistaDB3x.dll ..\plugins\MyMetaVistaDB3xPlugin\bin\Release\MyMeta.Plugins.VistaDB3x.dll
+  ;File /nonfatal /oname=MyMeta.Plugins.VistaDB3x.dll ..\plugins\MyMetaVistaDB3xPlugin\bin\Release\MyMeta.Plugins.VistaDB3x.dll
   File /nonfatal /oname=MyMeta.Plugins.SqlCe.dll ..\plugins\MyMetaSqlCePlugin\bin\Release\MyMeta.Plugins.SqlCe.dll
   File /nonfatal /oname=MyMeta.Plugins.SybaseASE.dll ..\plugins\MyMetaSybaseASEPlugin\bin\Release\MyMeta.Plugins.SybaseASE.dll
   File /nonfatal /oname=MyMeta.Plugins.SybaseASA.dll ..\plugins\MyMetaSybaseASAPlugin\bin\Release\MyMeta.Plugins.SybaseASA.dll
   File /nonfatal /oname=MyMeta.Plugins.Ingres2006.dll ..\plugins\MyMetaIngres2006Plugin\bin\Release\MyMeta.Plugins.Ingres2006.dll
+  File /nonfatal /oname=MyMeta.Plugins.EffiProz.dll ..\plugins\MyMetaEffiProzPlugin\bin\Release\MyMeta.Plugins.EffiProz.dll
   File /nonfatal /oname=MyMeta.Plugins.VisualFoxPro.dll ..\plugins\MyMetaFoxProPlugin\bin\Release\MyMeta.Plugins.VisualFoxPro.dll
   File /nonfatal /oname=MyGeneration.UI.Plugins.SqlTool.dll ..\plugins\MyGeneration.UI.Plugins.SqlTool\bin\Release\MyGeneration.UI.Plugins.SqlTool.dll
   
@@ -536,16 +564,16 @@ Section "-Install Mygeneration and Register Shell Extensions"
 SectionEnd ; end the section
 
 ; *** We will just have to add this in later, there are too many bugs ***
-Section /o "Visual Studio 2005 Add-In"
+;Section /o "Visual Studio 2005 Add-In"
   ; Set output path to the installation directory.
-  SetOutPath $INSTDIR
+  ;SetOutPath $INSTDIR
     
-  File /nonfatal ..\ideplugins\visualstudio2005\MyGenVS2005\MyGenVS2005.AddIn
-  File /nonfatal ..\ideplugins\visualstudio2005\MyGenVS2005\bin\MyGenVS2005.dll
+  ;File /nonfatal ..\ideplugins\visualstudio2005\MyGenVS2005\MyGenVS2005.AddIn
+  ;File /nonfatal ..\ideplugins\visualstudio2005\MyGenVS2005\bin\MyGenVS2005.dll
 
-  ExecWait `"$INSTDIR\ZeusCmd.exe" -installvs2005`
+  ;ExecWait `"$INSTDIR\ZeusCmd.exe" -installvs2005`
   
-SectionEnd ; end the section
+;SectionEnd ; end the section
 
 
 Section "Install Xsd3b Provider for xml (xsd, uml, entityrelationship)"
@@ -705,23 +733,27 @@ FunctionEnd
 ;
 ;FunctionEnd
 
-; detects Microsoft .Net Framework 3.5
-Function DotNet35Exists
-
+;--------------------------------------------------------
+; Detects Microsoft .Net Framework 4
+;--------------------------------------------------------
+Function DotNet4Exists
 	ClearErrors
-	ReadRegStr $1 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v3.5" "Version"
-	IfErrors MDNFNotFound MDNFFound
+	ReadRegStr $1 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full" "Version"
+	IfErrors MDNFFullNotFound MDNFFound
+
+	MDNFFullNotFound:
+		ReadRegStr $1 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Client" "Version"
+		IfErrors MDNFNotFound MDNFFound
 
 	MDNFFound:
-		Push 0
-		Goto ExitFunction
-		
-	MDNFNotFound:
 		Push 1
 		Goto ExitFunction
 
-	ExitFunction:
+	MDNFNotFound:
+		Push 0
+		Goto ExitFunction
 
+	ExitFunction:
 FunctionEnd
 
 ; detects MDAC 2.7
