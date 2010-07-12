@@ -784,23 +784,23 @@ namespace MyMeta
                 //Provider=SQLOLEDB.1;Persist Security Info=False;User ID=sa;Initial Catalog=Northwind;Data Source=localhost
 				if(null == _parsedConnectionString)
 				{
-					string[] first = ConnectionString.Split(new char[] {';'});
+					string[] tokens = ConnectionString.Split(new char[] {';'}, StringSplitOptions.RemoveEmptyEntries);
 
-					_parsedConnectionString = new Hashtable(first.GetUpperBound(0));
+                    _parsedConnectionString = new Hashtable(tokens.Length);
 
 					string[] kv = null;
 
-					for(int i = 0; i < first.GetUpperBound(0); i++)
+                    for (int i = 0; i < tokens.Length; i++)
 					{
-						kv = first[i].Split(new char[] {'='});
+                        kv = tokens[i].Split('=');
 
-						if(1 == kv.GetUpperBound(0))
+						if (kv.Length == 2)
 						{
 							_parsedConnectionString.Add(kv[0].ToUpper(), kv[1]);
 						}
-						else
+						else if (kv.Length == 1)
 						{
-							_parsedConnectionString.Add(kv[0].ToUpper(), "");
+							_parsedConnectionString.Add(kv[0].ToUpper(), string.Empty);
 						}
 					}
 				}
