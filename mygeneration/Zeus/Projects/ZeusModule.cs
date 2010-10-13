@@ -88,7 +88,7 @@ namespace Zeus.Projects
                         return m as ZeusProject;
                     }
 
-                    m = this.ParentModule;
+                    m = m.ParentModule;
                 } while (m != null);
 
                 return null;
