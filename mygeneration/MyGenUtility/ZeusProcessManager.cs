@@ -18,6 +18,7 @@ namespace MyGeneration
         public const string BEGIN_RECORDING_TAG = "[BEGIN_RECORDING]";
         public const string END_RECORDING_TAG = "[END_RECORDING]";
         public const string PROJECT_GENERATION_COMPLETE = "[PROJECT_GENERATION_COMPLETE]";
+        public const string ERROR_TAG = "ERROR:";
 
         public static Guid ExecuteTemplate(string filename, ZeusProcessStatusDelegate callback)
         {
@@ -172,16 +173,17 @@ namespace MyGeneration
 
     public class ZeusProcessStatusEventArgs : EventArgs
     {
-        private bool _isRunning = false;
-        private string _message = string.Empty;
-        private Guid _id = Guid.NewGuid();
+        private bool _isRunning;
+        private string _message;
+        private Guid _id;
+        private Exception _Exception;
 
-        public ZeusProcessStatusEventArgs(Guid id, bool isRunning, string message)
-            : base()
-        {
+        public ZeusProcessStatusEventArgs(Guid id, bool isRunning, string message) : this(id, isRunning, message, null) {}
+        public ZeusProcessStatusEventArgs(Guid id, bool isRunning, string message, Exception exception) {
             this._id = id;
             this._isRunning = isRunning;
             this._message = message;
+            this._Exception = exception;
         }
 
         public Guid ID
@@ -338,27 +340,29 @@ namespace MyGeneration
                 {
                     string l;
                     p.Start();
-                    while (!p.HasExited)
-                    {
+                    StringBuilder error;
+                    do {
                         l = p.StandardOutput.ReadLine();
-                        td.Callback(new ZeusProcessStatusEventArgs(td.ID, true, l));
+                        if (l != null) {
+                            if (l.StartsWith(ZeusProcessManager.ERROR_TAG)) {
+                                error = new StringBuilder(l);
+                                do {
+                                    l = p.StandardOutput.ReadLine();
+                                    if (l.StartsWith("   "))
+                                        error.AppendLine(l);
+                                    else {
+                                        td.Callback(new ZeusProcessStatusEventArgs(td.ID, true, error.ToString()));
+                                        break;
+                                    }
+                                } while (l != null);
+                                error = null;
+                            }
+
+                            td.Callback(new ZeusProcessStatusEventArgs(td.ID, true, l));
+                        }
                         // need to bubble up this line, and the status in a thread safe way.
 
                         // if marked to "kill", break out and kill process!
-                    }
-
-                    
-                    do
-                    {
-                        try
-                        {
-                            l = p.StandardOutput.ReadLine();
-                            if (l != null) td.Callback(new ZeusProcessStatusEventArgs(td.ID, true, l));
-                        }
-                        catch
-                        {
-                            l = null;
-                        }
                     }
                     while (l != null);
 

@@ -172,9 +172,15 @@ namespace MyGeneration
                 this._mdi.WriteConsole("File Generated: " + generatedFile);
                 this._mdi.SendAlert(this, "FileGenerated", generatedFile);
 
-            }
-            else
-            {
+            } else if (message.StartsWith(ZeusProcessManager.ERROR_TAG)) {
+                string error = message.Substring(ZeusProcessManager.ERROR_TAG.Length);
+                this._mdi.ErrorList.AddErrors(new MyGenError() {
+                    Class = MyGenErrorClass.Template,
+                    Message = "Error processing template",
+                    Detail = error,
+                });
+
+            } else {
                 if (_consoleWriteGeneratedDetails) this._mdi.WriteConsole(message);
             }
 
