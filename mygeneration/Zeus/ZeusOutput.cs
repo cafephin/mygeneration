@@ -92,6 +92,15 @@ namespace Zeus
 		/// </summary>
 		public ZeusOutput() {}
 
+
+        /// <summary>
+        /// The rollback method removes the last x characters from the buffer
+        /// </summary>
+        /// <param name="num">number of characters to remove</param>
+        public void rollback(int num) {
+            _output.Length -= num;
+        }
+
 		/// <summary>
 		/// Writes the inputed string, text, to the output buffer.
 		/// </summary>

@@ -5,6 +5,7 @@ namespace Zeus
 {
 	public interface IZeusOutput
 	{
+        void rollback(int num);
 		void write(string text);
 		void writeln(string text);
 		void autoTab(string text);
