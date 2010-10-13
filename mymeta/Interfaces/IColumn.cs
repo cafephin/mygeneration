@@ -46,7 +46,7 @@ namespace MyMeta
 	///	</code>
 	/// </example>
 	[GuidAttribute("2e9998c4-4873-442e-9ef7-0f68d98d08a5"),InterfaceType(ComInterfaceType.InterfaceIsDual)]	 
-	public interface IColumn 
+	public interface IColumn : IEquatable<IColumn>
 	{
 		// Objects
 		/// <summary>
