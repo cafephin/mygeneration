@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace MyMeta
@@ -8,7 +9,7 @@ namespace MyMeta
 	/// This is a MyMeta Collection. The only two methods meant for public consumption are Count and Item.
 	/// </summary>
 	[GuidAttribute("117d2be8-25a7-45ef-aff6-0b4cc1937ac4"),InterfaceType(ComInterfaceType.InterfaceIsDual)]
-	public interface IForeignKeys : IList, IEnumerable	
+	public interface IForeignKeys : IList, IEnumerable<IForeignKey>
 	{
 		// User Meta Data
 		string UserDataXPath { get; }
@@ -76,13 +77,6 @@ namespace MyMeta
 		/// ICollection support. Not implemented.
 		/// </summary>
 		new object SyncRoot { get; }
-
-		// IEnumerable
-		/// <summary>
-		/// Used to support 'foreach' sytax. Do not call this directly.
-		/// </summary>
-		[DispId(-4)]
-		new IEnumerator GetEnumerator();
 	}
 }
 

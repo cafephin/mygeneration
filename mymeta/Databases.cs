@@ -1,6 +1,7 @@
 using System;
 using System.Xml;
 using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
 using System.Reflection;
@@ -269,14 +270,22 @@ namespace MyMeta
 
 		#endregion
 
-		#region IEnumerable Members
+        #region IEnumerable Members
 
-		public IEnumerator GetEnumerator()
-		{
-			return new Enumerator(this._array);
-		}
+        IEnumerator IEnumerable.GetEnumerator() {
+            return GetEnumerator();
+        }
 
-		#endregion
+        #endregion
+
+        #region IEnumerable<IDatabase> Members
+
+        public IEnumerator<IDatabase> GetEnumerator() {
+            foreach (object item in _array)
+                yield return item as IDatabase;
+        }
+
+        #endregion
 
 		#region IList Members
 
@@ -287,5 +296,7 @@ namespace MyMeta
 		}
 
 		#endregion
-	}
+
+
+    }
 }

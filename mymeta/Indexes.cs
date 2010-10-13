@@ -1,6 +1,7 @@
 using System;
 using System.Xml;
 using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
 
@@ -195,14 +196,22 @@ namespace MyMeta
 
 		#endregion
 
-		#region IEnumerable Members
+        #region IEnumerable Members
 
-		public IEnumerator GetEnumerator()
-		{
-			return new Enumerator(this._array);
-		}
+        IEnumerator IEnumerable.GetEnumerator() {
+            return GetEnumerator();
+        }
 
-		#endregion
+        #endregion
+
+        #region IEnumerable<IIndex> Members
+
+        public IEnumerator<IIndex> GetEnumerator() {
+            foreach (object item in _array)
+                yield return item as IIndex;
+        }
+
+        #endregion
 
 		#region XML User Data
 
@@ -273,5 +282,7 @@ namespace MyMeta
 		#endregion
 
 		internal Table Table = null;
-	}
+
+        
+    }
 }

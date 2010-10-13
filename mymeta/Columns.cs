@@ -1,6 +1,7 @@
 using System;
 using System.Xml;
 using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
 
@@ -10,7 +11,7 @@ namespace MyMeta
 	using System.Runtime.InteropServices;
 	[ComVisible(false), ClassInterface(ClassInterfaceType.AutoDual)]
 #endif 
-	public class Columns : Collection, IColumns, IEnumerable, ICollection
+	public class Columns : Collection, IColumns, ICollection
 	{
 		public Columns()
 		{
@@ -220,19 +221,27 @@ namespace MyMeta
 
 		#endregion
 
-		#region IEnumerable Members
+        #region IEnumerable Members
 
-		public IEnumerator GetEnumerator()
-		{
-			return new Enumerator(this._array);
-		}
+        IEnumerator IEnumerable.GetEnumerator() {
+            return GetEnumerator();
+        }
 
-		#endregion
+        #endregion
 
-		#region XML User Data
+        #region IEnumerable<IColumn> Members
+
+        public IEnumerator<IColumn> GetEnumerator() {
+            foreach (object item in _array)
+                yield return item as IColumn;
+        }
+
+        #endregion
+
+        #region XML User Data
 
 #if ENTERPRISE
-		[ComVisible(false)]
+        [ComVisible(false)]
 #endif		
 		override public string UserDataXPath
 		{ 
@@ -371,5 +380,5 @@ namespace MyMeta
 
 		internal bool FKsLoaded = false;
 
-	}
+    }
 }
