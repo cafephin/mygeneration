@@ -696,5 +696,21 @@ namespace MyMeta
 		internal Columns Columns = null;
 		protected ForeignKeys _foreignKeys = null;
 		static private ForeignKeys _emptyForeignKeys = new ForeignKeys();
-	}
+
+        #region IEquatable<IColumn> Members
+
+        public bool Equals(IColumn other) {
+            if (other == null)
+                return false;
+            var o = other as Column;
+            if (o == null)
+                throw new NotImplementedException();
+
+            return this.dbRoot == o.dbRoot
+                && this.Columns == o.Columns
+                && this._row == o._row;
+        }
+
+        #endregion
+    }
 }
