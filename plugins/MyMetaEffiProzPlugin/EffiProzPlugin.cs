@@ -109,33 +109,38 @@ namespace MyMeta.Plugins
         DataTable IMyMetaPlugin.GetTables(string database)
         {
 			DataTable metaData = new DataTable();
-
+            /*SYSTEM_TABLES*/
 			try
 			{
 				metaData = context.CreateTablesDataTable();
 
-                EfzConnection conn = new EfzConnection();
-                conn.ConnectionString = context.ConnectionString;
+                using (EfzConnection conn = new EfzConnection())
+                {
+                    conn.ConnectionString = context.ConnectionString;
+                    conn.Open();
 
-                /*EfzCommand cmd = new EfzCommand();
-                cmd.CommandText = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='TABLE'";
-                cmd.Connection = conn;
+                    EfzCommand cmd = new EfzCommand();
+                    cmd.CommandText = "SELECT * FROM INFORMATION_SCHEMA.SYSTEM_TABLES WHERE TABLE_TYPE='TABLE'";
+                    cmd.Connection = conn;
 
-                DataTable dt = new DataTable();
-                EfzDataAdapter adapter = new EfzDataAdapter();
-                adapter.SelectCommand = cmd;
-                adapter.Fill(dt);
+                    DataTable dt = new DataTable();
+                    EfzDataAdapter adapter = new EfzDataAdapter();
+                    adapter.SelectCommand = cmd;
+                    adapter.Fill(dt);
 
-				foreach(DataRow r in dt.Rows) 
-				{ 
-					DataRow row = metaData.NewRow();
-					metaData.Rows.Add(row);
+                    foreach (DataRow r in dt.Rows)
+                    {
+                        DataRow row = metaData.NewRow();
+                        metaData.Rows.Add(row);
 
-                    row["TABLE_CATALOG"] = r["TABLE_CATALOG"];
-                    row["TABLE_SCHEMA"] = r["TABLE_SCHEMA"];
-                    row["TABLE_NAME"] = r["TABLE_NAME"];
+                        row["TABLE_CATALOG"] = r["TABLE_CAT"];
+                        row["TABLE_SCHEMA"] = r["TABLE_SCHEM"];
+                        row["TABLE_NAME"] = r["TABLE_NAME"];
+                        row["TABLE_TYPE"] = r["TABLE_TYPE"] + " " + r["EFFIPROZ_TYPE"] + (r["COMMIT_ACTION"] == DBNull.Value ? string.Empty : (" " + r["COMMIT_ACTION"]));
+                        row["DESCRIPTION"] = r["REMARKS"];
 
-				}*/
+                    }
+                }
 			}
 			finally
 			{
@@ -704,15 +709,18 @@ namespace MyMeta.Plugins
 
 		public string GetDatabaseName()
 		{
-            EfzConnection cn = new EfzConnection();
-            cn.ConnectionString = context.ConnectionString;
-
-			string dbName = cn.DataSource;
-			int index = dbName.LastIndexOfAny(new char[]{'\\'});
-			if (index >= 0)
-			{
-				dbName = dbName.Substring(index + 1);
-			}
+            string dbName = "test";
+            using (EfzConnection cn = new EfzConnection())
+            {
+                cn.ConnectionString = context.ConnectionString;
+                cn.Open();
+                dbName = cn.DataSource;
+                int index = dbName.LastIndexOfAny(new char[] { '\\' });
+                if (index >= 0)
+                {
+                    dbName = dbName.Substring(index + 1);
+                }
+            }
 			return dbName;
 		}
 
