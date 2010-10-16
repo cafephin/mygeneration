@@ -27,6 +27,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,6 +36,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -97,6 +99,10 @@
       <Project>{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}</Project>
       <Name>MyMeta</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MyMetaEffiprozPlugin\MyMetaEffiprozPlugin.csproj">
+      <Project>{38F07F67-08C1-48E4-AF0B-9550157F9460}</Project>
+      <Name>MyMetaEffiprozPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MyMetaFoxProPlugin\MyMetaVisualFoxProPlugin.csproj">
       <Project>{A0680832-79DA-410E-A650-C974BF0A1205}</Project>
       <Name>MyMetaVisualFoxProPlugin</Name>
@@ -108,6 +114,10 @@
     <ProjectReference Include="..\MyMetaSqlCePlugin\MyMetaSqlCePlugin.csproj">
       <Project>{E172F96C-2642-42DA-AC44-873123D6970F}</Project>
       <Name>MyMetaSqlCePlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MyMetaSybaseASAPlugin\MyMetaSybaseASAPlugin.csproj">
+      <Project>{DF10FD5D-1893-4738-9D0F-5E7B61B98DBB}</Project>
+      <Name>MyMetaSybaseASAPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\MyMetaSybaseASEPlugin\MyMetaSybaseASEPlugin.csproj">
       <Project>{FED65D0E-038D-4523-A9B4-B4F009778E05}</Project>
@@ -121,6 +131,15 @@
       <Project>{17CC8224-460F-4990-8031-F23BF808075E}</Project>
       <Name>MyMetaXsd3bPlugin</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="Settings\DbTargets.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Settings\Languages.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

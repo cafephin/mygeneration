@@ -16,7 +16,7 @@ namespace MyMeta.Plugins
         private const string PROVIDER_NAME = @"EffiProz";
         private const string AUTHOR_INFO = @"EffiProz MyMeta plugin written by MyGeneration Software.";
 		private const string AUTHOR_URI = @"http://www.mygenerationsoftware.com/";
-        private const string SAMPLE_CONNECTION = @"Connection Type=File ; Initial Catalog=Test/Data/SampleDB; User=sa; Password=;";
+        private const string SAMPLE_CONNECTION = @"Connection Type=File; Initial Catalog=App_Data/Efz/TestDB; User=sa; Password=;";
 
 		private IMyMetaPluginContext context;
 
@@ -86,12 +86,11 @@ namespace MyMeta.Plugins
         {
             get
             {
-				DataTable metaData = new DataTable();
+
+                DataTable metaData = context.CreateDatabasesDataTable();
 
 				try
 				{
-					metaData = context.CreateDatabasesDataTable();
-
 					DataRow row = metaData.NewRow();
 					metaData.Rows.Add(row);
 
@@ -118,7 +117,7 @@ namespace MyMeta.Plugins
                 EfzConnection conn = new EfzConnection();
                 conn.ConnectionString = context.ConnectionString;
 
-                EfzCommand cmd = new EfzCommand();
+                /*EfzCommand cmd = new EfzCommand();
                 cmd.CommandText = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='TABLE'";
                 cmd.Connection = conn;
 
@@ -136,7 +135,7 @@ namespace MyMeta.Plugins
                     row["TABLE_SCHEMA"] = r["TABLE_SCHEMA"];
                     row["TABLE_NAME"] = r["TABLE_NAME"];
 
-				}
+				}*/
 			}
 			finally
 			{
@@ -213,7 +212,7 @@ namespace MyMeta.Plugins
             {
                 metaData = context.CreateColumnsDataTable();
 
-                EfzConnection conn = new EfzConnection();
+                /*EfzConnection conn = new EfzConnection();
                 conn.ConnectionString = context.ConnectionString;
 
                 EfzCommand cmd = new EfzCommand();
@@ -287,7 +286,7 @@ namespace MyMeta.Plugins
                     row["CHARACTER_MAXIMUM_LENGTH"] = charMax;
 
                     row["IS_COMPUTED"] = (type == "timestamp") ? true : false;
-                }
+                }*/
             }
             finally
             {
@@ -305,7 +304,7 @@ namespace MyMeta.Plugins
             {
                 metaData = context.CreateColumnsDataTable();
 
-                EfzConnection conn = new EfzConnection();
+                /*EfzConnection conn = new EfzConnection();
                 conn.ConnectionString = context.ConnectionString;
 
                 EfzCommand cmd = new EfzCommand();
@@ -379,7 +378,7 @@ namespace MyMeta.Plugins
                     row["CHARACTER_MAXIMUM_LENGTH"] = charMax;
 
                     row["IS_COMPUTED"] = (type == "timestamp") ? true : false;
-                }
+                }*/
             }
             finally
             {
@@ -395,7 +394,7 @@ namespace MyMeta.Plugins
 
             try
             {
-                EfzConnection conn = new EfzConnection();
+                /*EfzConnection conn = new EfzConnection();
                 conn.ConnectionString = context.ConnectionString;
 
                 EfzCommand cmd = new EfzCommand();
@@ -413,7 +412,7 @@ namespace MyMeta.Plugins
                 {
                     primaryKeys.Add((string)row["COLUMN_NAME"]);
 
-                }
+                }*/
             }
             catch { }
 
@@ -438,7 +437,7 @@ namespace MyMeta.Plugins
             {
                 metaData = context.CreateIndexesDataTable();
 
-                EfzConnection conn = new EfzConnection();
+                /*EfzConnection conn = new EfzConnection();
                 conn.ConnectionString = context.ConnectionString;
 
                 EfzCommand cmd = new EfzCommand();
@@ -473,7 +472,7 @@ namespace MyMeta.Plugins
                     row["PRIMARY_KEY"] = r["PRIMARY_KEY"];
                     row["NULLS"] = r["NULLS"];
                     row["ORDINAL_POSITION"] = r["ORDINAL_POSITION"];
-                }
+                }*/
             }
             catch { }
 
@@ -488,15 +487,15 @@ namespace MyMeta.Plugins
             {
                 metaData = context.CreateForeignKeysDataTable();
 
-                LoadForeignKeysPartOne(metaData, table);
-                LoadForeignKeysPartTwo(metaData, table);
+                //LoadForeignKeysPartOne(metaData, table);
+                //LoadForeignKeysPartTwo(metaData, table);
             }
             catch { }
 
 			return metaData;
         }
 
-        private void LoadForeignKeysPartOne(DataTable metaData, string table)
+        /*private void LoadForeignKeysPartOne(DataTable metaData, string table)
         {
             EfzConnection conn = new EfzConnection();
             conn.ConnectionString = context.ConnectionString;
@@ -686,7 +685,7 @@ namespace MyMeta.Plugins
                     row["FK_COLUMN_NAME"] = fRow["COLUMN_NAME"];
                 }
             }
-        }
+        }*/
 
         public object GetDatabaseSpecificMetaData(object myMetaObject, string key)
         {

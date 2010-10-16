@@ -25,17 +25,17 @@ namespace MyMeta.Plugins
 
         string IMyMetaPlugin.ProviderName
         {
-            get { return @"VistaDB 3.x"; }
+            get { return @"VistaDB 4.x"; }
         }
 
         string IMyMetaPlugin.ProviderUniqueKey
         {
-            get { return @"VISTADB3X"; }
+            get { return @"VISTADB4X"; }
         }
 
         string IMyMetaPlugin.ProviderAuthorInfo
         {
-            get { return @"VistaDB 3.x MyMeta Plugin Written by Mike Griffin"; }
+            get { return @"VistaDB 4.x MyMeta Plugin Written by Mike Griffin"; }
         }
 
         Uri IMyMetaPlugin.ProviderAuthorUri
@@ -55,7 +55,7 @@ namespace MyMeta.Plugins
 
         string IMyMetaPlugin.SampleConnectionString
         {
-            get { return @"Data Source=C:\Program Files\VistaDB 3.0\Data\Northwind.vdb3;OpenMode=NonexclusiveReadOnly"; }
+            get { return @"Data Source=C:\Program Files\VistaDB 4.0\Data\Northwind.vdb3;OpenMode=NonexclusiveReadOnly"; }
         }
 
         IDbConnection IMyMetaPlugin.NewConnection
