@@ -151,8 +151,63 @@ namespace MyMeta.Plugins
         }
 
 		DataTable IMyMetaPlugin.GetViews(string database)
-		{
-			DataTable metaData = new DataTable();
+        {
+            DataTable metaData = new DataTable();
+            /*SYSTEM_TABLES*/
+            try
+            {
+                metaData = context.CreateViewsDataTable();
+
+                using (EfzConnection conn = new EfzConnection())
+                {
+                    conn.ConnectionString = context.ConnectionString;
+                    conn.Open();
+
+                    EfzCommand cmd = new EfzCommand();
+                    cmd.CommandText =
+@"SELECT t.TABLE_CAT, t.TABLE_SCHEM, v.TABLE_NAME, v.VIEW_DEFINITION, v.CHECK_OPTION, t.REMARKS, t.EFFIPROZ_TYPE, t.TABLE_TYPE, v.IS_UPDATABLE
+FROM INFORMATION_SCHEMA.VIEWS v 
+left join INFORMATION_SCHEMA.SYSTEM_TABLES t on t.TABLE_NAME = v.TABLE_NAME";
+                    cmd.Connection = conn;
+
+                    DataTable dt = new DataTable();
+                    EfzDataAdapter adapter = new EfzDataAdapter();
+                    adapter.SelectCommand = cmd;
+                    adapter.Fill(dt);
+
+                    foreach (DataRow r in dt.Rows)
+                    {
+                        DataRow row = metaData.NewRow();
+                        metaData.Rows.Add(row);
+/*metaData.Columns.Add("TABLE_CATALOG", Type.GetType("System.String"));
+metaData.Columns.Add("TABLE_SCHEMA", Type.GetType("System.String"));
+metaData.Columns.Add("TABLE_NAME", Type.GetType("System.String"));
+metaData.Columns.Add("TABLE_TYPE", Type.GetType("System.String"));
+metaData.Columns.Add("TABLE_GUID", Type.GetType("System.Guid"));
+metaData.Columns.Add("DESCRIPTION", Type.GetType("System.String"));
+metaData.Columns.Add("VIEW_TEXT", Type.GetType("System.String"));
+metaData.Columns.Add("IS_UPDATABLE", Type.GetType("System.Boolean"));
+metaData.Columns.Add("TABLE_PROPID", Type.GetType("System.Int64"));
+metaData.Columns.Add("DATE_CREATED", Type.GetType("System.DateTime"));
+metaData.Columns.Add("DATE_MODIFIED", Type.GetType("System.DateTime"));*/
+                        row["TABLE_CATALOG"] = r["TABLE_CAT"];
+                        row["TABLE_SCHEMA"] = r["TABLE_SCHEM"];
+                        row["TABLE_NAME"] = r["TABLE_NAME"];
+                        row["TABLE_TYPE"] = r["TABLE_TYPE"] + " " + r["EFFIPROZ_TYPE"] + (r["CHECK_OPTION"] == DBNull.Value ? string.Empty : (" " + r["CHECK_OPTION"]));
+                        row["DESCRIPTION"] = r["REMARKS"];
+                        row["IS_UPDATABLE"] = r["IS_UPDATABLE"].ToString().Equals("YES", StringComparison.CurrentCultureIgnoreCase);
+                        //row["INSERTABLE_INTO"] = r["INSERTABLE_INTO"]; // NOT SUPPORTED YET
+                        row["VIEW_TEXT"] = r["VIEW_DEFINITION"];
+
+                    }
+                }
+            }
+            finally
+            {
+
+            }
+
+            return metaData;
 
             //try
             //{
@@ -184,8 +239,6 @@ namespace MyMeta.Plugins
             //{
 
             //}
-
-            return metaData;
 		}
 
         DataTable IMyMetaPlugin.GetProcedures(string database)
