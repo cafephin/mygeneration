@@ -283,12 +283,12 @@ left join INFORMATION_SCHEMA.SYSTEM_TABLES t on t.TABLE_NAME = v.TABLE_NAME";
                         row["COLUMN_DEFAULT"] = r["COLUMN_DEF"];
                     }
 
-                    /*if (r["AUTOINC_INCREMENT"] != DBNull.Value)
+                    if (r["IS_GENERATED"] != DBNull.Value && r["IDENTITY_INCREMENT"] != DBNull.Value)
                     {
                         row["IS_AUTO_KEY"] = true;
-                        row["AUTO_KEY_SEED"] = Convert.ToInt32(r["AUTOINC_SEED"]);
-                        row["AUTO_KEY_INCREMENT"] = Convert.ToInt32(r["AUTOINC_INCREMENT"]);
-                    }*/
+                        row["AUTO_KEY_SEED"] = Convert.ToInt32(r["IDENTITY_START"]);
+                        row["AUTO_KEY_INCREMENT"] = Convert.ToInt32(r["IDENTITY_INCREMENT"]);
+                    }
 
                     int type = Convert.ToInt32(r["DATA_TYPE"]); // dbType enum code
                     string typeName = (string)r["TYPE_NAME"]; // dbType enum code
