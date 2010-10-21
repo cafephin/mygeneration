@@ -115,6 +115,7 @@ namespace MyMeta.Plugins
                             row["SCHEMA_NAME"] = r["TABLE_SCHEM"];
                             row["DESCRIPTION"] = conn.DataSource;
                         }
+                        conn.Close();
                     }
                 }
                 finally
@@ -160,6 +161,7 @@ namespace MyMeta.Plugins
                         row["DESCRIPTION"] = r["REMARKS"];
 
                     }
+                    conn.Close();
                 }
 			}
 			finally
@@ -209,6 +211,7 @@ left join INFORMATION_SCHEMA.SYSTEM_TABLES t on t.TABLE_NAME = v.TABLE_NAME";
                         row["VIEW_TEXT"] = r["VIEW_DEFINITION"];
 
                     }
+                    conn.Close();
                 }
             }
             finally
@@ -247,81 +250,84 @@ left join INFORMATION_SCHEMA.SYSTEM_TABLES t on t.TABLE_NAME = v.TABLE_NAME";
             {
                 metaData = context.CreateColumnsDataTable();
 
-                EfzConnection conn = new EfzConnection();
-                conn.ConnectionString = context.ConnectionString;
-
-                EfzCommand cmd = new EfzCommand();
-                cmd.CommandText = "SELECT * FROM INFORMATION_SCHEMA.SYSTEM_COLUMNS WHERE TABLE_NAME='" + view + "' and TABLE_CAT='" + database + "'";
-                cmd.Connection = conn;
-
-                DataTable dt = new DataTable();
-                EfzDataAdapter adapter = new EfzDataAdapter();
-                adapter.SelectCommand = cmd;
-                adapter.Fill(dt);
-
-                foreach (DataRow r in dt.Rows)
+                using (EfzConnection conn = new EfzConnection())
                 {
-                    DataRow row = metaData.NewRow();
-                    metaData.Rows.Add(row);
+                    conn.ConnectionString = context.ConnectionString;
 
-                    row["TABLE_CATALOG"] = r["TABLE_CAT"];
-                    row["TABLE_SCHEMA"] = r["TABLE_SCHEM"];
-                    row["TABLE_NAME"] = r["TABLE_NAME"];
-                    row["COLUMN_NAME"] = r["COLUMN_NAME"];
-                    row["ORDINAL_POSITION"] = r["ORDINAL_POSITION"];
-                    row["DESCRIPTION"] = r["REMARKS"];
-                    row["COLUMN_HASDEFAULT"] = false;
+                    EfzCommand cmd = new EfzCommand();
+                    cmd.CommandText = "SELECT * FROM INFORMATION_SCHEMA.SYSTEM_COLUMNS WHERE TABLE_NAME='" + view + "' and TABLE_CAT='" + database + "'";
+                    cmd.Connection = conn;
 
-                    if (r["IS_NULLABLE"] != DBNull.Value)
+                    DataTable dt = new DataTable();
+                    EfzDataAdapter adapter = new EfzDataAdapter();
+                    adapter.SelectCommand = cmd;
+                    adapter.Fill(dt);
+
+                    foreach (DataRow r in dt.Rows)
                     {
-                        row["IS_NULLABLE"] = r["IS_NULLABLE"];
+                        DataRow row = metaData.NewRow();
+                        metaData.Rows.Add(row);
+
+                        row["TABLE_CATALOG"] = r["TABLE_CAT"];
+                        row["TABLE_SCHEMA"] = r["TABLE_SCHEM"];
+                        row["TABLE_NAME"] = r["TABLE_NAME"];
+                        row["COLUMN_NAME"] = r["COLUMN_NAME"];
+                        row["ORDINAL_POSITION"] = r["ORDINAL_POSITION"];
+                        row["DESCRIPTION"] = r["REMARKS"];
+                        row["COLUMN_HASDEFAULT"] = false;
+
+                        if (r["IS_NULLABLE"] != DBNull.Value)
+                        {
+                            row["IS_NULLABLE"] = r["IS_NULLABLE"];
+                        }
+
+                        if (r["COLUMN_DEF"] != DBNull.Value)
+                        {
+                            row["COLUMN_HASDEFAULT"] = true;
+                            row["COLUMN_DEFAULT"] = r["COLUMN_DEF"];
+                        }
+
+                        if (r["IS_GENERATED"] != DBNull.Value && r["IDENTITY_INCREMENT"] != DBNull.Value)
+                        {
+                            row["IS_AUTO_KEY"] = true;
+                            row["AUTO_KEY_SEED"] = Convert.ToInt32(r["IDENTITY_START"]);
+                            row["AUTO_KEY_INCREMENT"] = Convert.ToInt32(r["IDENTITY_INCREMENT"]);
+                        }
+
+                        int type = Convert.ToInt32(r["DATA_TYPE"]); // dbType enum code
+                        string typeName = (string)r["TYPE_NAME"]; // dbType enum code
+                        int charMax = 0;
+                        int precision = 0;
+                        int scale = 0;
+
+                        if (r["COLUMN_SIZE"] != DBNull.Value)
+                        {
+                            charMax = Convert.ToInt32(r["COLUMN_SIZE"]);
+                        }
+
+                        if (r["COLUMN_SIZE"] != DBNull.Value)
+                        {
+                            precision = Convert.ToInt32(r["COLUMN_SIZE"]);
+                        }
+
+                        if (r["DECIMAL_DIGITS"] != DBNull.Value)
+                        {
+                            scale = Convert.ToInt32(r["DECIMAL_DIGITS"]);
+                        }
+
+                        row["DATA_TYPE"] = type;
+                        row["TYPE_NAME"] = typeName;
+                        row["TYPE_NAME_COMPLETE"] = this.GetDataTypeNameComplete(typeName, charMax, precision, scale);
+
+                        row["NUMERIC_PRECISION"] = precision;
+                        row["NUMERIC_SCALE"] = scale;
+
+                        row["CHARACTER_MAXIMUM_LENGTH"] = charMax;
+
+                        //TODO: we will have to find the best way to implement this later?
+                        //row["IS_COMPUTED"] = (type == "timestamp") ? true : false;
                     }
-
-                    if (r["COLUMN_DEF"] != DBNull.Value)
-                    {
-                        row["COLUMN_HASDEFAULT"] = true;
-                        row["COLUMN_DEFAULT"] = r["COLUMN_DEF"];
-                    }
-
-                    if (r["IS_GENERATED"] != DBNull.Value && r["IDENTITY_INCREMENT"] != DBNull.Value)
-                    {
-                        row["IS_AUTO_KEY"] = true;
-                        row["AUTO_KEY_SEED"] = Convert.ToInt32(r["IDENTITY_START"]);
-                        row["AUTO_KEY_INCREMENT"] = Convert.ToInt32(r["IDENTITY_INCREMENT"]);
-                    }
-
-                    int type = Convert.ToInt32(r["DATA_TYPE"]); // dbType enum code
-                    string typeName = (string)r["TYPE_NAME"]; // dbType enum code
-                    int charMax = 0;
-                    int precision = 0;
-                    int scale = 0;
-
-                    if (r["COLUMN_SIZE"] != DBNull.Value)
-                    {
-                        charMax = Convert.ToInt32(r["COLUMN_SIZE"]);
-                    }
-
-                    if (r["COLUMN_SIZE"] != DBNull.Value)
-                    {
-                        precision = Convert.ToInt32(r["COLUMN_SIZE"]);
-                    }
-
-                    if (r["DECIMAL_DIGITS"] != DBNull.Value)
-                    {
-                        scale = Convert.ToInt32(r["DECIMAL_DIGITS"]);
-                    }
-
-                    row["DATA_TYPE"] = type;
-                    row["TYPE_NAME"] = typeName;
-                    row["TYPE_NAME_COMPLETE"] = this.GetDataTypeNameComplete(typeName, charMax, precision, scale);
-
-                    row["NUMERIC_PRECISION"] = precision;
-                    row["NUMERIC_SCALE"] = scale;
-
-                    row["CHARACTER_MAXIMUM_LENGTH"] = charMax;
-
-                    //TODO: we will have to find the best way to implement this later?
-                    //row["IS_COMPUTED"] = (type == "timestamp") ? true : false;
+                    conn.Close();
                 }
             }
             finally
@@ -340,81 +346,84 @@ left join INFORMATION_SCHEMA.SYSTEM_TABLES t on t.TABLE_NAME = v.TABLE_NAME";
             {
                 metaData = context.CreateColumnsDataTable();
 
-                EfzConnection conn = new EfzConnection();
-                conn.ConnectionString = context.ConnectionString;
-
-                EfzCommand cmd = new EfzCommand();
-                cmd.CommandText = "SELECT * FROM INFORMATION_SCHEMA.SYSTEM_COLUMNS WHERE TABLE_NAME='" + table + "' AND TABLE_CAT='" + database + "'";
-                cmd.Connection = conn;
-
-                DataTable dt = new DataTable();
-                EfzDataAdapter adapter = new EfzDataAdapter();
-                adapter.SelectCommand = cmd;
-                adapter.Fill(dt);
-
-                foreach (DataRow r in dt.Rows)
+                using (EfzConnection conn = new EfzConnection())
                 {
-                    DataRow row = metaData.NewRow();
-                    metaData.Rows.Add(row);
+                    conn.ConnectionString = context.ConnectionString;
 
-                    row["TABLE_CATALOG"] = r["TABLE_CAT"];
-                    row["TABLE_SCHEMA"] = r["TABLE_SCHEM"];
-                    row["TABLE_NAME"] = r["TABLE_NAME"];
-                    row["COLUMN_NAME"] = r["COLUMN_NAME"];
-                    row["ORDINAL_POSITION"] = r["ORDINAL_POSITION"];
-                    row["DESCRIPTION"] = r["REMARKS"];
-                    row["COLUMN_HASDEFAULT"] = false;
+                    EfzCommand cmd = new EfzCommand();
+                    cmd.CommandText = "SELECT * FROM INFORMATION_SCHEMA.SYSTEM_COLUMNS WHERE TABLE_NAME='" + table + "' AND TABLE_CAT='" + database + "'";
+                    cmd.Connection = conn;
 
-                    if (r["IS_NULLABLE"] != DBNull.Value)
+                    DataTable dt = new DataTable();
+                    EfzDataAdapter adapter = new EfzDataAdapter();
+                    adapter.SelectCommand = cmd;
+                    adapter.Fill(dt);
+
+                    foreach (DataRow r in dt.Rows)
                     {
-                        row["IS_NULLABLE"] = r["IS_NULLABLE"];
+                        DataRow row = metaData.NewRow();
+                        metaData.Rows.Add(row);
+
+                        row["TABLE_CATALOG"] = r["TABLE_CAT"];
+                        row["TABLE_SCHEMA"] = r["TABLE_SCHEM"];
+                        row["TABLE_NAME"] = r["TABLE_NAME"];
+                        row["COLUMN_NAME"] = r["COLUMN_NAME"];
+                        row["ORDINAL_POSITION"] = r["ORDINAL_POSITION"];
+                        row["DESCRIPTION"] = r["REMARKS"];
+                        row["COLUMN_HASDEFAULT"] = false;
+
+                        if (r["IS_NULLABLE"] != DBNull.Value)
+                        {
+                            row["IS_NULLABLE"] = r["IS_NULLABLE"];
+                        }
+
+                        if (r["COLUMN_DEF"] != DBNull.Value)
+                        {
+                            row["COLUMN_HASDEFAULT"] = true;
+                            row["COLUMN_DEFAULT"] = r["COLUMN_DEF"];
+                        }
+
+                        if (r["IS_GENERATED"] != DBNull.Value && r["IDENTITY_INCREMENT"] != DBNull.Value)
+                        {
+                            row["IS_AUTO_KEY"] = true;
+                            row["AUTO_KEY_SEED"] = Convert.ToInt32(r["IDENTITY_START"]);
+                            row["AUTO_KEY_INCREMENT"] = Convert.ToInt32(r["IDENTITY_INCREMENT"]);
+                        }
+
+                        int type = Convert.ToInt32(r["DATA_TYPE"]); // dbType enum code
+                        string typeName = (string)r["TYPE_NAME"]; // dbType enum code
+                        int charMax = 0;
+                        int precision = 0;
+                        int scale = 0;
+
+                        if (r["COLUMN_SIZE"] != DBNull.Value)
+                        {
+                            charMax = Convert.ToInt32(r["COLUMN_SIZE"]);
+                        }
+
+                        if (r["COLUMN_SIZE"] != DBNull.Value)
+                        {
+                            precision = Convert.ToInt32(r["COLUMN_SIZE"]);
+                        }
+
+                        if (r["DECIMAL_DIGITS"] != DBNull.Value)
+                        {
+                            scale = Convert.ToInt32(r["DECIMAL_DIGITS"]);
+                        }
+
+                        row["DATA_TYPE"] = type;
+                        row["TYPE_NAME"] = typeName;
+                        row["TYPE_NAME_COMPLETE"] = this.GetDataTypeNameComplete(typeName, charMax, precision, scale);
+
+                        row["NUMERIC_PRECISION"] = precision;
+                        row["NUMERIC_SCALE"] = scale;
+
+                        row["CHARACTER_MAXIMUM_LENGTH"] = charMax;
+
+                        //TODO: we will have to find the best way to implement this later?
+                        //row["IS_COMPUTED"] = (type == "timestamp") ? true : false;
                     }
-
-                    if (r["COLUMN_DEF"] != DBNull.Value)
-                    {
-                        row["COLUMN_HASDEFAULT"] = true;
-                        row["COLUMN_DEFAULT"] = r["COLUMN_DEF"];
-                    }
-
-                    if (r["IS_GENERATED"] != DBNull.Value && r["IDENTITY_INCREMENT"] != DBNull.Value)
-                    {
-                        row["IS_AUTO_KEY"] = true;
-                        row["AUTO_KEY_SEED"] = Convert.ToInt32(r["IDENTITY_START"]);
-                        row["AUTO_KEY_INCREMENT"] = Convert.ToInt32(r["IDENTITY_INCREMENT"]);
-                    }
-
-                    int type = Convert.ToInt32(r["DATA_TYPE"]); // dbType enum code
-                    string typeName = (string)r["TYPE_NAME"]; // dbType enum code
-                    int charMax = 0;
-                    int precision = 0;
-                    int scale = 0;
-
-                    if (r["COLUMN_SIZE"] != DBNull.Value)
-                    {
-                        charMax = Convert.ToInt32(r["COLUMN_SIZE"]);
-                    }
-
-                    if (r["COLUMN_SIZE"] != DBNull.Value)
-                    {
-                        precision = Convert.ToInt32(r["COLUMN_SIZE"]);
-                    }
-
-                    if (r["DECIMAL_DIGITS"] != DBNull.Value)
-                    {
-                        scale = Convert.ToInt32(r["DECIMAL_DIGITS"]);
-                    }
-
-                    row["DATA_TYPE"] = type;
-                    row["TYPE_NAME"] = typeName;
-                    row["TYPE_NAME_COMPLETE"] = this.GetDataTypeNameComplete(typeName, charMax, precision, scale);
-
-                    row["NUMERIC_PRECISION"] = precision;
-                    row["NUMERIC_SCALE"] = scale;
-
-                    row["CHARACTER_MAXIMUM_LENGTH"] = charMax;
-
-                    //TODO: we will have to find the best way to implement this later?
-                    //row["IS_COMPUTED"] = (type == "timestamp") ? true : false;
+                    conn.Close();
                 }
             }
             finally
@@ -749,18 +758,18 @@ left join INFORMATION_SCHEMA.SYSTEM_TABLES t on t.TABLE_NAME = v.TABLE_NAME";
                     conn.ConnectionString = context.ConnectionString;
                     conn.Open();
 
-                    EfzCommand cmd = new EfzCommand();
+                    EfzCommand cmd = new EfzCommand();//"DATABASE", "IFNULL", "USER"
                     cmd.CommandText = "SELECT DISTINCT SCHEMA FROM INFORMATION_SCHEMA.SYSTEM_SESSIONS";
                     cmd.Connection = conn;
                     using (EfzDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            db = reader[0].ToString();
-                            //break;
+                            db = reader["SCHEMA"].ToString();
                         }
                         reader.Close();
                     }
+                    conn.Close();
                 }
             }
             finally
