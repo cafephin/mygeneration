@@ -68,6 +68,7 @@ namespace Zeus
 			bool isCustom = false;
 			string nextTagToFind = string.Empty;
 			IZeusCodeParser codeParser = engine.CodeParser;
+            var sb = new StringBuilder();
 
 			int headerInsertIndex = builder.Length;
 
@@ -86,9 +87,12 @@ namespace Zeus
 
 						if (isShortcut) 
 						{
+                            sb.Append(line.Substring(0, index));
+
 							//TODO: ***If the line in the shortcut has more than one command (a semicolon) throw an exception.
-							builder.Append( codeParser.BuildOutputCommand(language, line.Substring(0, index), false, false) );
-							
+							builder.Append( codeParser.BuildOutputCommand(language, sb.ToString() , false, false) );
+                            sb.Clear();
+
 							isShortcut = false;
 						}
 						else if (isCustom) 
@@ -109,6 +113,7 @@ namespace Zeus
 						inBlock = true;
 						if (index > 0)
 						{
+                            // Append the code before the open tag
 							builder.Append( codeParser.BuildOutputCommand(language, line.Substring(0, index), true, false) );
 						}
 
@@ -116,6 +121,7 @@ namespace Zeus
 						{
 							isCustom = false;
 							isShortcut = true;
+                            // Set the line to the actual code
 							line = line.Substring(index + tagShortcut.Length);
 						}
 						else if (index == line.IndexOf(tagSpecial)) 
@@ -135,11 +141,13 @@ namespace Zeus
 					index = line.IndexOf(inBlock ? tagEnd : tagStart);
 				}
 				
-				// Shortcut & Custom tags have to start and end on the same line!
-				isShortcut = false;
+				// Custom tags have to start and end on the same line!
 				isCustom = false;
-				
-				if (inBlock) 
+
+                if (isShortcut) {
+                    sb.Append(line.Trim() + "\r\n");
+                }
+				else if (inBlock) 
 				{
 					builder.Append(line.Trim() + "\r\n");
 				}
