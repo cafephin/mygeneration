@@ -349,5 +349,21 @@ namespace MyMeta
 		}
 
 		#endregion
-	}
+
+        #region IEquatable<Table> Members
+
+        public bool Equals(ITable other) {
+            if (other == null)
+                return false;
+            var o = other as Table;
+            if (o == null)
+                throw new NotImplementedException();
+
+            return this.dbRoot == o.dbRoot
+                && this._row == o._row;
+        }
+
+        #endregion
+
+    }
 }

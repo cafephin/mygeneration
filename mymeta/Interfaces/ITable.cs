@@ -40,7 +40,7 @@ namespace MyMeta
 	/// </code>
 	/// </example>
 	[GuidAttribute("d623c10a-8a7e-4360-830a-d273c8cc70dd"),InterfaceType(ComInterfaceType.InterfaceIsDual)] 
-	public interface ITable
+	public interface ITable: IEquatable<ITable>
 	{
 		// Collections
 		/// <summary>
