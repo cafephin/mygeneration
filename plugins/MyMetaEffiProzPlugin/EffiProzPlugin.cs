@@ -150,10 +150,7 @@ namespace MyMeta.Plugins
                     }
 
                 }
-                finally
-                {
-                    //EfzConnection.ClearAllPools();
-                }
+                finally { }
 
                 return metaData;
             }
@@ -189,10 +186,7 @@ namespace MyMeta.Plugins
                 }
 
             }
-            finally
-            {
-                //EfzConnection.ClearAllPools();
-            }
+            finally { }
 
             return metaData;
         }
@@ -231,20 +225,46 @@ left join INFORMATION_SCHEMA.SYSTEM_TABLES t on t.TABLE_NAME = v.TABLE_NAME";
 
                     }
                 }
-
-
             }
-            finally
-            {
-                //EfzConnection.ClearAllPools();
-            }
+            finally { }
 
             return metaData;
         }
 
         public DataTable GetProcedures(string database)
         {
-            return new DataTable();
+            DataTable metaData = new DataTable();
+
+            try
+            {
+                metaData = context.CreateProceduresDataTable();
+
+                EfzConnection conn = InternalConnection;
+
+                EfzCommand cmd = new EfzCommand();
+                cmd.CommandText =
+@"SELECT p.*
+FROM INFORMATION_SCHEMA.SYSTEM_PROCEDURES p
+WHERE PROCEDURE_CAT = '" + database + "'";
+                cmd.Connection = conn;
+
+                using (EfzDataReader r = cmd.ExecuteReader())
+                {
+                    while (r.Read())
+                    {
+                        DataRow row = metaData.NewRow();
+                        metaData.Rows.Add(row);
+                        row["PROCEDURE_CATALOG"] = r["PROCEDURE_CAT"];
+                        row["PROCEDURE_SCHEMA"] = r["PROCEDURE_SCHEM"];
+                        row["PROCEDURE_NAME"] = r["PROCEDURE_NAME"];
+                        row["PROCEDURE_TYPE"] = r["PROCEDURE_TYPE"];
+                        row["DESCRIPTION"] = r["REMARKS"];
+                    }
+                }
+            }
+            finally { }
+
+            return metaData;
         }
 
         public DataTable GetDomains(string database)
@@ -254,7 +274,93 @@ left join INFORMATION_SCHEMA.SYSTEM_TABLES t on t.TABLE_NAME = v.TABLE_NAME";
 
         public DataTable GetProcedureParameters(string database, string procedure)
         {
-            return new DataTable();
+            DataTable metaData = new DataTable();
+
+            try
+            {
+                metaData = context.CreateParametersDataTable();
+
+                EfzConnection conn = InternalConnection;
+
+                EfzCommand cmd = new EfzCommand();
+                cmd.CommandText = 
+@"SELECT * 
+FROM INFORMATION_SCHEMA.SYSTEM_PROCEDURECOLUMNS
+WHERE PROCEDURE_NAME='" + procedure + "' and PROCEDURE_CAT='" + database + "'";
+                cmd.Connection = conn;
+
+                using (EfzDataReader r = cmd.ExecuteReader())
+                {
+                    while (r.Read())
+                    {
+                        DataRow row = metaData.NewRow();
+                        metaData.Rows.Add(row);
+
+                        if (r["IS_NULLABLE"] != DBNull.Value)
+                        {
+                            row["IS_NULLABLE"] = r["NULLABLE"];
+                        }
+
+                        int type = Convert.ToInt32(r["DATA_TYPE"]); // dbType enum code
+                        string typeName = (string)r["TYPE_NAME"]; // dbType enum code
+                        int charMax = 0;
+                        int charOctetMax = 0;
+                        int precision = 0;
+                        int scale = 0;
+
+                        if (r["CHAR_OCTET_LENGTH"] != DBNull.Value)
+                        {
+                            charOctetMax = Convert.ToInt32(r["CHAR_OCTET_LENGTH"]);
+                        }
+
+                        if (r["LENGTH"] != DBNull.Value)
+                        {
+                            charMax = Convert.ToInt32(r["LENGTH"]);
+                        }
+
+                        if (r["PRECISION"] != DBNull.Value)
+                        {
+                            precision = Convert.ToInt32(r["PRECISION"]);
+                        }
+
+                        if (r["SCALE"] != DBNull.Value)
+                        {
+                            scale = Convert.ToInt32(r["SCALE"]);
+                        }
+
+                        row["DATA_TYPE"] = type;
+                        row["TYPE_NAME"] = typeName;
+                        //row["TYPE_NAME_COMPLETE"] = this.GetDataTypeNameComplete(typeName, charMax, precision, scale);
+
+                        row["CHARACTER_MAXIMUM_LENGTH"] = charMax;
+                        row["CHARACTER_OCTET_LENGTH"] = charOctetMax;
+                        row["NUMERIC_PRECISION"] = precision;
+                        row["NUMERIC_SCALE"] = scale;
+
+
+                        row["PROCEDURE_CATALOG"] = r["PROCEDURE_CAT"];
+                        row["PROCEDURE_SCHEMA"] = r["PROCEDURE_SCHEM"];
+                        row["PROCEDURE_NAME"] = r["PROCEDURE_NAME"];
+                        row["PARAMETER_NAME"] = r["COLUMN_NAME"];
+                        row["ORDINAL_POSITION"] = r["ORDINAL_POSITION"];
+                        row["PARAMETER_TYPE"] = r["COLUMN_TYPE"];
+                        row["PARAMETER_HASDEFAULT"] = r["COLUMN_DEF"] != DBNull.Value && r["COLUMN_DEF"] != string.Empty;
+                        row["PARAMETER_DEFAULT"] = r["COLUMN_DEF"];
+                        //row["IS_NULLABLE"] = r["NULLABLE"];
+                        //row["DATA_TYPE"] = r["DATA_TYPE"];
+                        //row["CHARACTER_MAXIMUM_LENGTH"] = r["LENGTH"];
+                        //row["CHARACTER_OCTET_LENGTH"] = r["CHAR_OCTET_LENGTH"];
+                        row["NUMERIC_PRECISION"] = r["PRECISION"];
+                        row["NUMERIC_SCALE"] = r["SCALE"];
+                        row["DESCRIPTION"] = r["REMARKS"];
+                        //row["TYPE_NAME"] = r["TYPE_NAME"];
+                        //row["LOCAL_TYPE_NAME"] = r[""];
+                    }
+                }
+            }
+            finally { }
+
+            return metaData;
         }
 
         public DataTable GetProcedureResultColumns(string database, string procedure)
@@ -343,14 +449,8 @@ left join INFORMATION_SCHEMA.SYSTEM_TABLES t on t.TABLE_NAME = v.TABLE_NAME";
                         //row["IS_COMPUTED"] = (type == "timestamp") ? true : false;
                     }
                 }
-
-
-
             }
-            finally
-            {
-                //EfzConnection.ClearAllPools();
-            }
+            finally { }
 
             return metaData;
         }
@@ -436,13 +536,8 @@ left join INFORMATION_SCHEMA.SYSTEM_TABLES t on t.TABLE_NAME = v.TABLE_NAME";
                         //row["IS_COMPUTED"] = (type == "timestamp") ? true : false;
                     }
                 }
-
-
             }
-            finally
-            {
-                //EfzConnection.ClearAllPools();
-            }
+            finally { }
 
             return metaData;
         }
@@ -453,25 +548,22 @@ left join INFORMATION_SCHEMA.SYSTEM_TABLES t on t.TABLE_NAME = v.TABLE_NAME";
 
             try
             {
-                /*EfzConnection conn = InternalConnection;
-                EfzCommand cmd = new EfzCommand();
 
-                cmd.CommandText =
-"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.INDEXES where Table_Name='" + table + "' AND PRIMARY_KEY=1";
-                cmd.Connection = conn;
+                    EfzConnection conn = InternalConnection;
 
-                DataTable dt = new DataTable();
-                EfzDataAdapter adapter = new EfzDataAdapter();
-                adapter.SelectCommand = cmd;
-                adapter.Fill(dt);
+                    EfzCommand cmd = new EfzCommand();
+                    cmd.CommandText = "SELECT * FROM INFORMATION_SCHEMA.SYSTEM_PRIMARYKEYS WHERE TABLE_NAME='" + table + "' AND TABLE_CAT='" + database + "'";
+                    cmd.Connection = conn;
 
-                foreach (DataRow row in dt.Rows)
-                {
-                    primaryKeys.Add((string)row["COLUMN_NAME"]);
-
-                }*/
+                    using (EfzDataReader r = cmd.ExecuteReader())
+                    {
+                        while (r.Read())
+                        {
+                            primaryKeys.Add(r["COLUMN_NAME"].ToString());
+                        }
+                    }
             }
-            catch { }
+            finally { }
 
             return primaryKeys;
         }
@@ -530,7 +622,7 @@ left join INFORMATION_SCHEMA.SYSTEM_TABLES t on t.TABLE_NAME = v.TABLE_NAME";
                     row["ORDINAL_POSITION"] = r["ORDINAL_POSITION"];
                 }*/
             }
-            catch { }
+            finally { }
 
             return metaData;
         }
@@ -546,7 +638,7 @@ left join INFORMATION_SCHEMA.SYSTEM_TABLES t on t.TABLE_NAME = v.TABLE_NAME";
                 //LoadForeignKeysPartOne(metaData, table);
                 //LoadForeignKeysPartTwo(metaData, table);
             }
-            catch { }
+            finally { }
 
             return metaData;
         }
@@ -792,18 +884,6 @@ left join INFORMATION_SCHEMA.SYSTEM_TABLES t on t.TABLE_NAME = v.TABLE_NAME";
 
         private string GetDataTypeNameComplete(string dataType, int charMax, int precision, int scale)
         {
-            // this.GetDataTypeNameComplete(type, charMax, precision, scale);
-            //if (this.dbRoot.DomainOverride)
-            //{
-            //    if (this.HasDomain)
-            //    {
-            //        if (this.Domain != null)
-            //        {
-            //            return this.Domain.DataTypeNameComplete;
-            //        }
-            //    }
-            //}
-
             StringBuilder sb = new StringBuilder();
 
             switch (dataType.ToUpper())
