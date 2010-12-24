@@ -217,7 +217,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>copy  "$(SolutionDir)MyGeneration\PluginResources\*.dll" "$(TargetDir)"
+    <PreBuildEvent>rem copy  "$(SolutionDir)MyGeneration\PluginResources\*.dll" "$(TargetDir)"
 rem xcopy "$(SolutionDir)..\plugins\MyMetaSybaseASEPlugin\bin\Release\MyMeta.Plugins.SybaseASE.*" "$(TargetDir)" /C /Y
 </PreBuildEvent>
     <PostBuildEvent>xcopy "$(SolutionDir)ZeusCmd\bin\$(ConfigurationName)\ZeusCmd.*" "$(TargetDir)" /Y /C
