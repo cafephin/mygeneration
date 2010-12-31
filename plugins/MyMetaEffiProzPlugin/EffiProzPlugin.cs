@@ -180,8 +180,8 @@ namespace MyMeta.Plugins
                         row["TABLE_CATALOG"] = r["TABLE_CAT"];
                         row["TABLE_SCHEMA"] = r["TABLE_SCHEM"];
                         row["TABLE_NAME"] = r["TABLE_NAME"];
-                        row["TABLE_TYPE"] = r["TABLE_TYPE"] + " " + r["EFFIPROZ_TYPE"] + (r["COMMIT_ACTION"] == DBNull.Value ? string.Empty : (" " + r["COMMIT_ACTION"]));
-                        row["DESCRIPTION"] = r["REMARKS"];
+                        row["TABLE_TYPE"] = (r["TABLE_TYPE"].ToString().IndexOf("SYSTEM ") > -1) ? "SYSTEM TABLE" : "TABLE";
+                        row["DESCRIPTION"] = r["REMARKS"] + " : " + r["EFFIPROZ_TYPE"] + (r["COMMIT_ACTION"] == DBNull.Value ? string.Empty : (" " + r["COMMIT_ACTION"]));
                     }
                 }
 
@@ -217,8 +217,8 @@ left join INFORMATION_SCHEMA.SYSTEM_TABLES t on t.TABLE_NAME = v.TABLE_NAME";
                         row["TABLE_CATALOG"] = r["TABLE_CAT"];
                         row["TABLE_SCHEMA"] = r["TABLE_SCHEM"];
                         row["TABLE_NAME"] = r["TABLE_NAME"];
-                        row["TABLE_TYPE"] = r["TABLE_TYPE"] + " " + r["EFFIPROZ_TYPE"] + (r["CHECK_OPTION"] == DBNull.Value ? string.Empty : (" " + r["CHECK_OPTION"]));
-                        row["DESCRIPTION"] = r["REMARKS"];
+                        row["TABLE_TYPE"] = (r["TABLE_TYPE"].ToString().IndexOf("SYSTEM ") > -1) ? "SYSTEM VIEW" : "VIEW";
+                        row["DESCRIPTION"] = r["REMARKS"] + " : " + r["EFFIPROZ_TYPE"] + (r["CHECK_OPTION"] == DBNull.Value ? string.Empty : (" " + r["CHECK_OPTION"]));
                         row["IS_UPDATABLE"] = r["IS_UPDATABLE"].ToString().Equals("YES", StringComparison.CurrentCultureIgnoreCase);
                         //row["INSERTABLE_INTO"] = r["INSERTABLE_INTO"]; // NOT SUPPORTED YET
                         row["VIEW_TEXT"] = r["VIEW_DEFINITION"];
@@ -586,11 +586,11 @@ WHERE PROCEDURE_NAME='" + procedure + "' and PROCEDURE_CAT='" + database + "'";
             {
                 metaData = context.CreateIndexesDataTable();
 
-                /*EfzConnection conn InternalConnection;
+                EfzConnection conn = InternalConnection;
 
                 EfzCommand cmd = new EfzCommand();
-                cmd.CommandText = "SELECT * FROM INFORMATION_SCHEMA.INDEXES WHERE TABLE_NAME='" +
-                    table + "'";
+                cmd.CommandText = "SELECT * FROM INFORMATION_SCHEMA.SYSTEM_INDEXINFO WHERE TABLE_NAME='" +
+                    table + "' AND TABLE_CAT='" + database + "'";
                 cmd.Connection = conn;
 
                 DataTable dt = new DataTable();
@@ -603,24 +603,19 @@ WHERE PROCEDURE_NAME='" + procedure + "' and PROCEDURE_CAT='" + database + "'";
                     DataRow row = metaData.NewRow();
                     metaData.Rows.Add(row);
 
+                    row["TABLE_CATALOG"] = r["TABLE_CAT"];
+                    row["TABLE_SCHEMA"] = r["TABLE_SCHEM"];
                     row["TABLE_NAME"] = r["TABLE_NAME"];
                     row["INDEX_NAME"] = r["INDEX_NAME"];
-                    row["UNIQUE"] = r["UNIQUE"];
-                    row["CLUSTERED"] = r["CLUSTERED"];
-                    row["AUTO_UPDATE"] = r["AUTO_UPDATE"];
-                    row["SORT_BOOKMARKS"] = r["SORT_BOOKMARKS"];
-                    row["FILTER_CONDITION"] = r["FILTER_CONDITION"];
-                    row["NULL_COLLATION"] = r["NULL_COLLATION"];
-                    row["INITIAL_SIZE"] = r["INITIAL_SIZE"];
-                    row["CARDINALITY"] = Convert.ToDecimal(r["INITIAL_SIZE"]);
-                    row["COLLATION"] = r["COLLATION"];
+                    row["UNIQUE"] = r["UNIQUE_INDEX"];
+                    row["PRIMARY_KEY"] = r["PRIMARY_INDEX"];
+                    row["CARDINALITY"] = r["ROW_CARDINALITY"] == DBNull.Value ? (object)DBNull.Value : (object)Convert.ToDecimal(r["ROW_CARDINALITY"]);
                     row["COLUMN_NAME"] = r["COLUMN_NAME"];
-                    row["FILL_FACTOR"] = r["FILL_FACTOR"];
-                    row["AUTO_UPDATE"] = r["AUTO_UPDATE"];
-                    row["PRIMARY_KEY"] = r["PRIMARY_KEY"];
-                    row["NULLS"] = r["NULLS"];
-                    row["ORDINAL_POSITION"] = r["ORDINAL_POSITION"];
-                }*/
+                    row["FILTER_CONDITION"] = r["FILTER_CONDITION"];
+                    row["TYPE"] = r["TYPE"];
+                    row["PAGES"] = r["PAGES"];
+                    row["ORDINAL_POSITION"] = r["ORDINAL_POSITION"];                
+                }
             }
             finally { }
 
@@ -635,202 +630,45 @@ WHERE PROCEDURE_NAME='" + procedure + "' and PROCEDURE_CAT='" + database + "'";
             {
                 metaData = context.CreateForeignKeysDataTable();
 
-                //LoadForeignKeysPartOne(metaData, table);
-                //LoadForeignKeysPartTwo(metaData, table);
+                EfzConnection conn = InternalConnection;
+
+                EfzCommand cmd = new EfzCommand();
+                cmd.CommandText = "SELECT * FROM INFORMATION_SCHEMA.SYSTEM_CROSSREFERENCE WHERE (PKTABLE_NAME='" +
+                    table + "' AND PKTABLE_CAT='" + database + "') OR (FKTABLE_NAME='" +
+                    table + "' AND FKTABLE_CAT='" + database + "')";
+                cmd.Connection = conn;
+
+                DataTable dt = new DataTable();
+                EfzDataAdapter adapter = new EfzDataAdapter();
+                adapter.SelectCommand = cmd;
+                adapter.Fill(dt);
+
+                foreach (DataRow r in dt.Rows)
+                {
+                    DataRow row = metaData.NewRow();
+                    metaData.Rows.Add(row);
+
+                    // The main Information ...
+                    row["PK_TABLE_CATALOG"] = r["PKTABLE_CAT"];
+                    row["PK_TABLE_SCHEMA"] = r["PKTABLE_SCHEM"];
+                    row["PK_TABLE_NAME"] = r["PKTABLE_NAME"];
+                    row["FK_TABLE_CATALOG"] = r["FKTABLE_CAT"];
+                    row["FK_TABLE_SCHEMA"] = r["FKTABLE_SCHEM"];
+                    row["FK_TABLE_NAME"] = r["FKTABLE_NAME"];
+                    row["ORDINAL"] = r["KEY_SEQ"];
+                    row["FK_NAME"] = r["FK_NAME"];
+                    row["PK_NAME"] = r["PK_NAME"];
+                    row["UPDATE_RULE"] = r["UPDATE_RULE"];
+                    row["DELETE_RULE"] = r["DELETE_RULE"];
+                    row["DEFERRABILITY"] = r["DEFERRABILITY"];
+                    row["PK_COLUMN_NAME"] = r["PKCOLUMN_NAME"];
+                    row["FK_COLUMN_NAME"] = r["FKCOLUMN_NAME"];
+                }
             }
             finally { }
 
             return metaData;
         }
-
-        /*private void LoadForeignKeysPartOne(DataTable metaData, string table)
-        {
-            EfzConnection conn = InternalConnection;
-
-            EfzCommand cmd = new EfzCommand();
-            cmd.CommandText =
-"SELECT tc.*, rc.UPDATE_RULE, rc.DELETE_RULE, rc.UNIQUE_CONSTRAINT_NAME FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc " +
-"JOIN INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS rc ON tc.CONSTRAINT_NAME = rc.CONSTRAINT_NAME " +
-"WHERE tc.CONSTRAINT_TYPE='FOREIGN KEY' AND tc.TABLE_NAME = '" + table + "'";
-
-            cmd.Connection = conn;
-
-            DataTable dt = new DataTable();
-            EfzDataAdapter adapter = new EfzDataAdapter();
-            adapter.SelectCommand = cmd;
-            adapter.Fill(dt);
-
-            foreach (DataRow fk in dt.Rows)
-            {
-                //---------------------------------------
-                // Get the Primary Key and Columns
-                //---------------------------------------
-                cmd = new EfzCommand();
-                cmd.CommandText =
-"SELECT * FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE CONSTRAINT_NAME='" + fk["UNIQUE_CONSTRAINT_NAME"] + "'";
-                cmd.Connection = conn;
-
-                DataTable pCols = new DataTable();
-                adapter = new EfzDataAdapter();
-                adapter.SelectCommand = cmd;
-                adapter.Fill(pCols);
-
-                //---------------------------------------
-                // Get the Foreign Key Columns
-                //---------------------------------------
-                cmd = new EfzCommand();
-                cmd.CommandText =
-"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE CONSTRAINT_NAME = '" + fk["CONSTRAINT_NAME"] + "'";
-                cmd.Connection = conn;
-
-                DataTable fCols = new DataTable();
-                adapter = new EfzDataAdapter();
-                adapter.SelectCommand = cmd;
-                adapter.Fill(fCols);
-
-                for (int i = 0; i < pCols.Rows.Count; i++)
-                {
-                    DataRow row = metaData.NewRow();
-                    metaData.Rows.Add(row);
-
-                    DataRow pRow = pCols.Rows[i];
-                    DataRow fRow = fCols.Rows[i];
-
-                    // The main Information ...
-                    row["PK_TABLE_CATALOG"] = DBNull.Value;
-                    row["PK_TABLE_SCHEMA"] = DBNull.Value;
-                    row["FK_TABLE_CATALOG"] = DBNull.Value;
-                    row["FK_TABLE_SCHEMA"] = DBNull.Value;
-                    row["FK_TABLE_NAME"] = fk["TABLE_NAME"];
-                    row["PK_TABLE_NAME"] = pRow["TABLE_NAME"];
-                    row["ORDINAL"] = 0;
-                    row["FK_NAME"] = fk["CONSTRAINT_NAME"];
-                    row["UPDATE_RULE"] = fk["UPDATE_RULE"];
-                    row["DELETE_RULE"] = fk["DELETE_RULE"];
-
-                    bool isDeferrable = (bool)fk["IS_DEFERRABLE"];
-                    bool initiallyDeferred = (bool)fk["INITIALLY_DEFERRED"];
-
-                    if (isDeferrable)
-                    {
-                        row["DEFERRABILITY"] = initiallyDeferred ? 1 : 2;
-                    }
-                    else
-                    {
-                        row["DEFERRABILITY"] = 3;
-                    }
-
-                    row["PK_NAME"] = pRow["CONSTRAINT_NAME"];
-                    row["PK_COLUMN_NAME"] = pRow["COLUMN_NAME"];
-                    row["FK_COLUMN_NAME"] = fRow["COLUMN_NAME"];
-                }
-            }
-        }
-
-        private void LoadForeignKeysPartTwo(DataTable metaData, string table)
-        {
-            // Get primary key name
-            EfzConnection conn = InternalConnection;
-
-            EfzCommand cmd = new EfzCommand();
-            cmd.CommandText = "SELECT INDEX_NAME FROM INFORMATION_SCHEMA.INDEXES WHERE TABLE_NAME='" + table + "' AND PRIMARY_KEY=1";
-            cmd.Connection = conn;
-
-            string pkName = "";
-
-            try
-            {
-                conn.Open();
-                pkName = (string)cmd.ExecuteScalar();
-            }
-            finally
-            {
-                
-            }
-
-            // Got it
-            
-            conn = InternalConnection;
-
-            cmd = new EfzCommand();
-            cmd.CommandText =
-"SELECT tc.*, rc.UPDATE_RULE, rc.DELETE_RULE, rc.UNIQUE_CONSTRAINT_NAME FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc " +
-"JOIN INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS rc ON tc.CONSTRAINT_NAME = rc.CONSTRAINT_NAME " +
-"WHERE tc.CONSTRAINT_TYPE='FOREIGN KEY' AND rc.UNIQUE_CONSTRAINT_NAME = '" + pkName + "'";
-
-            cmd.Connection = conn;
-
-            DataTable dt = new DataTable();
-            EfzDataAdapter adapter = new EfzDataAdapter();
-            adapter.SelectCommand = cmd;
-            adapter.Fill(dt);
-
-            foreach (DataRow fk in dt.Rows)
-            {
-                //---------------------------------------
-                // Get the Primary Key and Columns
-                //---------------------------------------
-                cmd = new EfzCommand();
-                cmd.CommandText =
-"SELECT * FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE CONSTRAINT_NAME='" + fk["UNIQUE_CONSTRAINT_NAME"] + "'";
-                cmd.Connection = conn;
-
-                DataTable pCols = new DataTable();
-                adapter = new EfzDataAdapter();
-                adapter.SelectCommand = cmd;
-                adapter.Fill(pCols);
-
-                //---------------------------------------
-                // Get the Foreign Key Columns
-                //---------------------------------------
-                cmd = new EfzCommand();
-                cmd.CommandText =
-"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE CONSTRAINT_NAME = '" + fk["CONSTRAINT_NAME"] + "'";
-                cmd.Connection = conn;
-
-                DataTable fCols = new DataTable();
-                adapter = new EfzDataAdapter();
-                adapter.SelectCommand = cmd;
-                adapter.Fill(fCols);
-
-                for (int i = 0; i < pCols.Rows.Count; i++)
-                {
-                    DataRow row = metaData.NewRow();
-                    metaData.Rows.Add(row);
-
-                    DataRow pRow = pCols.Rows[i];
-                    DataRow fRow = fCols.Rows[i];
-
-                    // The main Information ...
-                    row["PK_TABLE_CATALOG"] = DBNull.Value;
-                    row["PK_TABLE_SCHEMA"] = DBNull.Value;
-                    row["FK_TABLE_CATALOG"] = DBNull.Value;
-                    row["FK_TABLE_SCHEMA"] = DBNull.Value;
-                    row["FK_TABLE_NAME"] = fk["TABLE_NAME"];
-                    row["PK_TABLE_NAME"] = pRow["TABLE_NAME"];
-                    row["ORDINAL"] = 0;
-                    row["FK_NAME"] = fk["CONSTRAINT_NAME"];
-                    row["UPDATE_RULE"] = fk["UPDATE_RULE"];
-                    row["DELETE_RULE"] = fk["DELETE_RULE"];
-
-                    bool isDeferrable = (bool)fk["IS_DEFERRABLE"];
-                    bool initiallyDeferred = (bool)fk["INITIALLY_DEFERRED"];
-
-                    if (isDeferrable)
-                    {
-                        row["DEFERRABILITY"] = initiallyDeferred ? 1 : 2;
-                    }
-                    else
-                    {
-                        row["DEFERRABILITY"] = 3;
-                    }
-
-                    row["PK_NAME"] = pRow["CONSTRAINT_NAME"];
-                    row["PK_COLUMN_NAME"] = pRow["COLUMN_NAME"];
-                    row["FK_COLUMN_NAME"] = fRow["COLUMN_NAME"];
-                }
-            }
-        }*/
 
         public object GetDatabaseSpecificMetaData(object myMetaObject, string key)
         {
@@ -851,7 +689,7 @@ WHERE PROCEDURE_NAME='" + procedure + "' and PROCEDURE_CAT='" + database + "'";
             try
             {
                 EfzConnection conn = InternalConnection;
-                EfzCommand cmd = new EfzCommand();//"DATABASE", "IFNULL", "USER"
+                EfzCommand cmd = new EfzCommand();
                 cmd.CommandText = "SELECT DISTINCT SCHEMA FROM INFORMATION_SCHEMA.SYSTEM_SESSIONS";
                 cmd.Connection = conn;
                 using (EfzDataReader reader = cmd.ExecuteReader())

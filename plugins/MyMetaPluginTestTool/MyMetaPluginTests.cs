@@ -171,6 +171,17 @@ namespace MyMetaPluginTestTool
 
                                 criteria.AppendLog("Plugin table FK error in " + dbname + "." + tblname, ex);
                             }
+
+                            try
+                            {
+                                DataTable dt = plugin.GetTableIndexes(dbname, tblname);
+                                criteria.AppendLog(dt.Rows.Count + " indexes in table " + dbname + "." + tblname + " found through Plugin.");
+                            }
+                            catch (Exception ex)
+                            {
+
+                                criteria.AppendLog("Plugin table index error in " + dbname + "." + tblname, ex);
+                            }
                         }
                     }
                 }
