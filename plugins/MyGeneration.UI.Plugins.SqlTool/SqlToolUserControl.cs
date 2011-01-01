@@ -165,7 +165,7 @@ namespace MyGeneration.UI.Plugins.SqlTool
             if (mymeta.Databases.Count >= 1)
             {
                 //show databases dropdown - select current
-                if ((string.IsNullOrEmpty(_databaseName)) || (!_databaseNames.Contains(_databaseName)))
+                if (mymeta.DefaultDatabase != null && (string.IsNullOrEmpty(_databaseName)) || (!_databaseNames.Contains(_databaseName)))
                 {
                     this._databaseName = mymeta.DefaultDatabase.Name;
                 }
