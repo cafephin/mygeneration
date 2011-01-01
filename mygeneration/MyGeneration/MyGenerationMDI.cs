@@ -1230,7 +1230,7 @@ namespace MyGeneration
             MSDASC.DataLinksClass dl = new MSDASC.DataLinksClass();
             dl.hWnd = this.Handle.ToInt32();
 
-            ADODB.Connection conn = new ADODB.ConnectionClass();
+            ADODB.Connection conn = new ADODB.Connection();
             conn.ConnectionString = connstr;
 
             object objCn = (object)conn;

@@ -78,20 +78,23 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="adodb, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\installer\adodb.dll</HintPath>
+    <Reference Include="ADODB, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\lib\thirdparty\ADODB.dll</HintPath>
     </Reference>
-    <Reference Include="FirebirdSql.Data.FirebirdClient">
-      <HintPath>ThirdParty\FirebirdSql.Data.FirebirdClient.dll</HintPath>
+    <Reference Include="FirebirdSql.Data.FirebirdClient, Version=2.5.2.0, Culture=neutral, PublicKeyToken=3750abcc3150b00c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\thirdparty\FirebirdSql.Data.FirebirdClient.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="MySql.Data, Version=6.2.3.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>ThirdParty\MySql.Data.dll</HintPath>
+      <HintPath>..\lib\thirdparty\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="Npgsql, Version=2.0.9.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>ThirdParty\Npgsql.dll</HintPath>
+      <HintPath>..\lib\thirdparty\Npgsql.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -99,8 +102,9 @@
     <Reference Include="System.Data">
       <Name>System.Data</Name>
     </Reference>
-    <Reference Include="System.Data.SQLite">
-      <HintPath>ThirdParty\System.Data.SQLite.DLL</HintPath>
+    <Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\thirdparty\System.Data.SQLite.dll</HintPath>
     </Reference>
     <Reference Include="System.EnterpriseServices">
       <Name>System.EnterpriseServices</Name>
@@ -1285,10 +1289,6 @@
     <Content Include="MetaDataBrowser.ico" />
     <Content Include="MyMeta.chm" />
     <None Include="MyMeta.snk" />
-    <None Include="ThirdParty\FirebirdSql.Data.Firebird.dll" />
-    <None Include="ThirdParty\Mono.Security.dll" />
-    <None Include="ThirdParty\Mono.Security.Protocol.Tls.dll" />
-    <None Include="ThirdParty\Npgsql.dll" />
     <EmbeddedResource Include="VistaDB\Source\VistaDBDataSet.resx">
       <DependentUpon>VistaDBDataSet.cs</DependentUpon>
       <SubType>Designer</SubType>

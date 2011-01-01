@@ -136,8 +136,12 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>copy "$(SolutionDir)MyGeneration\PluginResources\*.dll" "$(TargetDir)"</PreBuildEvent>
-    <PostBuildEvent>xcopy "$(SolutionDir)..\templates\*.*" "$(TargetDir)Templates\" /E /C /Y
-xcopy "$(SolutionDir)..\plugins\MyMetaXsd3bPlugin\templates\xsd3b\*.*" "$(TargetDir)Templates\" /C /Y</PostBuildEvent>
+    <PreBuildEvent>xcopy "$(SolutionDir)..\lib\thirdparty\*.dll" "$(TargetDir)" /Y /C
+xcopy "$(SolutionDir)..\lib\thirdparty\*.xml" "$(TargetDir)" /Y /C
+xcopy "$(SolutionDir)..\lib\project\*.dll" "$(TargetDir)" /Y /C
+xcopy "$(SolutionDir)..\lib\project\*.xml" "$(TargetDir)" /Y /C
+</PreBuildEvent>
+    <PostBuildEvent>rem xcopy "$(SolutionDir)..\templates\*.*" "$(TargetDir)Templates\" /E /C /Y
+rem xcopy "$(SolutionDir)..\plugins\MyMetaXsd3bPlugin\templates\xsd3b\*.*" "$(TargetDir)Templates\" /C /Y</PostBuildEvent>
   </PropertyGroup>
 </Project>

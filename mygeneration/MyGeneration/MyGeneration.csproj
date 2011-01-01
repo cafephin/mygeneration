@@ -82,13 +82,14 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="adodb, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <Reference Include="ADODB, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\installer\adodb.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\..\lib\thirdparty\ADODB.dll</HintPath>
     </Reference>
-    <Reference Include="ScintillaNET, Version=1.0.2863.315, Culture=neutral, PublicKeyToken=a8e8a5e40ca52c59, processorArchitecture=MSIL">
+    <Reference Include="ScintillaNET, Version=1.0.3844.28993, Culture=neutral, PublicKeyToken=a8e8a5e40ca52c59, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>PluginResources\ScintillaNET.dll</HintPath>
+      <HintPath>..\..\lib\thirdparty\ScintillaNET.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -217,11 +218,13 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>rem copy  "$(SolutionDir)MyGeneration\PluginResources\*.dll" "$(TargetDir)"
-rem xcopy "$(SolutionDir)..\plugins\MyMetaSybaseASEPlugin\bin\Release\MyMeta.Plugins.SybaseASE.*" "$(TargetDir)" /C /Y
+    <PreBuildEvent>xcopy "$(SolutionDir)..\lib\thirdparty\*.dll" "$(TargetDir)" /Y /C
+xcopy "$(SolutionDir)..\lib\thirdparty\*.xml" "$(TargetDir)" /Y /C
+xcopy "$(SolutionDir)..\lib\project\*.dll" "$(TargetDir)" /Y /C
+xcopy "$(SolutionDir)..\lib\project\*.xml" "$(TargetDir)" /Y /C
 </PreBuildEvent>
-    <PostBuildEvent>xcopy "$(SolutionDir)ZeusCmd\bin\$(ConfigurationName)\ZeusCmd.*" "$(TargetDir)" /Y /C
-xcopy "$(SolutionDir)..\templates\*.*" "$(TargetDir)Templates\" /E /C /Y
-xcopy "$(SolutionDir)..\plugins\MyMetaXsd3bPlugin\templates\xsd3b\*.*" "$(TargetDir)Templates\" /C /Y</PostBuildEvent>
+    <PostBuildEvent>rem xcopy "$(SolutionDir)ZeusCmd\bin\$(ConfigurationName)\ZeusCmd.*" "$(TargetDir)" /Y /C
+rem xcopy "$(SolutionDir)..\templates\*.*" "$(TargetDir)Templates\" /E /C /Y
+rem xcopy "$(SolutionDir)..\plugins\MyMetaXsd3bPlugin\templates\xsd3b\*.*" "$(TargetDir)Templates\" /C /Y</PostBuildEvent>
   </PropertyGroup>
 </Project>
