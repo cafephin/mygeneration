@@ -80,9 +80,8 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ScintillaNET, Version=1.0.2863.315, Culture=neutral, PublicKeyToken=a8e8a5e40ca52c59, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\MyGeneration\PluginResources\ScintillaNET.dll</HintPath>
+    <Reference Include="ScintillaNET">
+      <HintPath>..\..\lib\thirdparty\ScintillaNET.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -100,7 +99,7 @@
       <Name>System.XML</Name>
     </Reference>
     <Reference Include="WeifenLuo.WinFormsUI.Docking">
-      <HintPath>..\MyGeneration\PluginResources\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+      <HintPath>..\..\lib\thirdparty\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -80,17 +80,16 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="adodb, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <Reference Include="ADODB, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\installer\adodb.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\..\lib\thirdparty\ADODB.dll</HintPath>
     </Reference>
-    <Reference Include="CollapsibleSplitter, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\MyGeneration\CollapsableSplitter\CollapsibleSplitter.dll</HintPath>
+    <Reference Include="CollapsibleSplitter">
+      <HintPath>..\..\lib\thirdparty\CollapsibleSplitter.dll</HintPath>
     </Reference>
-    <Reference Include="ScintillaNET, Version=1.0.2863.315, Culture=neutral, PublicKeyToken=a8e8a5e40ca52c59, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\MyGeneration\PluginResources\ScintillaNET.dll</HintPath>
+    <Reference Include="ScintillaNET">
+      <HintPath>..\..\lib\thirdparty\ScintillaNET.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -103,10 +102,6 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
-    </Reference>
-    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.1.2706.19617, Culture=neutral, PublicKeyToken=d481317c817cec47, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\MyGeneration\PluginResources\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
     <ProjectReference Include="..\..\mymeta\MyMeta.csproj">
       <Project>{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}</Project>
@@ -121,6 +116,9 @@
       <Project>{CE8A697D-D45C-4E60-838D-E36980227543}</Project>
       <Name>Zeus</Name>
     </ProjectReference>
+    <Reference Include="WeifenLuo.WinFormsUI.Docking">
+      <HintPath>..\..\lib\thirdparty\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs">

@@ -18,7 +18,7 @@ namespace MyMeta.Plugins
         private const string PROVIDER_NAME = @"EffiProz";
         private const string AUTHOR_INFO = @"EffiProz MyMeta plugin written by MyGeneration Software.";
         private const string AUTHOR_URI = @"http://www.mygenerationsoftware.com/";
-        private const string SAMPLE_CONNECTION = @"Connection Type=File; Initial Catalog=App_Data/Efz/TestDB; User=sa; Password=;";
+        private const string SAMPLE_CONNECTION = @"Connection Type=File; Auto Shutdown=false; ReadOnly=true; Initial Catalog=App_Data/Efz/Northwind; User=sa; Password=;";
 
         private string lastConnectionString = null;
         private EfzConnection currentConnection;
@@ -73,13 +73,32 @@ namespace MyMeta.Plugins
                 {
                     CloseInternalConnection();
                 }
+
                 if (currentConnection == null || currentConnection.State == ConnectionState.Broken || currentConnection.State == ConnectionState.Closed)
                 {
-                    lastConnectionString = this.context.ConnectionString;
-                    currentConnection = new EfzConnection(this.context.ConnectionString);
+                    string connString = this.context.ConnectionString;
+                    lastConnectionString = connString;
+ 
+                    int roIdx = connString.IndexOf("readonly", StringComparison.CurrentCultureIgnoreCase);
+                    if (roIdx > -1)
+                    {
+                        int scIdx = connString.IndexOf(";", roIdx);
+                        if (scIdx > roIdx) {
+                            connString = connString.Substring(0, roIdx) + connString.Substring(scIdx + 1);
+                        }
+                        else {
+                            connString = connString.Substring(0, roIdx);
+                        }
+                    }
+
+                    if (!connString.Trim().EndsWith(";")) connString += ";";
+                    connString += " ReadOnly=true;";
+
+                    currentConnection = new EfzConnection(connString);
                     currentConnection.Open();
                     currentConnection.IsolationLevel = IsolationLevel.ReadUncommitted;
                 }
+
                 return currentConnection;
             }
         }
