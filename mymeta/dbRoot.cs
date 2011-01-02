@@ -192,8 +192,8 @@ namespace MyMeta
 		/// This is the default database as defined in your connection string, or if not provided your DBMS system may provide one.
 		/// Finally, for single database systems like Microsoft Access it will be the default database.
 		/// </summary>
-		public IDatabase DefaultDatabase
-		{
+        public IDatabase DefaultDatabase
+        {
             get
             {
                 IDatabase defDatabase = null;
@@ -203,11 +203,21 @@ namespace MyMeta
                 {
                     try
                     {
-                        defDatabase = dbases.GetByPhysicalName(this._defaultDatabase);
+                        defDatabase = dbases.GetByName(this._defaultDatabase);
                     }
                     catch { }
+
+                    if (defDatabase == null)
+                    {
+                        try
+                        {
+                            defDatabase = dbases.GetByPhysicalName(this._defaultDatabase);
+                        }
+                        catch { }
+                    }
                 }
-                else
+
+                if (defDatabase == null)
                 {
                     if (dbases.Count == 1)
                     {
@@ -217,7 +227,7 @@ namespace MyMeta
 
                 return defDatabase;
             }
-		}
+        }
 
 		public IProviderTypes ProviderTypes
 		{

@@ -14,6 +14,7 @@ goto :x64
 set DEVENV=
 
 COPY "..\..\plugins\Dnp.Utils\bin\release\Dnp.Utils.dll" .
+COPY "..\..\plugins\MyMetaEffiprozPlugin\bin\release\MyMeta.dll" .
 COPY "..\..\plugins\MyMetaSqlCePlugin\bin\release\MyMeta.Plugins.SqlCe.dll" .
 COPY "..\..\plugins\MyMetaTextFilePlugin\bin\release\MyMeta.Plugins.DelimitedText.dll" .
 COPY "..\..\plugins\MyMetaXsd3bPlugin\bin\release\MyMeta.Plugins.Xsd3b.dll" .
