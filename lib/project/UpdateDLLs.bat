@@ -14,7 +14,6 @@ goto :x64
 set DEVENV=
 
 COPY "..\..\plugins\Dnp.Utils\bin\release\Dnp.Utils.dll" .
-COPY "..\..\plugins\MyMetaEffiprozPlugin\bin\release\MyMeta.dll" .
 COPY "..\..\plugins\MyMetaSqlCePlugin\bin\release\MyMeta.Plugins.SqlCe.dll" .
 COPY "..\..\plugins\MyMetaTextFilePlugin\bin\release\MyMeta.Plugins.DelimitedText.dll" .
 COPY "..\..\plugins\MyMetaXsd3bPlugin\bin\release\MyMeta.Plugins.Xsd3b.dll" .
@@ -26,6 +25,7 @@ COPY "..\..\plugins\MyMetaFoxProPlugin\bin\release\MyMeta.Plugins.VisualFoxPro.d
 COPY "..\..\plugins\SampleUIPlugin\bin\release\MyGeneration.UI.Plugins.Sample.dll" .
 COPY "..\..\plugins\MyGeneration.UI.Plugins.CodeSmith2MyGen\bin\release\MyGeneration.UI.Plugins.CodeSmith2MyGen.dll" .
 COPY "..\..\plugins\MyGeneration.UI.Plugins.SqlTool\bin\release\MyGeneration.UI.Plugins.SqlTool.dll" .
+rem COPY "..\..\plugins\MyMetaEffiprozPlugin\bin\release\MyMeta.dll" .
 rem COPY "..\..\plugins\TypeSerializer\bin\release\*.dll" .
 rem COPY "..\..\plugins\ContextProcessor\bin\release\ContextProcessor.dll" .
 rem COPY "..\..\..\plugins\MyMetaVistaDB3xPlugin\bin\release\*.dll" .
