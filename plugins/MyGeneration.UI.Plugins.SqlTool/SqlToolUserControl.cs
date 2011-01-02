@@ -96,12 +96,12 @@ namespace MyGeneration.UI.Plugins.SqlTool
             IDbConnection _connection = null;
             try
             {
-                object v = mymeta.DefaultDatabase.DatabaseSpecificMetaData("requiresinternalconnection");
+                object v = mymeta.PluginSpecificData(DbDriver, "requiresinternalconnection");
                 if (v != null && v.GetType() == typeof(bool))
                 {
                     if ((bool)v)
                     {
-                        _connection = mymeta.DefaultDatabase.DatabaseSpecificMetaData("internalconnection") as IDbConnection; 
+                        _connection = mymeta.PluginSpecificData(DbDriver, "internalconnection") as IDbConnection; 
                     }
                 }
 

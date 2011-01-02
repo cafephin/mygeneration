@@ -149,6 +149,16 @@ namespace MyMeta
 			_dbTargetNode = null;
 		}
 
+        public object DriverSpecificData(string providerName, string key)
+        {
+            object o = null;
+            if (Plugins.ContainsKey(providerName))
+            {
+                o = (Plugins[providerName] as IMyMetaPlugin).GetDatabaseSpecificMetaData(null, key);
+            }
+            return o;
+        }
+
 		#region Properties
 
 		/// <summary>
@@ -863,6 +873,22 @@ namespace MyMeta
 		#endregion
 
         #region Plugin Members
+        /// <summary>
+        /// If you want to fetch data specific to a given plugin, you can get generic info here.
+        /// </summary>
+        /// <param name="providerName"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public object PluginSpecificData(string providerName, string key)
+        {
+            object o = null;
+            if (Plugins.ContainsKey(providerName))
+            {
+                o = (Plugins[providerName] as IMyMetaPlugin).GetDatabaseSpecificMetaData(null, key);
+            }
+            return o;
+        }
+
         /// <summary>
         /// A Plugin ConnectionString is a special feature for external assemblies.
         /// </summary>

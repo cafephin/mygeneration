@@ -120,12 +120,15 @@ namespace MyGeneration
             }
             else
             {
-                string nl = "@!!nl@!!";
-                this.textBoxErrorMessage.Text = text
-                    .Replace("\r\n", nl)
-                    .Replace("\n", nl)
-                    .Replace("\r", nl)
-                    .Replace(nl, Environment.NewLine);
+                if (text != null)
+                {
+                    string nl = "@!!nl@!!";
+                    this.textBoxErrorMessage.Text = text
+                        .Replace("\r\n", nl)
+                        .Replace("\n", nl)
+                        .Replace("\r", nl)
+                        .Replace(nl, Environment.NewLine);
+                }
             }
         }
 
