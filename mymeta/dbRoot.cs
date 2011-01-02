@@ -194,27 +194,29 @@ namespace MyMeta
 		/// </summary>
 		public IDatabase DefaultDatabase
 		{
-			get
-			{
-				IDatabase  defDatabase = null;
-				try
-				{
-					Databases dbases = this.Databases as Databases;
+            get
+            {
+                IDatabase defDatabase = null;
+                Databases dbases = this.Databases as Databases;
 
-					if(this._defaultDatabase != null && this._defaultDatabase != "")
-						defDatabase =  dbases.GetByPhysicalName(this._defaultDatabase);				
-					else
-					{
-						if(dbases.Count == 1)
-						{
-							defDatabase = dbases[0];
-						}
-					}
-				}
-				catch {}
+                if (this._defaultDatabase != null && this._defaultDatabase != "")
+                {
+                    try
+                    {
+                        defDatabase = dbases.GetByPhysicalName(this._defaultDatabase);
+                    }
+                    catch { }
+                }
+                else
+                {
+                    if (dbases.Count == 1)
+                    {
+                        defDatabase = dbases[0];
+                    }
+                }
 
-				return defDatabase;
-			}
+                return defDatabase;
+            }
 		}
 
 		public IProviderTypes ProviderTypes
@@ -603,7 +605,7 @@ namespace MyMeta
                             if (connection != null)
                                 connection.Open();
                             dbName = connection.Database;
-                            if (string.IsNullOrEmpty(dbName)) dbName = plugin.DefaultDatabase;
+                            if (!string.IsNullOrEmpty(plugin.DefaultDatabase) || string.IsNullOrEmpty(dbName)) dbName = plugin.DefaultDatabase;
                             if (!string.IsNullOrEmpty(dbName)) this._defaultDatabase = dbName;
                         }
                         this._driverString = pluginName;
