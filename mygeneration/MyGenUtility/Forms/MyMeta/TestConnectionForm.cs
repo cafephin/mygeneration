@@ -459,7 +459,10 @@ namespace MyGeneration
 							{
 								state = ConnectionTestState.Error;
 								info = process.StandardOutput.ReadToEnd().TrimEnd();
-								info = info.Substring(info.IndexOf("ERROR") + 6);
+                                if (!string.IsNullOrEmpty(info) && info.IndexOf("ERROR") >= 0)
+                                {
+                                    info = info.Substring(info.IndexOf("ERROR") + 6);
+                                }
 							}
 						}
 					}
