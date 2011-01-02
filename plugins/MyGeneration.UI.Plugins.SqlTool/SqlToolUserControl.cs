@@ -28,6 +28,7 @@ namespace MyGeneration.UI.Plugins.SqlTool
         private string _commandSeperator = "GO";
         private List<string> _databaseNames = new List<string>();
         private bool _isNew = true;
+        private bool _isUsingCurrentConnection = false;
 
         public SqlToolUserControl()
         {
@@ -47,7 +48,30 @@ namespace MyGeneration.UI.Plugins.SqlTool
             RefreshConnectionInfo();
         }
 
-        public dbRoot NewDbRoot()
+        public dbRoot CurrentDbRoot()
+        {
+            dbRoot mymeta = null;
+
+            try
+            {
+                mymeta = _mdi.PerformMdiFuntion(this.Parent as IMyGenContent, "getstaticdbroot") as dbRoot;
+                _isUsingCurrentConnection = true;
+                if (!(mymeta is dbRoot))
+                {
+                    mymeta = new dbRoot();
+                    mymeta.Connect(DbDriver, ConnectionString);
+                    _isUsingCurrentConnection = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                this._mdi.ErrorList.AddErrors(ex);
+            }
+
+            return mymeta;
+        }
+
+        /*public dbRoot NewDbRoot()
         {
             dbRoot mymeta = new dbRoot();
             try
@@ -59,21 +83,40 @@ namespace MyGeneration.UI.Plugins.SqlTool
                 this._mdi.ErrorList.AddErrors(ex);
             }
             return mymeta;
-        }
+        }*/
 
-        public IDbConnection NewConnection()
+        public IDbConnection OpenConnection()
         {
-            return NewConnection(null);
+            return OpenConnection(null);
         }
 
-        public IDbConnection NewConnection(string database)
+        public IDbConnection OpenConnection(string database)
         {
             dbRoot mymeta = new dbRoot();
             IDbConnection _connection = null;
             try
             {
-                _connection = mymeta.BuildConnection(DbDriver, ConnectionString);
-                
+                object v = mymeta.DefaultDatabase.DatabaseSpecificMetaData("requiresinternalconnection");
+                if (v != null && v.GetType() == typeof(bool))
+                {
+                    if ((bool)v)
+                    {
+                        _connection = mymeta.DefaultDatabase.DatabaseSpecificMetaData("internalconnection") as IDbConnection; 
+                    }
+                }
+
+                if (_connection != null)
+                {
+                    _connection = mymeta.BuildConnection(DbDriver, ConnectionString);
+                }
+
+
+                if (_connection.State != ConnectionState.Open)
+                {
+                    _connection.Open();
+                }
+
+
                 if (!string.IsNullOrEmpty(database))
                     mymeta.ChangeDatabase(_connection, database);
             }
@@ -82,6 +125,17 @@ namespace MyGeneration.UI.Plugins.SqlTool
                 this._mdi.ErrorList.AddErrors(ex);
             }
             return _connection;
+        }
+
+
+        public void CloseConnection(IDbConnection connection)
+        {
+            if (_isUsingCurrentConnection)
+            {
+                connection.Close();
+                connection.Dispose();
+                connection = null;
+            }
         }
 
         public bool IsEmpty
@@ -154,20 +208,30 @@ namespace MyGeneration.UI.Plugins.SqlTool
         {
             _dbDriver = null;
             _connString = null;
-            dbRoot mymeta = NewDbRoot();
+            dbRoot mymeta = CurrentDbRoot();
             _databaseNames.Clear();
 
-            foreach (IDatabase db in mymeta.Databases)
+            if (mymeta.Databases != null)
             {
-                _databaseNames.Add(db.Name);
-            }
-
-            if (mymeta.Databases.Count >= 1)
-            {
-                //show databases dropdown - select current
-                if (mymeta.DefaultDatabase != null && (string.IsNullOrEmpty(_databaseName)) || (!_databaseNames.Contains(_databaseName)))
+                foreach (IDatabase db in mymeta.Databases)
                 {
-                    this._databaseName = mymeta.DefaultDatabase.Name;
+                    _databaseNames.Add(db.Name);
+                }
+
+                if (mymeta.Databases.Count >= 1)
+                {
+                    try
+                    {
+                        //show databases dropdown - select current
+                        if (mymeta.DefaultDatabase != null && (string.IsNullOrEmpty(_databaseName)) || (!_databaseNames.Contains(_databaseName)))
+                        {
+                            this._databaseName = mymeta.DefaultDatabase.Name;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        this._databaseName = mymeta.Databases[0].Name;
+                    }
                 }
             }
         }
@@ -383,16 +447,16 @@ namespace MyGeneration.UI.Plugins.SqlTool
             int resultSetIndex = 0, numRows = 0, gridIndex = 1;
             try
             {
-                conn = NewConnection(_databaseName);
-                conn.Open();
+                conn = OpenConnection(_databaseName);
 
                 List<string> sqlCommands = this.SqlToExecute;
                 foreach (string sql in sqlCommands)
                 {
                     if (conn == null)
                     {
-                        conn = NewConnection(_databaseName);
+                        conn = OpenConnection(_databaseName);
                     }
+                    
                     if (conn.State != ConnectionState.Open)
                     {
                         conn.Open();
@@ -477,8 +541,7 @@ namespace MyGeneration.UI.Plugins.SqlTool
                     }
                 }
 
-                conn.Close();
-                conn.Dispose();
+                CloseConnection(conn);
             }
             catch (Exception ex)
             {

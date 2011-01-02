@@ -1324,7 +1324,11 @@ namespace MyGeneration
 
         public object PerformMdiFuntion(IMyGenContent sender, string function, params object[] args)
         {
-            if (function.Equals("showoledbdialog", StringComparison.CurrentCultureIgnoreCase) &&
+            if (function.Equals("getstaticdbroot", StringComparison.CurrentCultureIgnoreCase))
+            {
+                return MetaDataBrowser.StaticMyMetaObj;
+            }
+            else if (function.Equals("showoledbdialog", StringComparison.CurrentCultureIgnoreCase) &&
                 args.Length == 1)
             {
                 return BrowseOleDbConnectionString(args[0].ToString());

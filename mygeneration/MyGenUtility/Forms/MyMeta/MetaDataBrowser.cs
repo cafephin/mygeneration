@@ -23,6 +23,9 @@ namespace MyGeneration
 	/// </summary>
     public class MetaDataBrowser : DockContent, IMyGenContent
     {
+        private static TreeNode static_rootNode, loadingNode;
+        private static dbRoot static_myMeta;
+
         public bool _isUserDataDirty = false;
         private IMyGenerationMDI mdi = null;
         public MetaProperties MetaData = null;
@@ -41,11 +44,9 @@ namespace MyGeneration
 		private System.Windows.Forms.ToolBarButton toolBarButton2;
 
         private delegate void AddRootNodeCallback();
-
-        private static TreeNode static_rootNode, loadingNode;
         private System.Windows.Forms.Timer timerIconAnimate;
-        private static dbRoot static_myMeta;
-        private static dbRoot StaticMyMeta
+
+        private  static dbRoot StaticMyMeta
         {
             get
             {
@@ -59,6 +60,14 @@ namespace MyGeneration
                     static_myMeta.Dispose();
                     static_myMeta = null;
                 }
+            }
+        }
+
+        public static object StaticMyMetaObj
+        {
+            get
+            {
+                return StaticMyMeta;
             }
         }
 

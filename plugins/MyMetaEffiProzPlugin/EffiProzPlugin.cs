@@ -691,6 +691,14 @@ WHERE PROCEDURE_NAME='" + procedure + "' and PROCEDURE_CAT='" + database + "'";
 
         public object GetDatabaseSpecificMetaData(object myMetaObject, string key)
         {
+            if (key.Equals("internalconnection", StringComparison.CurrentCultureIgnoreCase))
+            {
+                return this.InternalConnection;
+            }
+            else if (key.Equals("requiresinternalconnection", StringComparison.CurrentCultureIgnoreCase))
+            {
+                return true;
+            }
             return null;
         }
         
@@ -730,12 +738,12 @@ WHERE PROCEDURE_NAME='" + procedure + "' and PROCEDURE_CAT='" + database + "'";
 
         public string GetFullDatabaseName()
         {
-            string source = null;
+            /*string source = null;
             using (EfzConnection conn = new EfzConnection(this.context.ConnectionString))
             {
                 source = conn.DataSource;
-            }
-            return source;
+            }*/
+            return this.GetDatabaseName();
         }
 
 
