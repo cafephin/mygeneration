@@ -71,20 +71,6 @@ namespace MyGeneration.UI.Plugins.SqlTool
             return mymeta;
         }
 
-        /*public dbRoot NewDbRoot()
-        {
-            dbRoot mymeta = new dbRoot();
-            try
-            {
-                mymeta.Connect(DbDriver, ConnectionString);
-            }
-            catch (Exception ex)
-            {
-                this._mdi.ErrorList.AddErrors(ex);
-            }
-            return mymeta;
-        }*/
-
         public IDbConnection OpenConnection()
         {
             return OpenConnection(null);

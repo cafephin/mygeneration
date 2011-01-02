@@ -11,6 +11,9 @@
 
 !define DNF4_URL "http://download.microsoft.com/download/1/B/E/1BE39E79-7E39-46A3-96FF-047F95396215/dotNetFx40_Full_setup.exe"
 
+; Include common functions for checking softwrae versions, etc
+!include ".\common_functions.nsh"
+
 ; Set the compressions to lzma, which is always the best compression!
 SetCompressor lzma 
 
@@ -185,22 +188,20 @@ Section "-Install Mygeneration and Register Shell Extensions"
   File /oname=Interop.MSScriptControl.dll ..\mygeneration\MyGeneration\bin\Release\Interop.MSScriptControl.dll
   File /oname=Interop.Scripting.dll ..\mygeneration\MyGeneration\bin\Release\Interop.Scripting.dll
 
-  File /oname=adodb.dll .\adodb.dll
-  File /oname=System.Data.SQLite.DLL ..\mymeta\ThirdParty\System.Data.SQLite.DLL
+  File /oname=adodb.dll ..\lib\thirdparty\adodb.dll
+  File /oname=System.Data.SQLite.DLL ..\lib\thirdparty\System.Data.SQLite.DLL
+  File /oname=Npgsql.dll ..\lib\thirdparty\Npgsql.dll
+  File /oname=Mono.Security.dll ..\lib\thirdparty\Mono.Security.dll
+  File /oname=FirebirdSql.Data.FirebirdClient.dll ..\lib\thirdparty\FirebirdSql.Data.FirebirdClient.dll
+  File /oname=MySql.Data.dll ..\lib\thirdparty\MySql.Data.dll
+  File /oname=EffiProz.dll ..\lib\thirdparty\EffiProz.dll
   File /oname=CollapsibleSplitter.dll ..\mygeneration\MyGeneration\bin\Release\CollapsibleSplitter.dll
-  File /oname=Npgsql.dll ..\mymeta\ThirdParty\Npgsql.dll
-  File /oname=Mono.Security.dll ..\mymeta\ThirdParty\Mono.Security.dll
-  File /oname=FirebirdSql.Data.FirebirdClient.dll ..\mymeta\ThirdParty\FirebirdSql.Data.FirebirdClient.dll
-  File /oname=MySql.Data.dll ..\mymeta\ThirdParty\MySql.Data.dll
-  File /oname=EffiProz.dll ..\mygeneration\MyGeneration\PluginResources\EffiProz.dll
-  
-  File /oname=ScintillaNET.dll ..\mygeneration\MyGeneration\PluginResources\ScintillaNET.dll
-  File /oname=SciLexer.dll ..\mygeneration\MyGeneration\PluginResources\SciLexer.dll
-  File /oname=WeifenLuo.WinFormsUI.Docking.dll ..\mygeneration\MyGeneration\PluginResources\WeifenLuo.WinFormsUI.Docking.dll
+  File /oname=ScintillaNET.dll ..\lib\thirdparty\ScintillaNET.dll
+  File /oname=SciLexer.dll ..\lib\thirdparty\SciLexer.dll
+  File /oname=WeifenLuo.WinFormsUI.Docking.dll ..\lib\thirdparty\WeifenLuo.WinFormsUI.Docking.dll
 
 ; Plugins nonfatal means create installer even if the filese do not exist
   File /nonfatal /oname=MyMeta.Plugins.DelimitedText.dll ..\plugins\MyMetaTextFilePlugin\bin\Release\MyMeta.Plugins.DelimitedText.dll
-  ;File /nonfatal /oname=MyMeta.Plugins.VistaDB3x.dll ..\plugins\MyMetaVistaDB3xPlugin\bin\Release\MyMeta.Plugins.VistaDB3x.dll
   File /nonfatal /oname=MyMeta.Plugins.SqlCe.dll ..\plugins\MyMetaSqlCePlugin\bin\Release\MyMeta.Plugins.SqlCe.dll
   File /nonfatal /oname=MyMeta.Plugins.SybaseASE.dll ..\plugins\MyMetaSybaseASEPlugin\bin\Release\MyMeta.Plugins.SybaseASE.dll
   File /nonfatal /oname=MyMeta.Plugins.SybaseASA.dll ..\plugins\MyMetaSybaseASAPlugin\bin\Release\MyMeta.Plugins.SybaseASA.dll
@@ -217,11 +218,6 @@ Section "-Install Mygeneration and Register Shell Extensions"
   File /oname=MyMeta.dll ..\mymeta\bin\Release\MyMeta.dll
   File /oname=MyMeta.tlb ..\mymeta\bin\Release\MyMeta.tlb
   File /oname=MyGenUtility.dll ..\mygeneration\MyGenUtility\bin\Release\MyGenUtility.dll
-  ;File /oname=MyWinformUI.dll ..\mygeneration\MyGeneration\MyWinformUI.dll
-  ;File /oname=DotNetScriptingEngine.dll ..\plugins\DotNetScriptingEngine\bin\Release\DotNetScriptingEngine.dll
-  ;File /oname=MicrosoftScriptingEngine.dll ..\plugins\MicrosoftScriptingEngine\bin\Release\MicrosoftScriptingEngine.dll
-  ;File /oname=ContextProcessor.dll ..\plugins\ContextProcessor\bin\Release\ContextProcessor.dll
-  ;File /oname=TypeSerializer.dll ..\plugins\TypeSerializer\bin\Release\TypeSerializer.dll
   
   File /oname=MyMeta.chm ..\mymeta\MyMeta.chm
   File /oname=dOOdads.chm ..\doodads\dOOdads.chm
@@ -581,8 +577,8 @@ Section "Install Xsd3b Provider for xml (xsd, uml, entityrelationship)"
   SetOutPath $INSTDIR
     
   File /nonfatal /oname=MyMeta.Plugins.Xsd3b.dll ..\plugins\MyMetaXsd3bPlugin\bin\Release\MyMeta.Plugins.Xsd3b.dll
-  File /nonfatal ..\mygeneration\MyGeneration\PluginResources\Dl3bak.*.dll
-  File /nonfatal ..\mygeneration\MyGeneration\PluginResources\*xsd3b*.chm
+  File /nonfatal ..\lib\thirdparty\Dl3bak.*.dll
+  File /nonfatal .\*xsd3b*.chm
 
   SetOutPath "$INSTDIR\Templates\Xsd3b"
   ; CreateDirectory "$INSTDIR\Templates\Xsd3b"
@@ -696,7 +692,6 @@ Section "Uninstall"
 SectionEnd
 
 ; functions defined here:
-
 Function .onInit
 
     SetOutPath $TEMP
@@ -713,188 +708,3 @@ Function .onInit
 
     Return
 FunctionEnd
-
-; detects Microsoft .Net Framework 2.0
-;Function DotNet20Exists
-;
-;	ClearErrors
-;	ReadRegStr $1 HKLM "SOFTWARE\Microsoft\.NETFramework\policy\v2.0" "50727"
-;	IfErrors MDNFNotFound MDNFFound
-;
-;	MDNFFound:
-;		Push 0
-;		Goto ExitFunction
-;		
-;	MDNFNotFound:
-;		Push 1
-;		Goto ExitFunction
-;
-;	ExitFunction:
-;
-;FunctionEnd
-
-;--------------------------------------------------------
-; Detects Microsoft .Net Framework 4
-;--------------------------------------------------------
-Function DotNet4Exists
-	ClearErrors
-	ReadRegStr $1 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full" "Version"
-	IfErrors MDNFFullNotFound MDNFFound
-
-	MDNFFullNotFound:
-		ReadRegStr $1 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Client" "Version"
-		IfErrors MDNFNotFound MDNFFound
-
-	MDNFFound:
-		Push 1
-		Goto ExitFunction
-
-	MDNFNotFound:
-		Push 0
-		Goto ExitFunction
-
-	ExitFunction:
-FunctionEnd
-
-; detects MDAC 2.7
-Function MDAC27Exists
-
-	ClearErrors
-	ReadRegStr $1 HKLM "SOFTWARE\Microsoft\DataAccess" "FullInstallVer"
-	IfErrors MDACNotFound MDACFound
-
-	MDACFound:
-		StrCpy $2 $1 3
-
-		StrCmp $2 "2.7" MDAC27Found
-		StrCmp $2 "2.8" MDAC27Found
-		StrCmp $2 "6.0" MDAC27Found
-		StrCmp $2 "6.1" MDAC27Found
-		StrCmp $2 "6.2" MDAC27Found
-		Goto MDACNotFound
-		
-	MDAC27Found:
-		Push 0
-		Goto ExitFunction
-
-	MDACNotFound:
-		Push 1
-		Goto ExitFunction
-	ExitFunction:
-
-FunctionEnd
-
-; detects Microsoft Script Control
-Function ScriptControlExists
-
-	ClearErrors
-	ReadRegStr $1 HKLM "SOFTWARE\Classes\CLSID\{0E59F1D5-1FBE-11D0-8FF2-00A0D10038BC}" ""
-	IfErrors MSCNotFound MSCFound
-
-	MSCFound:
-		Push 0
-		Goto ExitFunction
-		
-	MSCNotFound:
-		Push 1
-		Goto ExitFunction
-
-	ExitFunction:
-
-FunctionEnd
-
-; GetWindowsVersion
- ;
- ; Based on Yazno's function, http://yazno.tripod.com/powerpimpit/
- ; Updated by Joost Verburg
- ;
- ; Returns on top of stack
- ;
- ; Windows Version (95, 98, ME, NT x.x, 2000, XP, 2003, Vista)
- ; or
- ; '' (Unknown Windows Version)
- ;
- ; Usage:
- ;   Call GetWindowsVersion
- ;   Pop $R0
- ;   ; at this point $R0 is "NT 4.0" or whatnot
- 
- Function GetWindowsVersion
- 
-   Push $R0
-   Push $R1
- 
-   ClearErrors
- 
-   ReadRegStr $R0 HKLM \
-   "SOFTWARE\Microsoft\Windows NT\CurrentVersion" CurrentVersion
-
-   IfErrors 0 lbl_winnt
-   
-   ; we are not NT
-   ReadRegStr $R0 HKLM \
-   "SOFTWARE\Microsoft\Windows\CurrentVersion" VersionNumber
- 
-   StrCpy $R1 $R0 1
-   StrCmp $R1 '4' 0 lbl_error
- 
-   StrCpy $R1 $R0 3
- 
-   StrCmp $R1 '4.0' lbl_win32_95
-   StrCmp $R1 '4.9' lbl_win32_ME lbl_win32_98
- 
-   lbl_win32_95:
-     StrCpy $R0 '95'
-   Goto lbl_done
- 
-   lbl_win32_98:
-     StrCpy $R0 '98'
-   Goto lbl_done
- 
-   lbl_win32_ME:
-     StrCpy $R0 'ME'
-   Goto lbl_done
- 
-   lbl_winnt:
- 
-   StrCpy $R1 $R0 1
- 
-   StrCmp $R1 '3' lbl_winnt_x
-   StrCmp $R1 '4' lbl_winnt_x
- 
-   StrCpy $R1 $R0 3
- 
-   StrCmp $R1 '5.0' lbl_winnt_2000
-   StrCmp $R1 '5.1' lbl_winnt_XP
-   StrCmp $R1 '5.2' lbl_winnt_2003
-   StrCmp $R1 '6.0' lbl_winnt_vista lbl_error
- 
-   lbl_winnt_x:
-     StrCpy $R0 "NT $R0" 6
-   Goto lbl_done
- 
-   lbl_winnt_2000:
-     Strcpy $R0 '2000'
-   Goto lbl_done
- 
-   lbl_winnt_XP:
-     Strcpy $R0 'XP'
-   Goto lbl_done
- 
-   lbl_winnt_2003:
-     Strcpy $R0 '2003'
-   Goto lbl_done
- 
-   lbl_winnt_vista:
-     Strcpy $R0 'Vista'
-   Goto lbl_done
- 
-   lbl_error:
-     Strcpy $R0 ''
-   lbl_done:
- 
-   Pop $R1
-   Exch $R0
- 
- FunctionEnd
-; eof

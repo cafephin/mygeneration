@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Home Orafice")]
 [assembly: AssemblyProduct("MyGeneration.UI.Plugins.CodeSmith2MyGen")]
-[assembly: AssemblyCopyright("Copyright © Home Orafice 2007")]
+[assembly: AssemblyCopyright("Copyright © Home Orafice 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

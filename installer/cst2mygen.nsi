@@ -1,6 +1,9 @@
 ; CodeSmith2MyGeneration 0.1 Beta Installation Script
 ;-----------------------------------------
 
+; Include common functions for checking softwrae versions, etc
+!include ".\common_functions.nsh"
+
 ; Set the compressions to lzma, which is always the best compression!
 SetCompressor lzma 
 
@@ -31,19 +34,41 @@ ComponentText "This will install the CodeSmith2MyGeneration on your computer. Se
 ; The text to prompt the user to enter a directory
 ;DirText "Choose an install directory for CodeSmith2MyGeneration."
 
-; Install .Net Framework 2.0
-Section "Detect .Net Framework 2.0"
-  Call DotNet20Exists
-  Pop $1
-  IntCmp $1 0 SkipFramework
-    MessageBox MB_OK|MB_ICONINFORMATION "You cannot run CodeSmith2MyGeneration without having the .Net Framework 2.0 installed. It is not included $\r$\nin the installer because the file is huge and most people already have it installed." IDOK
-    ExecShell open http://www.microsoft.com/downloads/details.aspx?familyid=0856EACB-4362-4B0D-8EDD-AAB15C5E04F5&displaylang=en
-    DetailPrint ".Net Framework 2.0 not installed... Aborting Installation."
-    Abort
-    Goto FrameworkDone
-	SkipFramework:
-		DetailPrint ".Net Framework 2.0 found... Continuing."
-	FrameworkDone:
+;--------------------------------------------------------
+; Download and install the .Net Framework 4
+;--------------------------------------------------------
+Section "-.Net Framework 4" net4_section_id
+	Call DotNet4Exists
+	Pop $1
+	IntCmp $1 1 SkipDotNet4
+
+	StrCpy $1 "dotNetFx40_Full_setup.exe"
+	StrCpy $2 "$EXEDIR\$1"
+	IfFileExists $2 FileExistsAlready FileMissing
+
+	FileMissing:
+		DetailPrint ".Net Framework 4 not installed... Downloading file."
+		StrCpy $2 "$TEMP\$1"
+		NSISdl::download "${DNF4_URL}" $2
+
+	FileExistsAlready:
+		DetailPrint "Installing the .Net Framework 4."
+		;ExecWait '"$SYSDIR\msiexec.exe" "$2" /quiet'
+		ExecWait '"$2" /quiet'
+
+		Call DotNet4Exists
+		Pop $1
+		IntCmp $1 1 DotNet4Done DotNet4Failed
+
+	DotNet4Failed:
+		DetailPrint ".Net Framework 4 install failed... Aborting Install"
+		MessageBox MB_OK ".Net Framework 4 install failed... Aborting Install"
+		Abort
+
+	SkipDotNet4:
+		DetailPrint ".Net Framework 4 found... Continuing."
+
+	DotNet4Done:
 SectionEnd
 
 ; The stuff to install
@@ -92,23 +117,3 @@ Section "Uninstall"
   Delete "$SMPROGRAMS\MyGeneration 1.3\Uninstall CodeSmith2MyGen.lnk"
 SectionEnd
 
-; detects Microsoft .Net Framework 2.0
-Function DotNet20Exists
-
-	ClearErrors
-	ReadRegStr $1 HKLM "SOFTWARE\Microsoft\.NETFramework\policy\v2.0" "50727"
-	IfErrors MDNFNotFound MDNFFound
-
-	MDNFFound:
-		Push 0
-		Goto ExitFunction
-		
-	MDNFNotFound:
-		Push 1
-		Goto ExitFunction
-
-	ExitFunction:
-
-FunctionEnd
-
-; eof

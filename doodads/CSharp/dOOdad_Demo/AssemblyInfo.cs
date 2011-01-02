@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("MyGeneration")][assembly: AssemblyDescription("The MyGeneration dOOdad Demo")][assembly: AssemblyConfiguration("")][assembly: AssemblyCompany("MyGeneration Software")][assembly: AssemblyProduct("MyGeneration")][assembly: AssemblyCopyright("Copyright (c) 2004-2005 MyGeneration Software. All Rights Reserved")][assembly: AssemblyTrademark("")][assembly: AssemblyCulture("")]		
+[assembly: AssemblyTitle("MyGeneration")][assembly: AssemblyDescription("The MyGeneration dOOdad Demo")][assembly: AssemblyConfiguration("")][assembly: AssemblyCompany("MyGeneration Software")][assembly: AssemblyProduct("MyGeneration")][assembly: AssemblyCopyright("Copyright (c) 2004-2011 MyGeneration Software. All Rights Reserved")][assembly: AssemblyTrademark("")][assembly: AssemblyCulture("")]		
 
 //
 // Version information for an assembly consists of the following four values:

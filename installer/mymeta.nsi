@@ -2,6 +2,11 @@
 ; MyMeta Installation Script
 ;-----------------------------------------
 
+!define DNF4_URL "http://download.microsoft.com/download/1/B/E/1BE39E79-7E39-46A3-96FF-047F95396215/dotNetFx40_Full_setup.exe"
+
+; Include common functions for checking softwrae versions, etc
+!include ".\common_functions.nsh"
+
 ; Set the compressions to lzma, which is always the best compression!
 SetCompressor lzma 
 
@@ -34,23 +39,50 @@ ComponentText "This will install the MyMeta Meta Data API."
 ; The text to prompt belithe user to enter a directory
 DirText "Choose an install directory for MyMeta."
 
-; Install .Net Framework 2.0
-Section "Detect .Net Framework 2.0"
-  Call DotNet20Exists
-  Pop $1
-  IntCmp $1 0 SkipFramework
-    MessageBox MB_OK|MB_ICONINFORMATION "You cannot run MyGeneration without having the .Net Framework 2.0 installed. It is not included $\r$\nin the installer because the file is huge and most people already have it installed." IDOK
-    ExecShell open http://www.microsoft.com/downloads/details.aspx?familyid=0856EACB-4362-4B0D-8EDD-AAB15C5E04F5&displaylang=en
-    DetailPrint ".Net Framework 2.0 not installed... Aborting Installation."
-    Abort
-    Goto FrameworkDone
-	SkipFramework:
-		DetailPrint ".Net Framework 2.0 found... Continuing."
-	FrameworkDone:
+;--------------------------------------------------------
+; Download and install the .Net Framework 4
+;--------------------------------------------------------
+Section "-.Net Framework 4" net4_section_id
+	Call DotNet4Exists
+	Pop $1
+	IntCmp $1 1 SkipDotNet4
+
+	StrCpy $1 "dotNetFx40_Full_setup.exe"
+	StrCpy $2 "$EXEDIR\$1"
+	IfFileExists $2 FileExistsAlready FileMissing
+
+	FileMissing:
+		DetailPrint ".Net Framework 4 not installed... Downloading file."
+		StrCpy $2 "$TEMP\$1"
+		NSISdl::download "${DNF4_URL}" $2
+
+	FileExistsAlready:
+		DetailPrint "Installing the .Net Framework 4."
+		;ExecWait '"$SYSDIR\msiexec.exe" "$2" /quiet'
+		ExecWait '"$2" /quiet'
+
+		Call DotNet4Exists
+		Pop $1
+		IntCmp $1 1 DotNet4Done DotNet4Failed
+
+	DotNet4Failed:
+		DetailPrint ".Net Framework 4 install failed... Aborting Install"
+		MessageBox MB_OK ".Net Framework 4 install failed... Aborting Install"
+		Abort
+
+	SkipDotNet4:
+		DetailPrint ".Net Framework 4 found... Continuing."
+
+	DotNet4Done:
 SectionEnd
 
 ; Install MDAC 2.7
 Section "Detect MDAC 2.7+"
+
+	Call GetWindowsVersion
+	Pop $R0
+	StrCmp $R0 "Vista" SkipVistaMDAC
+	
 	Call MDAC27Exists
 	Pop $1
 	IntCmp $1 0 SkipMDAC
@@ -58,6 +90,9 @@ Section "Detect MDAC 2.7+"
 		ExecShell open http://www.microsoft.com/downloads/details.aspx?FamilyID=6c050fe3-c795-4b7d-b037-185d0506396c&DisplayLang=en
 		DetailPrint "MDAC 2.7+ not installed... Aborting Installation."
 		Abort
+		Goto MDACDone
+	SkipVistaMDAC:
+		DetailPrint "Vista doesn't need MDAC installed... Continuing."
 		Goto MDACDone
 	SkipMDAC:
 		DetailPrint "MDAC 2.7+ found... Continuing."
@@ -73,18 +108,25 @@ Section "Install Files and Reg Entries"
   ;Create Settings Directory 
   ;ExecShell mkdir $INSTDIR\Settings
 
-  File /oname=Interop.ADOX.dll ..\mygeneration\MyGeneration\bin\Release\Interop.ADOX.dll
-  File /oname=Interop.MSDASC.dll ..\mygeneration\MyGeneration\bin\Release\Interop.MSDASC.dll
 
-  File /oname=adodb.dll .\adodb.dll
-  File /oname=System.Data.SQLite.DLL ..\mymeta\ThirdParty\System.Data.SQLite.DLL
-  File /oname=Npgsql.dll ..\mymeta\ThirdParty\Npgsql.dll
-  File /oname=Mono.Security.dll ..\mymeta\ThirdParty\Mono.Security.dll
-  File /oname=FirebirdSql.Data.Firebird.dll ..\mymeta\ThirdParty\FirebirdSql.Data.Firebird.dll
-  File /oname=MyMeta.Plugins.DelimitedText.dll ..\plugins\MyMetaTextFilePlugin\bin\Release\MyMeta.Plugins.DelimitedText.dll
-  File /oname=MyMeta.Plugins.VistaDB3x.dll ..\plugins\MyMetaVistaDB3xPlugin\bin\Release\MyMeta.Plugins.VistaDB3x.dll
-  File /oname=MyMeta.Plugins.SqlCe.dll ..\plugins\MyMetaSqlCePlugin\bin\Release\MyMeta.Plugins.SqlCe.dll
-; File /oname=MyMeta.Plugins.Xsd3b.dll ..\plugins\MyMetaXsd3bPlugin\bin\Release\MyMeta.Plugins.Xsd3b.dll
+  
+  File /oname=adodb.dll ..\lib\thirdparty\adodb.dll
+  File /oname=System.Data.SQLite.DLL ..\lib\thirdparty\System.Data.SQLite.DLL
+  File /oname=Npgsql.dll ..\lib\thirdparty\Npgsql.dll
+  File /oname=Mono.Security.dll ..\lib\thirdparty\Mono.Security.dll
+  File /oname=FirebirdSql.Data.FirebirdClient.dll ..\lib\thirdparty\FirebirdSql.Data.FirebirdClient.dll
+  File /oname=MySql.Data.dll ..\lib\thirdparty\MySql.Data.dll
+  File /oname=EffiProz.dll ..\lib\thirdparty\EffiProz.dll
+    
+  File /nonfatal /oname=MyMeta.Plugins.DelimitedText.dll ..\plugins\MyMetaTextFilePlugin\bin\Release\MyMeta.Plugins.DelimitedText.dll
+  File /nonfatal /oname=MyMeta.Plugins.SqlCe.dll ..\plugins\MyMetaSqlCePlugin\bin\Release\MyMeta.Plugins.SqlCe.dll
+  File /nonfatal /oname=MyMeta.Plugins.SybaseASE.dll ..\plugins\MyMetaSybaseASEPlugin\bin\Release\MyMeta.Plugins.SybaseASE.dll
+  File /nonfatal /oname=MyMeta.Plugins.SybaseASA.dll ..\plugins\MyMetaSybaseASAPlugin\bin\Release\MyMeta.Plugins.SybaseASA.dll
+  File /nonfatal /oname=MyMeta.Plugins.Ingres2006.dll ..\plugins\MyMetaIngres2006Plugin\bin\Release\MyMeta.Plugins.Ingres2006.dll
+  File /nonfatal /oname=MyMeta.Plugins.EffiProz.dll ..\plugins\MyMetaEffiProzPlugin\bin\Release\MyMeta.Plugins.EffiProz.dll
+  File /nonfatal /oname=MyMeta.Plugins.VisualFoxPro.dll ..\plugins\MyMetaFoxProPlugin\bin\Release\MyMeta.Plugins.VisualFoxPro.dll
+
+  File /oname=Interop.ADOX.dll ..\mymeta\bin\Release\Interop.ADOX.dll
   File /oname=MyMeta.dll ..\mymeta\bin\Release\MyMeta.dll
   File /oname=MyMeta.tlb ..\mymeta\bin\Release\MyMeta.tlb
   File /oname=MyMeta.chm ..\mymeta\MyMeta.chm
@@ -116,8 +158,8 @@ Section "Install Xsd3b Provider for xml (xsd, uml, entityrelationship)"
   SetOutPath $INSTDIR
   
   File /nonfatal /oname=MyMeta.Plugins.Xsd3b.dll ..\plugins\MyMetaXsd3bPlugin\bin\Release\MyMeta.Plugins.Xsd3b.dll
-  File /nonfatal ..\mygeneration\MyGeneration\PluginResources\Dl3bak.*.dll
-  File /nonfatal ..\mygeneration\MyGeneration\PluginResources\*xsd3b*.chm
+  File /nonfatal ..\lib\thirdparty\Dl3bak.*.dll
+  File /nonfatal .\*xsd3b*.chm
 
   SetOutPath "$INSTDIR\Templates\Xsd3b"
   ; CreateDirectory "$INSTDIR\Templates\Xsd3b"
@@ -129,7 +171,7 @@ Section "Install Xsd3b Provider for xml (xsd, uml, entityrelationship)"
   
   SetOutPath $INSTDIR
 
-  WriteUninstaller "uninstall.exe"
+  ;WriteUninstaller "uninstall.exe"
 SectionEnd ; end the section
 
 Section "MSDTC Reset Log (sometimes needed)"
@@ -154,9 +196,7 @@ Section "Start Menu Shortcuts"
   CreateShortCut "$SMPROGRAMS\MyGeneration\MyMeta Reference.lnk" "$INSTDIR\MyMeta.chm"
 SectionEnd
 
-
 ; functions defined here:
-
 Function .onInit
 
     SetOutPath $TEMP
@@ -173,49 +213,3 @@ Function .onInit
 
     Return
 FunctionEnd
-
-; detects Microsoft .Net Framework 2.0
-Function DotNet20Exists
-
-	ClearErrors
-	ReadRegStr $1 HKLM "SOFTWARE\Microsoft\.NETFramework\policy\v2.0" "50727"
-	IfErrors MDNFNotFound MDNFFound
-
-	MDNFFound:
-		Push 0
-		Goto ExitFunction
-		
-	MDNFNotFound:
-		Push 1
-		Goto ExitFunction
-
-	ExitFunction:
-
-FunctionEnd
-
-; detects MDAC 2.7
-Function MDAC27Exists
-
-	ClearErrors
-	ReadRegStr $1 HKLM "SOFTWARE\Microsoft\DataAccess" "FullInstallVer"
-	IfErrors MDACNotFound MDACFound
-
-	MDACFound:
-		StrCpy $2 $1 3
-
-		StrCmp $2 "2.7" MDAC27Found
-		StrCmp $2 "2.8" MDAC27Found
-		Goto MDACNotFound
-		
-	MDAC27Found:
-		Push 0
-		Goto ExitFunction
-
-	MDACNotFound:
-		Push 1
-		Goto ExitFunction
-	ExitFunction:
-
-FunctionEnd
-
-; eof

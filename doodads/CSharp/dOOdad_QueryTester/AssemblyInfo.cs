@@ -11,7 +11,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("MyGeneration Software")]
 [assembly: AssemblyProduct("MyGeneration")]
-[assembly: AssemblyCopyright("Copyright (c) 2004-2005 MyGeneration Software. All Rights Reserved")]
+[assembly: AssemblyCopyright("Copyright (c) 2004-2011 MyGeneration Software. All Rights Reserved")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
 

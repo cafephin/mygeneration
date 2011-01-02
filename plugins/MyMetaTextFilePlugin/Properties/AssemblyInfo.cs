@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("MyGeneration Software")]
 [assembly: AssemblyProduct("MyMetaTextFilePlugin")]
-[assembly: AssemblyCopyright("Copyright © MyGeneration Software 2006")]
+[assembly: AssemblyCopyright("Copyright © MyGeneration Software 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

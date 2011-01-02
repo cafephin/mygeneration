@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("MyGeneration Software")]
 [assembly: AssemblyProduct("MyMetaSybaseASEPlugin")]
-[assembly: AssemblyCopyright("Copyright © MyGeneration Software 2008")]
+[assembly: AssemblyCopyright("Copyright © MyGeneration Software 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

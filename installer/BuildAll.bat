@@ -1,4 +1,4 @@
-del ".\build.log"
+del ".\application_build.log"
 del ".\installbuild_mygen.log"
 del ".\installbuild_mymeta.log"
 del ".\installbuild_doodads.log"
