@@ -988,4 +988,27 @@
 		<Type From="Date" To="OleDbType.Date" />
 		<Type From="Date Time" To="OleDbType.DBTimeStamp" />
 	</DbTarget>
+  <DbTarget From="EFFIPROZ" To="Efz">
+    <Type From="INTEGER" To="EfzType.Int" />
+    <Type From="TINYINT" To="EfzType.TinyInt" />
+    <Type From="SMALLINT" To="EfzType.SmallInt" />
+    <Type From="BIGINT" To="EfzType.BigInt" />
+    <Type From="BOOLEAN" To="EfzType.Boolean" />
+    <Type From="DATE" To="EfzType.Date" />
+    <Type From="DOUBLE" To="EfzType.Double" />
+    <Type From="UNIQUEIDENTIFIER" To="EfzType.UniqueIdentifier" />
+    <Type From="VARCHAR" To="EfzType.VarChar" />
+    <Type From="VARCHAR2" To="EfzType.VarChar" />
+    <Type From="CHAR" To="EfzType.Char" />
+    <Type From="BINARY" To="EfzType.Binary" />
+    <Type From="VARBINARY" To="EfzType.VarBinary" />
+    <Type From="BLOB" To="EfzType.Blob" />
+    <Type From="CLOB" To="EfzType.Clob" />
+    <Type From="DECIMAL" To="EfzType.Decimal" />
+    <Type From="NUMBER" To="EfzType.Decimal" />
+    <Type From="TIMESTAMP" To="EfzType.TimeStamp" />
+    <Type From="TIMESTAMP WITH TIME ZONE" To="EfzType.TimeStampTZ" />
+    <Type From="INTERVAL YEAR TO MONTH" To="EfzType.IntervalYM" />
+    <Type From="INTERVAL DAY TO SECOND" To="EfzType.IntervalDS" />
+  </DbTarget>
 </DbTargets>

@@ -37,6 +37,32 @@ namespace MyMetaPluginTestTool
             TestTables(criteria, root);
             TestViews(criteria, root);
             TestProcedures(criteria, root);
+            TestSQL(criteria, root);
+        }
+
+        private static void TestSQL(IMyMetaTestContext criteria, dbRoot root)
+        {
+            IDbConnection conn = root.PluginSpecificData(root.DriverString, "internalconnection") as IDbConnection;
+            if (conn != null)
+            {
+                IDbCommand cmd = conn.CreateCommand();
+                cmd.CommandText = "select * from TEST_DATATYPES";
+                IDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    for (int i = 0; i < reader.FieldCount; i++)
+                    {
+                        try
+                        {
+                            string name = reader.GetName(i);
+                            string dtname = reader.GetDataTypeName(i);
+                            string dtname2 = reader.GetFieldType(i).Name;
+                            criteria.AppendLog(name + "\t=\t" + dtname + "\t=\t" + dtname2);
+                        }
+                        catch { }
+                    }
+                }
+            }
         }
 
         private static void TestDatabases(IMyMetaTestContext criteria, dbRoot root)

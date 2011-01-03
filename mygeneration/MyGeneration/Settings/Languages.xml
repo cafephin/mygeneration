@@ -2090,4 +2090,50 @@
 		<Type From="Date" To="DateTime" />
 		<Type From="Date Time" To="DateTime" />
 	</Language>
+  <Language From="EFFIPROZ" To="C#">
+    <Type From="INTEGER" To="int" />
+    <Type From="TINYINT" To="sbyte" />
+    <Type From="SMALLINT" To="short" />
+    <Type From="BIGINT" To="long" />
+    <Type From="BOOLEAN" To="bool" />
+    <Type From="DATE" To="DateTime" />
+    <Type From="DOUBLE" To="double" />
+    <Type From="UNIQUEIDENTIFIER" To="Guid" />
+    <Type From="VARCHAR" To="string" />
+    <Type From="VARCHAR2" To="string" />
+    <Type From="CHAR" To="string" />
+    <Type From="BINARY" To="byte[]" />
+    <Type From="VARBINARY" To="byte[]" />
+    <Type From="BLOB" To="byte[]" />
+    <Type From="CLOB" To="string" />
+    <Type From="DECIMAL" To="decimal" />
+    <Type From="NUMBER" To="decimal" />
+    <Type From="TIMESTAMP" To="DateTime" />
+    <Type From="TIMESTAMP WITH TIME ZONE" To="DateTime" />
+    <Type From="INTERVAL YEAR TO MONTH" To="Integer" />
+    <Type From="INTERVAL DAY TO SECOND" To="TimeSpan" />
+  </Language>
+  <Language From="EFFIPROZ" To="VB.NET">
+    <Type From="INTEGER" To="Integer" />
+    <Type From="TINYINT" To="Byte" />
+    <Type From="SMALLINT" To="Short" />
+    <Type From="BIGINT" To="Long" />
+    <Type From="BOOLEAN" To="Boolean" />
+    <Type From="DATE" To="DateTime" />
+    <Type From="DOUBLE" To="Double" />
+    <Type From="UNIQUEIDENTIFIER" To="Guid" />
+    <Type From="VARCHAR" To="String" />
+    <Type From="VARCHAR2" To="String" />
+    <Type From="CHAR" To="String" />
+    <Type From="BINARY" To="Byte()" />
+    <Type From="VARBINARY" To="Byte()" />
+    <Type From="BLOB" To="Byte()" />
+    <Type From="CLOB" To="String" />
+    <Type From="DECIMAL" To="Decimal" />
+    <Type From="NUMBER" To="Decimal" />
+    <Type From="TIMESTAMP" To="DateTime" />
+    <Type From="TIMESTAMP WITH TIME ZONE" To="DateTime" />
+    <Type From="INTERVAL YEAR TO MONTH" To="Integer" />
+    <Type From="INTERVAL DAY TO SECOND" To="TimeSpan" />
+  </Language>
 </Languages>
