@@ -78,10 +78,12 @@ namespace MyGeneration.UI.Plugins.SqlTool
 
         public IDbConnection OpenConnection(string database)
         {
-            dbRoot mymeta = new dbRoot();
+            //dbRoot mymeta = new dbRoot();
+            dbRoot mymeta = CurrentDbRoot();
             IDbConnection _connection = null;
             try
             {
+                // special code to handle databases that cannot have multiple open connections.
                 object v = mymeta.PluginSpecificData(DbDriver, "requiresinternalconnection");
                 if (v != null && v.GetType() == typeof(bool))
                 {
@@ -91,20 +93,24 @@ namespace MyGeneration.UI.Plugins.SqlTool
                     }
                 }
 
-                if (_connection != null)
+                // The standard connection code.
+                if (_connection == null)
                 {
                     _connection = mymeta.BuildConnection(DbDriver, ConnectionString);
                 }
 
-
-                if (_connection.State != ConnectionState.Open)
+                if (_connection != null)
                 {
-                    _connection.Open();
+                    if (_connection.State != ConnectionState.Open)
+                    {
+                        _connection.Open();
+                    }
+
+                    if (!string.IsNullOrEmpty(database))
+                    {
+                        mymeta.ChangeDatabase(_connection, database);
+                    }
                 }
-
-
-                if (!string.IsNullOrEmpty(database))
-                    mymeta.ChangeDatabase(_connection, database);
             }
             catch (Exception ex)
             {

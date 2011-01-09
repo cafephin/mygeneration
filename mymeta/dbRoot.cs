@@ -882,10 +882,14 @@ namespace MyMeta
         public object PluginSpecificData(string providerName, string key)
         {
             object o = null;
-            if (Plugins.ContainsKey(providerName))
+            try
             {
-                o = (Plugins[providerName] as IMyMetaPlugin).GetDatabaseSpecificMetaData(null, key);
+                if (Plugins.ContainsKey(providerName))
+                {
+                    o = (Plugins[providerName] as IMyMetaPlugin).GetDatabaseSpecificMetaData(null, key);
+                }
             }
+            catch { }
             return o;
         }
 
