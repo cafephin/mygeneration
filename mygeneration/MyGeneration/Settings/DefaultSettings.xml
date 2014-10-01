@@ -13,8 +13,8 @@
 	name="My Connection" 
 	driver="FIREBIRD" 
 	connstr="Database=C:\firebird\EMPLOYEE.GDB;User=SYSDBA;Password=MyGen;Dialect=3;Server=localhost&quot;;"
-	dbtargetpath="C:\Program Files\MyGeneration\Settings\DbTargets.xml"
-	languagepath="C:\Program Files\MyGeneration\Settings\Languages.xml"
-	usermetapath="C:\Program Files\MyGeneration\Settings\UserMetaData.xml"
+	dbtargetpath=".\Settings\DbTargets.xml"
+	languagepath=".\Settings\Languages.xml"
+	usermetapath=".\Settings\UserMetaData.xml"
 	/>
 </DefaultSettings>
