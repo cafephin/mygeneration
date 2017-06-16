@@ -9,11 +9,11 @@ namespace MyGeneration
 {
     public abstract class EditorManager : IEditorManager
     {
-        #region Static factory type members 
+        #region Static factory type members
         private static Dictionary<string, IEditorManager> editorManagers = null;
         private static string openFileDialogString = null;
 
-       public static Dictionary<string, IEditorManager> EditorManagers
+        public static Dictionary<string, IEditorManager> EditorManagers
         {
             get
             {
@@ -21,7 +21,7 @@ namespace MyGeneration
                 {
                     TemplateEditorManager tem = new TemplateEditorManager();
                     ProjectEditorManager pem = new ProjectEditorManager();
-                    
+
                     editorManagers = new Dictionary<string, IEditorManager>();
                     editorManagers.Add(tem.Name, tem);
                     editorManagers.Add(pem.Name, pem);
