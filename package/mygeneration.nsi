@@ -190,7 +190,6 @@ Section "Install MyGeneration"
   File /nonfatal /oname=MyMeta.Plugins.SybaseASA.dll ..\src\plugins\MyMetaSybaseASAPlugin\bin\Release\MyMeta.Plugins.SybaseASA.dll
   File /nonfatal /oname=MyMeta.Plugins.Ingres2006.dll ..\src\plugins\MyMetaIngres2006Plugin\bin\Release\MyMeta.Plugins.Ingres2006.dll
   File /nonfatal /oname=MyMeta.Plugins.EffiProz.dll ..\src\plugins\MyMetaEffiProzPlugin\bin\Release\MyMeta.Plugins.EffiProz.dll
-  File /nonfatal /oname=MyMeta.Plugins.VisualFoxPro.dll ..\src\plugins\MyMetaFoxProPlugin\bin\Release\MyMeta.Plugins.VisualFoxPro.dll
   File /nonfatal /oname=MyGeneration.UI.Plugins.SqlTool.dll ..\src\plugins\MyGeneration.UI.Plugins.SqlTool\bin\Release\MyGeneration.UI.Plugins.SqlTool.dll
   
   Delete $INSTDIR\WeifenLuo.WinFormsUI.dll

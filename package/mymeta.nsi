@@ -123,7 +123,6 @@ Section "Install Files and Reg Entries"
   File /nonfatal /oname=MyMeta.Plugins.SybaseASA.dll ..\src\plugins\MyMetaSybaseASAPlugin\bin\Release\MyMeta.Plugins.SybaseASA.dll
   File /nonfatal /oname=MyMeta.Plugins.Ingres2006.dll ..\src\plugins\MyMetaIngres2006Plugin\bin\Release\MyMeta.Plugins.Ingres2006.dll
   File /nonfatal /oname=MyMeta.Plugins.EffiProz.dll ..\src\plugins\MyMetaEffiProzPlugin\bin\Release\MyMeta.Plugins.EffiProz.dll
-  File /nonfatal /oname=MyMeta.Plugins.VisualFoxPro.dll ..\src\plugins\MyMetaFoxProPlugin\bin\Release\MyMeta.Plugins.VisualFoxPro.dll
 
   File /oname=Interop.ADOX.dll ..\src\mymeta\bin\Release\Interop.ADOX.dll
   File /oname=MyMeta.dll ..\src\mymeta\bin\Release\MyMeta.dll
