@@ -1,9 +1,13 @@
-SETLOCAL ENABLEEXTENSIONS
 @ECHO OFF
+SETLOCAL ENABLEEXTENSIONS
 
 IF EXIST ".\build.log" DEL ".\build.log"
 
 SET config=%1
+IF [%config%]==[] (
+    ECHO A build configuration ^(debug or release^) must be specified
+    EXIT /b 1
+)
 
 SET BUILD=msbuild /t:Rebuild /p:Configuration=%config% /flp:logfile=build.log;Append
 
