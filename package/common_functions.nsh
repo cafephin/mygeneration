@@ -1,3 +1,6 @@
+!include "WordFunc.nsh"
+!include "LogicLib.nsh"
+
 ;--------------------------------------------------------
 ; Detects Microsoft .Net Framework 4
 ;--------------------------------------------------------
@@ -21,22 +24,30 @@ Function DotNet4Exists
 	ExitFunction:
 FunctionEnd
 
-; detects MDAC 2.7
+;--------------------------------------------------------
+; Detects MDAC 2.7+
+;--------------------------------------------------------
 Function MDAC27Exists
-
 	ClearErrors
 	ReadRegStr $1 HKLM "SOFTWARE\Microsoft\DataAccess" "FullInstallVer"
 	IfErrors MDACNotFound MDACFound
 
 	MDACFound:
 		StrCpy $2 $1 3
-
-		StrCmp $2 "2.7" MDAC27Found
-		StrCmp $2 "2.8" MDAC27Found
-		StrCmp $2 "6.0" MDAC27Found
-		StrCmp $2 "6.1" MDAC27Found
-		StrCmp $2 "6.2" MDAC27Found
+    Var /GLOBAL version_compare_result
+		${VersionCompare} $2 "2.7" $version_compare_result
+    ${Switch} $version_compare_result
+      ${Case} '0' ; MDAC version is 2.7
+      ${Case} '1' ; MDAC version is newer than 2.7
+        Goto MDAC27Found
+        ${Break}
+      ${Case} '2' ; MDAC version is older than 2.7
+		    Goto MDACNotFound
+        ${Break}
+      ${Default}
         Goto MDACNotFound
+        ${Break}
+    ${EndSwitch}
 		
 	MDAC27Found:
 		Push 0
