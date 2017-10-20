@@ -6,11 +6,20 @@ This repository is a fork from [sourceforge.net/projects/mygeneration](https://s
 
 ## Build
 
-```bash
-git clone https://github.com/khaister/mygeneration
-cd mygeneration\build
+```cmd
+cmd> git clone https://github.com/khaister/mygeneration
+cmd> cd mygeneration\build
 
-# ensure msbuild is in your PATH
-build.cmd release    # build with release configuration
-build.cmd debug      # build with debug configuration
+:: ensure msbuild is in your PATH
+cmd> build.cmd release    # build with release configuration
+cmd> build.cmd debug      # build with debug configuration
+```
+
+## Package
+
+```cmd
+:: This shold be performed only after build step with Release configuration
+:: Ensure that NSIS is installed on your machine
+cmd> cd package
+cmd> package.bat # installers are placed in package\installers
 ```
