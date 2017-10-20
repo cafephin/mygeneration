@@ -36,7 +36,7 @@ Function MDAC27Exists
 		StrCmp $2 "6.0" MDAC27Found
 		StrCmp $2 "6.1" MDAC27Found
 		StrCmp $2 "6.2" MDAC27Found
-		Goto MDACNotFound
+        Goto MDACNotFound
 		
 	MDAC27Found:
 		Push 0
@@ -46,12 +46,12 @@ Function MDAC27Exists
 		Push 1
 		Goto ExitFunction
 	ExitFunction:
-
 FunctionEnd
 
-; detects Microsoft Script Control
+;--------------------------------------------------------
+; Detects Microsoft Script Control
+;--------------------------------------------------------
 Function ScriptControlExists
-
 	ClearErrors
 	ReadRegStr $1 HKLM "SOFTWARE\Classes\CLSID\{0E59F1D5-1FBE-11D0-8FF2-00A0D10038BC}" ""
 	IfErrors MSCNotFound MSCFound
@@ -65,11 +65,11 @@ Function ScriptControlExists
 		Goto ExitFunction
 
 	ExitFunction:
-
 FunctionEnd
 
+;--------------------------------------------------------
 ; GetWindowsVersion
- ;
+;--------------------------------------------------------
  ; Based on Yazno's function, http://yazno.tripod.com/powerpimpit/
  ; Updated by Joost Verburg
  ;
@@ -83,9 +83,7 @@ FunctionEnd
  ;   Call GetWindowsVersion
  ;   Pop $R0
  ;   ; at this point $R0 is "NT 4.0" or whatnot
- 
- Function GetWindowsVersion
- 
+Function GetWindowsVersion
    Push $R0
    Push $R1
  
@@ -162,4 +160,3 @@ FunctionEnd
    Exch $R0
  
  FunctionEnd
-; eof

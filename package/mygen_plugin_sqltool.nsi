@@ -1,41 +1,33 @@
+;-----------------------------------------
 ; MyGenerationSqlTool 0.1 Beta Installation Script
 ;-----------------------------------------
 
-; Include common functions for checking softwrae versions, etc
 !include ".\common_functions.nsh"
 
-; Set the compressions to lzma, which is always the best compression!
-SetCompressor lzma 
+!define OUT_PATH ".\installers"
+!system 'mkdir "${OUT_PATH}"'
 
-; The name of the installer
-Name "MyGeneration Sql Tool Plugin 0.1 Beta"
-
-; The file to write
-OutFile "mygen_plugin_sqltool010b.exe"
-
-; Icon doesn't work for some reason
-Icon ".\modern-install.ico"
-
+;--------------------------------------------------------
+; Configurations
+;--------------------------------------------------------
+SetCompressor lzma ; Set the compressions to lzma
+Name "MyGeneration Sql Tool Plugin 0.1 Beta" ; The name of the installer
+OutFile "${OUT_PATH}\mygen-plugin-sqltool-installer.exe" ; The file to write
+Icon ".\icos\modern-install.ico"
 XPStyle on
-
 ShowInstDetails show
-
 LicenseText "Liscence Agreement"
-LicenseData "BSDLicense.rtf"
-
+LicenseData "..\LICENSE"
 
 ; Registry key to check for directory (so if you install again, it will 
 ; overwrite the old one automatically)
 InstallDirRegKey HKLM SOFTWARE\MyGenerationSqlTool "Install_Dir"
 
 ; The text to prompt the user to enter a directory
-ComponentText "This will install the MyGeneration SqlTool on your computer. Select which optional things you want installed."
-
-; The text to prompt the user to enter a directory
-;DirText "Choose an install directory for MyGenerationSqlTool."
+ComponentText "Install MyGeneration SqlTool"
 
 ;--------------------------------------------------------
-; Download and install the .Net Framework 4
+; Download and install the .NET Framework 4
 ;--------------------------------------------------------
 Section "-.Net Framework 4" net4_section_id
 	Call DotNet4Exists
@@ -71,7 +63,9 @@ Section "-.Net Framework 4" net4_section_id
 	DotNet4Done:
 SectionEnd
 
-; The stuff to install
+;--------------------------------------------------------
+; Install
+;--------------------------------------------------------
 Section "Install Files, Reg Entries, Uninstaller, & Shortcuts"
 
   ReadRegStr $0 HKLM Software\MyGeneration13 "Install_Dir"
@@ -97,22 +91,23 @@ Section "Install Files, Reg Entries, Uninstaller, & Shortcuts"
   CreateDirectory "$SMPROGRAMS\MyGeneration 1.3"
   CreateShortCut "$SMPROGRAMS\MyGeneration 1.3\Uninstall MyGeneration SqlTool.lnk" "$INSTDIR\MyGenerationSqlToolUninstall.exe" "" "$INSTDIR\MyGenerationSqlToolUninstall.exe" 0
 
-SectionEnd ; end the section
+SectionEnd
 
-; uninstall stuff
-UninstallText "This will uninstall the MyGeneration SqlTool plugin. Hit next to continue."
-UninstallIcon ".\modern-uninstall.ico"
+;--------------------------------------------------------
+; Uninstall
+;--------------------------------------------------------
+UninstallText "Uninstall MyGeneration SqlTool"
+UninstallIcon ".\icos\modern-uninstall.ico"
 
-; special uninstall section.
 Section "Uninstall"
-    
-  ; remove registry keys
+
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\MyGenerationSqlTool"
   DeleteRegKey HKLM SOFTWARE\MyGenerationSqlTool
 
-  ; MUST REMOVE UNINSTALLER, too
+  ; must remove uninstaller too
   Delete $INSTDIR\MyGenerationSqlToolUninstall.exe
   Delete $INSTDIR\MyGeneration.UI.Plugins.SqlTool.dll
    
   Delete "$SMPROGRAMS\MyGeneration 1.3\Uninstall MyGeneration SqlTool.lnk"
+
 SectionEnd
