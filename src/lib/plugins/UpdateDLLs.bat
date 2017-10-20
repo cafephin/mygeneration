@@ -21,7 +21,6 @@ COPY "..\..\plugins\MyMetaSybaseASEPlugin\bin\release\MyMeta.Plugins.SybaseASE.d
 COPY "..\..\plugins\MyMetaSybaseASAPlugin\bin\release\MyMeta.Plugins.SybaseASA.dll" .
 COPY "..\..\plugins\MyMetaIngres2006Plugin\bin\release\MyMeta.Plugins.Ingres2006.dll" .
 COPY "..\..\plugins\MyMetaEffiprozPlugin\bin\release\MyMeta.Plugins.EffiProz.dll" .
-COPY "..\..\plugins\MyMetaFoxProPlugin\bin\release\MyMeta.Plugins.VisualFoxPro.dll" .
 COPY "..\..\plugins\SampleUIPlugin\bin\release\MyGeneration.UI.Plugins.Sample.dll" .
 COPY "..\..\plugins\MyGeneration.UI.Plugins.CodeSmith2MyGen\bin\release\MyGeneration.UI.Plugins.CodeSmith2MyGen.dll" .
 COPY "..\..\plugins\MyGeneration.UI.Plugins.SqlTool\bin\release\MyGeneration.UI.Plugins.SqlTool.dll" .

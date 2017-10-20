@@ -104,10 +104,6 @@
     <None Include="templates\xsd3b\ToXsd3b.csgen">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\installer\MyGenXsd3b.chm">
-      <Link>MyGenXsd3b.chm</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="templates\xsd3b\ExampleOracle2.xdm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

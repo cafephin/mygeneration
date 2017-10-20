@@ -219,10 +219,10 @@
   <PropertyGroup>
     <PreBuildEvent>xcopy "$(SolutionDir)..\lib\thirdparty\*.dll" "$(TargetDir)" /Y /C
 xcopy "$(SolutionDir)..\lib\thirdparty\*.xml" "$(TargetDir)" /Y /C
-xcopy "$(SolutionDir)..\lib\project\*.dll" "$(TargetDir)" /Y /C
-xcopy "$(SolutionDir)..\lib\project\*.xml" "$(TargetDir)" /Y /C</PreBuildEvent>
+xcopy "$(SolutionDir)..\lib\plugins\*.dll" "$(TargetDir)" /Y /C
+xcopy "$(SolutionDir)..\lib\plugins\*.xml" "$(TargetDir)" /Y /C</PreBuildEvent>
     <PostBuildEvent>xcopy "$(SolutionDir)ZeusCmd\bin\$(ConfigurationName)\ZeusCmd.*" "$(TargetDir)" /Y /C
-xcopy "$(SolutionDir)..\..\templates\*.*" "$(TargetDir)Templates\" /E /C /Y
+xcopy "$(SolutionDir)..\templates\*.*" "$(TargetDir)Templates\" /E /C /Y
 rem xcopy "$(SolutionDir)..\plugins\MyMetaXsd3bPlugin\templates\xsd3b\*.*" "$(TargetDir)Templates\" /C /Y</PostBuildEvent>
   </PropertyGroup>
 </Project>
