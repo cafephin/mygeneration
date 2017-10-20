@@ -1,27 +1,23 @@
-del ".\application_build.log"
-del ".\installbuild_mygen.log"
-del ".\installbuild_mymeta.log"
-del ".\installbuild_doodads.log"
+if exist ".\build.log" del ".\build.log"
 
-if "%PROGRAMFILES(X86)%"=="" goto :x86
-goto :x64
-:x86
-	if "%DEVENV%"=="" set DEVENV="%PROGRAMFILES%\Microsoft Visual Studio 10.0\Common7\IDE\devenv.exe"  /out ".\application_build.log" /rebuild release
-	if "%MAKENSIS%"=="" set MAKENSIS=%PROGRAMFILES%\NSIS\makensis.exe
-	goto done
-:x64
-	if "%DEVENV%"=="" set DEVENV="%PROGRAMFILES(X86)%\Microsoft Visual Studio 10.0\Common7\IDE\devenv.exe"  /out ".\application_build.log" /rebuild release
-	if "%MAKENSIS%"=="" set MAKENSIS=%PROGRAMFILES(X86)%\NSIS\makensis.exe
-:done
+set BUILD=msbuild /t:Rebuild /p:Configuration=Release /flp:logfile=build.log;Append
 
-%DEVENV% "..\plugins\MyMetaPlugins.sln"
-%DEVENV% "..\plugins\ZeusPlugins.sln"
-%DEVENV% "..\mygeneration\Zeus.sln"
-set DEVENV=
+%BUILD% "..\src\plugins\MyMetaPlugins.sln"
+%BUILD% "..\src\plugins\ZeusPlugins.sln"
 
-"%MAKENSIS%" ".\mygeneration.nsi" > ".\installbuild_mygen.log"
-"%MAKENSIS%"  ".\mymeta.nsi" > ".\installbuild_mymeta.log"
-"%MAKENSIS%"  ".\doodads.nsi" > ".\installbuild_doodads.log"
-"%MAKENSIS%"  ".\cst2mygen.nsi" > ".\installbuild_cst2mygen.log"
-set MAKENSIS=
+COPY "..\src\plugins\Dnp.Utils\bin\Release\Dnp.Utils.dll" "..\src\lib\plugins"
+COPY "..\src\plugins\MyGeneration.UI.Plugins.CodeSmith2MyGen\bin\Release\MyGeneration.UI.Plugins.CodeSmith2MyGen.dll" "..\src\lib\plugins"
+COPY "..\src\plugins\MyGeneration.UI.Plugins.SqlTool\bin\release\MyGeneration.UI.Plugins.SqlTool.dll" "..\src\lib\plugins"
+COPY "..\src\plugins\MyMetaEffiprozPlugin\bin\release\MyMeta.Plugins.EffiProz.dll" "..\src\lib\plugins"
+COPY "..\src\plugins\MyMetaIngres2006Plugin\bin\release\MyMeta.Plugins.Ingres2006.dll" "..\src\lib\plugins"
+COPY "..\src\plugins\MyMetaSqlCePlugin\bin\release\MyMeta.Plugins.SqlCe.dll" "..\src\lib\plugins"
+COPY "..\src\plugins\MyMetaSybaseASAPlugin\bin\release\MyMeta.Plugins.SybaseASA.dll" "..\src\lib\plugins"
+COPY "..\src\plugins\MyMetaSybaseASEPlugin\bin\release\MyMeta.Plugins.SybaseASE.dll" "..\src\lib\plugins"
+COPY "..\src\plugins\MyMetaTextFilePlugin\bin\release\MyMeta.Plugins.DelimitedText.dll" "..\src\lib\plugins"
+COPY "..\src\plugins\MyMetaXsd3bPlugin\bin\release\MyMeta.Plugins.Xsd3b.dll" "..\src\lib\plugins"
+COPY "..\src\plugins\SampleUIPlugin\bin\release\MyGeneration.UI.Plugins.Sample.dll" "..\src\lib\plugins"
 
+%BUILD% "..\src\mygeneration\ZeusCmd.sln"
+%BUILD% "..\src\mygeneration\MyGeneration.sln"
+
+set BUILD=
