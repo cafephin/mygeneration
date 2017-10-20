@@ -27,5 +27,5 @@ cmd> build.cmd debug
 :: output installer files are placed in pack\installers
 
 cmd> cd pack
-cmd> pack.bat
+cmd> pack.cmd
 ```
