@@ -1,14 +1,14 @@
 @ECHO OFF
 SETLOCAL ENABLEEXTENSIONS
 
-IF EXIST ".\package.log" DEL ".\package.log"
+IF EXIST ".\pack.log" DEL ".\pack.log"
 
 IF "%MAKENSIS%"=="" SET MAKENSIS=%PROGRAMFILES(X86)%\NSIS\makensis.exe
 
-"%MAKENSIS%" ".\mygeneration.nsi" >> ".\package.log"
-"%MAKENSIS%" ".\mymeta.nsi"       >> ".\package.log"
-"%MAKENSIS%" ".\doodads.nsi"      >> ".\package.log"
-"%MAKENSIS%" ".\cst2mygen.nsi"    >> ".\package.log"
+"%MAKENSIS%" ".\mygeneration.nsi" >> ".\pack.log"
+"%MAKENSIS%" ".\mymeta.nsi"       >> ".\pack.log"
+"%MAKENSIS%" ".\doodads.nsi"      >> ".\pack.log"
+"%MAKENSIS%" ".\cst2mygen.nsi"    >> ".\pack.log"
 SET MAKENSIS=
 
 ECHO ON
