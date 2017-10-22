@@ -8,8 +8,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginInterfaces", "EngineI
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZeusCmd", "ZeusCmd\ZeusCmd.csproj", "{5B4F8E02-8E97-48F5-B57C-7391CF20C94F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyGenUtility", "MyGenUtility\MyGenUtility.csproj", "{A1D6D035-420C-40A3-9598-9E34F11FB1AA}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMeta", "..\mymeta\MyMeta.csproj", "{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}"
 EndProject
 Global
@@ -52,16 +50,6 @@ Global
 		{5B4F8E02-8E97-48F5-B57C-7391CF20C94F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{5B4F8E02-8E97-48F5-B57C-7391CF20C94F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{5B4F8E02-8E97-48F5-B57C-7391CF20C94F}.Release|x86.ActiveCfg = Release|Any CPU
-		{A1D6D035-420C-40A3-9598-9E34F11FB1AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A1D6D035-420C-40A3-9598-9E34F11FB1AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A1D6D035-420C-40A3-9598-9E34F11FB1AA}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{A1D6D035-420C-40A3-9598-9E34F11FB1AA}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{A1D6D035-420C-40A3-9598-9E34F11FB1AA}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{A1D6D035-420C-40A3-9598-9E34F11FB1AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A1D6D035-420C-40A3-9598-9E34F11FB1AA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A1D6D035-420C-40A3-9598-9E34F11FB1AA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{A1D6D035-420C-40A3-9598-9E34F11FB1AA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{A1D6D035-420C-40A3-9598-9E34F11FB1AA}.Release|x86.ActiveCfg = Release|Any CPU
 		{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
