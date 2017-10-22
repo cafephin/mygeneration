@@ -7,7 +7,7 @@
     <ProjectGuid>{02EA6C17-3A7B-47A6-9AC9-0C27F41E394E}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon>MyGeneration.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\MyGeneration.ico</ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
     <AssemblyName>MyGeneration</AssemblyName>
@@ -165,7 +165,10 @@
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Settings\CSharp.INI" />
-    <Content Include="MyGeneration.ico" />
+    <Content Include="Resources\MyGeneration.ico" />
+    <Content Include="Resources\dev01tiny.png" />
+    <Content Include="Resources\dev02tiny.png" />
+    <Content Include="Resources\mygenlogo.gif" />
     <Content Include="Settings\DbTargets.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
