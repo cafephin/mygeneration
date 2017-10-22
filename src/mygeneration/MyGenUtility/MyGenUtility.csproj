@@ -286,9 +286,14 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="SharedResources.cs" />
+    <Compile Include="ZeusProcess\ThreadData.cs" />
     <Compile Include="XmlHelper.cs" />
     <Compile Include="ZeusController.cs" />
-    <Compile Include="ZeusProcessManager.cs" />
+    <Compile Include="ZeusProcess\ZeusProcess.cs" />
+    <Compile Include="ZeusProcess\ZeusProcessManager.cs" />
+    <Compile Include="ZeusProcess\ZeusProcessManagerTags.cs" />
+    <Compile Include="ZeusProcess\ZeusProcessStatusEventArgs.cs" />
+    <Compile Include="ZeusProcess\ZeusProcessType.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Forms\AboutBox\AboutBox.resx">

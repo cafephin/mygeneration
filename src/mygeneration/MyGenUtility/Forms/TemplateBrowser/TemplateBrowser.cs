@@ -78,9 +78,9 @@ namespace MyGeneration
                         if (!this._mdi.Console.DockContent.IsActivated) this._mdi.Console.DockContent.Activate();
                     }
 
-                    if (args.Message.StartsWith(ZeusProcessManager.GENERATED_FILE_TAG))
+                    if (args.Message.StartsWith(ZeusProcessManagerTags.GENERATED_FILE_TAG))
                     {
-                        string generatedFile = args.Message.Substring(ZeusProcessManager.GENERATED_FILE_TAG.Length);
+                        string generatedFile = args.Message.Substring(ZeusProcessManagerTags.GENERATED_FILE_TAG.Length);
                         this._mdi.WriteConsole("File Generated: " + generatedFile);
                         this._mdi.SendAlert(this, "FileGenerated", generatedFile);
                     }
@@ -105,9 +105,9 @@ namespace MyGeneration
                 if (!this._mdi.Console.DockContent.IsActivated) this._mdi.Console.DockContent.Activate();
             }
 
-            if (message.StartsWith(ZeusProcessManager.GENERATED_FILE_TAG))
+            if (message.StartsWith(ZeusProcessManagerTags.GENERATED_FILE_TAG))
             {
-                string generatedFile = message.Substring(ZeusProcessManager.GENERATED_FILE_TAG.Length);
+                string generatedFile = message.Substring(ZeusProcessManagerTags.GENERATED_FILE_TAG.Length);
                 this._mdi.WriteConsole("File Generated: " + generatedFile);
                 this._mdi.SendAlert(this, "FileGenerated", generatedFile);
             }
