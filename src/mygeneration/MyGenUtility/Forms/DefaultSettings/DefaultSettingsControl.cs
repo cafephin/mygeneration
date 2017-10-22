@@ -23,6 +23,46 @@ namespace MyGeneration
         public delegate void AfterSaveDelegate();
         public event EventHandler AfterSave;
 
+        public DataTable DriversTable
+        {
+            get
+            {
+                if (_driversTable == null)
+                {
+                    _driversTable = new DataTable();
+                    _driversTable.Columns.Add("DISPLAY");
+                    _driversTable.Columns.Add("VALUE");
+                    _driversTable.Columns.Add("ISPLUGIN");
+                    _driversTable.Rows.Add(new object[] { "<None>", "NONE", false });
+                    _driversTable.Rows.Add(new object[] { "Advantage Database Server", "ADVANTAGE", false });
+                    _driversTable.Rows.Add(new object[] { "Firebird", "FIREBIRD", false });
+                    _driversTable.Rows.Add(new object[] { "IBM DB2", "DB2", false });
+                    _driversTable.Rows.Add(new object[] { "IBM iSeries (AS400)", "ISERIES", false });
+                    _driversTable.Rows.Add(new object[] { "Interbase", "INTERBASE", false });
+                    _driversTable.Rows.Add(new object[] { "Microsoft SQL Server", "SQL", false });
+                    _driversTable.Rows.Add(new object[] { "Microsoft Access", "ACCESS", false });
+                    _driversTable.Rows.Add(new object[] { "MySQL", "MYSQL", false });
+                    _driversTable.Rows.Add(new object[] { "MySQL2", "MYSQL2", false });
+                    _driversTable.Rows.Add(new object[] { "Oracle", "ORACLE", false });
+                    _driversTable.Rows.Add(new object[] { "Pervasive", "PERVASIVE", false });
+                    _driversTable.Rows.Add(new object[] { "PostgreSQL", "POSTGRESQL", false });
+                    _driversTable.Rows.Add(new object[] { "PostgreSQL 8+", "POSTGRESQL8", false });
+                    _driversTable.Rows.Add(new object[] { "SQLite", "SQLITE", false });
+#if !IGNORE_VISTA
+                    _driversTable.Rows.Add(new object[] { "VistaDB", "VISTADB", false });
+#endif
+
+                    foreach (IMyMetaPlugin plugin in MyMeta.dbRoot.Plugins.Values)
+                    {
+                        _driversTable.Rows.Add(new object[] { plugin.ProviderName, plugin.ProviderUniqueKey, true });
+                    }
+
+                    _driversTable.DefaultView.Sort = "DISPLAY";
+                }
+                return _driversTable;
+            }
+        }
+
         public DefaultSettingsControl()
         {
             InitializeComponent();
@@ -35,12 +75,87 @@ namespace MyGeneration
 
         public void Populate()
         {
+            PopulateConnectionSettings();
+            PopulateTemplateSettings();
+            PopulateMiscSettings();
+        }
+
+        private void PopulateConnectionSettings()
+        {
             _myMeta = new dbRoot();
+            _myMeta.ShowDefaultDatabaseOnly = DefaultSettings.Instance.ShowDefaultDatabaseOnly;
+            _myMeta.LanguageMappingFileName = DefaultSettings.Instance.LanguageMappingFile;
+            _myMeta.DbTargetMappingFileName = DefaultSettings.Instance.DbTargetMappingFile;
+
+            ReloadSavedDbConnections();
+            PopulateConnectionStringSettings();
+
+            PopulateDbTargetSettings();
+            PopulateLanguageSettings();
+
+            DbUserMetaMappingsTextBox.Text = DefaultSettings.Instance.DatabaseUserDataXmlMappingsString;
+            UserMetaDataFileTextBox.Text = DefaultSettings.Instance.UserMetaDataFileName;
+        }
+
+        private void ReloadSavedDbConnections()
+        {
+            SavedConnectionComboBox.Items.Clear();
+            foreach (ConnectionInfo info in DefaultSettings.Instance.SavedConnections.Values)
+            {
+                SavedConnectionComboBox.Items.Add(info);
+            }
+            SavedConnectionComboBox.Sorted = true;
+            SavedConnectionComboBox.SelectedIndex = -1;
+        }
+
+        private void PopulateMiscSettings()
+        {
+            CheckForUpdatesCheckBox.Checked = DefaultSettings.Instance.CheckForNewBuild;
+            DomainOverrideCheckBox.Checked = DefaultSettings.Instance.DomainOverride;
+        }
+
+        private void PopulateLanguageSettings()
+        {
+            PopulateLanguages();
+            LanguageComboBox.Enabled = true;
+            LanguageComboBox.SelectedItem = DefaultSettings.Instance.Language;
+            LanguageFileTextBox.Text = DefaultSettings.Instance.LanguageMappingFile;
+        }
+
+        private void PopulateDbTargetSettings()
+        {
+            PopulateDbTargets();
+            TargetDbComboBox.Enabled = true;
+            TargetDbComboBox.SelectedItem = DefaultSettings.Instance.DbTarget;
+            DbTargetFileTextBox.Text = DefaultSettings.Instance.DbTargetMappingFile;
+        }
+
+        private void PopulateTemplateSettings()
+        {
+            CopyOutputToClipboardCheckBox.Checked = DefaultSettings.Instance.EnableClipboard;
+            RunTemplatesAsyncCheckBox.Checked = DefaultSettings.Instance.ExecuteFromTemplateBrowserAsync;
+            ShowConsoleOutputCheckBox.Checked = DefaultSettings.Instance.ConsoleWriteGeneratedDetails;
+            DocumentStyleSettingsCheckBox.Checked = DefaultSettings.Instance.EnableDocumentStyleSettings;
+            ShowLineNumbersCheckBox.Checked = DefaultSettings.Instance.EnableLineNumbering;
+            TabSizeTextBox.Text = DefaultSettings.Instance.Tabs.ToString();
+            DefaultTemplatePathTextBox.Text = DefaultSettings.Instance.DefaultTemplateDirectory;
+            OutputPathTextBox.Text = DefaultSettings.Instance.DefaultOutputDirectory;
+            FontTextBox.Text = DefaultSettings.Instance.FontFamily;
+            PopulateTimeoutSettings();
+            PopulateProxySettings();
+            PopulateCodePageEncodingSettings();
+        }
+
+        private void PopulateConnectionStringSettings()
+        {
             _defaultOleDbButtonColor = OleDbButton.BackColor;
+            
+            ShowDefaultDbOnlyCheckBox.Checked = DefaultSettings.Instance.ShowDefaultDatabaseOnly;
 
             DbDriverComboBox.DisplayMember = "DISPLAY";
             DbDriverComboBox.ValueMember = "VALUE";
             DbDriverComboBox.DataSource = DriversTable;
+            DbDriverComboBox.SelectedValue = DefaultSettings.Instance.DbDriver;
 
             switch (DefaultSettings.Instance.DbDriver)
             {
@@ -51,9 +166,7 @@ namespace MyGeneration
                 case "INTERBASE":
                 case "SQLITE":
                 case "MYSQL2":
-#if !IGNORE_VISTA
                 case "VISTADB":
-#endif
                 case "ISERIES":
                 case "NONE":
                 case "":
@@ -62,62 +175,27 @@ namespace MyGeneration
             }
 
             ConnectionStringTextBox.Enabled = true;
-
-            DbDriverComboBox.SelectedValue = DefaultSettings.Instance.DbDriver;
             ConnectionStringTextBox.Text = DefaultSettings.Instance.ConnectionString;
-            LanguageFileTextBox.Text = DefaultSettings.Instance.LanguageMappingFile;
-            DbTargetFileTextBox.Text = DefaultSettings.Instance.DbTargetMappingFile;
-            UserMetaDataFileTextBox.Text = DefaultSettings.Instance.UserMetaDataFileName;
+        }
 
-            _myMeta.ShowDefaultDatabaseOnly = DefaultSettings.Instance.ShowDefaultDatabaseOnly;
-            _myMeta.LanguageMappingFileName = DefaultSettings.Instance.LanguageMappingFile;
-            _myMeta.DbTargetMappingFileName = DefaultSettings.Instance.DbTargetMappingFile;
-
-            LanguageComboBox.Enabled = true;
-            TargetDbComboBox.Enabled = true;
-
-            PopulateLanguages();
-            PopulateDbTargets();
-
-            LanguageComboBox.SelectedItem = DefaultSettings.Instance.Language;
-            TargetDbComboBox.SelectedItem = DefaultSettings.Instance.DbTarget;
-
-            DbUserMetaMappingsTextBox.Text = DefaultSettings.Instance.DatabaseUserDataXmlMappingsString;
-
-            CopyOutputToClipboardCheckBox.Checked = DefaultSettings.Instance.EnableClipboard;
-            RunTemplatesAsyncCheckBox.Checked = DefaultSettings.Instance.ExecuteFromTemplateBrowserAsync;
-            ShowDefaultDbOnlyCheckBox.Checked = DefaultSettings.Instance.ShowDefaultDatabaseOnly;
-            ShowConsoleOutputCheckBox.Checked = DefaultSettings.Instance.ConsoleWriteGeneratedDetails;
-            DocumentStyleSettingsCheckBox.Checked = DefaultSettings.Instance.EnableDocumentStyleSettings;
-            ShowLineNumbersCheckBox.Checked = DefaultSettings.Instance.EnableLineNumbering;
-            TabSizeTextBox.Text = DefaultSettings.Instance.Tabs.ToString();
-            DefaultTemplatePathTextBox.Text = DefaultSettings.Instance.DefaultTemplateDirectory;
-            OutputPathTextBox.Text = DefaultSettings.Instance.DefaultOutputDirectory;
-
-            CheckForUpdatesCheckBox.Checked = DefaultSettings.Instance.CheckForNewBuild;
-            DomainOverrideCheckBox.Checked = DefaultSettings.Instance.DomainOverride;
-
+        private void PopulateTimeoutSettings()
+        {
             var timeout = DefaultSettings.Instance.ScriptTimeout;
             if (timeout == -1)
             {
-                checkBoxDisableTimeout.Checked = true;
-                checkBoxDisableTimeout_CheckedChanged(this, new EventArgs());
+                DisableTimeoutCheckBox.Checked = true;
+                DisableTimeoutCheckBox_OnCheckedStateChanged(this, new EventArgs());
             }
             else
             {
-                checkBoxDisableTimeout.Checked = false;
-                checkBoxDisableTimeout_CheckedChanged(this, new EventArgs());
-                textBoxTimeout.Text = timeout.ToString();
+                DisableTimeoutCheckBox.Checked = false;
+                DisableTimeoutCheckBox_OnCheckedStateChanged(this, new EventArgs());
+                TimeoutTextBox.Text = timeout.ToString();
             }
+        }
 
-            UseProxyServerCheckBox.Checked = DefaultSettings.Instance.UseProxyServer;
-            ProxyServerTextBox.Text = DefaultSettings.Instance.ProxyServerUri;
-            ProxyUserTextBox.Text = DefaultSettings.Instance.ProxyAuthUsername;
-            ProxyPasswordTextBox.Text = DefaultSettings.Instance.ProxyAuthPassword;
-            ProxyDomainTextBox.Text = DefaultSettings.Instance.ProxyAuthDomain;
-
-            ReloadSavedDbConnections();
-
+        private void PopulateCodePageEncodingSettings()
+        {
             var encodings = Encoding.GetEncodings();
             CodePageComboBox.Items.Add(string.Empty);
             foreach (EncodingInfo encoding in encodings)
@@ -130,8 +208,15 @@ namespace MyGeneration
                     CodePageComboBox.SelectedIndex = idx;
                 }
             }
+        }
 
-            FontTextBox.Text = DefaultSettings.Instance.FontFamily;
+        private void PopulateProxySettings()
+        {
+            UseProxyServerCheckBox.Checked = DefaultSettings.Instance.UseProxyServer;
+            ProxyServerTextBox.Text = DefaultSettings.Instance.ProxyServerUri;
+            ProxyUserTextBox.Text = DefaultSettings.Instance.ProxyAuthUsername;
+            ProxyPasswordTextBox.Text = DefaultSettings.Instance.ProxyAuthPassword;
+            ProxyDomainTextBox.Text = DefaultSettings.Instance.ProxyAuthDomain;
         }
 
         public bool Save()
@@ -189,17 +274,6 @@ namespace MyGeneration
                        (DefaultSettings.Instance.DbTarget != TargetDbComboBox.Text) ||
                        (DefaultSettings.Instance.UserMetaDataFileName != UserMetaDataFileTextBox.Text);
             }
-        }
-
-        private void ReloadSavedDbConnections()
-        {
-            SavedConnectionComboBox.Items.Clear();
-            foreach (ConnectionInfo info in DefaultSettings.Instance.SavedConnections.Values)
-            {
-                SavedConnectionComboBox.Items.Add(info);
-            }
-            SavedConnectionComboBox.Sorted = true;
-            SavedConnectionComboBox.SelectedIndex = -1;
         }
 
         private void PopulateLanguages()
@@ -294,13 +368,13 @@ namespace MyGeneration
             DefaultSettings.Instance.DefaultTemplateDirectory = DefaultTemplatePathTextBox.Text;
             DefaultSettings.Instance.DefaultOutputDirectory = OutputPathTextBox.Text;
 
-            if (checkBoxDisableTimeout.Checked)
+            if (DisableTimeoutCheckBox.Checked)
             {
                 DefaultSettings.Instance.ScriptTimeout = -1;
             }
             else
             {
-                DefaultSettings.Instance.ScriptTimeout = Convert.ToInt32(textBoxTimeout.Text);
+                DefaultSettings.Instance.ScriptTimeout = Convert.ToInt32(TimeoutTextBox.Text);
             }
 
             DefaultSettings.Instance.UseProxyServer = UseProxyServerCheckBox.Checked;
@@ -309,18 +383,20 @@ namespace MyGeneration
             DefaultSettings.Instance.ProxyAuthPassword = ProxyPasswordTextBox.Text;
             DefaultSettings.Instance.ProxyAuthDomain = ProxyDomainTextBox.Text;
 
-            DefaultSettings.Instance.FirstLoad = false;
-
-            InternalDriver drv = InternalDriver.Get(DefaultSettings.Instance.DbDriver);
-            if (drv != null)
+            InternalDriver internalDriver = InternalDriver.Get(DefaultSettings.Instance.DbDriver);
+            if (internalDriver != null)
             {
-                drv.ConnectString = ConnectionStringTextBox.Text;
-                DefaultSettings.Instance.SetSetting(drv.DriverId, ConnectionStringTextBox.Text);
+                internalDriver.ConnectString = ConnectionStringTextBox.Text;
+                DefaultSettings.Instance.SetSetting(internalDriver.DriverId, ConnectionStringTextBox.Text);
             }
             else
             {
-                MessageBox.Show(this, "Choosing '<None>' will eliminate your ability to run 99.9% of the MyGeneration Templates. Most templates will crash if you run them",
-                    "Warning !!!", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                MessageBox.Show(this,
+                                "Choosing '<None>' will eliminate your ability to run 99.9% of the MyGeneration templates. " +
+                                "Most templates will crash if you run them",
+                                "Warning",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Stop);
             }
         }
 
@@ -371,46 +447,6 @@ namespace MyGeneration
             testConnectionForm.ShowDialog(this);
 
             return TestConnectionForm.State != ConnectionTestState.Error;
-        }
-
-        public DataTable DriversTable
-        {
-            get
-            {
-                if (_driversTable == null)
-                {
-                    _driversTable = new DataTable();
-                    _driversTable.Columns.Add("DISPLAY");
-                    _driversTable.Columns.Add("VALUE");
-                    _driversTable.Columns.Add("ISPLUGIN");
-                    _driversTable.Rows.Add(new object[] { "<None>", "NONE", false });
-                    _driversTable.Rows.Add(new object[] { "Advantage Database Server", "ADVANTAGE", false });
-                    _driversTable.Rows.Add(new object[] { "Firebird", "FIREBIRD", false });
-                    _driversTable.Rows.Add(new object[] { "IBM DB2", "DB2", false });
-                    _driversTable.Rows.Add(new object[] { "IBM iSeries (AS400)", "ISERIES", false });
-                    _driversTable.Rows.Add(new object[] { "Interbase", "INTERBASE", false });
-                    _driversTable.Rows.Add(new object[] { "Microsoft SQL Server", "SQL", false });
-                    _driversTable.Rows.Add(new object[] { "Microsoft Access", "ACCESS", false });
-                    _driversTable.Rows.Add(new object[] { "MySQL", "MYSQL", false });
-                    _driversTable.Rows.Add(new object[] { "MySQL2", "MYSQL2", false });
-                    _driversTable.Rows.Add(new object[] { "Oracle", "ORACLE", false });
-                    _driversTable.Rows.Add(new object[] { "Pervasive", "PERVASIVE", false });
-                    _driversTable.Rows.Add(new object[] { "PostgreSQL", "POSTGRESQL", false });
-                    _driversTable.Rows.Add(new object[] { "PostgreSQL 8+", "POSTGRESQL8", false });
-                    _driversTable.Rows.Add(new object[] { "SQLite", "SQLITE", false });
-#if !IGNORE_VISTA
-                    _driversTable.Rows.Add(new object[] { "VistaDB", "VISTADB", false });
-#endif
-
-                    foreach (IMyMetaPlugin plugin in MyMeta.dbRoot.Plugins.Values)
-                    {
-                        _driversTable.Rows.Add(new object[] { plugin.ProviderName, plugin.ProviderUniqueKey, true });
-                    }
-
-                    _driversTable.DefaultView.Sort = "DISPLAY";
-                }
-                return _driversTable;
-            }
         }
 
         #region Control Event Handlers
@@ -473,7 +509,7 @@ namespace MyGeneration
             catch { }
         }
 
-        private void btnLanguageFile_Click(object sender, System.EventArgs e)
+        private void LanguageFileBrowseButton_OnClicked(object sender, System.EventArgs e)
         {
             string fileName = PickFile("Langauge File (*.xml)|*.xml");
 
@@ -485,7 +521,7 @@ namespace MyGeneration
             }
         }
 
-        private void btnDbTargetFile_Click(object sender, System.EventArgs e)
+        private void DbTargetFileBrowseButton_OnClicked(object sender, System.EventArgs e)
         {
             string fileName = PickFile("Database Target File (*.xml)|*.xml");
 
@@ -497,13 +533,7 @@ namespace MyGeneration
             }
         }
 
-        //		private string sqlString = @"Provider=SQLOLEDB.1;Persist Security Info=True;User ID=sa;Data Source=localhost";
-        //		private string mySqlString = @"Provider=MySQLProv;Persist Security Info=True;Data Source=test;UID=griffo;PWD=;PORT=3306";
-        //		private string accessString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=c:\access\newnorthwind.mdb;User Id=;Password=";
-        //		private string oracleString = @"Provider=OraOLEDB.Oracle.1;Password=sa;Persist Security Info=True;User ID=GRIFFO;Data Source=dbMeta";
-        //		private string db2String = @"Provider=IBMDADB2.1;Password=sa;User ID=DB2Admin;Data Source=MyMeta;Persist Security Info=True";
-        //      private string firbirdstring = @"Provider=LCPI.IBProvider.2;Password=MyGen;Persist Security Info=True;User ID=sysdba;Data Source=MyGeneration;Location=c:\firebird\MyGeneration.gdb;ctype=;";
-        private void cboDbDriver_SelectionChangeCommitted(object sender, System.EventArgs e)
+        private void DbDriverComboBox_OnSelectionChanged(object sender, System.EventArgs e)
         {
             ConnectionStringTextBox.Text = string.Empty;
             ConnectionStringTextBox.Enabled = true;
@@ -511,58 +541,44 @@ namespace MyGeneration
             LanguageComboBox.Enabled = true;
             TargetDbComboBox.Enabled = true;
 
-            //			string language = LanguageComboBox.SelectedItem as string;
-            //			string dbTarget = DbDriverComboBox.SelectedItem as string;
-
             PopulateLanguages();
             PopulateDbTargets();
 
-            //			if(-1 != LanguageComboBox.FindStringExact(language))
-            //			{
-            //				LanguageComboBox.SelectedItem = language;
-            //			}
-            //
-            //			if(-1 != DbDriverComboBox.FindStringExact(dbTarget))
-            //			{
-            //				DbDriverComboBox.SelectedItem = dbTarget;
-            //			}
-
-            string driver = string.Empty;
-            if (null != DbDriverComboBox.SelectedValue) driver = DbDriverComboBox.SelectedValue as string;
-            driver = driver.ToUpper();
+            var dbDriver = string.Empty;
+            if (DbDriverComboBox.SelectedValue != null) dbDriver = DbDriverComboBox.SelectedValue as string;
+            dbDriver = dbDriver.ToUpper();
 
             OleDbButton.BackColor = _defaultOleDbButtonColor;
             OleDbButton.Enabled = true;
-            btnTestConnection.Enabled = true;
+            TestConnectionButton.Enabled = true;
 
-            InternalDriver drv = InternalDriver.Get(driver);
-            if (drv != null)
+            InternalDriver internalDriver = InternalDriver.Get(dbDriver);
+            if (internalDriver != null)
             {
-                bool oleDB = drv.IsOleDB;
+                bool oleDB = internalDriver.IsOleDB;
                 OleDbButton.Enabled = oleDB;
                 if (oleDB)
                 {
                     OleDbButton.BackColor = System.Drawing.Color.LightBlue;
                 }
 
-                ConnectionStringTextBox.Text = DefaultSettings.Instance.GetSetting(drv.DriverId, drv.ConnectString);
+                ConnectionStringTextBox.Text = DefaultSettings.Instance.GetSetting(internalDriver.DriverId, internalDriver.ConnectString);
             }
             else
             {
-                btnTestConnection.Enabled = false;
-                //MessageBox.Show(this, "Choosing '<None>' will eliminate your ability to run 99.9% of the MyGeneration Templates. Most templates will crash if you run them",
-                //    "Warning !!!", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                TestConnectionButton.Enabled = false;
             }
-
         }
 
-        private void btnBrowse_Click(object sender, System.EventArgs e)
+        private void DefaultTemplatePathBrowseButton_OnClicked(object sender, System.EventArgs e)
         {
-            FolderBrowserDialog folderDialog = new FolderBrowserDialog();
-            folderDialog.SelectedPath = DefaultSettings.Instance.DefaultTemplateDirectory;
-            folderDialog.Description = "Select Default Template Directory";
-            folderDialog.RootFolder = Environment.SpecialFolder.MyComputer;
-            folderDialog.ShowNewFolderButton = true;
+            var folderDialog = new FolderBrowserDialog
+                               {
+                                   SelectedPath = DefaultSettings.Instance.DefaultTemplateDirectory,
+                                   Description = "Select Default Template Directory",
+                                   RootFolder = Environment.SpecialFolder.MyComputer,
+                                   ShowNewFolderButton = true
+                               };
 
             if (folderDialog.ShowDialog() == DialogResult.OK)
             {
@@ -571,7 +587,7 @@ namespace MyGeneration
             }
         }
 
-        private void buttonBrowseOutPath_Click(object sender, System.EventArgs e)
+        private void OutputPathBrowseButton_OnClicked(object sender, System.EventArgs e)
         {
             FolderBrowserDialog folderDialog = new FolderBrowserDialog();
             folderDialog.SelectedPath = DefaultSettings.Instance.DefaultOutputDirectory;
@@ -586,21 +602,21 @@ namespace MyGeneration
             }
         }
 
-        private void checkBoxDisableTimeout_CheckedChanged(object sender, System.EventArgs e)
+        private void DisableTimeoutCheckBox_OnCheckedStateChanged(object sender, System.EventArgs e)
         {
-            bool isChecked = checkBoxDisableTimeout.Checked;
+            bool isChecked = DisableTimeoutCheckBox.Checked;
 
             if (isChecked)
             {
-                textBoxTimeout.Text = "";
+                TimeoutTextBox.Text = "";
             }
 
-            textBoxTimeout.Enabled = !isChecked;
-            textBoxTimeout.ReadOnly = isChecked;
+            TimeoutTextBox.Enabled = !isChecked;
+            TimeoutTextBox.ReadOnly = isChecked;
             label9.Enabled = !isChecked;
         }
 
-        private void checkBoxUseProxyServer_CheckedChanged(object sender, System.EventArgs e)
+        private void UseProxyServerCheckBox_OnCheckedStateChanged(object sender, System.EventArgs e)
         {
             bool isChecked = UseProxyServerCheckBox.Checked;
 
@@ -621,17 +637,17 @@ namespace MyGeneration
             labelProxyDomain.Enabled = isChecked;
         }
 
-        private void btnTestConnection_Click(object sender, System.EventArgs e)
+        private void TestConnectionButton_OnClicked(object sender, System.EventArgs e)
         {
             DbConnectionOk(false);
         }
 
-        private void cboDbDriver_SelectedIndexChanged(object sender, System.EventArgs e)
+        private void DbDriverComboBox_OnSelectedIndexChanged(object sender, System.EventArgs e)
         {
-            cboDbDriver_SelectionChangeCommitted(sender, e);
+            DbDriverComboBox_OnSelectionChanged(sender, e);
         }
 
-        private void buttonSave_Click(object sender, System.EventArgs e)
+        private void SavedConnectionsSaveButton_OnClicked(object sender, System.EventArgs e)
         {
             string text = SavedConnectionComboBox.Text.Trim();
             if (text == string.Empty)
@@ -666,7 +682,7 @@ namespace MyGeneration
             }
         }
 
-        private void buttonLoad_Click(object sender, System.EventArgs e)
+        private void SavedConnectionLoadButton_OnClicked(object sender, System.EventArgs e)
         {
             ConnectionInfo info = SavedConnectionComboBox.SelectedItem as ConnectionInfo;
 
@@ -713,7 +729,7 @@ namespace MyGeneration
             }
         }
 
-        private void buttonDelete_Click(object sender, System.EventArgs e)
+        private void SavedConnectionDeleteButton_OnClicked(object sender, System.EventArgs e)
         {
             ConnectionInfo info = SavedConnectionComboBox.SelectedItem as ConnectionInfo;
 
@@ -737,7 +753,7 @@ namespace MyGeneration
             }
         }
 
-        private void buttonFont_Click(object sender, EventArgs e)
+        private void FontButton_OnClicked(object sender, EventArgs e)
         {
             try
             {
@@ -761,15 +777,15 @@ namespace MyGeneration
             }
         }
 
-        private void btnUserMetaDataFile_Click(object sender, System.EventArgs e)
+        private void UserMetadataFileBrowseButton_OnClicked(object sender, System.EventArgs e)
         {
-            string fileName = PickFile("Langauge File (*.xml)|*.xml");
+            var fileName = PickFile("Language File (*.xml)|*.xml");
 
-            if (string.Empty != fileName)
+            if (!string.IsNullOrWhiteSpace(fileName))
             {
                 UserMetaDataFileTextBox.Text = fileName;
             }
         }
-#endregion
+        #endregion
     }
 }

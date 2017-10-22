@@ -323,12 +323,6 @@ namespace MyGeneration
 		    get { return XmlHelper.GetAttribute(_settingsRootNode, "Version", MISSING); }
 		    set { XmlHelper.SetAttribute(_settingsRootNode, "Version", value); }
 		}
-
-		public bool FirstLoad
-		{
-		    get { return XmlHelper.GetAttribute(_settingsRootNode, "FirstTime", "true") == "true"; }
-		    set { XmlHelper.SetAttribute(_settingsRootNode, "FirstTime", value ? "true" : "false"); }
-		}
         #endregion
 
         #region Settings

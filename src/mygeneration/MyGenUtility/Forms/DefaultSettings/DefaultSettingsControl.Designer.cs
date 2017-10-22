@@ -50,7 +50,7 @@ namespace MyGeneration
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.ShowDefaultDbOnlyCheckBox = new System.Windows.Forms.CheckBox();
-            this.btnTestConnection = new System.Windows.Forms.Button();
+            this.TestConnectionButton = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.DbDriverComboBox = new System.Windows.Forms.ComboBox();
             this.OleDbButton = new System.Windows.Forms.Button();
@@ -59,7 +59,7 @@ namespace MyGeneration
             this.label1DbUserMetaMappingsExample = new System.Windows.Forms.Label();
             this.labellDbUserMetaMappings = new System.Windows.Forms.Label();
             this.DbUserMetaMappingsTextBox = new System.Windows.Forms.TextBox();
-            this.btnUserMetaDataFile = new System.Windows.Forms.Button();
+            this.UserMetadataFileBrowseButton = new System.Windows.Forms.Button();
             this.UserMetaDataFileTextBox = new System.Windows.Forms.TextBox();
             this.labelUserMetaData = new System.Windows.Forms.Label();
             this.tabScript = new System.Windows.Forms.TabPage();
@@ -81,8 +81,8 @@ namespace MyGeneration
             this.ProxyServerTextBox = new System.Windows.Forms.TextBox();
             this.labelProxyServer = new System.Windows.Forms.Label();
             this.groupBoxTimout = new System.Windows.Forms.GroupBox();
-            this.checkBoxDisableTimeout = new System.Windows.Forms.CheckBox();
-            this.textBoxTimeout = new System.Windows.Forms.TextBox();
+            this.DisableTimeoutCheckBox = new System.Windows.Forms.CheckBox();
+            this.TimeoutTextBox = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.buttonBrowseOutPath = new System.Windows.Forms.Button();
             this.labelOutputPath = new System.Windows.Forms.Label();
@@ -180,7 +180,7 @@ namespace MyGeneration
             this.buttonDelete.TabIndex = 35;
             this.buttonDelete.Text = "Delete";
             this.buttonDelete.UseVisualStyleBackColor = false;
-            this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
+            this.buttonDelete.Click += new System.EventHandler(this.SavedConnectionDeleteButton_OnClicked);
             // 
             // buttonLoad
             // 
@@ -194,7 +194,7 @@ namespace MyGeneration
             this.buttonLoad.TabIndex = 34;
             this.buttonLoad.Text = "Load";
             this.buttonLoad.UseVisualStyleBackColor = false;
-            this.buttonLoad.Click += new System.EventHandler(this.buttonLoad_Click);
+            this.buttonLoad.Click += new System.EventHandler(this.SavedConnectionLoadButton_OnClicked);
             // 
             // buttonSave
             // 
@@ -208,7 +208,7 @@ namespace MyGeneration
             this.buttonSave.TabIndex = 33;
             this.buttonSave.Text = "Save";
             this.buttonSave.UseVisualStyleBackColor = false;
-            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
+            this.buttonSave.Click += new System.EventHandler(this.SavedConnectionsSaveButton_OnClicked);
             // 
             // SavedConnectionComboBox
             // 
@@ -290,7 +290,7 @@ namespace MyGeneration
             this.btnDbTargetFile.Size = new System.Drawing.Size(28, 23);
             this.btnDbTargetFile.TabIndex = 19;
             this.btnDbTargetFile.Text = "...";
-            this.btnDbTargetFile.Click += new System.EventHandler(this.btnDbTargetFile_Click);
+            this.btnDbTargetFile.Click += new System.EventHandler(this.DbTargetFileBrowseButton_OnClicked);
             // 
             // groupBox1
             // 
@@ -350,7 +350,7 @@ namespace MyGeneration
             this.btnLanguageFile.Size = new System.Drawing.Size(28, 23);
             this.btnLanguageFile.TabIndex = 22;
             this.btnLanguageFile.Text = "...";
-            this.btnLanguageFile.Click += new System.EventHandler(this.btnLanguageFile_Click);
+            this.btnLanguageFile.Click += new System.EventHandler(this.LanguageFileBrowseButton_OnClicked);
             // 
             // label2
             // 
@@ -367,7 +367,7 @@ namespace MyGeneration
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox3.Controls.Add(this.ShowDefaultDbOnlyCheckBox);
-            this.groupBox3.Controls.Add(this.btnTestConnection);
+            this.groupBox3.Controls.Add(this.TestConnectionButton);
             this.groupBox3.Controls.Add(this.label6);
             this.groupBox3.Controls.Add(this.DbDriverComboBox);
             this.groupBox3.Controls.Add(this.OleDbButton);
@@ -391,16 +391,16 @@ namespace MyGeneration
             this.ShowDefaultDbOnlyCheckBox.Text = "Default DB Only";
             this.ShowDefaultDbOnlyCheckBox.UseVisualStyleBackColor = true;
             // 
-            // btnTestConnection
+            // TestConnectionButton
             // 
-            this.btnTestConnection.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnTestConnection.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnTestConnection.Location = new System.Drawing.Point(386, 24);
-            this.btnTestConnection.Name = "btnTestConnection";
-            this.btnTestConnection.Size = new System.Drawing.Size(99, 23);
-            this.btnTestConnection.TabIndex = 27;
-            this.btnTestConnection.Text = "Test Connection";
-            this.btnTestConnection.Click += new System.EventHandler(this.btnTestConnection_Click);
+            this.TestConnectionButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.TestConnectionButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TestConnectionButton.Location = new System.Drawing.Point(386, 24);
+            this.TestConnectionButton.Name = "TestConnectionButton";
+            this.TestConnectionButton.Size = new System.Drawing.Size(99, 23);
+            this.TestConnectionButton.TabIndex = 27;
+            this.TestConnectionButton.Text = "Test Connection";
+            this.TestConnectionButton.Click += new System.EventHandler(this.TestConnectionButton_OnClicked);
             // 
             // label6
             // 
@@ -419,8 +419,8 @@ namespace MyGeneration
             this.DbDriverComboBox.Name = "DbDriverComboBox";
             this.DbDriverComboBox.Size = new System.Drawing.Size(192, 21);
             this.DbDriverComboBox.TabIndex = 24;
-            this.DbDriverComboBox.SelectedIndexChanged += new System.EventHandler(this.cboDbDriver_SelectedIndexChanged);
-            this.DbDriverComboBox.SelectionChangeCommitted += new System.EventHandler(this.cboDbDriver_SelectionChangeCommitted);
+            this.DbDriverComboBox.SelectedIndexChanged += new System.EventHandler(this.DbDriverComboBox_OnSelectedIndexChanged);
+            this.DbDriverComboBox.SelectionChangeCommitted += new System.EventHandler(this.DbDriverComboBox_OnSelectionChanged);
             // 
             // OleDbButton
             // 
@@ -454,13 +454,13 @@ namespace MyGeneration
             this.groupBoxUserMetaData.Controls.Add(this.label1DbUserMetaMappingsExample);
             this.groupBoxUserMetaData.Controls.Add(this.labellDbUserMetaMappings);
             this.groupBoxUserMetaData.Controls.Add(this.DbUserMetaMappingsTextBox);
-            this.groupBoxUserMetaData.Controls.Add(this.btnUserMetaDataFile);
+            this.groupBoxUserMetaData.Controls.Add(this.UserMetadataFileBrowseButton);
             this.groupBoxUserMetaData.Controls.Add(this.UserMetaDataFileTextBox);
             this.groupBoxUserMetaData.Controls.Add(this.labelUserMetaData);
             this.groupBoxUserMetaData.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBoxUserMetaData.Location = new System.Drawing.Point(16, 400);
             this.groupBoxUserMetaData.Name = "groupBoxUserMetaData";
-            this.groupBoxUserMetaData.Size = new System.Drawing.Size(552, 119);
+            this.groupBoxUserMetaData.Size = new System.Drawing.Size(552, 154);
             this.groupBoxUserMetaData.TabIndex = 33;
             this.groupBoxUserMetaData.TabStop = false;
             this.groupBoxUserMetaData.Text = "User Meta-Data";
@@ -470,9 +470,9 @@ namespace MyGeneration
             this.label1DbUserMetaMappingsExample.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1DbUserMetaMappingsExample.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.label1DbUserMetaMappingsExample.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label1DbUserMetaMappingsExample.Location = new System.Drawing.Point(221, 51);
+            this.label1DbUserMetaMappingsExample.Location = new System.Drawing.Point(8, 64);
             this.label1DbUserMetaMappingsExample.Name = "label1DbUserMetaMappingsExample";
-            this.label1DbUserMetaMappingsExample.Size = new System.Drawing.Size(320, 13);
+            this.label1DbUserMetaMappingsExample.Size = new System.Drawing.Size(533, 13);
             this.label1DbUserMetaMappingsExample.TabIndex = 29;
             this.label1DbUserMetaMappingsExample.Text = "(comma seperated name=value, e.g. \"dbname=alias, dbname2=alias2\")";
             // 
@@ -491,24 +491,24 @@ namespace MyGeneration
             this.DbUserMetaMappingsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.DbUserMetaMappingsTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DbUserMetaMappingsTextBox.Location = new System.Drawing.Point(8, 67);
+            this.DbUserMetaMappingsTextBox.Location = new System.Drawing.Point(8, 87);
             this.DbUserMetaMappingsTextBox.Multiline = true;
             this.DbUserMetaMappingsTextBox.Name = "DbUserMetaMappingsTextBox";
             this.DbUserMetaMappingsTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.DbUserMetaMappingsTextBox.Size = new System.Drawing.Size(536, 40);
+            this.DbUserMetaMappingsTextBox.Size = new System.Drawing.Size(536, 57);
             this.DbUserMetaMappingsTextBox.TabIndex = 21;
             // 
-            // btnUserMetaDataFile
+            // UserMetaDataFileBrowseButton
             // 
-            this.btnUserMetaDataFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnUserMetaDataFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnUserMetaDataFile.Location = new System.Drawing.Point(513, 24);
-            this.btnUserMetaDataFile.Name = "btnUserMetaDataFile";
-            this.btnUserMetaDataFile.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnUserMetaDataFile.Size = new System.Drawing.Size(28, 23);
-            this.btnUserMetaDataFile.TabIndex = 15;
-            this.btnUserMetaDataFile.Text = "...";
-            this.btnUserMetaDataFile.Click += new System.EventHandler(this.btnUserMetaDataFile_Click);
+            this.UserMetadataFileBrowseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.UserMetadataFileBrowseButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UserMetadataFileBrowseButton.Location = new System.Drawing.Point(513, 24);
+            this.UserMetadataFileBrowseButton.Name = "UserMetadataFileBrowseButton";
+            this.UserMetadataFileBrowseButton.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.UserMetadataFileBrowseButton.Size = new System.Drawing.Size(28, 23);
+            this.UserMetadataFileBrowseButton.TabIndex = 15;
+            this.UserMetadataFileBrowseButton.Text = "...";
+            this.UserMetadataFileBrowseButton.Click += new System.EventHandler(this.UserMetadataFileBrowseButton_OnClicked);
             // 
             // UserMetaDataFileTextBox
             // 
@@ -583,7 +583,7 @@ namespace MyGeneration
             this.buttonFont.Size = new System.Drawing.Size(56, 23);
             this.buttonFont.TabIndex = 18;
             this.buttonFont.Text = "Browse";
-            this.buttonFont.Click += new System.EventHandler(this.buttonFont_Click);
+            this.buttonFont.Click += new System.EventHandler(this.FontButton_OnClicked);
             // 
             // FontTextBox
             // 
@@ -702,7 +702,7 @@ namespace MyGeneration
             this.UseProxyServerCheckBox.Size = new System.Drawing.Size(184, 24);
             this.UseProxyServerCheckBox.TabIndex = 11;
             this.UseProxyServerCheckBox.Text = "Use Custom Proxy Server";
-            this.UseProxyServerCheckBox.CheckedChanged += new System.EventHandler(this.checkBoxUseProxyServer_CheckedChanged);
+            this.UseProxyServerCheckBox.CheckedChanged += new System.EventHandler(this.UseProxyServerCheckBox_OnCheckedStateChanged);
             // 
             // ProxyServerTextBox
             // 
@@ -725,8 +725,8 @@ namespace MyGeneration
             // 
             // groupBoxTimout
             // 
-            this.groupBoxTimout.Controls.Add(this.checkBoxDisableTimeout);
-            this.groupBoxTimout.Controls.Add(this.textBoxTimeout);
+            this.groupBoxTimout.Controls.Add(this.DisableTimeoutCheckBox);
+            this.groupBoxTimout.Controls.Add(this.TimeoutTextBox);
             this.groupBoxTimout.Controls.Add(this.label9);
             this.groupBoxTimout.Location = new System.Drawing.Point(12, 231);
             this.groupBoxTimout.Name = "groupBoxTimout";
@@ -737,24 +737,24 @@ namespace MyGeneration
             // 
             // checkBoxDisableTimeout
             // 
-            this.checkBoxDisableTimeout.Checked = true;
-            this.checkBoxDisableTimeout.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxDisableTimeout.Location = new System.Drawing.Point(8, 24);
-            this.checkBoxDisableTimeout.Name = "checkBoxDisableTimeout";
-            this.checkBoxDisableTimeout.Size = new System.Drawing.Size(184, 24);
-            this.checkBoxDisableTimeout.TabIndex = 11;
-            this.checkBoxDisableTimeout.Text = "Disable Timeout on Scripts";
-            this.checkBoxDisableTimeout.CheckedChanged += new System.EventHandler(this.checkBoxDisableTimeout_CheckedChanged);
+            this.DisableTimeoutCheckBox.Checked = true;
+            this.DisableTimeoutCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.DisableTimeoutCheckBox.Location = new System.Drawing.Point(8, 24);
+            this.DisableTimeoutCheckBox.Name = "DisableTimeoutCheckBox";
+            this.DisableTimeoutCheckBox.Size = new System.Drawing.Size(184, 24);
+            this.DisableTimeoutCheckBox.TabIndex = 11;
+            this.DisableTimeoutCheckBox.Text = "Disable Timeout on Scripts";
+            this.DisableTimeoutCheckBox.CheckedChanged += new System.EventHandler(this.DisableTimeoutCheckBox_OnCheckedStateChanged);
             // 
             // textBoxTimeout
             // 
-            this.textBoxTimeout.Enabled = false;
-            this.textBoxTimeout.Location = new System.Drawing.Point(8, 72);
-            this.textBoxTimeout.Name = "textBoxTimeout";
-            this.textBoxTimeout.ReadOnly = true;
-            this.textBoxTimeout.Size = new System.Drawing.Size(56, 20);
-            this.textBoxTimeout.TabIndex = 9;
-            this.textBoxTimeout.Text = "120";
+            this.TimeoutTextBox.Enabled = false;
+            this.TimeoutTextBox.Location = new System.Drawing.Point(8, 72);
+            this.TimeoutTextBox.Name = "TimeoutTextBox";
+            this.TimeoutTextBox.ReadOnly = true;
+            this.TimeoutTextBox.Size = new System.Drawing.Size(56, 20);
+            this.TimeoutTextBox.TabIndex = 9;
+            this.TimeoutTextBox.Text = "120";
             // 
             // label9
             // 
@@ -773,7 +773,7 @@ namespace MyGeneration
             this.buttonBrowseOutPath.Size = new System.Drawing.Size(56, 23);
             this.buttonBrowseOutPath.TabIndex = 8;
             this.buttonBrowseOutPath.Text = "Browse";
-            this.buttonBrowseOutPath.Click += new System.EventHandler(this.buttonBrowseOutPath_Click);
+            this.buttonBrowseOutPath.Click += new System.EventHandler(this.OutputPathBrowseButton_OnClicked);
             // 
             // labelOutputPath
             // 
@@ -798,7 +798,7 @@ namespace MyGeneration
             this.btnBrowse.Size = new System.Drawing.Size(56, 23);
             this.btnBrowse.TabIndex = 4;
             this.btnBrowse.Text = "Browse";
-            this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
+            this.btnBrowse.Click += new System.EventHandler(this.DefaultTemplatePathBrowseButton_OnClicked);
             // 
             // TabSizeTextBox
             // 
@@ -1013,13 +1013,13 @@ namespace MyGeneration
         private System.Windows.Forms.Button btnLanguageFile;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Button btnTestConnection;
+        private System.Windows.Forms.Button TestConnectionButton;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox DbDriverComboBox;
         private System.Windows.Forms.Button OleDbButton;
         private System.Windows.Forms.TextBox ConnectionStringTextBox;
         private System.Windows.Forms.GroupBox groupBoxUserMetaData;
-        private System.Windows.Forms.Button btnUserMetaDataFile;
+        private System.Windows.Forms.Button UserMetadataFileBrowseButton;
         private System.Windows.Forms.TextBox UserMetaDataFileTextBox;
         private System.Windows.Forms.Label labelUserMetaData;
         private System.Windows.Forms.TabPage tabScript;
@@ -1040,8 +1040,8 @@ namespace MyGeneration
         private System.Windows.Forms.TextBox ProxyServerTextBox;
         private System.Windows.Forms.Label labelProxyServer;
         private System.Windows.Forms.GroupBox groupBoxTimout;
-        private System.Windows.Forms.CheckBox checkBoxDisableTimeout;
-        private System.Windows.Forms.TextBox textBoxTimeout;
+        private System.Windows.Forms.CheckBox DisableTimeoutCheckBox;
+        private System.Windows.Forms.TextBox TimeoutTextBox;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button buttonBrowseOutPath;
         private System.Windows.Forms.Label labelOutputPath;
