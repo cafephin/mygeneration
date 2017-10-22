@@ -20,7 +20,7 @@ namespace MyGeneration
         IZeusController ZeusController { get; }
         DockPanel DockPanel { get; }
         void SendAlert(IMyGenContent sender, string command, params object[] args);
-        object PerformMdiFuntion(IMyGenContent sender, string function, params object[] args);
+        object PerformMdiFunction(IMyGenContent sender, string function, params object[] args);
 
         IMyGenConsole Console { get; }
         IMyGenErrorList ErrorList { get; }

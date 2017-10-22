@@ -21,7 +21,7 @@ namespace MyGeneration
 
 	    private string ShowOleDbDialog(string cs)
         {
-            return _mdi.PerformMdiFuntion(this, "ShowOLEDBDialog", cs) as string; 
+            return _mdi.PerformMdiFunction(this, "ShowOLEDBDialog", cs) as string; 
         }
 
 		#region Windows Form Designer generated code

@@ -153,7 +153,7 @@ namespace MyGeneration
 
         private void projectBrowserControl1_ExecutionStarted(object sender, EventArgs e)
         {
-            this._mdi.PerformMdiFuntion(this, "ExecutionQueueStart");
+            this._mdi.PerformMdiFunction(this, "ExecutionQueueStart");
         }
 
         private void projectBrowserControl1_ErrorsOccurred(object sender, EventArgs e)
@@ -186,7 +186,7 @@ namespace MyGeneration
 
             if (!isRunning)
             {
-                this._mdi.PerformMdiFuntion(this, "ExecutionQueueUpdate");
+                this._mdi.PerformMdiFunction(this, "ExecutionQueueUpdate");
             }
 
         }

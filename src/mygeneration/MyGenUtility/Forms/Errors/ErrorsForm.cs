@@ -158,7 +158,7 @@ namespace MyGeneration.Forms
         {
             if (this.listView1.SelectedItems.Count > 0)
             {
-                this._mdi.PerformMdiFuntion(this, "ShowErrorDetail", this.SelectedErrors);
+                this._mdi.PerformMdiFunction(this, "ShowErrorDetail", this.SelectedErrors);
             }
         }
 
@@ -169,7 +169,7 @@ namespace MyGeneration.Forms
             {
                 if (this.listView1.SelectedItems.Count > 0)
                 {
-                    this._mdi.PerformMdiFuntion(this, 
+                    this._mdi.PerformMdiFunction(this, 
                         "NavigateToTemplateError", this.SelectedError);
                 }
             }
@@ -177,7 +177,7 @@ namespace MyGeneration.Forms
             {
                 if (this.listView1.SelectedItems.Count > 0)
                 {
-                    this._mdi.PerformMdiFuntion(this, "ShowErrorDetail", this.SelectedErrors);
+                    this._mdi.PerformMdiFunction(this, "ShowErrorDetail", this.SelectedErrors);
                 }
             }
         }

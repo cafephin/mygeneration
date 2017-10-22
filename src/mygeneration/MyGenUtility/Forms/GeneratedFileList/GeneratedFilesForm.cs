@@ -78,7 +78,7 @@ namespace MyGeneration.Forms
         {
             if (this.listView1.SelectedItems.Count > 0)
             {
-                this._mdi.PerformMdiFuntion(this, "OpenFile", this.SelectedFiles);
+                this._mdi.PerformMdiFunction(this, "OpenFile", this.SelectedFiles);
             }
         }
 
@@ -86,12 +86,12 @@ namespace MyGeneration.Forms
         {
             if (this.listView1.SelectedItems.Count == 1)
             {
-                this._mdi.PerformMdiFuntion(this,
+                this._mdi.PerformMdiFunction(this,
                     "OpenFile", this.SelectedFile);
             }
             else if (this.listView1.SelectedItems.Count > 1)
             {
-                this._mdi.PerformMdiFuntion(this, "OpenFile", this.SelectedFiles);
+                this._mdi.PerformMdiFunction(this, "OpenFile", this.SelectedFiles);
             }
         }
 
