@@ -121,6 +121,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppRelease.cs" />
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -284,6 +285,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SharedResources.cs" />
     <Compile Include="XmlHelper.cs" />
     <Compile Include="ZeusController.cs" />
     <Compile Include="ZeusProcessManager.cs" />
