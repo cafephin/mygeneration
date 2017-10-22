@@ -148,12 +148,6 @@
     <Compile Include="MyGenerationMDI.designer.cs">
       <DependentUpon>MyGenerationMDI.cs</DependentUpon>
     </Compile>
-    <Compile Include="Web References\com.mygenerationsoftware.www\Reference.cs">
-      <DependentUpon>Reference.map</DependentUpon>
-      <SubType>code</SubType>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
     <EmbeddedResource Include="ExceptionDialog.resx">
       <DependentUpon>ExceptionDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -172,12 +166,6 @@
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Settings\CSharp.INI" />
-    <None Include="Web References\com.mygenerationsoftware.www\Reference.map">
-      <Generator>MSDiscoCodeGenerator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Web References\com.mygenerationsoftware.www\VersionInfo.disco" />
-    <None Include="Web References\com.mygenerationsoftware.www\VersionInfo.wsdl" />
     <Content Include="MyGeneration.ico" />
     <Content Include="Settings\DbTargets.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -189,11 +177,6 @@
     <Content Include="Settings\Languages.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <WebReferenceUrl Include="http://www.mygenerationsoftware.com/WebServices/VersionInfo.asmx">
-      <RelPath>Web References\com.mygenerationsoftware.www\</RelPath>
-      <UrlBehavior>Static</UrlBehavior>
-    </WebReferenceUrl>
-    <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="MSDASC">
