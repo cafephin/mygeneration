@@ -49,6 +49,7 @@ namespace MyGeneration
             this.btnLanguageFile = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.checkBoxDefaultDBOnly = new System.Windows.Forms.CheckBox();
             this.btnTestConnection = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.cboDbDriver = new System.Windows.Forms.ComboBox();
@@ -107,7 +108,6 @@ namespace MyGeneration
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.buttonSaveSettings = new System.Windows.Forms.Button();
             this.buttonCancelSettings = new System.Windows.Forms.Button();
-            this.checkBoxDefaultDBOnly = new System.Windows.Forms.CheckBox();
             this.tabControl.SuspendLayout();
             this.tabConnection.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -124,9 +124,9 @@ namespace MyGeneration
             // 
             // tabControl
             // 
-            this.tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl.Controls.Add(this.tabConnection);
             this.tabControl.Controls.Add(this.tabScript);
             this.tabControl.Controls.Add(this.tabMisc);
@@ -135,12 +135,14 @@ namespace MyGeneration
             this.tabControl.Name = "tabControl";
             this.tabControl.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(595, 558);
+            this.tabControl.Size = new System.Drawing.Size(595, 604);
             this.tabControl.TabIndex = 1;
             // 
             // tabConnection
             // 
+            this.tabConnection.Controls.Add(this.buttonCancelSettings);
             this.tabConnection.Controls.Add(this.groupBox5);
+            this.tabConnection.Controls.Add(this.buttonSaveSettings);
             this.tabConnection.Controls.Add(this.groupBox2);
             this.tabConnection.Controls.Add(this.groupBox1);
             this.tabConnection.Controls.Add(this.groupBox3);
@@ -148,14 +150,14 @@ namespace MyGeneration
             this.tabConnection.Location = new System.Drawing.Point(4, 22);
             this.tabConnection.Name = "tabConnection";
             this.tabConnection.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.tabConnection.Size = new System.Drawing.Size(587, 532);
+            this.tabConnection.Size = new System.Drawing.Size(587, 578);
             this.tabConnection.TabIndex = 0;
             this.tabConnection.Text = "Connection";
             // 
             // groupBox5
             // 
-            this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox5.Controls.Add(this.buttonDelete);
             this.groupBox5.Controls.Add(this.buttonLoad);
             this.groupBox5.Controls.Add(this.buttonSave);
@@ -212,8 +214,8 @@ namespace MyGeneration
             // 
             // comboBoxSavedConns
             // 
-            this.comboBoxSavedConns.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBoxSavedConns.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxSavedConns.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.comboBoxSavedConns.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxSavedConns.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
@@ -224,8 +226,8 @@ namespace MyGeneration
             // 
             // groupBox2
             // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.cboDbTarget);
@@ -271,8 +273,8 @@ namespace MyGeneration
             // 
             // txtDbTargetFile
             // 
-            this.txtDbTargetFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtDbTargetFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtDbTargetFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtDbTargetFile.Location = new System.Drawing.Point(88, 24);
             this.txtDbTargetFile.Name = "txtDbTargetFile";
@@ -294,8 +296,8 @@ namespace MyGeneration
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.cboLanguage);
             this.groupBox1.Controls.Add(this.txtLanguageFile);
@@ -331,8 +333,8 @@ namespace MyGeneration
             // 
             // txtLanguageFile
             // 
-            this.txtLanguageFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtLanguageFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtLanguageFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtLanguageFile.Location = new System.Drawing.Point(88, 24);
             this.txtLanguageFile.Name = "txtLanguageFile";
@@ -364,8 +366,8 @@ namespace MyGeneration
             // 
             // groupBox3
             // 
-            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox3.Controls.Add(this.checkBoxDefaultDBOnly);
             this.groupBox3.Controls.Add(this.btnTestConnection);
             this.groupBox3.Controls.Add(this.label6);
@@ -379,6 +381,17 @@ namespace MyGeneration
             this.groupBox3.TabIndex = 23;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Connection String";
+            // 
+            // checkBoxDefaultDBOnly
+            // 
+            this.checkBoxDefaultDBOnly.AutoSize = true;
+            this.checkBoxDefaultDBOnly.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxDefaultDBOnly.Location = new System.Drawing.Point(254, 26);
+            this.checkBoxDefaultDBOnly.Name = "checkBoxDefaultDBOnly";
+            this.checkBoxDefaultDBOnly.Size = new System.Drawing.Size(102, 17);
+            this.checkBoxDefaultDBOnly.TabIndex = 28;
+            this.checkBoxDefaultDBOnly.Text = "Default DB Only";
+            this.checkBoxDefaultDBOnly.UseVisualStyleBackColor = true;
             // 
             // btnTestConnection
             // 
@@ -408,8 +421,8 @@ namespace MyGeneration
             this.cboDbDriver.Name = "cboDbDriver";
             this.cboDbDriver.Size = new System.Drawing.Size(192, 21);
             this.cboDbDriver.TabIndex = 24;
-            this.cboDbDriver.SelectionChangeCommitted += new System.EventHandler(this.cboDbDriver_SelectionChangeCommitted);
             this.cboDbDriver.SelectedIndexChanged += new System.EventHandler(this.cboDbDriver_SelectedIndexChanged);
+            this.cboDbDriver.SelectionChangeCommitted += new System.EventHandler(this.cboDbDriver_SelectionChangeCommitted);
             // 
             // btnOleDb
             // 
@@ -425,8 +438,8 @@ namespace MyGeneration
             // 
             // txtConnectionString
             // 
-            this.txtConnectionString.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtConnectionString.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtConnectionString.Enabled = false;
             this.txtConnectionString.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtConnectionString.Location = new System.Drawing.Point(8, 56);
@@ -438,8 +451,8 @@ namespace MyGeneration
             // 
             // groupBoxUserMetaData
             // 
-            this.groupBoxUserMetaData.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBoxUserMetaData.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxUserMetaData.Controls.Add(this.label1DbUserMetaMappingsExample);
             this.groupBoxUserMetaData.Controls.Add(this.labellDbUserMetaMappings);
             this.groupBoxUserMetaData.Controls.Add(this.textBoxDbUserMetaMappings);
@@ -463,7 +476,7 @@ namespace MyGeneration
             this.label1DbUserMetaMappingsExample.Name = "label1DbUserMetaMappingsExample";
             this.label1DbUserMetaMappingsExample.Size = new System.Drawing.Size(320, 13);
             this.label1DbUserMetaMappingsExample.TabIndex = 29;
-            this.label1DbUserMetaMappingsExample.Text = "(comma seperated pairs like \"dbname=alias,dbname2=alias2...)";
+            this.label1DbUserMetaMappingsExample.Text = "(comma seperated name=value, e.g. \"dbname=alias, dbname2=alias2\")";
             // 
             // labellDbUserMetaMappings
             // 
@@ -477,8 +490,8 @@ namespace MyGeneration
             // 
             // textBoxDbUserMetaMappings
             // 
-            this.textBoxDbUserMetaMappings.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxDbUserMetaMappings.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxDbUserMetaMappings.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxDbUserMetaMappings.Location = new System.Drawing.Point(8, 67);
             this.textBoxDbUserMetaMappings.Multiline = true;
@@ -501,8 +514,8 @@ namespace MyGeneration
             // 
             // txtUserMetaDataFile
             // 
-            this.txtUserMetaDataFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtUserMetaDataFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtUserMetaDataFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtUserMetaDataFile.Location = new System.Drawing.Point(88, 24);
             this.txtUserMetaDataFile.Name = "txtUserMetaDataFile";
@@ -619,9 +632,9 @@ namespace MyGeneration
             this.groupBox4.Controls.Add(this.checkBoxUseProxyServer);
             this.groupBox4.Controls.Add(this.textBoxProxyServer);
             this.groupBox4.Controls.Add(this.labelProxyServer);
-            this.groupBox4.Location = new System.Drawing.Point(234, 235);
+            this.groupBox4.Location = new System.Drawing.Point(234, 231);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(344, 208);
+            this.groupBox4.Size = new System.Drawing.Size(344, 212);
             this.groupBox4.TabIndex = 13;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Custom Proxy Server Settings";
@@ -853,7 +866,7 @@ namespace MyGeneration
             // 
             this.checkBoxShowConsoleOutput.Location = new System.Drawing.Point(24, 116);
             this.checkBoxShowConsoleOutput.Name = "checkBoxShowConsoleOutput";
-            this.checkBoxShowConsoleOutput.Size = new System.Drawing.Size(216, 24);
+            this.checkBoxShowConsoleOutput.Size = new System.Drawing.Size(257, 24);
             this.checkBoxShowConsoleOutput.TabIndex = 3;
             this.checkBoxShowConsoleOutput.Text = "Show Template Generation Output in Console";
             // 
@@ -927,7 +940,7 @@ namespace MyGeneration
             // 
             this.buttonSaveSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonSaveSettings.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.buttonSaveSettings.Location = new System.Drawing.Point(464, 3);
+            this.buttonSaveSettings.Location = new System.Drawing.Point(439, 542);
             this.buttonSaveSettings.Name = "buttonSaveSettings";
             this.buttonSaveSettings.Size = new System.Drawing.Size(62, 23);
             this.buttonSaveSettings.TabIndex = 2;
@@ -939,7 +952,7 @@ namespace MyGeneration
             // 
             this.buttonCancelSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCancelSettings.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancelSettings.Location = new System.Drawing.Point(532, 3);
+            this.buttonCancelSettings.Location = new System.Drawing.Point(506, 542);
             this.buttonCancelSettings.Name = "buttonCancelSettings";
             this.buttonCancelSettings.Size = new System.Drawing.Size(62, 23);
             this.buttonCancelSettings.TabIndex = 3;
@@ -947,27 +960,14 @@ namespace MyGeneration
             this.buttonCancelSettings.UseVisualStyleBackColor = true;
             this.buttonCancelSettings.Click += new System.EventHandler(this.buttonCancelSettings_Click);
             // 
-            // checkBoxDefaultDBOnly
-            // 
-            this.checkBoxDefaultDBOnly.AutoSize = true;
-            this.checkBoxDefaultDBOnly.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxDefaultDBOnly.Location = new System.Drawing.Point(254, 26);
-            this.checkBoxDefaultDBOnly.Name = "checkBoxDefaultDBOnly";
-            this.checkBoxDefaultDBOnly.Size = new System.Drawing.Size(108, 17);
-            this.checkBoxDefaultDBOnly.TabIndex = 28;
-            this.checkBoxDefaultDBOnly.Text = "Default DB Only?";
-            this.checkBoxDefaultDBOnly.UseVisualStyleBackColor = true;
-            // 
             // DefaultSettingsControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.buttonCancelSettings);
-            this.Controls.Add(this.buttonSaveSettings);
             this.Controls.Add(this.tabControl);
             this.MinimumSize = new System.Drawing.Size(601, 574);
             this.Name = "DefaultSettingsControl";
-            this.Size = new System.Drawing.Size(601, 574);
+            this.Size = new System.Drawing.Size(601, 620);
             this.tabControl.ResumeLayout(false);
             this.tabConnection.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);

@@ -163,7 +163,7 @@ namespace MyGeneration
         {
             get
             {
-                ConnectionInfo info = settings.SavedConnections[lastLoadedConnection] as ConnectionInfo;
+                var info = settings.SavedConnections[lastLoadedConnection] as ConnectionInfo;
 
                 if ((lastLoadedConnection == string.Empty)
                     || (settings.SavedConnections.ContainsKey(lastLoadedConnection)))
@@ -172,13 +172,13 @@ namespace MyGeneration
                 }
 
                 return (info.Driver != this.cboDbDriver.SelectedValue.ToString()) ||
-                                            (info.ConnectionString != this.txtConnectionString.Text) ||
-                                            (info.LanguagePath != this.txtLanguageFile.Text) ||
-                                            (info.Language != this.cboLanguage.Text) ||
-                                            (info.DbTargetPath != this.txtDbTargetFile.Text) ||
-                                            (info.DbTarget != this.cboDbTarget.Text) ||
-                                            (info.UserMetaDataPath != this.txtUserMetaDataFile.Text) ||
-                                            (info.DatabaseUserDataXmlMappingsString != this.textBoxDbUserMetaMappings.Text);
+                       (info.ConnectionString != this.txtConnectionString.Text) ||
+                       (info.LanguagePath != this.txtLanguageFile.Text) ||
+                       (info.Language != this.cboLanguage.Text) ||
+                       (info.DbTargetPath != this.txtDbTargetFile.Text) ||
+                       (info.DbTarget != this.cboDbTarget.Text) ||
+                       (info.UserMetaDataPath != this.txtUserMetaDataFile.Text) ||
+                       (info.DatabaseUserDataXmlMappingsString != this.textBoxDbUserMetaMappings.Text);
             }
         }
 
@@ -188,13 +188,14 @@ namespace MyGeneration
             {
                 if (this.cboDbDriver.SelectedValue == null)
                     return false;
+
                 return (settings.DbDriver != this.cboDbDriver.SelectedValue.ToString()) ||
-                                    (settings.ConnectionString != this.txtConnectionString.Text) ||
-                                    (settings.LanguageMappingFile != this.txtLanguageFile.Text) ||
-                                    (settings.Language != this.cboLanguage.Text) ||
-                                    (settings.DbTargetMappingFile != this.txtDbTargetFile.Text) ||
-                                    (settings.DbTarget != this.cboDbTarget.Text) ||
-                                    (settings.UserMetaDataFileName != this.txtUserMetaDataFile.Text);
+                       (settings.ConnectionString != this.txtConnectionString.Text) ||
+                       (settings.LanguageMappingFile != this.txtLanguageFile.Text) ||
+                       (settings.Language != this.cboLanguage.Text) ||
+                       (settings.DbTargetMappingFile != this.txtDbTargetFile.Text) ||
+                       (settings.DbTarget != this.cboDbTarget.Text) ||
+                       (settings.UserMetaDataFileName != this.txtUserMetaDataFile.Text);
             }
         }
 
