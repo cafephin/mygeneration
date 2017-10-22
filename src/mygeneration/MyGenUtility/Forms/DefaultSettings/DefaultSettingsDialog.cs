@@ -118,7 +118,7 @@ namespace MyGeneration
 
         public ToolStrip ToolStrip
         {
-            get { return _toolStripOptions; }
+            get { return null; }
         }
 
         public string DocumentIndentity
