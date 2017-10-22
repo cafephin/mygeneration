@@ -38,14 +38,14 @@
             this.defaultSettingsControl.Location = new System.Drawing.Point(0, 0);
             this.defaultSettingsControl.MinimumSize = new System.Drawing.Size(601, 574);
             this.defaultSettingsControl.Name = "defaultSettingsControl";
-            this.defaultSettingsControl.Size = new System.Drawing.Size(613, 622);
+            this.defaultSettingsControl.Size = new System.Drawing.Size(607, 649);
             this.defaultSettingsControl.TabIndex = 0;
             // 
             // DefaultSettingsDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(613, 622);
+            this.ClientSize = new System.Drawing.Size(607, 649);
             this.Controls.Add(this.defaultSettingsControl);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "DefaultSettingsDialog";

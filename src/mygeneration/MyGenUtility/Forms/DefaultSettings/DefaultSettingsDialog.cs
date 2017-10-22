@@ -23,7 +23,7 @@ namespace MyGeneration
             InitializeComponent();
 
             this._mdi = mdi;
-            this.defaultSettingsControl.ShowOLEDBDialog = new ShowOleDbDialogHandler(ShowOLEDBDialog);
+            this.defaultSettingsControl.ShowOleDbDialog = new ShowOleDbDialogHandler(ShowOLEDBDialog);
             this.defaultSettingsControl.Initialize(mdi);
         }
 

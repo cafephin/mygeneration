@@ -23,7 +23,7 @@ namespace MyGeneration
 			InitializeComponent();
 
             _mdi = mdi;
-            _defaultSettingsControl.ShowOLEDBDialog = new ShowOleDbDialogHandler(ShowOleDbDialog);
+            _defaultSettingsControl.ShowOleDbDialog = new ShowOleDbDialogHandler(ShowOleDbDialog);
             _defaultSettingsControl.Initialize(mdi);
 		}
 
@@ -138,7 +138,7 @@ namespace MyGeneration
             this._defaultSettingsControl.Location = new System.Drawing.Point(0, 0);
             this._defaultSettingsControl.MinimumSize = new System.Drawing.Size(601, 574);
             this._defaultSettingsControl.Name = "_defaultSettingsControl";
-            this._defaultSettingsControl.Size = new System.Drawing.Size(896, 627);
+            this._defaultSettingsControl.Size = new System.Drawing.Size(776, 650);
             this._defaultSettingsControl.TabIndex = 40;
             // 
             // DefaultProperties
@@ -146,7 +146,7 @@ namespace MyGeneration
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.AutoScroll = true;
             this.AutoScrollMinSize = new System.Drawing.Size(590, 531);
-            this.ClientSize = new System.Drawing.Size(896, 627);
+            this.ClientSize = new System.Drawing.Size(776, 650);
             this.Controls.Add(this._menuStripMain);
             this.Controls.Add(this._defaultSettingsControl);
             this.Controls.Add(this._toolStripOptions);
