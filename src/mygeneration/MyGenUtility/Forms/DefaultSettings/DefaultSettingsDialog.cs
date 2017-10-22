@@ -63,7 +63,6 @@ namespace MyGeneration
             this.Text = "Settings";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DefaultProperties_OnClosing);
             this.Load += new System.EventHandler(this.DefaultProperties_OnLoading);
-            this.Leave += new System.EventHandler(this.DefaultProperties_OnLeaving);
             this.ResumeLayout(false);
             this.PerformLayout();
 
