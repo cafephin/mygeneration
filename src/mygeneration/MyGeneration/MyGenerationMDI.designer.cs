@@ -64,7 +64,7 @@ namespace MyGeneration
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
+            this.MainDockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripDropDownButtonNew = new System.Windows.Forms.ToolStripDropDownButton();
             this.toolStripButtonOpen = new System.Windows.Forms.ToolStripButton();
@@ -177,7 +177,7 @@ namespace MyGeneration
             this.defaultSettingsToolStripMenuItem.Name = "defaultSettingsToolStripMenuItem";
             this.defaultSettingsToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.defaultSettingsToolStripMenuItem.Text = "&Default Settings";
-            this.defaultSettingsToolStripMenuItem.Click += new System.EventHandler(this.defaultSettingsToolStripMenuItem_Click);
+            this.defaultSettingsToolStripMenuItem.Click += new System.EventHandler(this.SettingsMenuItem_OnClicked);
             // 
             // toolStripMenuItem3
             // 
@@ -192,14 +192,14 @@ namespace MyGeneration
             this.exitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitMenuItem_OnClicked);
             // 
             // windowToolStripMenuItem
             // 
             this.windowToolStripMenuItem.Name = "windowToolStripMenuItem";
             this.windowToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
             this.windowToolStripMenuItem.Text = "&Window";
-            this.windowToolStripMenuItem.DropDownOpening += new System.EventHandler(this.windowToolStripMenuItem_DropDownOpening);
+            this.windowToolStripMenuItem.DropDownOpening += new System.EventHandler(this.WindowMenu_OnDropDownOpening);
             // 
             // pluginsToolStripMenuItem
             // 
@@ -230,7 +230,7 @@ namespace MyGeneration
             this.contentsToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
             this.contentsToolStripMenuItem.Tag = "\\MyGeneration.chm";
             this.contentsToolStripMenuItem.Text = "&Contents";
-            this.contentsToolStripMenuItem.Click += new System.EventHandler(this.chmToolStripMenuItem_Click);
+            this.contentsToolStripMenuItem.Click += new System.EventHandler(this.HelpMenuItem_OnClicked);
             // 
             // toolStripMenuItem4
             // 
@@ -250,7 +250,7 @@ namespace MyGeneration
             this.checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem";
             this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
             this.checkForUpdatesToolStripMenuItem.Text = "Check online for &updates";
-            this.checkForUpdatesToolStripMenuItem.Click += new System.EventHandler(this.checkForUpdatesToolStripMenuItem_Click);
+            this.checkForUpdatesToolStripMenuItem.Click += new System.EventHandler(this.CheckForUpdateMenuItem_OnClicked);
             // 
             // aboutToolStripMenuItem
             // 
@@ -258,21 +258,21 @@ namespace MyGeneration
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
             this.aboutToolStripMenuItem.Text = "&About";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.AboutMenuItem_OnClicked);
             // 
             // dockPanel
             // 
-            this.dockPanel.ActiveAutoHideContent = null;
-            this.dockPanel.AllowDrop = true;
-            this.dockPanel.AllowEndUserNestedDocking = false;
-            this.dockPanel.AutoSize = true;
-            this.dockPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dockPanel.DockBackColor = System.Drawing.SystemColors.Control;
-            this.dockPanel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dockPanel.Location = new System.Drawing.Point(0, 49);
-            this.dockPanel.Margin = new System.Windows.Forms.Padding(2);
-            this.dockPanel.Name = "dockPanel";
-            this.dockPanel.Size = new System.Drawing.Size(792, 495);
+            this.MainDockPanel.ActiveAutoHideContent = null;
+            this.MainDockPanel.AllowDrop = true;
+            this.MainDockPanel.AllowEndUserNestedDocking = false;
+            this.MainDockPanel.AutoSize = true;
+            this.MainDockPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.MainDockPanel.DockBackColor = System.Drawing.SystemColors.Control;
+            this.MainDockPanel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MainDockPanel.Location = new System.Drawing.Point(0, 49);
+            this.MainDockPanel.Margin = new System.Windows.Forms.Padding(2);
+            this.MainDockPanel.Name = "MainDockPanel";
+            this.MainDockPanel.Size = new System.Drawing.Size(792, 495);
             dockPanelGradient7.EndColor = System.Drawing.SystemColors.ControlLight;
             dockPanelGradient7.StartColor = System.Drawing.SystemColors.ControlLight;
             autoHideStripSkin3.DockStripGradient = dockPanelGradient7;
@@ -316,11 +316,11 @@ namespace MyGeneration
             dockPaneStripToolWindowGradient3.InactiveTabGradient = tabGradient21;
             dockPaneStripSkin3.ToolWindowGradient = dockPaneStripToolWindowGradient3;
             dockPanelSkin3.DockPaneStripSkin = dockPaneStripSkin3;
-            this.dockPanel.Skin = dockPanelSkin3;
-            this.dockPanel.TabIndex = 6;
-            this.dockPanel.ActiveContentChanged += new System.EventHandler(this.dockPanel_ActiveContentChanged);
-            this.dockPanel.DragDrop += new System.Windows.Forms.DragEventHandler(this.MyGenerationMDI_DragDrop);
-            this.dockPanel.DragEnter += new System.Windows.Forms.DragEventHandler(this.MyGenerationMDI_DragEnter);
+            this.MainDockPanel.Skin = dockPanelSkin3;
+            this.MainDockPanel.TabIndex = 6;
+            this.MainDockPanel.ActiveContentChanged += new System.EventHandler(this.dockPanel_ActiveContentChanged);
+            this.MainDockPanel.DragDrop += new System.Windows.Forms.DragEventHandler(this.MyGenerationMDI_DragDrop);
+            this.MainDockPanel.DragEnter += new System.Windows.Forms.DragEventHandler(this.MyGenerationMDI_DragEnter);
             // 
             // toolStrip1
             // 
@@ -364,7 +364,7 @@ namespace MyGeneration
             this.toolStripButtonOpen.Name = "toolStripButtonOpen";
             this.toolStripButtonOpen.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonOpen.Text = "Open";
-            this.toolStripButtonOpen.Click += new System.EventHandler(this.toolStripButtonOpen_Click);
+            this.toolStripButtonOpen.Click += new System.EventHandler(this.ToolStripOpenButton_OnClicked);
             // 
             // toolStripButtonTemplateBrowser
             // 
@@ -374,7 +374,7 @@ namespace MyGeneration
             this.toolStripButtonTemplateBrowser.Name = "toolStripButtonTemplateBrowser";
             this.toolStripButtonTemplateBrowser.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonTemplateBrowser.Text = "Template Browser";
-            this.toolStripButtonTemplateBrowser.Click += new System.EventHandler(this.toolStripButtonTemplateBrowser_Click);
+            this.toolStripButtonTemplateBrowser.Click += new System.EventHandler(this.ToolStripTemplateBrowserButton_OnClicked);
             // 
             // toolStripButtonOpenGeneratedOutputFolder
             // 
@@ -384,7 +384,7 @@ namespace MyGeneration
             this.toolStripButtonOpenGeneratedOutputFolder.Name = "toolStripButtonOpenGeneratedOutputFolder";
             this.toolStripButtonOpenGeneratedOutputFolder.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonOpenGeneratedOutputFolder.ToolTipText = "Open Generated Output Folder";
-            this.toolStripButtonOpenGeneratedOutputFolder.Click += new System.EventHandler(this.toolStripButtonOpenGeneratedOutputFolder_Click);
+            this.toolStripButtonOpenGeneratedOutputFolder.Click += new System.EventHandler(this.ToolStripOpenGeneratedOutputFolderButton_OnClicked);
             // 
             // toolStripSeparator1
             // 
@@ -399,7 +399,7 @@ namespace MyGeneration
             this.toolStripButtonMyMetaBrowser.Name = "toolStripButtonMyMetaBrowser";
             this.toolStripButtonMyMetaBrowser.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonMyMetaBrowser.Text = "MyMeta Browser";
-            this.toolStripButtonMyMetaBrowser.Click += new System.EventHandler(this.toolStripButtonMyMetaBrowser_Click);
+            this.toolStripButtonMyMetaBrowser.Click += new System.EventHandler(this.ToolStripMetaBrowserButton_OnClicked);
             // 
             // toolStripButtonMyMetaProperties
             // 
@@ -409,7 +409,7 @@ namespace MyGeneration
             this.toolStripButtonMyMetaProperties.Name = "toolStripButtonMyMetaProperties";
             this.toolStripButtonMyMetaProperties.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonMyMetaProperties.Text = "MyMeta Properties";
-            this.toolStripButtonMyMetaProperties.Click += new System.EventHandler(this.toolStripButtonMyMetaProperties_Click);
+            this.toolStripButtonMyMetaProperties.Click += new System.EventHandler(this.ToolStripMyMetaPropertiesButton_OnClicked);
             // 
             // toolStripButtonLangMappings
             // 
@@ -419,7 +419,7 @@ namespace MyGeneration
             this.toolStripButtonLangMappings.Name = "toolStripButtonLangMappings";
             this.toolStripButtonLangMappings.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonLangMappings.Text = "Language Mappings";
-            this.toolStripButtonLangMappings.Click += new System.EventHandler(this.toolStripButtonLangMappings_Click);
+            this.toolStripButtonLangMappings.Click += new System.EventHandler(this.ToolStripLanguageMappingsButton_OnClicked);
             // 
             // toolStripButtonDbTargetMappings
             // 
@@ -429,7 +429,7 @@ namespace MyGeneration
             this.toolStripButtonDbTargetMappings.Name = "toolStripButtonDbTargetMappings";
             this.toolStripButtonDbTargetMappings.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonDbTargetMappings.Text = "DB Target Mappings";
-            this.toolStripButtonDbTargetMappings.Click += new System.EventHandler(this.toolStripButtonDbTargetMappings_Click);
+            this.toolStripButtonDbTargetMappings.Click += new System.EventHandler(this.ToolStripDbTargetMappingsButton_OnClicked);
             // 
             // toolStripButtonLocalAliases
             // 
@@ -439,7 +439,7 @@ namespace MyGeneration
             this.toolStripButtonLocalAliases.Name = "toolStripButtonLocalAliases";
             this.toolStripButtonLocalAliases.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonLocalAliases.Text = "Local MetaData Mappings";
-            this.toolStripButtonLocalAliases.Click += new System.EventHandler(this.toolStripButtonLocalAliases_Click);
+            this.toolStripButtonLocalAliases.Click += new System.EventHandler(this.ToolStripLocalAliasesButton_OnClicked);
             // 
             // toolStripButtonGlobalAliases
             // 
@@ -449,7 +449,7 @@ namespace MyGeneration
             this.toolStripButtonGlobalAliases.Name = "toolStripButtonGlobalAliases";
             this.toolStripButtonGlobalAliases.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonGlobalAliases.Text = "Global MetaData Mappings";
-            this.toolStripButtonGlobalAliases.Click += new System.EventHandler(this.toolStripButtonGlobalAliases_Click);
+            this.toolStripButtonGlobalAliases.Click += new System.EventHandler(this.ToolStripGlobalAliasesButton_OnClicked);
             // 
             // toolStripSeparator2
             // 
@@ -464,7 +464,7 @@ namespace MyGeneration
             this.toolStripButtonOptions.Name = "toolStripButtonOptions";
             this.toolStripButtonOptions.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonOptions.Text = "Default Settings";
-            this.toolStripButtonOptions.Click += new System.EventHandler(this.toolStripButtonOptions_Click);
+            this.toolStripButtonOptions.Click += new System.EventHandler(this.ToolStripSettingsButton_OnClicked);
             // 
             // toolStripButtonErrors
             // 
@@ -474,7 +474,7 @@ namespace MyGeneration
             this.toolStripButtonErrors.Name = "toolStripButtonErrors";
             this.toolStripButtonErrors.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonErrors.Text = "Errors";
-            this.toolStripButtonErrors.Click += new System.EventHandler(this.toolStripButtonErrors_Click);
+            this.toolStripButtonErrors.Click += new System.EventHandler(this.ToolStripErrorButton_OnClicked);
             // 
             // toolStripButtonConsole
             // 
@@ -484,7 +484,7 @@ namespace MyGeneration
             this.toolStripButtonConsole.Name = "toolStripButtonConsole";
             this.toolStripButtonConsole.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonConsole.Text = "Console";
-            this.toolStripButtonConsole.Click += new System.EventHandler(this.toolStripButtonConsole_Click);
+            this.toolStripButtonConsole.Click += new System.EventHandler(this.ToolStripConsoleButton_OnClicked);
             // 
             // toolStripButtonGenFiles
             // 
@@ -495,7 +495,7 @@ namespace MyGeneration
             this.toolStripButtonGenFiles.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonGenFiles.Text = "Console";
             this.toolStripButtonGenFiles.ToolTipText = "Recently Generated Files";
-            this.toolStripButtonGenFiles.Click += new System.EventHandler(this.toolStripButtonGenFiles_Click);
+            this.toolStripButtonGenFiles.Click += new System.EventHandler(this.ToolStripRecentlyGeneratedFilesButton_OnClicked);
             // 
             // timerImgAnimate
             // 
@@ -508,7 +508,7 @@ namespace MyGeneration
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(792, 566);
-            this.Controls.Add(this.dockPanel);
+            this.Controls.Add(this.MainDockPanel);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.statusStripMain);
             this.Controls.Add(this.menuStripMain);
@@ -518,7 +518,7 @@ namespace MyGeneration
             this.Name = "MyGenerationMDI";
             this.Text = "MyGeneration";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MyGenerationMDI_FormClosing);
-            this.Load += new System.EventHandler(this.MyGenerationMDI_Load);
+            this.Load += new System.EventHandler(this.MyGenerationMDI_OnLoad);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.MyGenerationMDI_DragDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.MyGenerationMDI_DragEnter);
             this.statusStripMain.ResumeLayout(false);
@@ -541,7 +541,7 @@ namespace MyGeneration
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-        private WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel;
+        private WeifenLuo.WinFormsUI.Docking.DockPanel MainDockPanel;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;

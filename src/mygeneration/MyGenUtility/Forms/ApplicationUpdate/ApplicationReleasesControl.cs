@@ -98,7 +98,7 @@ namespace MyGeneration.Forms
                 {
                     releases = ZeusController.Instance.ReleaseList;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     releases = null;
                 }

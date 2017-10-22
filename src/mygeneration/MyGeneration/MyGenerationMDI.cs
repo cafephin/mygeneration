@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using MyGeneration.Forms;
@@ -20,40 +21,33 @@ namespace MyGeneration
         private const string SCINTILLA_CONFIG_FILE = @"\settings\scintillanet.xml";
         private const string REPLACEMENT_SUFFIX = "$REPLACEMENT$.dll";
 
-        private const string URL_SOURCEFORGE_DOWNLOAD = "http://sourceforge.net/project/showfiles.php?group_id=198893";
+        private static ConfigFile _configFile;
+        private ScintillaConfigureDelegate _scintillaConfigureDelegate;
+        
+        private readonly Dictionary<string, IMyGenContent> _dynamicContentWindows = new Dictionary<string, IMyGenContent>();
+        
+        private LanguageMappings _languageMappings;
+        private DbTargetMappings _dbTargetMappings;
+        private MetaDataBrowser _metaDataBrowser;
+        private UserMetaData _userMetaData;
+        private GlobalUserMetaData _globalUserMetaData;
+        private MetaProperties _metaProperties;
+        private DefaultSettingsDialog _defaultSettingsDialog;
+        private TemplateBrowser _templateBrowser;
+        private ConsoleForm _consoleForm;
+        private ErrorsForm _errorsForm;
+        private ErrorDetail _errorDetail;
+        private GeneratedFilesForm _generatedFilesForm;
 
-        private static ConfigFile configFile;
-        private ScintillaConfigureDelegate configureDelegate;
-
-        private FindForm findDialog = new FindForm();
-        private ReplaceForm replaceDialog = new ReplaceForm();
-
-        private Dictionary<string, IMyGenContent> dynamicContentWindows = new Dictionary<string, IMyGenContent>();
-
-        private DefaultSettings settings;
-        private LanguageMappings languageMappings;
-        private DbTargetMappings dbTargetMappings;
-        private MetaDataBrowser metaDataBrowser;
-        private UserMetaData userMetaData;
-        private GlobalUserMetaData globalUserMetaData;
-        private MetaProperties metaProperties;
-        private DefaultSettingsDialog options;
-        private TemplateBrowser templateBrowser;
-        private ConsoleForm consoleForm;
-        private ErrorsForm errorsForm;
-        private ErrorDetail errorDetail;
-        private GeneratedFilesForm generatedFilesForm;
-
-        private string startupPath;
-        private string[] startupFiles;
-        private int indexImgAnimate = -1;
-
+        private readonly string _startupPath;
+        private readonly string[] _startupFiles;
+        
         public MyGenerationMDI(string startupPath, params string[] args)
         {
-            this.startupPath = startupPath;
+            _startupPath = startupPath;
 
             // if the command line arguments contain a new location for the config file, set it.
-            List<string> argsList = new List<string>();
+            var argsList = new List<string>();
             string lastArg = null;
             foreach (string arg in args)
             {
@@ -72,68 +66,73 @@ namespace MyGeneration
                 lastArg = arg;
             }
 
-            settings = DefaultSettings.Instance;
-
-            //Any files that were locked when the TemplateLibrary downloaded and tried to replace them will be replaced now.
+            // Any files that were locked when the TemplateLibrary downloaded 
+            // and tried to replace them will be replaced now.
             ProcessReplacementFiles();
 
             InitializeComponent();
 
-            startupFiles = argsList.ToArray();
+            _startupFiles = argsList.ToArray();
 
             EditorManager.AddNewDocumentMenuItems(newFileDynamicToolStripMenuItem_Click,
-                newToolStripMenuItem.DropDownItems,
-                toolStripDropDownButtonNew.DropDownItems);
+                                                  newToolStripMenuItem.DropDownItems,
+                                                  toolStripDropDownButtonNew.DropDownItems);
 
-            ContentManager.AddNewContentMenuItems(openContentDynamicToolStripMenuItem_Click, this.pluginsToolStripMenuItem,
-                this.toolStrip1);
+            ContentManager.AddNewContentMenuItems(openContentDynamicToolStripMenuItem_Click, pluginsToolStripMenuItem, toolStrip1);
 
-            PluginManager.AddHelpMenuItems(chmToolStripMenuItem_Click, this.helpToolStripMenuItem, 2);
+            PluginManager.AddHelpMenuItems(HelpMenuItem_OnClicked, helpToolStripMenuItem, 2);
 
-            this.RefreshRecentFiles();
+            RefreshRecentFiles();
         }
 
-        private void MyGenerationMDI_Load(object sender, EventArgs e)
+        #region Loading
+        private void MyGenerationMDI_OnLoad(object sender, EventArgs e)
         {
-            switch (settings.WindowState)
+            RestoreWindowState();
+
+            LoadScintillaConfiguration();
+
+            LoadDockContentConfiguration();
+
+            if (_startupFiles != null)
             {
-                case "Maximized":
-
-                    this.WindowState = FormWindowState.Maximized;
-                    break;
-
-                case "Minimized":
-
-                    this.WindowState = FormWindowState.Minimized;
-                    break;
-
-                case "Normal":
-
-                    int x = Convert.ToInt32(settings.WindowPosLeft);
-                    int y = Convert.ToInt32(settings.WindowPosTop);
-                    int w = Convert.ToInt32(settings.WindowPosWidth);
-                    int h = Convert.ToInt32(settings.WindowPosHeight);
-
-                    this.Location = new System.Drawing.Point(x, y);
-                    this.Size = new Size(w, h);
-                    break;
+                OpenDocuments(_startupFiles);
             }
+        }
 
-            // Load up the scintilla configuration
-            ConfigurationUtility cu = new ConfigurationUtility();
+        private void LoadDockContentConfiguration()
+        {
+            var deserializeDockContent = new DeserializeDockContent(GetContentFromPersistString);
+            var dockConfigFileName = _startupPath + DOCK_CONFIG_FILE;
+            if (!File.Exists(dockConfigFileName)) return;
+            
+            try
+            {
+                MainDockPanel.LoadFromXml(dockConfigFileName, deserializeDockContent);
+            }
+            catch (Exception)
+            {
+                try
+                {
+                    File.Delete(dockConfigFileName);
+                }
+                catch
+                {
+                }
+            }
+        }
 
-            FileInfo scintillaConfigFile = new FileInfo(startupPath + SCINTILLA_CONFIG_FILE);
-            #region HACK: this needs to be cleaned up at some point.
-            // If the file doesn't exist, create it.
+        private void LoadScintillaConfiguration()
+        {
+            var scintillaConfigFile = new FileInfo(_startupPath + SCINTILLA_CONFIG_FILE);
             if (scintillaConfigFile.Exists)
             {
-                //TODO: Retry this with a copy of the file until we can upgrade Scintilla.Net with a fix.
-                int maxTries = 3;
+                var maxTries = 3;
                 while (maxTries > 0)
                 {
                     try
                     {
-                        configFile = cu.LoadConfiguration(scintillaConfigFile.FullName) as ConfigFile;
+                        _configFile = new ConfigurationUtility().LoadConfiguration(scintillaConfigFile.FullName) as ConfigFile;
                         break;
                     }
                     catch
@@ -145,49 +144,45 @@ namespace MyGeneration
                         }
                         else
                         {
-                            System.Threading.Thread.Sleep(10);
+                            Thread.Sleep(10);
                         }
                     }
                 }
             }
-            #endregion
-            if (configFile != null)
-            {
-                configureDelegate = configFile.MasterScintilla.Configure;
-                ZeusScintillaControl.StaticConfigure = configureDelegate;
-            }
 
-            // Dock Content configuration
-            DeserializeDockContent deserializeDockContent = new DeserializeDockContent(GetContentFromPersistString);
-            string dockConfigFileName = startupPath + DOCK_CONFIG_FILE;
+            if (_configFile == null) return;
 
-            if (File.Exists(dockConfigFileName))
-            {
-                try 
-                {
-                    dockPanel.LoadFromXml(dockConfigFileName, deserializeDockContent);
-                }
-                catch (Exception ex)
-                {
-                    try 
-                    {
-                        File.Delete(dockConfigFileName);
-                    }
-                    catch {}
-                }
-            }
-
-            // Startup files from the command line
-            if (this.startupFiles != null)
-            {
-                OpenDocuments(startupFiles);
-            }
+            _scintillaConfigureDelegate = _configFile.MasterScintilla.Configure;
+            ZeusScintillaControl.StaticConfigure = _scintillaConfigureDelegate;
         }
 
+        private void RestoreWindowState()
+        {
+            switch (DefaultSettings.Instance.WindowState)
+            {
+                case "Maximized":
+                    WindowState = FormWindowState.Maximized;
+                    break;
+                case "Minimized":
+                    WindowState = FormWindowState.Minimized;
+                    break;
+                case "Normal":
+                    var x = Convert.ToInt32(DefaultSettings.Instance.WindowPosLeft);
+                    var y = Convert.ToInt32(DefaultSettings.Instance.WindowPosTop);
+                    var w = Convert.ToInt32(DefaultSettings.Instance.WindowPosWidth);
+                    var h = Convert.ToInt32(DefaultSettings.Instance.WindowPosHeight);
+                    Location = new Point(x, y);
+                    Size = new Size(w, h);
+                    break;
+            }
+        }
+        #endregion
+
+        #region Closing
         private void MyGenerationMDI_FormClosing(object sender, FormClosingEventArgs e)
         {
-
-            bool allowPrevent = true, allowSave = true;
+            var allowPrevent = true; 
+            var allowSave = true;
             if (e.CloseReason == CloseReason.TaskManagerClosing)
             {
                 allowSave = false;
@@ -200,8 +195,11 @@ namespace MyGeneration
 
             if (!ZeusProcessManager.IsDormant)
             {
-                DialogResult r = MessageBox.Show(this, "There are templates currently being executed. Would you like to kill them?", "Warning!!", MessageBoxButtons.YesNo);
-                if (r == DialogResult.Yes)
+                var dialogResult = MessageBox.Show(this,
+                                                   "There are templates currently being executed. Would you like to kill them?",
+                                                   "Warning",
+                                                   MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
                 {
                     ZeusProcessManager.KillAll();
                 }
@@ -212,125 +210,74 @@ namespace MyGeneration
                 }
             }
 
-            if (allowSave && !this.Shutdown(allowPrevent))
+            if (allowSave && !Shutdown(allowPrevent))
             {
                 e.Cancel = true;
-                return;
             }
             else
             {
-                try
-                {
-                    switch (this.WindowState)
-                    {
-                        case FormWindowState.Maximized:
-
-                            settings.WindowState = "Maximized";
-                            break;
-
-                        case FormWindowState.Minimized:
-
-                            settings.WindowState = "Minimized";
-                            break;
-
-                        case FormWindowState.Normal:
-
-                            settings.WindowState = "Normal";
-                            settings.WindowPosLeft = this.Location.X.ToString();
-                            settings.WindowPosTop = this.Location.Y.ToString();
-                            settings.WindowPosWidth = this.Size.Width.ToString();
-                            settings.WindowPosHeight = this.Size.Height.ToString();
-                            break;
-                    }
-                    settings.Save();
-                }
-                catch { }
+                SaveWindowState();
             }
         }
 
-        private void dockPanel_ActiveContentChanged(object sender, EventArgs e)
+        private void SaveWindowState()
         {
-
-            IDockContent fe = this.dockPanel.ActiveContent as IDockContent;
-            if (fe is IEditControl)
+            try
             {
-                ToolStripManager.RevertMerge(toolStrip1);
-            }
-            else if (fe is IMyGenDocument)
-            {
-                ToolStripManager.RevertMerge(toolStrip1);
-                IMyGenDocument mgd = fe as IMyGenDocument;
-                if (mgd.ToolStrip != null)
+                switch (WindowState)
                 {
-                    ToolStripManager.Merge(mgd.ToolStrip, this.toolStrip1);
-                }
-            }
-            else if (fe == null)
-            {
-                bool foundDoc = false;
-                foreach (DockContent c in dockPanel.Contents)
-                {
-                    if ((c is IMyGenDocument) && (!c.IsHidden))
-                    {
-                        foundDoc = true;
+                    case FormWindowState.Maximized:
+                        DefaultSettings.Instance.WindowState = "Maximized";
                         break;
-                    }
+                    case FormWindowState.Minimized:
+                        DefaultSettings.Instance.WindowState = "Minimized";
+                        break;
+                    case FormWindowState.Normal:
+                        DefaultSettings.Instance.WindowState = "Normal";
+                        DefaultSettings.Instance.WindowPosLeft = Location.X.ToString();
+                        DefaultSettings.Instance.WindowPosTop = Location.Y.ToString();
+                        DefaultSettings.Instance.WindowPosWidth = Size.Width.ToString();
+                        DefaultSettings.Instance.WindowPosHeight = Size.Height.ToString();
+                        break;
                 }
-                if (!foundDoc) ToolStripManager.RevertMerge(toolStrip1);
+                DefaultSettings.Instance.Save();
             }
-        }
-
-        private void timerImgAnimate_Tick(object sender, EventArgs e)
-        {
-            indexImgAnimate = (indexImgAnimate >= 3) ? 0 : (indexImgAnimate + 1);
-            switch (indexImgAnimate)
+            catch
             {
-                case 0:
-                    this.toolStripStatusQueue.Image = Zeus.SharedResources.Refresh16x16_1;
-                    break;
-                case 1:
-                    this.toolStripStatusQueue.Image = Zeus.SharedResources.Refresh16x16_2;
-                    break;
-                case 2:
-                    this.toolStripStatusQueue.Image = Zeus.SharedResources.Refresh16x16_3;
-                    break;
-                case 3:
-                    this.toolStripStatusQueue.Image = Zeus.SharedResources.Refresh16x16_4;
-                    break;
             }
-            toolStripStatusQueue.Invalidate();
         }
+        #endregion
 
         private void PickFiles()
         {
-            DefaultSettings settings = DefaultSettings.Instance;
-
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = Directory.GetCurrentDirectory();
-            openFileDialog.Filter = EditorManager.OpenFileDialogString;
-            openFileDialog.RestoreDirectory = true;
-            openFileDialog.Multiselect = true;
+            var openFileDialog = new OpenFileDialog
+                                 {
+                                     InitialDirectory = Directory.GetCurrentDirectory(),
+                                     Filter = EditorManager.OpenFileDialogString,
+                                     RestoreDirectory = true,
+                                     Multiselect = true
+                                 };
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                this.OpenDocuments(openFileDialog.FileNames);
+                OpenDocuments(openFileDialog.FileNames);
             }
         }
 
-        public void OpenContent(params string[] keys)
+        private void OpenContent(params string[] keys)
         {
-            foreach (string key in keys)
+            foreach (var key in keys)
             {
-                if (dynamicContentWindows.ContainsKey(key))
+                if (_dynamicContentWindows.ContainsKey(key))
                 {
-                    IMyGenContent mygenContent = dynamicContentWindows[key];
+                    IMyGenContent mygenContent = _dynamicContentWindows[key];
                     if (mygenContent.DockContent.Visible)
                     {
                         mygenContent.DockContent.Hide();
                     }
                     else
                     {
-                        mygenContent.DockContent.Show(dockPanel);
+                        mygenContent.DockContent.Show(MainDockPanel);
                     }
                 }
                 else
@@ -338,14 +285,14 @@ namespace MyGeneration
                     IMyGenContent mygenContent = ContentManager.CreateContent(this, key);
                     if (mygenContent != null)
                     {
-                        dynamicContentWindows[key] = mygenContent;
-                        mygenContent.DockContent.Show(dockPanel);
+                        _dynamicContentWindows[key] = mygenContent;
+                        mygenContent.DockContent.Show(MainDockPanel);
                     }
                 }
             }
         }
 
-        public void ExecuteSimplePlugin(params string[] keys)
+        private void ExecuteSimplePlugin(params string[] keys)
         {
             try
             {
@@ -359,49 +306,46 @@ namespace MyGeneration
             }
             catch (Exception ex)
             {
-                this.ErrorsOccurred(ex);
+                ErrorsOccurred(ex);
             }
         }
 
         public void CreateDocument(params string[] fileTypes)
         {
-            foreach (string fileType in fileTypes)
+            foreach (var fileType in fileTypes)
             {
                 IMyGenDocument mygenDoc = EditorManager.CreateDocument(this, fileType);
                 if (mygenDoc != null)
-                {
-                    mygenDoc.DockContent.Show(dockPanel);
-                }
+                    mygenDoc.DockContent.Show(MainDockPanel);
             }
         }
 
         public void OpenDocuments(params string[] filenames)
         {
-            foreach (string file in filenames)
+            foreach (var file in filenames)
             {
-                FileInfo info = new FileInfo(file);
+                var info = new FileInfo(file);
 
-                if (info.Exists)
+                if (!info.Exists) continue;
+
+                if (IsDocumentOpen(info.FullName))
                 {
-                    if (this.IsDocumentOpen(info.FullName))
+                    FindDocument(info.FullName).DockContent.Activate();
+                }
+                else
+                {
+                    var isOpened = false;
+                    IMyGenDocument mygenDoc = EditorManager.OpenDocument(this, info.FullName);
+                    if (mygenDoc != null)
                     {
-                        this.FindDocument(info.FullName).DockContent.Activate();
+                        isOpened = true;
+                        mygenDoc.DockContent.Show(MainDockPanel);
+                        AddRecentFile(info.FullName);
                     }
-                    else
-                    {
-                        bool isOpened = false;
-                        IMyGenDocument mygenDoc = EditorManager.OpenDocument(this, info.FullName);
-                        if (mygenDoc != null)
-                        {
-                            isOpened = true;
-                            mygenDoc.DockContent.Show(dockPanel);
-                            this.AddRecentFile(info.FullName);
-                        }
 
-                        if (!isOpened)
-                        {
-                            MessageBox.Show(this, string.Format("Unknown file type in file {0}", info.Name), "Unknown file type");
-                        }
+                    if (!isOpened)
+                    {
+                        MessageBox.Show(this, info.Name + ": unknown file type", "Unknown file type");
                     }
                 }
             }
@@ -410,63 +354,63 @@ namespace MyGeneration
         private IDockContent GetContentFromPersistString(string persistString)
         {
             IDockContent content = null;
-            string[] parsedStrings = persistString.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] parsedStrings = persistString.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
             if (parsedStrings.Length == 1)
             {
                 string type = parsedStrings[0];
                 if (type == typeof(LanguageMappings).ToString())
                 {
-                    content = this.LanguageMappingsDockContent;
+                    content = LanguageMappingsDockContent;
                 }
                 else if (type == typeof(DbTargetMappings).ToString())
                 {
-                    content = this.DbTargetMappingsDockContent;
+                    content = DbTargetMappingsDockContent;
                 }
                 else if (type == typeof(MetaProperties).ToString())
                 {
-                    content = this.MetaPropertiesDockContent;
+                    content = MetaPropertiesDockContent;
                 }
                 else if (type == typeof(MetaDataBrowser).ToString())
                 {
-                    content = this.MetaDataBrowserDockContent;
+                    content = MetaDataBrowserDockContent;
                 }
                 else if (type == typeof(UserMetaData).ToString())
                 {
-                    content = this.UserMetaDataDockContent;
+                    content = UserMetaDataDockContent;
                 }
                 else if (type == typeof(GlobalUserMetaData).ToString())
                 {
-                    content = this.GlobalUserMetaDataDockContent;
+                    content = GlobalUserMetaDataDockContent;
                 }
                 else if (type == typeof(TemplateBrowser).ToString())
                 {
-                    content = this.TemplateBrowserDockContent;
+                    content = TemplateBrowserDockContent;
                 }
-                else if (type == typeof(DefaultSettingsDialog).ToString() && settings.EnableDocumentStyleSettings)
+                else if (type == typeof(DefaultSettingsDialog).ToString() && DefaultSettings.Instance.EnableDocumentStyleSettings)
                 {
-                    content = this.OptionsDockContent;
+                    content = DefaultSettingsDialog;
                 }
                 else if (type == typeof(ErrorsForm).ToString())
                 {
-                    content = this.ErrorsDockContent;
+                    content = ErrorsDockContent;
                 }
                 else if (type == typeof(GeneratedFilesForm).ToString())
                 {
-                    content = this.GeneratedFilesDockContent;
+                    content = GeneratedFilesDockContent;
                 }
                 else if (type == typeof(ConsoleForm).ToString())
                 {
-                    content = this.ConsoleDockContent;
+                    content = ConsoleDockContent;
                 }
                 else
                 {
                     // Preload all dynamicContentWindows here if needed
                     foreach (IContentManager cm in PluginManager.ContentManagers.Values)
                     {
-                        dynamicContentWindows[cm.Name] = cm.Create(this);
+                        _dynamicContentWindows[cm.Name] = cm.Create(this);
                     }
-                    foreach (IMyGenContent c in dynamicContentWindows.Values)
+                    foreach (IMyGenContent c in _dynamicContentWindows.Values)
                     {
                         if (type == c.GetType().ToString())
                         {
@@ -499,28 +443,29 @@ namespace MyGeneration
 
         private bool Shutdown(bool allowPrevent)
         {
-            bool shutdown = true;
+            var shutdown = true;
             try
             {
-                string dockConfigFileName = startupPath + DOCK_CONFIG_FILE;
+                string dockConfigFileName = _startupPath + DOCK_CONFIG_FILE;
 
-                IMyGenContent bw = null;
-                DockContentCollection coll = this.dockPanel.Contents;
-                bool canClose = true;
+                IMyGenContent mygenContent = null;
+                DockContentCollection dockContentCollection = MainDockPanel.Contents;
+                var canClose = true;
 
                 if (allowPrevent && !ZeusProcessManager.IsDormant)
                 {
                     return false;
                 }
 
-                for (int i = 0; i < coll.Count; i++)
+                foreach (IDockContent dockContent in dockContentCollection)
                 {
-                    bw = coll[i] as IMyGenContent;
+                    mygenContent = dockContent as IMyGenContent;
 
-                    // We need the MetaDataBrowser window to be closed last because it houses the UserMetaData.
-                    if (!(bw is MetaDataBrowser))
+                    // We need the MetaDataBrowser window to be closed last 
+                    // because it houses the UserMetaData
+                    if (!(mygenContent is MetaDataBrowser))
                     {
-                        canClose = bw.CanClose(allowPrevent);
+                        canClose = mygenContent.CanClose(allowPrevent);
 
                         if (allowPrevent && !canClose)
                         {
@@ -529,16 +474,15 @@ namespace MyGeneration
                         }
                     }
 
-                    // Close hidden windows.
-                    if (coll[i].DockHandler.IsHidden)
+                    if (dockContent.DockHandler.IsHidden)
                     {
-                        coll[i].DockHandler.Close();
+                        dockContent.DockHandler.Close();
                     }
                 }
 
                 if (shutdown)
                 {
-                    dockPanel.SaveAsXml(dockConfigFileName);
+                    MainDockPanel.SaveAsXml(dockConfigFileName);
                 }
             }
             catch
@@ -549,16 +493,16 @@ namespace MyGeneration
             return shutdown;
         }
 
-        #region Dran n' Drop
-        private void MyGenerationMDI_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
+        #region Drag n' Drop
+        private void MyGenerationMDI_DragDrop(object sender, DragEventArgs e)
         {
             string[] filenames = (string[])e.Data.GetData(DataFormats.FileDrop);
             OpenDocuments(filenames);
         }
 
-        private void MyGenerationMDI_DragEnter(object sender, System.Windows.Forms.DragEventArgs e)
+        private void MyGenerationMDI_DragEnter(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop, false) == true)
+            if (e.Data.GetDataPresent(DataFormats.FileDrop, false))
             {
                 bool foundValidFile = false;
                 string[] filenames = (string[])e.Data.GetData(DataFormats.FileDrop);
@@ -592,14 +536,14 @@ namespace MyGeneration
         #region DockManager Helper Methods
         public bool IsDocumentOpen(string text, params IMyGenDocument[] docsToExclude)
         {
-            IMyGenDocument doc = this.FindDocument(text, docsToExclude);
+            IMyGenDocument doc = FindDocument(text, docsToExclude);
             return (doc != null);
         }
 
         public IMyGenDocument FindDocument(string text, params IMyGenDocument[] docsToExclude)
         {
             IMyGenDocument found = null;
-            if (dockPanel.DocumentStyle == DocumentStyle.SystemMdi)
+            if (MainDockPanel.DocumentStyle == DocumentStyle.SystemMdi)
             {
                 foreach (Form form in MdiChildren)
                 {
@@ -623,7 +567,7 @@ namespace MyGeneration
             }
             else
             {
-                foreach (IDockContent content in dockPanel.Documents)
+                foreach (IDockContent content in MainDockPanel.Documents)
                 {
                     if (content is IMyGenDocument)
                     {
@@ -648,7 +592,53 @@ namespace MyGeneration
         }
         #endregion
 
-        #region Menu Events
+        private void dockPanel_ActiveContentChanged(object sender, EventArgs e)
+        {
+            IDockContent activeContent = MainDockPanel.ActiveContent;
+            if (activeContent is IEditControl)
+            {
+                ToolStripManager.RevertMerge(toolStrip1);
+            }
+            else if (activeContent is IMyGenDocument)
+            {
+                ToolStripManager.RevertMerge(toolStrip1);
+                var mgd = activeContent as IMyGenDocument;
+                if (mgd.ToolStrip != null)
+                {
+                    ToolStripManager.Merge(mgd.ToolStrip, toolStrip1);
+                }
+            }
+            else if (activeContent == null)
+            {
+                var foundDoc = MainDockPanel.Contents.Cast<DockContent>().Any(c => c is IMyGenDocument && !c.IsHidden);
+                if (!foundDoc) ToolStripManager.RevertMerge(toolStrip1);
+            }
+        }
+
+        private int _indexImgAnimate = -1;
+
+        private void timerImgAnimate_Tick(object sender, EventArgs e)
+        {
+            _indexImgAnimate = _indexImgAnimate >= 3 ? 0 : _indexImgAnimate + 1;
+            switch (_indexImgAnimate)
+            {
+                case 0:
+                    toolStripStatusQueue.Image = Zeus.SharedResources.Refresh16x16_1;
+                    break;
+                case 1:
+                    toolStripStatusQueue.Image = Zeus.SharedResources.Refresh16x16_2;
+                    break;
+                case 2:
+                    toolStripStatusQueue.Image = Zeus.SharedResources.Refresh16x16_3;
+                    break;
+                case 3:
+                    toolStripStatusQueue.Image = Zeus.SharedResources.Refresh16x16_4;
+                    break;
+            }
+            toolStripStatusQueue.Invalidate();
+        }
+
+        #region Menu Event Handlers
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             PickFiles();
@@ -657,250 +647,271 @@ namespace MyGeneration
         private void newFileDynamicToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem i = sender as ToolStripMenuItem;
-            this.CreateDocument(i.Text);
+            CreateDocument(i.Text);
         }
 
         private void openContentDynamicToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ToolStripItem i = sender as ToolStripItem;
-            if (i.Tag == typeof(IContentManager))
+            var toolStripItem = sender as ToolStripItem;
+            if ((Type) toolStripItem.Tag == typeof(IContentManager))
             {
-                if (string.IsNullOrEmpty(i.Text))
-                    this.OpenContent(i.ToolTipText);
-                else
-                    this.OpenContent(i.Text);
+                OpenContent(string.IsNullOrEmpty(toolStripItem.Text) ? toolStripItem.ToolTipText : toolStripItem.Text);
             }
-            else //if (i.Tag == typeof(ISimplePluginManager))
+            else
             {
-                if (string.IsNullOrEmpty(i.Text))
-                    this.ExecuteSimplePlugin(i.ToolTipText);
-                else
-                    this.ExecuteSimplePlugin(i.Text);
+                ExecuteSimplePlugin(string.IsNullOrEmpty(toolStripItem.Text) ? toolStripItem.ToolTipText : toolStripItem.Text);
             }
-
         }
 
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ExitMenuItem_OnClicked(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
-        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        private void AboutMenuItem_OnClicked(object sender, EventArgs e)
         {
-            AboutBox ab = new AboutBox();
-            ab.ShowDialog(this);
+            new AboutBox().ShowDialog(this);
         }
 
-        private void defaultSettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SettingsMenuItem_OnClicked(object sender, EventArgs e)
         {
-            if (!settings.EnableDocumentStyleSettings)
+            if (!DefaultSettings.Instance.EnableDocumentStyleSettings)
             {
-                if (options != null) { OptionsDockContent.Hide(); this.options = null; }
+                if (_defaultSettingsDialog != null)
+                {
+                    DefaultSettingsDialog.Hide();
+                    _defaultSettingsDialog = null;
+                }
                 var defaultProperties = new DefaultSettingsDialog(this);
                 defaultProperties.ShowDialog(this);
             }
             else
             {
-                if (OptionsDockContent.IsHidden)
+                if (DefaultSettingsDialog.IsHidden)
                 {
-                    OptionsDockContent.Show(this.dockPanel);
+                    DefaultSettingsDialog.Show(MainDockPanel);
                 }
                 else
                 {
-                    OptionsDockContent.Activate();
+                    DefaultSettingsDialog.Activate();
                 }
             }
         }
 
-        private void chmToolStripMenuItem_Click(object sender, EventArgs e)
+        private void HelpMenuItem_OnClicked(object sender, EventArgs e)
         {
-            ToolStripMenuItem item = sender as ToolStripMenuItem;
-
+            var item = sender as ToolStripMenuItem;
             if (item != null)
             {
-                Zeus.WindowsTools.LaunchHelpFile(this.startupPath + item.Tag.ToString(), ProcessWindowStyle.Maximized, true);
+                Zeus.WindowsTools.LaunchHelpFile(_startupPath + item.Tag, ProcessWindowStyle.Maximized, createNoWindow: true);
             }
         }
 
-        private void recentFilesToolStripMenuItem_Click(object sender, EventArgs e)
+        private void RecentFileMenuItem_OnClicked(object sender, EventArgs e)
         {
-            if (sender is ToolStripMenuItem)
+            if (!(sender is ToolStripMenuItem)) return;
+            
+            var item = sender as ToolStripMenuItem;
+            var file = item.Text;
+            if (File.Exists(file))
             {
-                ToolStripMenuItem item = sender as ToolStripMenuItem;
-                string file = item.Text;
-                if (File.Exists(file))
-                {
-                    AddRecentFile(item.Text);
-                    OpenDocuments(item.Text);
-                }
-                else
-                {
-                    // May want to add text to resource file for internationalization
-                    MessageBox.Show(this, string.Format("The file \"{0}\" no longer exists.", item.Text), "File Missing");
-                    RemoveRecentFile(item.Text);
-                }
+                AddRecentFile(item.Text);
+                OpenDocuments(item.Text);
+            }
+            else
+            {
+                MessageBox.Show(this, item.Text + " no longer exists.", "File Missing");
+                RemoveRecentFile(item.Text);
             }
         }
 
-        private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CheckForUpdateMenuItem_OnClicked(object sender, EventArgs e)
         {
-            //StartVersionCheck();
-            //List<IAppRelease> s = ZeusController.ReleaseList;
-            ApplicationReleases appRel = new ApplicationReleases();
-            appRel.ShowDialog(this);
+            new ApplicationReleases().ShowDialog(this);
+        }
+
+        private void DocMenuItem_OnClicked(object sender, EventArgs e)
+        {
+            var i = sender as ToolStripMenuItem;
+            if (i != null)
+            {
+                IMyGenDocument mgd = FindDocument(i.Tag.ToString());
+                mgd.DockContent.Activate();
+            }
+        }
+
+        private void WindowMenu_OnDropDownOpening(object sender, EventArgs e)
+        {
+            windowToolStripMenuItem.DropDownItems.Clear();
+            foreach (var dockContent in MainDockPanel.Contents)
+            {
+                var doc = (DockContent) dockContent;
+                if (!(doc is IMyGenDocument)) continue;
+                
+                var mgd = doc as IMyGenDocument;
+                if (doc.IsHidden) continue;
+
+                var toolStripMenuItem = new ToolStripMenuItem(doc.Text, null, DocMenuItem_OnClicked) {Tag = mgd.DocumentIndentity};
+                if (doc.IsActivated) toolStripMenuItem.Checked = true;
+                windowToolStripMenuItem.DropDownItems.Add(toolStripMenuItem);
+            }
         }
         #endregion
 
-        #region Toolstrip Button Events
-        private void toolStripButtonOpen_Click(object sender, EventArgs e)
+        #region Toolstrip Button Event Handlers
+        private void ToolStripOpenButton_OnClicked(object sender, EventArgs e)
         {
             PickFiles();
         }
 
-        private void toolStripButtonTemplateBrowser_Click(object sender, EventArgs e)
+        private void ToolStripTemplateBrowserButton_OnClicked(object sender, EventArgs e)
         {
-            if (this.TemplateBrowserDockContent.IsHidden)
+            if (TemplateBrowserDockContent.IsHidden)
             {
-                this.TemplateBrowserDockContent.Show(this.dockPanel);
+                TemplateBrowserDockContent.Show(MainDockPanel);
             }
             else
             {
-                this.TemplateBrowserDockContent.Activate();
+                TemplateBrowserDockContent.Activate();
             }
         }
 
-        private void toolStripButtonOptions_Click(object sender, EventArgs e)
+        private void ToolStripSettingsButton_OnClicked(object sender, EventArgs e)
         {
-            if (!settings.EnableDocumentStyleSettings)
+            if (!DefaultSettings.Instance.EnableDocumentStyleSettings)
             {
-                if (options != null) { this.OptionsDockContent.Hide(); this.options = null; }
+                if (_defaultSettingsDialog != null)
+                {
+                    DefaultSettingsDialog.Hide();
+                    _defaultSettingsDialog = null;
+                }
                 var dsd = new DefaultSettingsDialog(this);
                 dsd.ShowDialog(this);
             }
             else
             {
-                if (this.OptionsDockContent.IsHidden)
+                if (DefaultSettingsDialog.IsHidden)
                 {
-                    this.OptionsDockContent.Show(this.dockPanel);
+                    DefaultSettingsDialog.Show(MainDockPanel);
                 }
                 else
                 {
-                    this.OptionsDockContent.Hide();
+                    DefaultSettingsDialog.Hide();
                 }
             }
         }
 
-        private void toolStripButtonMyMetaBrowser_Click(object sender, EventArgs e)
+        private void ToolStripMetaBrowserButton_OnClicked(object sender, EventArgs e)
         {
-            if (this.MetaDataBrowserDockContent.IsHidden)
+            if (MetaDataBrowserDockContent.IsHidden)
             {
-                this.MetaDataBrowserDockContent.Show(this.dockPanel);
+                MetaDataBrowserDockContent.Show(MainDockPanel);
             }
             else
             {
-                this.MetaDataBrowserDockContent.Activate();
+                MetaDataBrowserDockContent.Activate();
             }
         }
 
-        private void toolStripButtonMyMetaProperties_Click(object sender, EventArgs e)
+        private void ToolStripMyMetaPropertiesButton_OnClicked(object sender, EventArgs e)
         {
-            if (this.MetaPropertiesDockContent.IsHidden)
+            if (MetaPropertiesDockContent.IsHidden)
             {
-                this.MetaPropertiesDockContent.Show(this.dockPanel);
+                MetaPropertiesDockContent.Show(MainDockPanel);
             }
             else
             {
-                this.MetaPropertiesDockContent.Activate();
+                MetaPropertiesDockContent.Activate();
             }
         }
 
-        private void toolStripButtonLangMappings_Click(object sender, EventArgs e)
+        private void ToolStripLanguageMappingsButton_OnClicked(object sender, EventArgs e)
         {
-            if (this.LanguageMappingsDockContent.IsHidden)
+            if (LanguageMappingsDockContent.IsHidden)
             {
-                this.LanguageMappingsDockContent.Show(this.dockPanel);
+                LanguageMappingsDockContent.Show(MainDockPanel);
             }
             else
             {
-                this.LanguageMappingsDockContent.Activate();
+                LanguageMappingsDockContent.Activate();
             }
         }
 
-        private void toolStripButtonDbTargetMappings_Click(object sender, EventArgs e)
+        private void ToolStripDbTargetMappingsButton_OnClicked(object sender, EventArgs e)
         {
-            if (this.DbTargetMappingsDockContent.IsHidden)
+            if (DbTargetMappingsDockContent.IsHidden)
             {
-                this.DbTargetMappingsDockContent.Show(this.dockPanel);
+                DbTargetMappingsDockContent.Show(MainDockPanel);
             }
             else
             {
-                this.DbTargetMappingsDockContent.Activate();
+                DbTargetMappingsDockContent.Activate();
             }
         }
 
-        private void toolStripButtonLocalAliases_Click(object sender, EventArgs e)
+        private void ToolStripLocalAliasesButton_OnClicked(object sender, EventArgs e)
         {
-            if (this.UserMetaDataDockContent.IsHidden)
+            if (UserMetaDataDockContent.IsHidden)
             {
-                this.UserMetaDataDockContent.Show(this.dockPanel);
+                UserMetaDataDockContent.Show(MainDockPanel);
             }
             else
             {
-                this.UserMetaDataDockContent.Activate();
+                UserMetaDataDockContent.Activate();
             }
         }
 
-        private void toolStripButtonGlobalAliases_Click(object sender, EventArgs e)
+        private void ToolStripGlobalAliasesButton_OnClicked(object sender, EventArgs e)
         {
-            if (this.GlobalUserMetaDataDockContent.IsHidden)
+            if (GlobalUserMetaDataDockContent.IsHidden)
             {
-                this.GlobalUserMetaDataDockContent.Show(this.dockPanel);
+                GlobalUserMetaDataDockContent.Show(MainDockPanel);
             }
             else
             {
-                this.GlobalUserMetaDataDockContent.Activate();
+                GlobalUserMetaDataDockContent.Activate();
             }
         }
 
-        private void toolStripButtonConsole_Click(object sender, EventArgs e)
+        private void ToolStripConsoleButton_OnClicked(object sender, EventArgs e)
         {
-            if (this.ConsoleDockContent.IsHidden)
+            if (ConsoleDockContent.IsHidden)
             {
-                this.ConsoleDockContent.Show(this.dockPanel);
+                ConsoleDockContent.Show(MainDockPanel);
             }
             else
             {
-                this.ConsoleDockContent.Activate();
+                ConsoleDockContent.Activate();
             }
         }
 
-        private void toolStripButtonErrors_Click(object sender, EventArgs e)
+        private void ToolStripErrorButton_OnClicked(object sender, EventArgs e)
         {
-            if (this.ErrorsDockContent.IsHidden)
+            if (ErrorsDockContent.IsHidden)
             {
-                this.ErrorsDockContent.Show(this.dockPanel);
+                ErrorsDockContent.Show(MainDockPanel);
             }
             else
             {
-                this.ErrorsDockContent.Activate();
+                ErrorsDockContent.Activate();
             }
         }
 
-        private void toolStripButtonGenFiles_Click(object sender, EventArgs e)
+        private void ToolStripRecentlyGeneratedFilesButton_OnClicked(object sender, EventArgs e)
         {
-            if (this.GeneratedFilesDockContent.IsHidden)
+            if (GeneratedFilesDockContent.IsHidden)
             {
-                this.GeneratedFilesDockContent.Show(this.dockPanel);
+                GeneratedFilesDockContent.Show(MainDockPanel);
             }
             else
             {
-                this.GeneratedFilesDockContent.Activate();
+                GeneratedFilesDockContent.Activate();
             }
         }
 
-        private void toolStripButtonOpenGeneratedOutputFolder_Click(object sender, EventArgs e)
+        private void ToolStripOpenGeneratedOutputFolderButton_OnClicked(object sender, EventArgs e)
         {
-            System.Diagnostics.Process p = new System.Diagnostics.Process();
+            Process p = new Process();
             p.StartInfo.FileName = "explorer";
             p.StartInfo.Arguments = "/e," + DefaultSettings.Instance.DefaultOutputDirectory;
             p.StartInfo.UseShellExecute = true;
@@ -913,45 +924,48 @@ namespace MyGeneration
         {
             get
             {
-                if ((generatedFilesForm != null) && generatedFilesForm.IsDisposed) generatedFilesForm = null;
-                if (generatedFilesForm == null) generatedFilesForm = new GeneratedFilesForm(this);
-                return generatedFilesForm;
+                if ((_generatedFilesForm != null) && _generatedFilesForm.IsDisposed) _generatedFilesForm = null;
+                if (_generatedFilesForm == null) _generatedFilesForm = new GeneratedFilesForm(this);
+                return _generatedFilesForm;
             }
         }
+
         public ConsoleForm ConsoleDockContent
         {
             get
             {
-                if ((consoleForm != null) && consoleForm.IsDisposed) consoleForm = null;
-                if (consoleForm == null) consoleForm = new ConsoleForm(this);
-                return consoleForm;
+                if ((_consoleForm != null) && _consoleForm.IsDisposed) _consoleForm = null;
+                if (_consoleForm == null) _consoleForm = new ConsoleForm(this);
+                return _consoleForm;
             }
         }
+
         public ErrorsForm ErrorsDockContent
         {
             get
             {
-                if ((errorsForm != null) && errorsForm.IsDisposed) errorsForm = null;
-                if (errorsForm == null) errorsForm = new ErrorsForm(this);
-                return errorsForm;
+                if ((_errorsForm != null) && _errorsForm.IsDisposed) _errorsForm = null;
+                if (_errorsForm == null) _errorsForm = new ErrorsForm(this);
+                return _errorsForm;
             }
         }
+
         public ErrorDetail ErrorDetailDockContent
         {
             get
             {
-                if ((errorDetail != null) && errorDetail.IsDisposed) errorDetail = null;
-                if (errorDetail == null) errorDetail = new ErrorDetail(this);
-                return errorDetail;
+                if ((_errorDetail != null) && _errorDetail.IsDisposed) _errorDetail = null;
+                if (_errorDetail == null) _errorDetail = new ErrorDetail(this);
+                return _errorDetail;
             }
         }
-        public DefaultSettingsDialog OptionsDockContent
+
+        public DefaultSettingsDialog DefaultSettingsDialog
         {
             get
             {
-                if ((options != null) && options.IsDisposed) options = null;
-                if (options == null) options = new DefaultSettingsDialog(this);
-                return options;
+                if (_defaultSettingsDialog != null && _defaultSettingsDialog.IsDisposed) _defaultSettingsDialog = null;
+                return _defaultSettingsDialog ?? (_defaultSettingsDialog = new DefaultSettingsDialog(this));
             }
         }
 
@@ -959,9 +973,9 @@ namespace MyGeneration
         {
             get
             {
-                if ((templateBrowser != null) && templateBrowser.IsDisposed) templateBrowser = null;
-                if (templateBrowser == null) templateBrowser = new TemplateBrowser(this);
-                return templateBrowser;
+                if ((_templateBrowser != null) && _templateBrowser.IsDisposed) _templateBrowser = null;
+                if (_templateBrowser == null) _templateBrowser = new TemplateBrowser(this);
+                return _templateBrowser;
             }
         }
 
@@ -969,9 +983,9 @@ namespace MyGeneration
         {
             get
             {
-                if ((languageMappings != null) && languageMappings.IsDisposed) languageMappings = null;
-                if (languageMappings == null) languageMappings = new LanguageMappings(this);
-                return languageMappings;
+                if ((_languageMappings != null) && _languageMappings.IsDisposed) _languageMappings = null;
+                if (_languageMappings == null) _languageMappings = new LanguageMappings(this);
+                return _languageMappings;
             }
         }
 
@@ -979,9 +993,9 @@ namespace MyGeneration
         {
             get
             {
-                if ((dbTargetMappings != null) && dbTargetMappings.IsDisposed) dbTargetMappings = null;
-                if (dbTargetMappings == null) dbTargetMappings = new DbTargetMappings(this);
-                return dbTargetMappings;
+                if ((_dbTargetMappings != null) && _dbTargetMappings.IsDisposed) _dbTargetMappings = null;
+                if (_dbTargetMappings == null) _dbTargetMappings = new DbTargetMappings(this);
+                return _dbTargetMappings;
             }
         }
 
@@ -989,10 +1003,10 @@ namespace MyGeneration
         {
             get
             {
-                if ((metaDataBrowser != null) && metaDataBrowser.IsDisposed) metaDataBrowser = null;
-                if (metaDataBrowser == null) metaDataBrowser = new MetaDataBrowser(this,
+                if ((_metaDataBrowser != null) && _metaDataBrowser.IsDisposed) _metaDataBrowser = null;
+                if (_metaDataBrowser == null) _metaDataBrowser = new MetaDataBrowser(this,
                     MetaPropertiesDockContent, UserMetaDataDockContent, GlobalUserMetaDataDockContent);
-                return metaDataBrowser;
+                return _metaDataBrowser;
             }
         }
 
@@ -1000,13 +1014,13 @@ namespace MyGeneration
         {
             get
             {
-                if ((userMetaData != null) && userMetaData.IsDisposed) userMetaData = null;
-                if (userMetaData == null)
+                if ((_userMetaData != null) && _userMetaData.IsDisposed) _userMetaData = null;
+                if (_userMetaData == null)
                 {
-                    userMetaData = new UserMetaData(this);
-                    userMetaData.MetaDataBrowser = this.MetaDataBrowserDockContent;
+                    _userMetaData = new UserMetaData(this);
+                    _userMetaData.MetaDataBrowser = MetaDataBrowserDockContent;
                 }
-                return userMetaData;
+                return _userMetaData;
             }
         }
 
@@ -1014,13 +1028,13 @@ namespace MyGeneration
         {
             get
             {
-                if ((globalUserMetaData != null) && globalUserMetaData.IsDisposed) globalUserMetaData = null;
-                if (globalUserMetaData == null)
+                if ((_globalUserMetaData != null) && _globalUserMetaData.IsDisposed) _globalUserMetaData = null;
+                if (_globalUserMetaData == null)
                 {
-                    globalUserMetaData = new GlobalUserMetaData(this);
-                    globalUserMetaData.MetaDataBrowser = this.MetaDataBrowserDockContent;
+                    _globalUserMetaData = new GlobalUserMetaData(this);
+                    _globalUserMetaData.MetaDataBrowser = MetaDataBrowserDockContent;
                 }
-                return globalUserMetaData;
+                return _globalUserMetaData;
             }
         }
 
@@ -1028,20 +1042,19 @@ namespace MyGeneration
         {
             get
             {
-                if ((metaProperties != null) && metaProperties.IsDisposed) metaProperties = null;
-                if (metaProperties == null) metaProperties = new MetaProperties(this);
-                return metaProperties;
+                if ((_metaProperties != null) && _metaProperties.IsDisposed) _metaProperties = null;
+                if (_metaProperties == null) _metaProperties = new MetaProperties(this);
+                return _metaProperties;
             }
         }
         #endregion
 
-        #region Replaces files that couldn't be replaced until locks were removed
         private void ProcessReplacementFiles()
         {
-            DirectoryInfo dir = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath));
+            var dir = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath));
             foreach (FileInfo info in dir.GetFiles("*" + REPLACEMENT_SUFFIX))
             {
-                FileInfo fileToReplace = new FileInfo(info.FullName.Replace(REPLACEMENT_SUFFIX, ".dll"));
+                var fileToReplace = new FileInfo(info.FullName.Replace(REPLACEMENT_SUFFIX, ".dll"));
                 try
                 {
                     if (fileToReplace.Exists)
@@ -1051,20 +1064,14 @@ namespace MyGeneration
 
                     info.MoveTo(fileToReplace.FullName);
                 }
-#if DEBUG
-                catch (Exception ex) { throw ex; }
-#else
                 catch { }
-#endif
             }
         }
-        #endregion
-
-        #region Refresh the Recent files menu item
-        public void RefreshRecentFiles()
+        
+        #region Refresh Recent Files
+        private void RefreshRecentFiles()
         {
-            // Clear the Recent Items List
-            this.recentFilesToolStripMenuItem.DropDownItems.Clear();
+            recentFilesToolStripMenuItem.DropDownItems.Clear();
 
             DefaultSettings ds = DefaultSettings.Instance;
             if (ds.RecentFiles.Count == 0)
@@ -1077,114 +1084,49 @@ namespace MyGeneration
 
                 foreach (string path in ds.RecentFiles)
                 {
-                    ToolStripMenuItem item = new ToolStripMenuItem(path);
-                    item.Click += new EventHandler(recentFilesToolStripMenuItem_Click);
+                    var item = new ToolStripMenuItem(path);
+                    item.Click += RecentFileMenuItem_OnClicked;
                     recentFilesToolStripMenuItem.DropDownItems.Add(item);
                 }
             }
         }
 
-        public void AddRecentFile(string path)
+        private void AddRecentFile(string path)
         {
 
-            if (settings.RecentFiles.Contains(path))
+            if (DefaultSettings.Instance.RecentFiles.Contains(path))
             {
-                settings.RecentFiles.Remove(path);
+                DefaultSettings.Instance.RecentFiles.Remove(path);
             }
 
-            settings.RecentFiles.Insert(0, path);
-            settings.Save();
+            DefaultSettings.Instance.RecentFiles.Insert(0, path);
+            DefaultSettings.Instance.Save();
 
             RefreshRecentFiles();
         }
 
-        public void RemoveRecentFile(string path)
+        private void RemoveRecentFile(string path)
         {
-            if (settings.RecentFiles.Contains(path))
+            if (DefaultSettings.Instance.RecentFiles.Contains(path))
             {
-                settings.RecentFiles.Remove(path);
+                DefaultSettings.Instance.RecentFiles.Remove(path);
             }
-            settings.Save();
+            DefaultSettings.Instance.Save();
 
             RefreshRecentFiles();
         }
-        #endregion
-
-        #region Check Application Version on Server
-
-        private void StartVersionCheck()
-        {
-            if (DefaultSettings.Instance.CheckForNewBuild)
-            {
-                MyGeneration.com.mygenerationsoftware.www.VersionInfo versionInfo = new MyGeneration.com.mygenerationsoftware.www.VersionInfo();
-
-                try
-                {
-                    string newVersion = versionInfo.GetVersion();
-                    System.Reflection.Assembly asmblyMyGen = System.Reflection.Assembly.GetAssembly(typeof(AboutBox));
-                    string currentVersion = asmblyMyGen.GetName().Version.ToString();
-
-                    System.Version currentVersionObject = asmblyMyGen.GetName().Version;
-                    System.Version newVersionObject = new System.Version(newVersion);
-
-                    if (newVersionObject > currentVersionObject)
-                    {
-                        this.Update();
-
-                        /*UpdatesForm form = new UpdatesForm();
-                        form.NewVersion = newVersion;
-                        form.ThisVersion = currentVersion;
-                        form.UpgradeText = versionInfo.GetUpdateText();
-                        DialogResult result = form.ShowDialog();
-
-                        if (result == DialogResult.OK)
-                        {
-                            DownloadLatestVersion();
-                        }*/
-                    }
-                    else if (newVersionObject < currentVersionObject)
-                    {
-                        DialogResult result = MessageBox.Show(this,
-                            @"You are running an currently unreleased build. Do you want to check the SourceForge page for updates now?",
-                            "Version Information", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-
-                        if (result == DialogResult.Yes)
-                        {
-                            Zeus.WindowsTools.LaunchBrowser(URL_SOURCEFORGE_DOWNLOAD);
-                        }
-                    }
-                }
-                catch (Exception wsex)
-                {
-                    this.ErrorsOccurred(wsex);
-                }
-            }
-        }
-
-        /*private void DownloadLatestVersion()
-        {
-            Zeus.WindowsTools.LaunchBrowser(URL_LATESTVERSION, System.Diagnostics.ProcessWindowStyle.Minimized, true);
-        }*/
         #endregion
 
         #region Show OLEDBDialog Dialog
 
         protected string BrowseOleDbConnectionString(string connstr)
         {
-            MSDASC.DataLinksClass dl = new MSDASC.DataLinksClass();
-            dl.hWnd = this.Handle.ToInt32();
+            var dl = new MSDASC.DataLinksClass {hWnd = Handle.ToInt32()};
 
-            ADODB.Connection conn = new ADODB.Connection();
-            conn.ConnectionString = connstr;
+            var conn = new ADODB.Connection {ConnectionString = connstr};
+            object objCn = conn;
 
-            object objCn = (object)conn;
-
-            if (dl.PromptEdit(ref objCn))
-            {
-                return conn.ConnectionString;
-            }
-
-            return null;
+            return dl.PromptEdit(ref objCn) ? conn.ConnectionString : null;
         }
         #endregion
 
@@ -1195,63 +1137,32 @@ namespace MyGeneration
             get { return Zeus.ZeusController.Instance; }
         }
 
+        private readonly FindForm _findForm = new FindForm();
         public FindForm FindDialog
         {
-            get { return findDialog; }
+            get { return _findForm; }
         }
 
+        private readonly ReplaceForm _replaceForm = new ReplaceForm();
         public ReplaceForm ReplaceDialog
         {
-            get { return replaceDialog; }
+            get { return _replaceForm; }
         }
 
         public ScintillaConfigureDelegate ConfigureDelegate
         {
-            get { return configureDelegate; }
+            get { return _scintillaConfigureDelegate; }
         }
 
         public DockPanel DockPanel
         {
-            get { return dockPanel; }
-        }
-
-        private void docItemToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ToolStripMenuItem i = sender as ToolStripMenuItem;
-            if (i != null)
-            {
-                IMyGenDocument mgd = this.FindDocument(i.Tag.ToString());
-                mgd.DockContent.Activate();
-            }
-        }
-
-        private void windowToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
-        {
-            windowToolStripMenuItem.DropDownItems.Clear();
-            foreach (DockContent doc in this.dockPanel.Contents)
-            {
-                if (doc is IMyGenDocument)
-                {
-                    IMyGenDocument mgd = doc as IMyGenDocument;
-                    if (!doc.IsHidden)
-                    {
-
-                        ToolStripMenuItem i = new ToolStripMenuItem(doc.Text, null, docItemToolStripMenuItem_Click);
-                        i.Tag = mgd.DocumentIndentity;
-                        if (doc.IsActivated) i.Checked = true;
-                        windowToolStripMenuItem.DropDownItems.Add(i);
-                    }
-                }
-            }
-            if (windowToolStripMenuItem.DropDownItems.Count == 0)
-            {
-            }
+            get { return MainDockPanel; }
         }
 
         public void SendAlert(IMyGenContent sender, string command, params object[] args)
         {
             IMyGenContent contentItem = null;
-            DockContentCollection contents = this.dockPanel.Contents;
+            DockContentCollection contents = MainDockPanel.Contents;
 
             DefaultSettings settings = DefaultSettings.Instance;
 
@@ -1266,20 +1177,22 @@ namespace MyGeneration
             }
         }
 
-        public object PerformMdiFuntion(IMyGenContent sender, string function, params object[] args)
+        public object PerformMdiFunction(IMyGenContent sender, string function, params object[] args)
         {
             if (function.Equals("getstaticdbroot", StringComparison.CurrentCultureIgnoreCase))
             {
                 return MetaDataBrowser.StaticMyMetaObj;
             }
-            else if (function.Equals("showoledbdialog", StringComparison.CurrentCultureIgnoreCase) &&
+            
+            if (function.Equals("showoledbdialog", StringComparison.CurrentCultureIgnoreCase) &&
                 args.Length == 1)
             {
                 return BrowseOleDbConnectionString(args[0].ToString());
             }
-            else if (function.Equals("executionqueuestart", StringComparison.CurrentCultureIgnoreCase))
+            
+            if (function.Equals("executionqueuestart", StringComparison.CurrentCultureIgnoreCase))
             {
-                this.toolStripStatusQueue.Visible = true;
+                toolStripStatusQueue.Visible = true;
                 timerImgAnimate.Start();
             }
             else if (function.Equals("executionqueueupdate", StringComparison.CurrentCultureIgnoreCase))
@@ -1287,11 +1200,11 @@ namespace MyGeneration
                 if (ZeusProcessManager.ProcessCount == 0)
                 {
                     timerImgAnimate.Stop();
-                    this.toolStripStatusQueue.Visible = false;
+                    toolStripStatusQueue.Visible = false;
                 }
                 else if (ZeusProcessManager.ProcessCount > 0)
                 {
-                    this.toolStripStatusQueue.Visible = true;
+                    toolStripStatusQueue.Visible = true;
                     timerImgAnimate.Start();
                 }
             }
@@ -1302,13 +1215,13 @@ namespace MyGeneration
                 {
                     List<IMyGenError> errors = args[0] as List<IMyGenError>;
                     ErrorDetailDockContent.Update(errors[0]);
-                    if (this.ErrorDetailDockContent.IsHidden)
+                    if (ErrorDetailDockContent.IsHidden)
                     {
-                        this.ErrorDetailDockContent.Show(this.dockPanel);
+                        ErrorDetailDockContent.Show(MainDockPanel);
                     }
                     else
                     {
-                        this.ErrorDetailDockContent.Activate();
+                        ErrorDetailDockContent.Activate();
                     }
                 }
             }
@@ -1323,10 +1236,10 @@ namespace MyGeneration
                     if (string.IsNullOrEmpty(error.SourceFile))
                     {
                         //it's a new unsaved template
-                        bool isopen = this.IsDocumentOpen(error.TemplateIdentifier);
+                        bool isopen = IsDocumentOpen(error.TemplateIdentifier);
                         if (isopen)
                         {
-                            edit = this.FindDocument(error.TemplateIdentifier) as TemplateEditor;
+                            edit = FindDocument(error.TemplateIdentifier) as TemplateEditor;
                             edit.Activate();
                         }
                     }
@@ -1335,7 +1248,7 @@ namespace MyGeneration
                         FileInfo file = new FileInfo(error.TemplateFileName);
                         if (file.Exists)
                         {
-                            bool isopen = this.IsDocumentOpen(file.FullName);
+                            bool isopen = IsDocumentOpen(file.FullName);
 
                             if (!isopen)
                             {
@@ -1344,7 +1257,7 @@ namespace MyGeneration
                             }
                             else
                             {
-                                edit = this.FindDocument(file.FullName) as TemplateEditor;
+                                edit = FindDocument(file.FullName) as TemplateEditor;
                                 if (edit != null)
                                 {
                                     edit.Activate();
@@ -1376,7 +1289,7 @@ namespace MyGeneration
                     List<FileInfo> files = args[0] as List<FileInfo>;
                     foreach (FileInfo fi in files)
                     {
-                        Zeus.WindowsTools.LaunchFile(fi.FullName.ToString());
+                        Zeus.WindowsTools.LaunchFile(fi.FullName);
                     }
                 }
                 else if (args[0] is FileInfo)
@@ -1394,12 +1307,12 @@ namespace MyGeneration
 
         public IMyGenConsole Console
         {
-            get { return this.ConsoleDockContent; }
+            get { return ConsoleDockContent; }
         }
 
         public IMyGenErrorList ErrorList
         {
-            get { return this.ErrorsDockContent; }
+            get { return ErrorsDockContent; }
         }
 
         public void WriteConsole(string text, params object[] args)
@@ -1432,7 +1345,7 @@ namespace MyGeneration
         {
             try
             {
-                Exception ex = (Exception)t.Exception;
+                Exception ex = t.Exception;
                 HandleError(ex);
             }
             catch { }
@@ -1442,13 +1355,13 @@ namespace MyGeneration
         {
             try
             {
-                if (this.ErrorsDockContent != null)
+                if (ErrorsDockContent != null)
                 {
-                    this.ErrorsDockContent.AddErrors(ex);
+                    ErrorsDockContent.AddErrors(ex);
                 }
-                if (this.ConsoleDockContent != null)
+                if (ConsoleDockContent != null)
                 {
-                    this.ConsoleDockContent.Write(ex);
+                    ConsoleDockContent.Write(ex);
                 }
             }
             catch { }

@@ -19,8 +19,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>MyGeneration</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <StartupObject>
-    </StartupObject>
+    <StartupObject>MyGeneration.Program</StartupObject>
     <WebReference_EnableProperties>true</WebReference_EnableProperties>
     <WebReference_EnableSQLTypes>false</WebReference_EnableSQLTypes>
     <WebReference_EnableLegacyEventingModel>true</WebReference_EnableLegacyEventingModel>
