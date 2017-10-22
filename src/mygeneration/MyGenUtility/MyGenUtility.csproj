@@ -124,6 +124,7 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ConnectionInfo.cs" />
     <Compile Include="DefaultSettings.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -283,6 +284,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="XmlHelper.cs" />
     <Compile Include="ZeusController.cs" />
     <Compile Include="ZeusProcessManager.cs" />
   </ItemGroup>

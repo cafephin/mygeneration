@@ -151,7 +151,7 @@ namespace Zeus
             get
             {
                 List<IAppRelease> releases = new List<IAppRelease>();
-                XmlDocument xmldoc = Zeus.HttpTools.GetXmlFromUrl(DefaultSettings.Instance.VersionRSSUrl, DefaultSettings.Instance.WebProxy);
+                XmlDocument xmldoc = Zeus.HttpTools.GetXmlFromUrl(DefaultSettings.Instance.VersionRssUrl, DefaultSettings.Instance.WebProxy);
                 XmlNodeList nodes = xmldoc.SelectNodes("//item");
                 foreach (XmlNode node in nodes)
                 {
