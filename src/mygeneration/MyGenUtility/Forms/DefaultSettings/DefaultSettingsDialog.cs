@@ -64,7 +64,6 @@ namespace MyGeneration
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DefaultProperties_OnClosing);
             this.Load += new System.EventHandler(this.DefaultProperties_OnLoading);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
 		}
 		#endregion
