@@ -54,7 +54,7 @@ namespace MyGeneration.UI.Plugins.SqlTool
 
             try
             {
-                mymeta = _mdi.PerformMdiFuntion(this.Parent as IMyGenContent, "getstaticdbroot") as dbRoot;
+                mymeta = _mdi.PerformMdiFunction(this.Parent as IMyGenContent, "getstaticdbroot") as dbRoot;
                 _isUsingCurrentConnection = true;
                 if (!(mymeta is dbRoot))
                 {
@@ -178,7 +178,7 @@ namespace MyGeneration.UI.Plugins.SqlTool
             {
                 if (_connString == null)
                 {
-                    _connString = _mdi.PerformMdiFuntion(this.Parent as IMyGenContent, "getmymetaconnection") as String;
+                    _connString = _mdi.PerformMdiFunction(this.Parent as IMyGenContent, "getmymetaconnection") as String;
                 }
                 return _connString;
             }
@@ -190,7 +190,7 @@ namespace MyGeneration.UI.Plugins.SqlTool
             {
                 if (_dbDriver == null)
                 {
-                    _dbDriver = _mdi.PerformMdiFuntion(this.Parent as IMyGenContent, "getmymetadbdriver") as String;
+                    _dbDriver = _mdi.PerformMdiFunction(this.Parent as IMyGenContent, "getmymetadbdriver") as String;
                 }
                 return _dbDriver;
             }
