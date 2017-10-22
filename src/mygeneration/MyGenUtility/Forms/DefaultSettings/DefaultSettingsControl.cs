@@ -136,14 +136,9 @@ namespace MyGeneration
 
         public bool Save()
         {
-            if (this.TestConnection(true))
-            {
-                this.BindControlsToSettings();
-
-                settings.Save();
+            BindControlsToSettings();
+            DefaultSettings.Instance.Save();
             return true;
-        }
-            return false;
         }
 
         protected void OnAfterSave()
