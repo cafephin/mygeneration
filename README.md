@@ -4,6 +4,10 @@ MyGeneration is a flexible template-based code generator written in Microsoft .N
 
 This repository is a fork from [sourceforge.net/projects/mygeneration](https://sourceforge.net/projects/mygeneration).
 
+## Download
+
+Download the latest release from the [release page](https://github.com/cafephin/mygeneration/releases).
+
 ## Build
 
 ```cmd
