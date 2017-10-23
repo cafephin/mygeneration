@@ -107,11 +107,7 @@ Section "Detect Microsoft Script Control"
 	Call ScriptControlExists
 	Pop $1
 	IntCmp $1 0 SkipMSC
-		GetTempFileName $R1
-		File /oname=$R1 ".\exes\SCT10EN.EXE"
-		DetailPrint "Installing Microsoft Script Control..."
-		ExecWait "$R1 /Q"
-		Delete $R1
+		MessageBox MB_OK|MB_ICONINFORMATION "Please install Microsoft Script Control." IDOK
 		Goto MSCDone
 	SkipMSC:
 		DetailPrint "Microsoft Script Control found; skipping installation"
