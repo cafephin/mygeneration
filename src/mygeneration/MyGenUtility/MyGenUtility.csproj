@@ -136,6 +136,7 @@
     <Compile Include="Forms\AboutBox\AboutBoxLogo.Designer.cs">
       <DependentUpon>AboutBoxLogo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\AboutBox\Ball.cs" />
     <Compile Include="Forms\ApplicationUpdate\ApplicationReleases.cs">
       <SubType>Form</SubType>
     </Compile>

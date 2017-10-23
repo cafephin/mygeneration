@@ -719,7 +719,7 @@ namespace MyGeneration
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NewAbout ab = new NewAbout();
+            AboutBox ab = new AboutBox();
             ab.ShowDialog(this);
         }
 
@@ -1177,7 +1177,7 @@ namespace MyGeneration
                 try
                 {
                     string newVersion = versionInfo.GetVersion();
-                    System.Reflection.Assembly asmblyMyGen = System.Reflection.Assembly.GetAssembly(typeof(NewAbout));
+                    System.Reflection.Assembly asmblyMyGen = System.Reflection.Assembly.GetAssembly(typeof(AboutBox));
                     string currentVersion = asmblyMyGen.GetName().Version.ToString();
 
                     System.Version currentVersionObject = asmblyMyGen.GetName().Version;

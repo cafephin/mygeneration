@@ -28,7 +28,7 @@ namespace MyGeneration.CrazyErrors
 
 		public ExceptionDialog(Exception ex)
 		{
-			Assembly asmblyMyGen = System.Reflection.Assembly.GetAssembly(typeof(NewAbout));
+			Assembly asmblyMyGen = System.Reflection.Assembly.GetAssembly(typeof(AboutBox));
 
 			this.ex = ex;
 

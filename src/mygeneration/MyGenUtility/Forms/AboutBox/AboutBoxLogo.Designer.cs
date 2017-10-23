@@ -1,6 +1,6 @@
 namespace MyGeneration
 {
-    partial class AboutBoxLogo
+    sealed partial class AboutBoxLogo
     {
         /// <summary>
         /// Required designer variable.
@@ -29,23 +29,22 @@ namespace MyGeneration
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.timerRepaint = new System.Windows.Forms.Timer(this.components);
+            this.RepaintTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // timerRepaint
             // 
-            this.timerRepaint.Tick += new System.EventHandler(this.timerRepaint_Tick);
+            this.RepaintTimer.Tick += new System.EventHandler(this.RepaintTimer_OnClicked);
             // 
             // AboutBoxLogo
             // 
             this.BackColor = System.Drawing.Color.White;
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.AboutBoxLogo_MouseUp);
             this.ResumeLayout(false);
-
         }
 
         #endregion
 
-        private System.Windows.Forms.Timer timerRepaint;
+        private System.Windows.Forms.Timer RepaintTimer;
     }
 }
