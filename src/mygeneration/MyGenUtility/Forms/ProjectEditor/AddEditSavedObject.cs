@@ -452,12 +452,12 @@ namespace MyGeneration
                         if (!this._mdi.Console.DockContent.IsActivated) this._mdi.Console.DockContent.Activate();
                     }*/
 
-                    if (args.Message.StartsWith(ZeusProcessManager.BEGIN_RECORDING_TAG)) 
+                    if (args.Message.StartsWith(ZeusProcessManagerTags.BEGIN_RECORDING_TAG)) 
                     {
                         _collectedInput = new StringBuilder();
                         _insideRecording = true;
                     }
-                    else if (args.Message.StartsWith(ZeusProcessManager.END_RECORDING_TAG)) 
+                    else if (args.Message.StartsWith(ZeusProcessManagerTags.END_RECORDING_TAG)) 
                     {
                         this._savedObject.XML = _collectedInput.ToString();
                         _insideRecording = false;

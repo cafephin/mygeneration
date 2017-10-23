@@ -1,28 +1,16 @@
 using System;
-using System.IO;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 using System.Diagnostics;
+using System.Drawing;
+using System.IO;
 using System.Threading;
-using System.Reflection;
-
-using WeifenLuo.WinFormsUI;
-using WeifenLuo.WinFormsUI.Docking;
-
-using Scintilla;
-using Scintilla.Enums;
-using Scintilla.Forms;
-using Scintilla.Printing;
-using Scintilla.Configuration;
-using Scintilla.Configuration.SciTE;
-using Scintilla.Configuration.Legacy;
-
-using Zeus;
+using System.Windows.Forms;
 using MyGeneration.Forms;
+using Scintilla;
+using Scintilla.Configuration.Legacy;
+using Scintilla.Forms;
+using WeifenLuo.WinFormsUI.Docking;
+using Zeus;
 
 namespace MyGeneration
 {
@@ -32,9 +20,6 @@ namespace MyGeneration
         private const string SCINTILLA_CONFIG_FILE = @"\settings\scintillanet.xml";
         private const string REPLACEMENT_SUFFIX = "$REPLACEMENT$.dll";
 
-        private const string URL_HOMEPAGE = "http://www.mygenerationsoftware.com/home/";
-        private const string URL_DOCUMENTATION = "http://www.mygenerationsoftware.com/Documentation.aspx";
-        private const string URL_LATESTVERSION = "http://www.mygenerationsoftware.com/LatestVersion";
         private const string URL_SOURCEFORGE_DOWNLOAD = "http://sourceforge.net/project/showfiles.php?group_id=198893";
 
         private static ConfigFile configFile;
@@ -52,7 +37,7 @@ namespace MyGeneration
         private UserMetaData userMetaData;
         private GlobalUserMetaData globalUserMetaData;
         private MetaProperties metaProperties;
-        private DefaultProperties options;
+        private DefaultSettingsDialog options;
         private TemplateBrowser templateBrowser;
         private ConsoleForm consoleForm;
         private ErrorsForm errorsForm;
@@ -196,23 +181,6 @@ namespace MyGeneration
             if (this.startupFiles != null)
             {
                 OpenDocuments(startupFiles);
-            }
-
-            // Show Default Properties if this is the first load.
-            if (settings.FirstLoad)
-            {
-                if (!settings.EnableDocumentStyleSettings)
-                {
-                    if (options != null) { this.OptionsDockContent.Hide(); this.options = null; }
-                    DefaultSettingsDialog dsd = new DefaultSettingsDialog(this);
-                    dsd.ShowDialog(this);
-                }
-                else
-                {
-                    if (this.OptionsDockContent.IsHidden)
-                        this.OptionsDockContent.Show(this.dockPanel);
-                    this.OptionsDockContent.Activate();
-                }
             }
         }
 
@@ -475,7 +443,7 @@ namespace MyGeneration
                 {
                     content = this.TemplateBrowserDockContent;
                 }
-                else if (type == typeof(DefaultProperties).ToString() && settings.EnableDocumentStyleSettings)
+                else if (type == typeof(DefaultSettingsDialog).ToString() && settings.EnableDocumentStyleSettings)
                 {
                     content = this.OptionsDockContent;
                 }
@@ -723,47 +691,23 @@ namespace MyGeneration
             ab.ShowDialog(this);
         }
 
-        private void jScriptTemplateToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CreateDocument(ZeusConstants.Engines.MICROSOFT_SCRIPT, ZeusConstants.Languages.JSCRIPT);
-        }
-
-        private void vBScriptTemplateToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CreateDocument(ZeusConstants.Engines.MICROSOFT_SCRIPT, ZeusConstants.Languages.VBSCRIPT);
-        }
-
-        private void cTemplateToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CreateDocument(ZeusConstants.Engines.DOT_NET_SCRIPT, ZeusConstants.Languages.CSHARP);
-        }
-
-        private void vBNetTemplateToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CreateDocument(ZeusConstants.Engines.DOT_NET_SCRIPT, ZeusConstants.Languages.VBNET);
-        }
-
-        private void projectToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-        }
-
         private void defaultSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!settings.EnableDocumentStyleSettings)
             {
-                if (options != null) { this.OptionsDockContent.Hide(); this.options = null; }
-                DefaultSettingsDialog dsd = new DefaultSettingsDialog(this);
-                dsd.ShowDialog(this);
+                if (options != null) { OptionsDockContent.Hide(); this.options = null; }
+                var defaultProperties = new DefaultSettingsDialog(this);
+                defaultProperties.ShowDialog(this);
             }
             else
             {
-                if (this.OptionsDockContent.IsHidden)
+                if (OptionsDockContent.IsHidden)
                 {
-                    this.OptionsDockContent.Show(this.dockPanel);
+                    OptionsDockContent.Show(this.dockPanel);
                 }
                 else
                 {
-                    this.OptionsDockContent.Activate();
+                    OptionsDockContent.Activate();
                 }
             }
         }
@@ -830,7 +774,7 @@ namespace MyGeneration
             if (!settings.EnableDocumentStyleSettings)
             {
                 if (options != null) { this.OptionsDockContent.Hide(); this.options = null; }
-                DefaultSettingsDialog dsd = new DefaultSettingsDialog(this);
+                var dsd = new DefaultSettingsDialog(this);
                 dsd.ShowDialog(this);
             }
             else
@@ -1001,12 +945,12 @@ namespace MyGeneration
                 return errorDetail;
             }
         }
-        public DefaultProperties OptionsDockContent
+        public DefaultSettingsDialog OptionsDockContent
         {
             get
             {
                 if ((options != null) && options.IsDisposed) options = null;
-                if (options == null) options = new DefaultProperties(this);
+                if (options == null) options = new DefaultSettingsDialog(this);
                 return options;
             }
         }
@@ -1510,6 +1454,5 @@ namespace MyGeneration
             catch { }
         }
         #endregion
-
     }
 }

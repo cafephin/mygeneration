@@ -1,63 +1,28 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text;
-using System.Data;
-using System.IO;
-using System.Diagnostics;
-using Zeus;
-using Zeus.Configuration;
-using Zeus.Projects;
-using Zeus.Serializers;
-using Zeus.UserInterface;
-using MyGeneration;
-using MyMeta;
 using System.Xml;
+using MyGeneration;
+using Zeus.Projects;
 
 namespace Zeus
 {
-    public static class SharedResources
-    {
-        public static System.Drawing.Bitmap Refresh16x16_1
-        {
-            get { return MyGeneration.Properties.Resources.Refresh16x16_1; }
-        }
-        public static System.Drawing.Bitmap Refresh16x16_2
-        {
-            get { return MyGeneration.Properties.Resources.Refresh16x16_2; }
-        }
-        public static System.Drawing.Bitmap Refresh16x16_3
-        {
-            get { return MyGeneration.Properties.Resources.Refresh16x16_3; }
-        }
-        public static System.Drawing.Bitmap Refresh16x16_4
-        {
-            get { return MyGeneration.Properties.Resources.Refresh16x16_4; }
-        }
-    }
     public class ZeusController : IZeusController
     {
-
         private static ZeusController _instance;
         public static ZeusController Instance 
         {
-            get 
-            {
-                if (_instance == null) _instance = new ZeusController();
-                return _instance;
-            }
+            get { return _instance ?? (_instance = new ZeusController()); }
         }
 
         private ZeusController() { }
 
         public IZeusSavedInput CollectTemplateInput(IZeusContext context, string templatePath)
         {
-            ZeusTemplate template = new ZeusTemplate(templatePath);
-            ZeusSavedInput collectedInput = new ZeusSavedInput();
-            DefaultSettings settings = DefaultSettings.Instance;
-
-            settings.PopulateZeusContext(context);
-            template.Collect(context, settings.ScriptTimeout, collectedInput.InputData.InputItems);
+            var template = new ZeusTemplate(templatePath);
+            var collectedInput = new ZeusSavedInput();
+            
+            DefaultSettings.Instance.PopulateZeusContext(context);
+            template.Collect(context, DefaultSettings.Instance.ScriptTimeout, collectedInput.InputData.InputItems);
             collectedInput.Save();
 
             return collectedInput;
@@ -65,12 +30,11 @@ namespace Zeus
 
         public IZeusSavedInput ExecuteTemplateAndCollectInput(IZeusContext context, string templatePath)
         {
-            ZeusTemplate template = new ZeusTemplate(templatePath);
-            ZeusSavedInput collectedInput = new ZeusSavedInput();
-            DefaultSettings settings = DefaultSettings.Instance;
-
-            settings.PopulateZeusContext(context);
-            template.ExecuteAndCollect(context, settings.ScriptTimeout, collectedInput.InputData.InputItems);
+            var template = new ZeusTemplate(templatePath);
+            var collectedInput = new ZeusSavedInput();
+            
+            DefaultSettings.Instance.PopulateZeusContext(context);
+            template.ExecuteAndCollect(context, DefaultSettings.Instance.ScriptTimeout, collectedInput.InputData.InputItems);
             collectedInput.Save();
 
             return collectedInput;
@@ -83,10 +47,9 @@ namespace Zeus
 
         public void ExecuteTemplate(IZeusContext context, string templatePath, string inputFilePath)
         {
-            ZeusTemplate template = new ZeusTemplate(templatePath);
+            var template = new ZeusTemplate(templatePath);
             ZeusSavedInput savedInput = null;
-            DefaultSettings settings = DefaultSettings.Instance;
-
+            
             if (!string.IsNullOrEmpty(inputFilePath))
             {
                 savedInput = new ZeusSavedInput(inputFilePath);
@@ -96,12 +59,12 @@ namespace Zeus
             if (savedInput != null)
             {
                 context.Input.AddItems(savedInput.InputData.InputItems);
-                template.Execute(context, settings.ScriptTimeout, true);
+                template.Execute(context, DefaultSettings.Instance.ScriptTimeout, true);
             }
             else
             {
-                settings.PopulateZeusContext(context);
-                template.Execute(context, settings.ScriptTimeout, false);
+                DefaultSettings.Instance.PopulateZeusContext(context);
+                template.Execute(context, DefaultSettings.Instance.ScriptTimeout, false);
             }
         }
 
@@ -112,21 +75,20 @@ namespace Zeus
 
         public void ExecuteProjectModule(IZeusContext context, string projectFilePath, params string[] modules)
         {
-            ZeusProject proj = new ZeusProject(projectFilePath);
-            DefaultSettings settings = DefaultSettings.Instance;
-
+            var zeusProject = new ZeusProject(projectFilePath);
+            
             if (modules.Length == 0)
             {
-                context.Log.Write("Executing: " + proj.Name);
-                proj.Execute(settings.ScriptTimeout, context.Log);
+                context.Log.Write("Executing: " + zeusProject.Name);
+                zeusProject.Execute(DefaultSettings.Instance.ScriptTimeout, context.Log);
 
             }
             else
             {
-                foreach (string mod in modules)
+                foreach (var mod in modules)
                 {
                     context.Log.Write("Executing: " + mod);
-                    ExecuteModules(context, proj, new List<string>(modules), settings.ScriptTimeout);
+                    ExecuteModules(context, zeusProject, new List<string>(modules), DefaultSettings.Instance.ScriptTimeout);
                 }
             }
         }
@@ -151,7 +113,7 @@ namespace Zeus
             get
             {
                 List<IAppRelease> releases = new List<IAppRelease>();
-                XmlDocument xmldoc = Zeus.HttpTools.GetXmlFromUrl(DefaultSettings.Instance.VersionRSSUrl, DefaultSettings.Instance.WebProxy);
+                XmlDocument xmldoc = Zeus.HttpTools.GetXmlFromUrl(DefaultSettings.Instance.VersionRssUrl, DefaultSettings.Instance.WebProxy);
                 XmlNodeList nodes = xmldoc.SelectNodes("//item");
                 foreach (XmlNode node in nodes)
                 {
@@ -226,12 +188,12 @@ namespace Zeus
         private string FindSourceForgeDownloadUrl(string description, out string version)
         {
             version = string.Empty;
-            string newurl = string.Empty;
+            var newurl = string.Empty;
             //"<br />Released at Fri, 29 Aug 2008 07:55:10 GMT by komma8komma1<br />Includes files: mygeneration_1306_20080829.exe (4562185 bytes, 64 downloads to date)<br /><a href=\"http://sourceforge.net/project/showfiles.php?group_id=198893&package_id=249524&release_id=622773\">[Download]</a> <a href=\"http://sourceforge.net/project/shownotes.php?release_id=622773\">[Release Notes]</a>"
-            int start = -1, end = description.IndexOf("\">[Download]</a>");
+            int start = -1, end = description.IndexOf("\">[Download]</a>", StringComparison.Ordinal);
             if (end > 0)
             {
-                start = (description.Substring(0, end)).LastIndexOf("<a href=\"") + 9;
+                start = (description.Substring(0, end)).LastIndexOf("<a href=\"", StringComparison.Ordinal) + 9;
             }
             if (start >= 9 && end > start)
             {
@@ -242,7 +204,6 @@ namespace Zeus
             int i = 0, i2 = 0, j, k, l;
             try
             {
-                //<td ><a href="http://downloads.sourceforge.net/mygeneration/mygeneration_1306_20080829.exe?modtime=1219979144&amp;big_mirror=0" onClick="window.location='/project/downloading.php?group_id=198893&amp;use_mirror=voxel&amp;filename=mygeneration_1306_20080829.exe&amp;'+Math.floor(Math.random()*100000000); return false;">mygeneration_1306_20080829.exe</a>
                 string tokenToFind = "http://downloads.sourceforge.net/mygeneration/";
                 do
                 {
@@ -293,21 +254,5 @@ namespace Zeus
             }
             return newurl;
         }
-
-    }
-    public class AppRelease : IAppRelease
-    {
-        private string _title, _description, _author;
-        private Uri _downloadLink, _releaseNotesLink;
-        private DateTime _date;
-        private Version _version;
-
-        public string Title { get { return _title;  } set { _title = value; } }
-        public string Description { get { return _description; } set { _description = value; } }
-        public string Author { get { return _author; } set { _author = value; } }
-        public Version AppVersion { get { return _version; } set { _version = value; } }
-        public Uri DownloadLink { get { return _downloadLink; } set { _downloadLink = value; } }
-        public Uri ReleaseNotesLink { get { return _releaseNotesLink; } set { _releaseNotesLink = value; } }
-        public DateTime Date { get { return _date; } set { _date = value; } }
     }
 }

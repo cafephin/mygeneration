@@ -166,14 +166,14 @@ namespace MyGeneration
             if (this._mdi.Console.DockContent.IsHidden) this._mdi.Console.DockContent.Show(_mdi.DockPanel);
             if (!this._mdi.Console.DockContent.IsActivated) this._mdi.Console.DockContent.Activate();
 
-            if (message.StartsWith(ZeusProcessManager.GENERATED_FILE_TAG))
+            if (message.StartsWith(ZeusProcessManagerTags.GENERATED_FILE_TAG))
             {
-                string generatedFile = message.Substring(ZeusProcessManager.GENERATED_FILE_TAG.Length);
+                string generatedFile = message.Substring(ZeusProcessManagerTags.GENERATED_FILE_TAG.Length);
                 this._mdi.WriteConsole("File Generated: " + generatedFile);
                 this._mdi.SendAlert(this, "FileGenerated", generatedFile);
 
-            } else if (message.StartsWith(ZeusProcessManager.ERROR_TAG)) {
-                string error = message.Substring(ZeusProcessManager.ERROR_TAG.Length);
+            } else if (message.StartsWith(ZeusProcessManagerTags.ERROR_TAG)) {
+                string error = message.Substring(ZeusProcessManagerTags.ERROR_TAG.Length);
                 this._mdi.ErrorList.AddErrors(new MyGenError() {
                     Class = MyGenErrorClass.Template,
                     Message = "Error processing template",
