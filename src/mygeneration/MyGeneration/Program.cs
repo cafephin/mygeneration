@@ -1,5 +1,4 @@
 using System;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace MyGeneration
@@ -11,7 +10,7 @@ namespace MyGeneration
         /// application exception handlers here and load up the parent form.
         /// </summary>
         [STAThread]
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             MyGenerationMDI mdi;
             try
@@ -23,9 +22,8 @@ namespace MyGeneration
             }
             catch (Exception ex)
             {
-                var exceptionDialog = new MyGeneration.CrazyErrors.ExceptionDialog(ex);
+                var exceptionDialog = new ExceptionDialog().PopulateUIExceptionDetails(ex);
                 exceptionDialog.ShowDialog();
-
                 mdi = null;
             }
 
@@ -38,6 +36,5 @@ namespace MyGeneration
                 Application.Exit();
             }
         }
-
     }
 }
