@@ -166,8 +166,6 @@
     <None Include="app.config" />
     <None Include="Settings\CSharp.INI" />
     <Content Include="Resources\MyGeneration.ico" />
-    <Content Include="Resources\dev01tiny.png" />
-    <Content Include="Resources\dev02tiny.png" />
     <Content Include="Resources\mygenlogo.gif" />
     <Content Include="Settings\DbTargets.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
