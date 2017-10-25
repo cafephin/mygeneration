@@ -1,27 +1,15 @@
 using System;
-using System.Xml;
 using System.Collections;
-using System.Data;
-using System.Data.OleDb;
 
 namespace MyMeta
 {
-	/// <summary>
-	/// Summary description for Collection.
-	/// </summary>
-	/// 
 #if ENTERPRISE
-	using System.Runtime.InteropServices;
+    using System.Runtime.InteropServices;
 	[ComVisible(false), ClassInterface(ClassInterfaceType.AutoDual)]
 #endif 
 	public class Collection : MetaObject
 	{
-		public Collection()
-		{
-
-		}
-
-		virtual public int Count
+		public virtual int Count
 		{
 			get
 			{
@@ -109,7 +97,7 @@ namespace MyMeta
 #endif 
 		public bool CompareStrings(string s1, string s2)
 		{
-			return (0 == string.Compare(s1, s2, _dbRoot.IgnoreCase)) ? true : false;
+			return 0 == string.Compare(s1, s2, _dbRoot.IgnoreCase);
 		}
 
 		protected ArrayList _array = new ArrayList();

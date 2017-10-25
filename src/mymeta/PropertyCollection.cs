@@ -1,27 +1,16 @@
 using System;
-using System.Xml;
 using System.Collections;
-using System.Data;
-using System.Data.OleDb;
+using System.Xml;
 
 namespace MyMeta
 {
-	/// <summary>
-	/// Summary description for Collection.
-	/// </summary>
-	/// 
 #if ENTERPRISE
-	using System.Runtime.InteropServices;
-	[ComVisible(true), ClassInterface(ClassInterfaceType.AutoDual), ComDefaultInterface(typeof(IPropertyCollection))]
+    using System.Runtime.InteropServices;
+    [ComVisible(true), ClassInterface(ClassInterfaceType.AutoDual), ComDefaultInterface(typeof(IPropertyCollection))]
 #endif 
-	public class PropertyCollection : Collection, IPropertyCollection, IEnumerable, IEnumerator, ICollection
+	public class PropertyCollection : Collection, IPropertyCollection, IEnumerator, ICollection
 	{
-		public PropertyCollection()
-		{
-
-		}
-
-		virtual internal void LoadAll()
+		internal virtual void LoadAll()
 		{
 			string xPath;
 
@@ -48,11 +37,8 @@ namespace MyMeta
 			}
 		}
 
-		virtual internal void LoadAllGlobal(XmlNode node)
+		internal virtual void LoadAllGlobal(XmlNode node)
 		{
-			//-----------------------------------------
-			// Global User Meta Data
-			//-----------------------------------------
 			if(node != null)
 			{
 				string xPath = @"./Properties";
@@ -78,7 +64,7 @@ namespace MyMeta
 #if ENTERPRISE
 		[ComVisible(false)]
 #endif
-		override public string UserDataXPath
+		public override string UserDataXPath
 		{ 
 			get
 			{
@@ -89,7 +75,7 @@ namespace MyMeta
 #if ENTERPRISE
 		[ComVisible(false)]
 #endif
-		override internal bool GetXmlNode(out XmlNode node, bool forceCreate)
+		internal override bool GetXmlNode(out XmlNode node, bool forceCreate)
 		{
 			node = null;
 			bool success = false;
@@ -123,7 +109,7 @@ namespace MyMeta
 #if ENTERPRISE
 		[ComVisible(false)]
 #endif
-		override public void CreateUserMetaData(XmlNode parentNode)
+		public override void CreateUserMetaData(XmlNode parentNode)
 		{
 			XmlNode myNode = parentNode.OwnerDocument.CreateNode(XmlNodeType.Element, "Properties", null);
 			parentNode.AppendChild(myNode);
@@ -170,13 +156,13 @@ namespace MyMeta
 					prop.Parent = this;
 
 					prop.SetKey(key);
-					prop.Value = value as string;
+					prop.Value = value;
 
 					this._collection.Add(key, prop);
 				}
 			}
 
-			return prop as IProperty;
+			return prop;
 		}
 
 		public void RemoveKey(string key)
@@ -202,7 +188,7 @@ namespace MyMeta
 			}
 		}
 
-		new public void Clear()
+		public new void Clear()
 		{
 			XmlNode node = null;
 			if(this.GetXmlNode(out node, true))
@@ -234,7 +220,7 @@ namespace MyMeta
 		public IEnumerator GetEnumerator()
 		{
 			Reset();
-			return (this as IEnumerator);
+			return this;
 		}
 
 		#endregion
@@ -297,8 +283,8 @@ namespace MyMeta
 			}
 		}
 
-		private IEnumerator _enumerator = null;
-		private SortedList	_collection = new SortedList();
-		private MetaObject	_parent = null;
+		private IEnumerator _enumerator;
+		private readonly SortedList	_collection = new SortedList();
+		private MetaObject	_parent;
 	}
 }

@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Data;
 using System.Runtime.InteropServices;
 
 namespace MyMeta
 {
-	[ComVisible(false)]
+    [ComVisible(false)]
 	public interface IMyMetaPlugin
     {
         /// <summary>
@@ -53,7 +52,6 @@ namespace MyMeta
         /// <summary>
         /// Get a IDbConnection for the database that is not opend yet
         /// </summary>
-        /// <param name="connectionString"></param>
         /// <returns></returns>
         IDbConnection NewConnection { get; }
 

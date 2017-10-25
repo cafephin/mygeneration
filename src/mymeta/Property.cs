@@ -1,26 +1,13 @@
-using System;
 using System.Xml;
-using System.Collections;
-using System.Data;
-using System.Data.OleDb;
 
 namespace MyMeta
 {
-	/// <summary>
-	/// Summary description for Collection.
-	/// </summary>
-	/// 
 #if ENTERPRISE
-	using System.Runtime.InteropServices;
+    using System.Runtime.InteropServices;
 	[ComVisible(true), ClassInterface(ClassInterfaceType.AutoDual), ComDefaultInterface(typeof(IProperty))]
 #endif 
 	public class Property : Single, IProperty
 	{
-		public Property()
-		{
-
-		}
-
 #if ENTERPRISE
 		[ComVisible(false)]
 #endif
@@ -33,7 +20,7 @@ namespace MyMeta
 
 		#region XML User Data
 
-		override public string UserDataXPath
+		public override string UserDataXPath
 		{ 
 			get
 			{
@@ -44,7 +31,7 @@ namespace MyMeta
 #if ENTERPRISE
 		[ComVisible(false)]
 #endif
-		override internal bool GetXmlNode(out XmlNode node, bool forceCreate)
+		internal override bool GetXmlNode(out XmlNode node, bool forceCreate)
 		{
 			node = null;
 			bool success = false;
@@ -151,7 +138,7 @@ namespace MyMeta
 
 		private string _key;
 		private string _value;
-		private bool _isGlobal = false;
+		private bool _isGlobal;
 		private PropertyCollection _collection;
 	}
 }

@@ -10,77 +10,72 @@
 
 
 using System;
-using System.Text;
-using System.IO;
-using System.Xml;
-using System.Data;
-using System.Runtime.InteropServices;
-using System.Data.OleDb;
-using System.Data.Odbc;
 using System.Collections;
-using System.Reflection;
-
-using System.Diagnostics;
-
-using Npgsql;
-using FirebirdSql.Data.FirebirdClient;
+using System.Data;
+using System.Data.OleDb;
 using System.Data.SQLite;
+using System.IO;
+using System.Reflection;
+using System.Text;
+using System.Xml;
+using FirebirdSql.Data.FirebirdClient;
 using MySql.Data.MySqlClient;
+using Npgsql;
 
 namespace MyMeta
 {
 #if ENTERPRISE
-	using System.Runtime.InteropServices;
-	using System.EnterpriseServices;
+    using System.EnterpriseServices;
+    using System.Runtime.InteropServices;
 
-	/// <summary>
-	/// MyMeta is the root of the MyMeta meta-data. MyMeta is an intrinsic object available to your script and configured based on the settings
-	/// you have entered in the Default Settings dialog. It is already connected before you script execution begins.
-	/// </summary>
-	/// <remarks>
-	///	MyMeta has 1 Collection:
-	/// <list type="table">
-	///		<item><term>Databases</term><description>Contains a collection of all of the databases in your system</description></item>
-	///	</list>
-	/// There is a property collection on every entity in your database, you can add key/value
-	/// pairs to the User Meta Data either through the user interface of MyGeneration or 
-	/// programmatically in your scripts.  User meta data is stored in XML and never writes to your database.
-	///
-	/// This can be very useful, you might need more meta data than MyMeta supplies, in fact,
-	/// MyMeta will eventually offer extended meta data using this feature as well. The current plan
-	/// is that any extended data added via MyGeneration will have a key that beings with "MyMeta.Something"
-	/// where 'Something' equals the description. 
-	/// </remarks>
-	/// <example>
-	///	VBScript - ****** NOTE ****** You never have to actually write this code, this is for education purposes only.
-	///	<code>
-	///	MyMeta.Connect "SQL", "Provider=SQLOLEDB.1;Persist Security Info=True;User ID=sa;Data Source=localhost"
-	///	
-	///	MyMeta.DbTarget	= "SqlClient"
-	///	MyMeta.DbTargetMappingFileName = "C:\Program Files\MyGeneration\Settings\DbTargets.xml"
-	///	
-	/// MyMeta.Language = "VB.NET"
-	/// MyMeta.LanguageMappingFileName = "C:\Program Files\MyGeneration\Settings\Languages.xml"
-	/// 
-	/// MyMeta.UserMetaDataFileName = "C:\Program Files\MyGeneration\Settings\UserMetaData.xml"
-	/// </code>
-	///	JScript - ****** NOTE ****** You never have to actually write this code, this is for education purposes only.
-	///	<code>
-	///	MyMeta.Connect("SQL", "Provider=SQLOLEDB.1;Persist Security Info=True;User ID=sa;Data Source=localhost")
-	///	
-	///	MyMeta.DbTarget	= "SqlClient";
-	///	MyMeta.DbTargetMappingFileName = "C:\Program Files\MyGeneration\Settings\DbTargets.xml";
-	///	
-	/// MyMeta.Language = "VB.NET";
-	/// MyMeta.LanguageMappingFileName = "C:\Program Files\MyGeneration\Settings\Languages.xml";
-	/// 
-	/// MyMeta.UserMetaDataFileName = "C:\Program Files\MyGeneration\Settings\UserMetaData.xml";
-	/// </code>
-	/// The above code is done for you long before you execute your script and the values come from the Default Settings Dialog.
-	/// However, you can override these defaults as many of the sample scripts do. For instance, if you have a script that is for SqlClient
-	/// only go ahead and set the MyMeta.DbTarget in your script thus overriding the Default Settings.
-	/// </example>
-	[GuidAttribute("6b6e4c19-a0c4-405a-8085-0676f5d5cdc3"),ClassInterface(ClassInterfaceType.AutoDual)]
+    /// <summary>
+    /// MyMeta is the root of the MyMeta meta-data. MyMeta is an intrinsic object available to your script and configured based on the settings
+    /// you have entered in the Default Settings dialog. It is already connected before you script execution begins.
+    /// </summary>
+    /// <remarks>
+    ///	MyMeta has 1 Collection:
+    /// <list type="table">
+    ///		<item><term>Databases</term><description>Contains a collection of all of the databases in your system</description></item>
+    ///	</list>
+    /// There is a property collection on every entity in your database, you can add key/value
+    /// pairs to the User Meta Data either through the user interface of MyGeneration or 
+    /// programmatically in your scripts.  User meta data is stored in XML and never writes to your database.
+    ///
+    /// This can be very useful, you might need more meta data than MyMeta supplies, in fact,
+    /// MyMeta will eventually offer extended meta data using this feature as well. The current plan
+    /// is that any extended data added via MyGeneration will have a key that beings with "MyMeta.Something"
+    /// where 'Something' equals the description. 
+    /// </remarks>
+    /// <example>
+    ///	VBScript - ****** NOTE ****** You never have to actually write this code, this is for education purposes only.
+    ///	<code>
+    ///	MyMeta.Connect "SQL", "Provider=SQLOLEDB.1;Persist Security Info=True;User ID=sa;Data Source=localhost"
+    ///	
+    ///	MyMeta.DbTarget	= "SqlClient"
+    ///	MyMeta.DbTargetMappingFileName = "C:\Program Files\MyGeneration\Settings\DbTargets.xml"
+    ///	
+    /// MyMeta.Language = "VB.NET"
+    /// MyMeta.LanguageMappingFileName = "C:\Program Files\MyGeneration\Settings\Languages.xml"
+    /// 
+    /// MyMeta.UserMetaDataFileName = "C:\Program Files\MyGeneration\Settings\UserMetaData.xml"
+    /// </code>
+    ///	JScript - ****** NOTE ****** You never have to actually write this code, this is for education purposes only.
+    ///	<code>
+    ///	MyMeta.Connect("SQL", "Provider=SQLOLEDB.1;Persist Security Info=True;User ID=sa;Data Source=localhost")
+    ///	
+    ///	MyMeta.DbTarget	= "SqlClient";
+    ///	MyMeta.DbTargetMappingFileName = "C:\Program Files\MyGeneration\Settings\DbTargets.xml";
+    ///	
+    /// MyMeta.Language = "VB.NET";
+    /// MyMeta.LanguageMappingFileName = "C:\Program Files\MyGeneration\Settings\Languages.xml";
+    /// 
+    /// MyMeta.UserMetaDataFileName = "C:\Program Files\MyGeneration\Settings\UserMetaData.xml";
+    /// </code>
+    /// The above code is done for you long before you execute your script and the values come from the Default Settings Dialog.
+    /// However, you can override these defaults as many of the sample scripts do. For instance, if you have a script that is for SqlClient
+    /// only go ahead and set the MyMeta.DbTarget in your script thus overriding the Default Settings.
+    /// </example>
+    [GuidAttribute("6b6e4c19-a0c4-405a-8085-0676f5d5cdc3"),ClassInterface(ClassInterfaceType.AutoDual)]
 	public class dbRoot : ServicedComponent
 #else
 	public class dbRoot 
@@ -88,7 +83,8 @@ namespace MyMeta
     {
 		public dbRoot()
 		{
-            Access.ClassFactory.Register();
+		    StripTrailingNulls = false;
+		    Access.ClassFactory.Register();
             Advantage.ClassFactory.Register();
             DB2.ClassFactory.Register();
             Firebird.ClassFactory.Register();
@@ -112,8 +108,8 @@ namespace MyMeta
 			UserData = null;
 
 			IgnoreCase = true;
-			requiredDatabaseName = false;
-			requiresSchemaName = false;
+			RequiredDatabaseName = false;
+			RequiresSchemaName = false;
 			StripTrailingNulls = false;
 			TrailingNull = ((char)0x0).ToString();
 
@@ -209,7 +205,7 @@ namespace MyMeta
                 IDatabase defDatabase = null;
                 Databases dbases = this.Databases as Databases;
 
-                if (this._defaultDatabase != null && this._defaultDatabase != "")
+                if (!string.IsNullOrEmpty(this._defaultDatabase))
                 {
                     try
                     {
@@ -270,12 +266,12 @@ namespace MyMeta
 
                 case MyMetaDrivers.PostgreSQL:
                 case MyMetaDrivers.PostgreSQL8:
-					conn = new Npgsql.NpgsqlConnection(connectionString);
+					conn = new NpgsqlConnection(connectionString);
 					break;
 
                 case MyMetaDrivers.Firebird:
                 case MyMetaDrivers.Interbase:
-					conn = new FirebirdSql.Data.FirebirdClient.FbConnection(connectionString);
+					conn = new FbConnection(connectionString);
                     break;
 
                 case MyMetaDrivers.SQLite:
@@ -285,7 +281,7 @@ namespace MyMeta
                 case MyMetaDrivers.VistaDB:	
 					try
 					{
-						MyMeta.VistaDB.MetaHelper mh = new MyMeta.VistaDB.MetaHelper();
+						var mh = new VistaDB.MetaHelper();
 						conn = mh.GetConnection(connectionString);
 					}
 					catch
@@ -311,7 +307,7 @@ namespace MyMeta
 		/// <summary>
 		/// This is how you connect to your DBMS system using MyMeta. This is already called for you before your script beings execution.
 		/// </summary>
-		/// <param name="driver">A string as defined in the remarks below</param>
+		/// <param name="driverIn">A string as defined in the remarks below</param>
 		/// <param name="connectionString">A valid connection string for you DBMS</param>
 		/// <returns>True if connected, False if not</returns>
 		/// <remarks>
@@ -429,8 +425,8 @@ namespace MyMeta
                         ConnectUsingOleDb(_driver, _connectionString);
                         this._driverString = MyMetaDrivers.SQL;
                         this.StripTrailingNulls = false;
-                        this.requiredDatabaseName = true;
-                        ClassFactory = new MyMeta.Sql.ClassFactory();
+                        this.RequiredDatabaseName = true;
+                        ClassFactory = new Sql.ClassFactory();
                         break;
 
                     case dbDriver.Oracle:
@@ -438,8 +434,8 @@ namespace MyMeta
                         ConnectUsingOleDb(_driver, _connectionString);
                         this._driverString = MyMetaDrivers.Oracle;
                         this.StripTrailingNulls = false;
-                        this.requiredDatabaseName = true;
-                        ClassFactory = new MyMeta.Oracle.ClassFactory();
+                        this.RequiredDatabaseName = true;
+                        ClassFactory = new Oracle.ClassFactory();
                         break;
 
                     case dbDriver.Access:
@@ -447,8 +443,8 @@ namespace MyMeta
                         ConnectUsingOleDb(_driver, _connectionString);
                         this._driverString = MyMetaDrivers.Access;
                         this.StripTrailingNulls = false;
-                        this.requiredDatabaseName = false;
-                        ClassFactory = new MyMeta.Access.ClassFactory();
+                        this.RequiredDatabaseName = false;
+                        ClassFactory = new Access.ClassFactory();
                         break;
 
                     case dbDriver.MySql:
@@ -456,8 +452,8 @@ namespace MyMeta
                         ConnectUsingOleDb(_driver, _connectionString);
                         this._driverString = MyMetaDrivers.MySql;
                         this.StripTrailingNulls = true;
-                        this.requiredDatabaseName = true;
-                        ClassFactory = new MyMeta.MySql.ClassFactory();
+                        this.RequiredDatabaseName = true;
+                        ClassFactory = new MySql.ClassFactory();
                         break;
 
                     case dbDriver.MySql2:
@@ -471,8 +467,8 @@ namespace MyMeta
 
                         this._driverString = MyMetaDrivers.MySql2;
                         this.StripTrailingNulls = true;
-                        this.requiredDatabaseName = true;
-                        ClassFactory = new MyMeta.MySql5.ClassFactory();
+                        this.RequiredDatabaseName = true;
+                        ClassFactory = new MySql5.ClassFactory();
                         break;
 
                     case dbDriver.DB2:
@@ -480,8 +476,8 @@ namespace MyMeta
                         ConnectUsingOleDb(_driver, _connectionString);
                         this._driverString = MyMetaDrivers.DB2;
                         this.StripTrailingNulls = false;
-                        this.requiredDatabaseName = false;
-                        ClassFactory = new MyMeta.DB2.ClassFactory();
+                        this.RequiredDatabaseName = false;
+                        ClassFactory = new DB2.ClassFactory();
                         break;
 
                     case dbDriver.ISeries:
@@ -489,8 +485,8 @@ namespace MyMeta
                         ConnectUsingOleDb(_driver, _connectionString);
                         this._driverString = MyMetaDrivers.ISeries;
                         this.StripTrailingNulls = false;
-                        this.requiredDatabaseName = false;
-                        ClassFactory = new MyMeta.ISeries.ClassFactory();
+                        this.RequiredDatabaseName = false;
+                        ClassFactory = new ISeries.ClassFactory();
                         break;
 
                     case dbDriver.Pervasive:
@@ -498,13 +494,13 @@ namespace MyMeta
                         ConnectUsingOleDb(_driver, _connectionString);
                         this._driverString = MyMetaDrivers.Pervasive;
                         this.StripTrailingNulls = false;
-                        this.requiredDatabaseName = false;
-                        ClassFactory = new MyMeta.Pervasive.ClassFactory();
+                        this.RequiredDatabaseName = false;
+                        ClassFactory = new Pervasive.ClassFactory();
                         break;
 
                     case dbDriver.PostgreSQL:
 
-                        using (NpgsqlConnection cn = new Npgsql.NpgsqlConnection(_connectionString))
+                        using (NpgsqlConnection cn = new NpgsqlConnection(_connectionString))
                         {
                             cn.Open();
                             this._defaultDatabase = cn.Database;
@@ -512,13 +508,13 @@ namespace MyMeta
 
                         this._driverString = MyMetaDrivers.PostgreSQL;
                         this.StripTrailingNulls = false;
-                        this.requiredDatabaseName = false;
-                        ClassFactory = new MyMeta.PostgreSQL.ClassFactory();
+                        this.RequiredDatabaseName = false;
+                        ClassFactory = new PostgreSQL.ClassFactory();
                         break;
 
                     case dbDriver.PostgreSQL8:
 
-                        using (NpgsqlConnection cn8 = new Npgsql.NpgsqlConnection(_connectionString))
+                        using (NpgsqlConnection cn8 = new NpgsqlConnection(_connectionString))
                         {
                             cn8.Open();
                             this._defaultDatabase = cn8.Database;
@@ -526,13 +522,13 @@ namespace MyMeta
 
                         this._driverString = MyMetaDrivers.PostgreSQL8;
                         this.StripTrailingNulls = false;
-                        this.requiredDatabaseName = false;
-                        ClassFactory = new MyMeta.PostgreSQL8.ClassFactory();
+                        this.RequiredDatabaseName = false;
+                        ClassFactory = new PostgreSQL8.ClassFactory();
                         break;
 
                     case dbDriver.Firebird:
 
-                        using (FbConnection cn1 = new FirebirdSql.Data.FirebirdClient.FbConnection(_connectionString))
+                        using (FbConnection cn1 = new FbConnection(_connectionString))
                         {
                             cn1.Open();
                             dbName = cn1.Database;
@@ -540,7 +536,7 @@ namespace MyMeta
 
                         try
                         {
-                            index = dbName.LastIndexOfAny(new char[] { '\\' });
+                            index = dbName.LastIndexOfAny(new[] { '\\' });
                             if (index >= 0)
                             {
                                 this._defaultDatabase = dbName.Substring(index + 1);
@@ -550,13 +546,13 @@ namespace MyMeta
 
                         this._driverString = MyMetaDrivers.Firebird;
                         this.StripTrailingNulls = false;
-                        this.requiredDatabaseName = false;
-                        ClassFactory = new MyMeta.Firebird.ClassFactory();
+                        this.RequiredDatabaseName = false;
+                        ClassFactory = new Firebird.ClassFactory();
                         break;
 
                     case dbDriver.Interbase:
 
-                        using (FbConnection cn2 = new FirebirdSql.Data.FirebirdClient.FbConnection(_connectionString))
+                        using (FbConnection cn2 = new FbConnection(_connectionString))
                         {
                             cn2.Open();
                             this._defaultDatabase = cn2.Database;
@@ -564,8 +560,8 @@ namespace MyMeta
 
                         this._driverString = MyMetaDrivers.Interbase;
                         this.StripTrailingNulls = false;
-                        this.requiredDatabaseName = false;
-                        ClassFactory = new MyMeta.Firebird.ClassFactory();
+                        this.RequiredDatabaseName = false;
+                        ClassFactory = new Firebird.ClassFactory();
                         break;
 
                     case dbDriver.SQLite:
@@ -579,15 +575,15 @@ namespace MyMeta
                         }
                         this._driverString = MyMetaDrivers.SQLite;
                         this.StripTrailingNulls = false;
-                        this.requiredDatabaseName = false;
-                        ClassFactory = new MyMeta.SQLite.ClassFactory();
+                        this.RequiredDatabaseName = false;
+                        ClassFactory = new SQLite.ClassFactory();
                         break;
 #if !IGNORE_VISTA
                     case dbDriver.VistaDB:
 
                         try
                         {
-                            MyMeta.VistaDB.MetaHelper mh = new MyMeta.VistaDB.MetaHelper();
+                            var mh = new VistaDB.MetaHelper();
                             dbName = mh.LoadDatabases(_connectionString);
 
                             if (dbName == "") return false;
@@ -596,8 +592,8 @@ namespace MyMeta
 
                             this._driverString = MyMetaDrivers.VistaDB;
                             this.StripTrailingNulls = false;
-                            this.requiredDatabaseName = false;
-                            ClassFactory = new MyMeta.VistaDB.ClassFactory();
+                            this.RequiredDatabaseName = false;
+                            ClassFactory = new VistaDB.ClassFactory();
                         }
                         catch
                         {
@@ -611,8 +607,8 @@ namespace MyMeta
                         ConnectUsingOleDb(_driver, _connectionString);
                         this._driverString = MyMetaDrivers.Advantage;
                         this.StripTrailingNulls = false;
-                        this.requiredDatabaseName = false;
-                        ClassFactory = new MyMeta.Advantage.ClassFactory();
+                        this.RequiredDatabaseName = false;
+                        ClassFactory = new Advantage.ClassFactory();
                         string[] s = this._defaultDatabase.Split('.');
                         this._defaultDatabase = s[0];
                         break;
@@ -629,9 +625,7 @@ namespace MyMeta
                             if (!string.IsNullOrEmpty(dbName)) this._defaultDatabase = dbName;
                         }
                         this._driverString = pluginName;
-                        //this.StripTrailingNulls = plugin.StripTrailingNulls;
-                        //this.requiredDatabaseName = plugin.RequiredDatabaseName;
-                        ClassFactory = new MyMeta.Plugin.ClassFactory(plugin);
+                        ClassFactory = new Plugin.ClassFactory(plugin);
                         break;
 
                     case dbDriver.None:
@@ -717,26 +711,18 @@ namespace MyMeta
 			}
 		}
 
-		private string GetDefaultDatabase(OleDbConnection cn, dbDriver driver)
+		private string GetDefaultDatabase(OleDbConnection oleDbConnection, dbDriver dbDriver)
 		{
-			string databaseName = string.Empty;
+			var databaseName = string.Empty;
 
-			switch(driver)
+			switch(dbDriver)
 			{
 				case dbDriver.Access:
-
-					int i = cn.DataSource.LastIndexOf(@"\");
-
-					if(i == -1) 
-						databaseName = cn.DataSource;
-					else
-						databaseName = cn.DataSource.Substring(++i);
-
-					break;
-
+                    var i = oleDbConnection.DataSource.LastIndexOf(@"\", StringComparison.Ordinal);
+                    databaseName = i == -1 ? oleDbConnection.DataSource : oleDbConnection.DataSource.Substring(++i);
+                    break;
 				default:
-
-					databaseName = cn.Database;
+					databaseName = oleDbConnection.Database;
 					break;
 			}
 
@@ -806,25 +792,25 @@ namespace MyMeta
                 //Provider=SQLOLEDB.1;Persist Security Info=False;User ID=sa;Initial Catalog=Northwind;Data Source=localhost
 				if(null == _parsedConnectionString)
 				{
-					string[] tokens = ConnectionString.Split(new char[] {';'}, StringSplitOptions.RemoveEmptyEntries);
+					string[] tokens = ConnectionString.Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries);
 
                     _parsedConnectionString = new Hashtable(tokens.Length);
 
 					string[] kv = null;
 
-                    for (int i = 0; i < tokens.Length; i++)
-					{
-                        kv = tokens[i].Split('=');
+                    foreach (string token in tokens)
+                    {
+                        kv = token.Split('=');
 
-						if (kv.Length == 2)
-						{
-							_parsedConnectionString.Add(kv[0].ToUpper(), kv[1]);
-						}
-						else if (kv.Length == 1)
-						{
-							_parsedConnectionString.Add(kv[0].ToUpper(), string.Empty);
-						}
-					}
+                        if (kv.Length == 2)
+                        {
+                            _parsedConnectionString.Add(kv[0].ToUpper(), kv[1]);
+                        }
+                        else if (kv.Length == 1)
+                        {
+                            _parsedConnectionString.Add(kv[0].ToUpper(), string.Empty);
+                        }
+                    }
 				}
 
 				return _parsedConnectionString;
@@ -896,18 +882,19 @@ namespace MyMeta
         /// <summary>
         /// A Plugin ConnectionString is a special feature for external assemblies.
         /// </summary>
-        /// <param name="connectionString">Sample: PluginName;Provider=SQLOLEDB.1;Persist Security Info=True;User ID=sa;Data Source=localhost</param>
+        /// <param name="providerName"></param>
+        /// <param name="pluginConnectionString">Sample: PluginName;Provider=SQLOLEDB.1;Persist Security Info=True;User ID=sa;Data Source=localhost</param>
         /// <returns></returns>
         private IDbConnection GetConnectionFromPlugin(string providerName, string pluginConnectionString)
         {
             IMyMetaPlugin plugin;
-
             return GetConnectionFromPlugin(providerName, pluginConnectionString, out plugin);
         }
 
         /// <summary>
         /// A Plugin ConnectionString is a special feature for external assemblies.
         /// </summary>
+        /// <param name="providerName"></param>
         /// <param name="pluginConnectionString">Sample: PluginName;Provider=SQLOLEDB.1;Persist Security Info=True;User ID=sa;Data Source=localhost</param>
         /// <param name="plugin">Returns the plugin object.</param>
         /// <returns></returns>
@@ -931,21 +918,21 @@ namespace MyMeta
             return connection;
         }
 
-        private static Hashtable plugins;
+        private static Hashtable _plugins;
 
         [ComVisible(false)]
         public static Hashtable Plugins
         {
             get
             {
-                if (plugins == null)
+                if (_plugins == null)
                 {
-                    plugins = new Hashtable();
+                    _plugins = new Hashtable();
                     FileInfo info = new FileInfo(Assembly.GetCallingAssembly().Location);
                     if (info.Exists)
                     {
                     	StringBuilder fileNames = new StringBuilder();
-                    	Exception err = null;
+                    	Exception exception = null;
 
 #if PLUGINS_FROM_SUBDIRS
                         // k3b allow plugins to be in its own directory
@@ -956,13 +943,13 @@ namespace MyMeta
                         {
                         	try
                         	{
-                        		loadPlugin(dllFile.FullName, plugins);
+                        		loadPlugin(dllFile.FullName, _plugins);
                         	} catch(Exception ex) {
                         		// Fix K3b 2007-06-27 if the current plugin cannot be loaded ignore it.
                         		//			i got the exception when loading a plugin that was linked against an old Interface
                         		//			the chatch ensures that the rest of the application-initialisation continues ...
                         		fileNames.AppendLine(dllFile.FullName);
-                        		err = ex;
+                        		exception = ex;
                         	}
                         }
                         
@@ -973,7 +960,7 @@ namespace MyMeta
                     
                 }
 
-                return plugins;
+                return _plugins;
             }
         }
         
@@ -1018,12 +1005,6 @@ namespace MyMeta
                 }
             }
 		}
-
-        static Module assembly_ModuleResolve(object sender, ResolveEventArgs e)
-        {
-            // throw new Exception("The method or operation is not implemented.");
-            return null;
-        }
 
         #endregion
         
@@ -1200,7 +1181,7 @@ namespace MyMeta
 
 					_languageDoc = new XmlDocument();
 					_languageDoc.Load(_languageMappingFileName);
-					_language = string.Empty;;
+					_language = string.Empty;
 					_languageNode = null;
 				}
 				catch {}
@@ -1280,7 +1261,7 @@ namespace MyMeta
 		private string _languageMappingFileName = string.Empty;
 		private string _language = string.Empty;
 		private XmlDocument _languageDoc;
-        private XmlNode _languageNode = null;
+        private XmlNode _languageNode;
 
 		#endregion
 
@@ -1301,7 +1282,7 @@ namespace MyMeta
 
 					_dbTargetDoc = new XmlDocument();
 					_dbTargetDoc.Load(_dbTargetMappingFileName);
-					_dbTarget = string.Empty;;
+					_dbTarget = string.Empty;
 					_dbTargetNode = null;
 				}
 				catch {}
@@ -1381,36 +1362,36 @@ namespace MyMeta
 		private string _dbTargetMappingFileName = string.Empty;
 		private string _dbTarget = string.Empty;
 		private XmlDocument _dbTargetDoc;
-        private XmlNode _dbTargetNode = null;
+        private XmlNode _dbTargetNode;
 		#endregion
 
         public XmlDocument UserData = new XmlDocument();
 
 		public bool IgnoreCase = true;
-        public bool requiredDatabaseName = false;
-        public bool requiresSchemaName = false;
-        public bool StripTrailingNulls = false;
+        public bool RequiredDatabaseName;
+        public bool RequiresSchemaName;
+        public bool StripTrailingNulls;
+        
+        public string TrailingNull;
 
-        public string TrailingNull = null;
+        public IClassFactory ClassFactory;
 
-        public IClassFactory ClassFactory = null;
-
-        private bool _showSystemData = false;
-        private bool _showDefaultDatabaseOnly = false;
+        private bool _showSystemData;
+        private bool _showDefaultDatabaseOnly;
 
 		private dbDriver _driver = dbDriver.None;
 		private string _driverString = "NONE";
 		private string _defaultDatabase = "";
-		private Databases _databases = null;
-		private ProviderTypes _providerTypes = null;
+		private Databases _databases;
+		private ProviderTypes _providerTypes;
 		private string _connectionString = "";
-		private bool _isConnected = false;
-		private Hashtable _parsedConnectionString = null;
+		private bool _isConnected;
+		private Hashtable _parsedConnectionString;
         private bool _domainOverride = true;
         private string _lastConnectionError = string.Empty;
-        private Exception _lastConnectionException = null;
-        private XmlNode _xmlNode = null;
-        private System.Collections.Generic.Dictionary<string, string> _userDataDatabaseMappings = null;
+        private Exception _lastConnectionException;
+        private XmlNode _xmlNode;
+        private System.Collections.Generic.Dictionary<string, string> _userDataDatabaseMappings;
 
 		private OleDbConnection _theConnection = new OleDbConnection();
 	}

@@ -1,27 +1,19 @@
 using System;
-using System.Text;
-using System.Xml;
-using System.IO;
+using System.Collections;
 using System.Data;
 using System.Data.OleDb;
-using System.Collections;
-
+using System.Xml;
 using ADODB;
 
 namespace MyMeta
 {
 #if ENTERPRISE
-	using System.Runtime.InteropServices;
-	[ComVisible(false), ClassInterface(ClassInterfaceType.AutoDual)]
+    using System.Runtime.InteropServices;
+    [ComVisible(false), ClassInterface(ClassInterfaceType.AutoDual)]
 #endif 
 	public class Database : Single, IDatabase, INameValueItem
 	{
         protected Hashtable dataTypeTables = new Hashtable();
-
-		public Database()
-		{
-
-		}
 
         virtual public IResultColumns ResultColumnsFromSQL(string sql)
         {
@@ -230,18 +222,12 @@ namespace MyMeta
             using (IDataReader reader = command.ExecuteReader())
             {
                 DataTable schema;
-                //DataTable data;
                 string dataType, fieldname;
                 int length;
 
-                // Skip columns contains the index of any columns that we cannot handle, array types and such ...
-                Hashtable skipColumns = null;
-
                 reader.Read();
                 schema = reader.GetSchemaTable();
-
-                IProviderType provType = null;
-                int columnOrdinal = 0, numericPrecision = 0, numericScale = 0, providerTypeInt = -1, colID = 0;
+                int columnOrdinal = 0, numericPrecision = 0, numericScale = 0, providerTypeInt = -1;
                 bool isLong = false;
                 string dbTypeName = string.Empty, dbTypeNameComplete = string.Empty;
 
@@ -252,7 +238,6 @@ namespace MyMeta
                     dataType = row["DataType"].ToString();
                     length = 0;
 
-                    provType = null;
                     columnOrdinal = 0; 
                     numericPrecision = 0; 
                     numericScale = 0; 

@@ -137,7 +137,7 @@ namespace Provider.VistaDB
 		/// Gets or sets a V-SQL statement to select records from the data set.
 		/// </summary>
 		[TypeConverter(typeof(ComponentConverter))]
-		public VistaDBCommand SelectCommand
+		public new VistaDBCommand SelectCommand
 		{
 			get
 			{
@@ -153,7 +153,7 @@ namespace Provider.VistaDB
 		/// Gets or sets a V-SQL statement to insert records into the data set.
 		/// </summary>
 		[TypeConverter(typeof(ComponentConverter))]
-		public VistaDBCommand InsertCommand
+		public new VistaDBCommand InsertCommand
 		{
 			get
 			{
@@ -169,7 +169,7 @@ namespace Provider.VistaDB
 		/// Gets or sets a V-SQL statement to update records in the data set.
 		/// </summary>
 		[TypeConverter(typeof(ComponentConverter))]
-		public VistaDBCommand UpdateCommand
+		public new VistaDBCommand UpdateCommand
 		{
 			get
 			{
@@ -185,7 +185,7 @@ namespace Provider.VistaDB
 		/// Gets or sets a V-SQL statement to delete records from the data set.
 		/// </summary>
 		[TypeConverter(typeof(ComponentConverter))]
-		public VistaDBCommand DeleteCommand
+		public new VistaDBCommand DeleteCommand
 		{
 			get
 			{

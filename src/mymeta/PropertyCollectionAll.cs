@@ -1,27 +1,14 @@
 using System;
-using System.Xml;
 using System.Collections;
-using System.Data;
-using System.Data.OleDb;
 
 namespace MyMeta
 {
-	/// <summary>
-	/// Summary description for Collection.
-	/// </summary>
-	/// 
 #if ENTERPRISE
-	using System.Runtime.InteropServices;
+    using System.Runtime.InteropServices;
     [ComVisible(true), ClassInterface(ClassInterfaceType.AutoDual), ComDefaultInterface(typeof(IPropertyCollection))]
 #endif 
-	public class PropertyCollectionAll : Collection, IPropertyCollection, IEnumerable, IEnumerator, ICollection
+	public class PropertyCollectionAll : Collection, IPropertyCollection, IEnumerator, ICollection
 	{
-
-		public PropertyCollectionAll()
-		{
-
-		}
-
 		internal void Load(IPropertyCollection local, IPropertyCollection global)
 		{
 			this._local  = local;
@@ -92,7 +79,7 @@ namespace MyMeta
 		/// <summary>
 		/// Removes all key/value pairs from the collection.
 		/// </summary>
-		new public void Clear()
+		public new void Clear()
 		{
 			throw new NotImplementedException("Cannot call AddKeyValue on this collection");
 		}
@@ -103,7 +90,7 @@ namespace MyMeta
 		public IEnumerator GetEnumerator()
 		{
 			Reset();
-			return (this as IEnumerator);
+			return this;
 		}
 
 		#endregion
@@ -112,8 +99,8 @@ namespace MyMeta
 
 		public void Reset()
 		{
-			useLocalEnum = true;
-			wereDone = false;
+			_useLocalEnum = true;
+			_wereDone = false;
 			_localEnumerator  = this._local.GetEnumerator();
 			_globalEnumerator = this._global.GetEnumerator();
 		}
@@ -124,7 +111,7 @@ namespace MyMeta
 			{
 				IProperty prop = null;
 
-				if(useLocalEnum)
+				if(_useLocalEnum)
 				{
 					prop = (IProperty)_localEnumerator.Current;
 				}
@@ -139,14 +126,14 @@ namespace MyMeta
 
 		public bool MoveNext()
 		{
-			if(this.useLocalEnum)
+			if(this._useLocalEnum)
 			{
 				if(_localEnumerator.MoveNext()) return true;
 			}
 
-			if(!wereDone)
+			if(!_wereDone)
 			{
-				this.useLocalEnum = false;
+				this._useLocalEnum = false;
 
 				while(true)
 				{
@@ -165,7 +152,7 @@ namespace MyMeta
 					}
 				}
 				
-				wereDone = true;
+				_wereDone = true;
 			}	
 			
 			return false;
@@ -203,9 +190,9 @@ namespace MyMeta
 		private IPropertyCollection _local;
 		private IPropertyCollection _global;
 
-		bool useLocalEnum = true;
-		bool wereDone = false;
-		private IEnumerator _localEnumerator = null;
-		private IEnumerator _globalEnumerator = null;
+		private bool _useLocalEnum = true;
+		private bool _wereDone;
+		private IEnumerator _localEnumerator;
+		private IEnumerator _globalEnumerator;
 	}
 }
