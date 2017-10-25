@@ -399,12 +399,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\dev01tiny.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\dev02tiny.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\mygenlogo.gif" />
   </ItemGroup>
   <ItemGroup>
