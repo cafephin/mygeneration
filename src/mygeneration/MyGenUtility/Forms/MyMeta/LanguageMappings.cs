@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
-
+using MyGeneration.Configuration;
 using WeifenLuo.WinFormsUI.Docking;
 
 using MyMeta;

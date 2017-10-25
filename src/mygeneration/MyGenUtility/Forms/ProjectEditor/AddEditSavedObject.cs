@@ -4,7 +4,7 @@ using System.Collections;
 using System.Text;
 using System.ComponentModel;
 using System.Windows.Forms;
-
+using MyGeneration.Configuration;
 using Zeus;
 using Zeus.Configuration;
 using Zeus.Projects;

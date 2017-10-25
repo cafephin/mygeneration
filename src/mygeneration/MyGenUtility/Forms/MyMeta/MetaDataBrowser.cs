@@ -11,7 +11,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 
 using ADODB;
-
+using MyGeneration.Configuration;
 using WeifenLuo.WinFormsUI.Docking;
 
 using MyMeta;

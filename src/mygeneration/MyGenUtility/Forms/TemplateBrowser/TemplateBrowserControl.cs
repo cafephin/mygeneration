@@ -6,7 +6,7 @@ using System.IO;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
-
+using MyGeneration.Configuration;
 using Zeus;
 using Zeus.UserInterface;
 using Zeus.UserInterface.WinForms;

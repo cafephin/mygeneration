@@ -112,6 +112,10 @@
       <Project>{61B369D1-95DD-4158-9F30-2E051CEB9D50}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
+    <ProjectReference Include="..\MyGeneration.Configuration\MyGeneration.Configuration.csproj">
+      <Project>{bfdf2112-266b-4069-9497-dcacce08797e}</Project>
+      <Name>MyGeneration.Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Zeus\Zeus.csproj">
       <Project>{CE8A697D-D45C-4E60-838D-E36980227543}</Project>
       <Name>Zeus</Name>
@@ -122,10 +126,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ConnectionInfo.cs" />
-    <Compile Include="DefaultSettings.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Forms\AboutBox\AboutBox.cs">
@@ -268,7 +268,6 @@
     </Compile>
     <Compile Include="SharedResources.cs" />
     <Compile Include="ZeusProcess\ThreadData.cs" />
-    <Compile Include="XmlHelper.cs" />
     <Compile Include="ZeusController.cs" />
     <Compile Include="ZeusProcess\ZeusProcess.cs" />
     <Compile Include="ZeusProcess\ZeusProcessManager.cs" />

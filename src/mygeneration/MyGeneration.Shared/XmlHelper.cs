@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml;
+﻿using System.Xml;
 
-namespace MyGeneration
+namespace MyGeneration.Shared
 {
     public class XmlHelper
     {
@@ -12,7 +8,7 @@ namespace MyGeneration
         /// robust replacement for parentNode.Attributes[name].Value = ...
         /// creates the attribute if it does not existent.
         /// </summary>
-        internal static void SetAttribute(XmlNode parentNode, string name, string value)
+        public static void SetAttribute(XmlNode parentNode, string name, string value)
         {
             if (parentNode != null)
             {

@@ -1,7 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Xml;
 using MyGeneration;
+using MyGeneration.Configuration;
 using Zeus.Projects;
 
 namespace Zeus
@@ -42,7 +41,7 @@ namespace Zeus
 
         public void ExecuteTemplate(IZeusContext context, string templateFilePath)
         {
-            this.ExecuteTemplate(context, templateFilePath, null);
+            ExecuteTemplate(context, templateFilePath, null);
         }
 
         public void ExecuteTemplate(IZeusContext context, string templatePath, string inputFilePath)

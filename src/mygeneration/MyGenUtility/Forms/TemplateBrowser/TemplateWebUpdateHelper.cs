@@ -7,7 +7,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Globalization;
-
+using MyGeneration.Configuration;
 using Zeus;
 using Zeus.Configuration;
 using Zeus.UserInterface;

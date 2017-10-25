@@ -11,6 +11,7 @@ using Scintilla.Enums;
 using Zeus;
 using Zeus.Templates;
 using MyGeneration.AutoCompletion;
+using MyGeneration.Configuration;
 
 namespace MyGeneration
 {

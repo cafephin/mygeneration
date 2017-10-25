@@ -80,6 +80,20 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EngineInterface\PluginInterfaces.csproj">
+      <Project>{61b369d1-95dd-4158-9f30-2e051ceb9d50}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+      <Name>PluginInterfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MyGeneration.Configuration\MyGeneration.Configuration.csproj">
+      <Project>{bfdf2112-266b-4069-9497-dcacce08797e}</Project>
+      <Name>MyGeneration.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Zeus\Zeus.csproj">
+      <Project>{ce8a697d-d45c-4e60-838d-e36980227543}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+      <Name>Zeus</Name>
+    </ProjectReference>
     <Reference Include="ADODB, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -92,37 +106,16 @@
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
-    <Reference Include="System.Data">
-      <Name>System.Data</Name>
-    </Reference>
     <Reference Include="System.Drawing">
       <Name>System.Drawing</Name>
-    </Reference>
-    <Reference Include="System.EnterpriseServices">
-      <Name>System.EnterpriseServices</Name>
-    </Reference>
-    <Reference Include="System.Web.Services">
-      <Name>System.Web.Services</Name>
     </Reference>
     <Reference Include="System.Windows.Forms">
       <Name>System.Windows.Forms</Name>
     </Reference>
-    <Reference Include="System.Xml">
-      <Name>System.XML</Name>
-    </Reference>
-    <ProjectReference Include="..\EngineInterface\PluginInterfaces.csproj">
-      <Name>PluginInterfaces</Name>
-      <Project>{61B369D1-95DD-4158-9F30-2E051CEB9D50}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
     <ProjectReference Include="..\MyGenUtility\MyGenUtility.csproj">
       <Name>MyGenUtility</Name>
       <Project>{A1D6D035-420C-40A3-9598-9E34F11FB1AA}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
-    <ProjectReference Include="..\Zeus\Zeus.csproj">
-      <Project>{CE8A697D-D45C-4E60-838D-E36980227543}</Project>
-      <Name>Zeus</Name>
     </ProjectReference>
     <Reference Include="WeifenLuo.WinFormsUI.Docking">
       <HintPath>..\..\lib\thirdparty\WeifenLuo.WinFormsUI.Docking.dll</HintPath>

@@ -103,9 +103,9 @@
       <Project>{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
-    <ProjectReference Include="..\MyGenUtility\MyGenUtility.csproj">
-      <Project>{a1d6d035-420c-40a3-9598-9e34f11fb1aa}</Project>
-      <Name>MyGenUtility</Name>
+    <ProjectReference Include="..\MyGeneration.Configuration\MyGeneration.Configuration.csproj">
+      <Project>{bfdf2112-266b-4069-9497-dcacce08797e}</Project>
+      <Name>MyGeneration.Configuration</Name>
     </ProjectReference>
     <ProjectReference Include="..\Zeus\Zeus.csproj">
       <Name>Zeus</Name>

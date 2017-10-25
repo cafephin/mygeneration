@@ -12,6 +12,7 @@ using Zeus.UserInterface;
 using MyGeneration;
 using MyMeta;
 using Microsoft.Win32;
+using MyGeneration.Configuration;
 
 namespace Zeus
 {

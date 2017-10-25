@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+using MyGeneration.Configuration;
 using MyGeneration.Forms;
 using Scintilla;
 using Scintilla.Configuration.Legacy;
