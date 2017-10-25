@@ -10,8 +10,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZeusCmd", "ZeusCmd\ZeusCmd.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMeta", "..\mymeta\MyMeta.csproj", "{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyGenUtility", "MyGenUtility\MyGenUtility.csproj", "{A1D6D035-420C-40A3-9598-9E34F11FB1AA}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyGeneration.Configuration", "MyGeneration.Configuration\MyGeneration.Configuration.csproj", "{BFDF2112-266B-4069-9497-DCACCE08797E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyGeneration.Shared", "MyGeneration.Shared\MyGeneration.Shared.csproj", "{D1EC3C75-74B9-4599-8A78-A1306D158BBE}"
@@ -66,18 +64,6 @@ Global
 		{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}.Release|x86.ActiveCfg = Release|Any CPU
-		{A1D6D035-420C-40A3-9598-9E34F11FB1AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A1D6D035-420C-40A3-9598-9E34F11FB1AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A1D6D035-420C-40A3-9598-9E34F11FB1AA}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{A1D6D035-420C-40A3-9598-9E34F11FB1AA}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{A1D6D035-420C-40A3-9598-9E34F11FB1AA}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{A1D6D035-420C-40A3-9598-9E34F11FB1AA}.Debug|x86.Build.0 = Debug|Any CPU
-		{A1D6D035-420C-40A3-9598-9E34F11FB1AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A1D6D035-420C-40A3-9598-9E34F11FB1AA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A1D6D035-420C-40A3-9598-9E34F11FB1AA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{A1D6D035-420C-40A3-9598-9E34F11FB1AA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{A1D6D035-420C-40A3-9598-9E34F11FB1AA}.Release|x86.ActiveCfg = Release|Any CPU
-		{A1D6D035-420C-40A3-9598-9E34F11FB1AA}.Release|x86.Build.0 = Release|Any CPU
 		{BFDF2112-266B-4069-9497-DCACCE08797E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BFDF2112-266B-4069-9497-DCACCE08797E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFDF2112-266B-4069-9497-DCACCE08797E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
