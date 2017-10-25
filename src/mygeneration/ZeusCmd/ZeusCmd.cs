@@ -1,63 +1,53 @@
 using System;
-using System.Text;
 using System.Data;
-using System.Collections;
 using System.IO;
-using System.Xml;
-using Zeus;
+using MyGeneration.Configuration;
+using MyMeta;
 using Zeus.Configuration;
 using Zeus.Projects;
-using Zeus.Serializers;
-using Zeus.UserInterface;
-using MyGeneration;
-using MyMeta;
-using Microsoft.Win32;
-using MyGeneration.Configuration;
 
 namespace Zeus
 {
-	/// <summary>
-	/// Summary description for ZeusCmd.
-	/// </summary>
-	class ZeusCmd
+    internal class ZeusCmd
 	{
-        private const string EXT_XML_NAMESPACE = "http://schemas.microsoft.com/AutomationExtensibility";
-		private Log _log;
+		private readonly Log _log;
 		private CmdInput _argmgr;
-		private int _returnValue = 0;
 
-        public ZeusCmd(string[] args)
+	    public ZeusCmd(string[] args)
         {
+            ReturnValue = 0;
             _log = new Log();
-            if (_ProcessArgs(args))
+            if (ProcessArguments(args))
             {
                 _log.IsInternalUseMode = _argmgr.InternalUseOnly;
                 switch (_argmgr.Mode)
                 {
                     case ProcessMode.Project:
-                        _ProcessProject();
+                        ProcessProject();
                         break;
                     case ProcessMode.Template:
-                        _ProcessTemplate();
+                        ProcessTemplate();
                         break;
                     case ProcessMode.MyMeta:
-                        _ProcessMyMeta();
+                        ProcessMyMeta();
                         break;
                     case ProcessMode.Other:
                         break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
             }
             else
             {
-                _returnValue = -1;
+                ReturnValue = -1;
             }
 
             _log.Close();
         }
 
-		public int ReturnValue { get { return _returnValue; } }
+		public int ReturnValue { get; private set; }
 
-		private bool _ProcessArgs(string[] args) 
+	    private bool ProcessArguments(string[] args) 
 		{
 			//Process arguments, validate, fill variables
 			_argmgr = new CmdInput(args);
@@ -120,7 +110,7 @@ namespace Zeus
 			}
 		}
 
-        private void _ProcessMyMeta()
+        private void ProcessMyMeta()
         {
             if (_argmgr.MergeMetaFiles)
             {
@@ -130,8 +120,8 @@ namespace Zeus
                 }
                 catch (Exception ex)
                 {
-                    this._log.Write(ex);
-                    this._log.Write("Merge UserMetaData files failed.");
+                    _log.Write(ex);
+                    _log.Write("Merge UserMetaData files failed.");
                 }
             }
             else
@@ -150,7 +140,7 @@ namespace Zeus
                 {
                     _log.Write("Test Failed");
                     if (_log != null) _log.Write(ex);
-                    _returnValue = -1;
+                    ReturnValue = -1;
                 }
 
                 if (connection != null)
@@ -161,91 +151,91 @@ namespace Zeus
             }
         }
 
-		private void _ProcessProject() 
+		private void ProcessProject() 
 		{
-			ZeusProject proj = this._argmgr.Project;
+			ZeusProject proj = _argmgr.Project;
 
-            this._log.Write("Begin Project Processing: " + proj.Name);
-            if (this._argmgr.ModuleNames.Count > 0)
+            _log.Write("Begin Project Processing: " + proj.Name);
+            if (_argmgr.ModuleNames.Count > 0)
             {
                 foreach (string mod in _argmgr.ModuleNames)
                 {
-                    this._log.Write("Executing: " + mod);
+                    _log.Write("Executing: " + mod);
                     try
                     {
                         if (!ExecuteModule(proj, mod))
                         {
-                            this._log.Write("Project Folder not found: {0}.", mod);
+                            _log.Write("Project Folder not found: {0}.", mod);
                         }
                     }
                     catch (Exception ex)
                     {
-                        this._log.Write(ex);
-                        this._log.Write("Project Folder execution failed for folder: {0}.", mod);
+                        _log.Write(ex);
+                        _log.Write("Project Folder execution failed for folder: {0}.", mod);
                     }
                 }
             }
-            else if (!string.IsNullOrEmpty(this._argmgr.ProjectItemToRecord) &&
-               !string.IsNullOrEmpty(this._argmgr.PathTemplate))
+            else if (!string.IsNullOrEmpty(_argmgr.ProjectItemToRecord) &&
+               !string.IsNullOrEmpty(_argmgr.PathTemplate))
             {
                 string item = _argmgr.ProjectItemToRecord;
                 string template = _argmgr.PathTemplate;
-                this._log.Write("Collecting: " + item + " for template " + template);
+                _log.Write("Collecting: " + item + " for template " + template);
                 try
                 {
                     if (!CollectProjectItem(proj, item, template))
                     {
-                        this._log.Write("Project Item not found: {0}.", item);
+                        _log.Write("Project Item not found: {0}.", item);
                     }
                 }
                 catch (Exception ex)
                 {
-                    this._log.Write(ex);
-                    this._log.Write("Project Item collection failed for item: {0}.", item);
+                    _log.Write(ex);
+                    _log.Write("Project Item collection failed for item: {0}.", item);
                 }
             }
-            else if (this._argmgr.ProjectItems.Count > 0)
+            else if (_argmgr.ProjectItems.Count > 0)
             {
                 foreach (string item in _argmgr.ProjectItems)
                 {
-                    this._log.Write("Executing: " + item);
+                    _log.Write("Executing: " + item);
                     try
                     {
                         if (!ExecuteProjectItem(proj, item))
                         {
-                            this._log.Write("Project Item not found: {0}.", item);
+                            _log.Write("Project Item not found: {0}.", item);
                         }
                     }
                     catch (Exception ex)
                     {
-                        this._log.Write(ex);
-                        this._log.Write("Project Item execution failed for item: {0}.", item);
+                        _log.Write(ex);
+                        _log.Write("Project Item execution failed for item: {0}.", item);
                     }
                 }
             }
             else
             {
-                this._log.Write("Executing: " + proj.Name);
+                _log.Write("Executing: " + proj.Name);
                 try
                 {
-                    proj.Execute(this._argmgr.Timeout, this._log);
+                    proj.Execute(_argmgr.Timeout, _log);
 
-                    if (this._argmgr.InternalUseOnly)
+                    if (_argmgr.InternalUseOnly)
                     {
                         foreach (string file in proj.SavedFiles)
                         {
-                            this._log.Write("[GENERATED_FILE]" + file);
+                            _log.Write("[GENERATED_FILE]" + file);
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    this._log.Write(ex);
-                    this._log.Write("Project execution failed.");
+                    _log.Write(ex);
+                    _log.Write("Project execution failed.");
                 }
             }
-			this._log.Write("End Project Processing: " + proj.Name);
-            if (_argmgr.InternalUseOnly) this._log.Write("[PROJECT_GENERATION_COMPLETE]");
+			_log.Write("End Project Processing: " + proj.Name);
+            if (_argmgr.InternalUseOnly) _log.Write("[PROJECT_GENERATION_COMPLETE]");
 		}
 
 		private bool ExecuteModule(ZeusModule parent, string projectPath) 
@@ -255,13 +245,13 @@ namespace Zeus
             if (m != null)
             {
                 complete = true;
-                m.Execute(this._argmgr.Timeout, this._log);
+                m.Execute(_argmgr.Timeout, _log);
 
-                if (this._argmgr.InternalUseOnly)
+                if (_argmgr.InternalUseOnly)
                 {
                     foreach (string file in m.SavedFiles)
                     {
-                        this._log.Write("[GENERATED_FILE]" + file);
+                        _log.Write("[GENERATED_FILE]" + file);
                     }
                 }
             }
@@ -282,13 +272,13 @@ namespace Zeus
                 {
                     if (m.SavedObjects.Contains(objectName))
                     {
-                        m.SavedObjects[objectName].Execute(this._argmgr.Timeout, this._log);
+                        m.SavedObjects[objectName].Execute(_argmgr.Timeout, _log);
 
-                        if (this._argmgr.InternalUseOnly)
+                        if (_argmgr.InternalUseOnly)
                         {
                             foreach (string file in m.SavedObjects[objectName].SavedFiles)
                             {
-                                this._log.Write("[GENERATED_FILE]" + file);
+                                _log.Write("[GENERATED_FILE]" + file);
                             }
                         }
                     }
@@ -326,7 +316,7 @@ namespace Zeus
 
 
                     ZeusContext context = new ZeusContext();
-                    context.Log = this._log;
+                    context.Log = _log;
 
                     savedInput.TemplateUniqueID = template.UniqueID;
                     savedInput.TemplatePath = template.FilePath + template.FileName;
@@ -340,17 +330,17 @@ namespace Zeus
 
                     if (template.Collect(context, settings.ScriptTimeout, savedInput.InputItems))
                     {
-                        //this._lastRecordedSelectedNode = this.SelectedTemplate;
+                        //_lastRecordedSelectedNode = SelectedTemplate;
                     }
 
 
-                    if (this._argmgr.InternalUseOnly)
+                    if (_argmgr.InternalUseOnly)
                     {
-                        this._log.Write("[BEGIN_RECORDING]");
+                        _log.Write("[BEGIN_RECORDING]");
 
-                        this._log.Write(savedInput.XML);
+                        _log.Write(savedInput.XML);
 
-                        this._log.Write("[END_RECORDING]");
+                        _log.Write("[END_RECORDING]");
                     }
                     complete = true;
                 }
@@ -385,40 +375,40 @@ namespace Zeus
             return m;
         }
 
-		private void _ProcessTemplate() 
+		private void ProcessTemplate() 
 		{
-			ZeusTemplate template = this._argmgr.Template;
-			ZeusSavedInput savedInput = this._argmgr.SavedInput;
-			ZeusSavedInput collectedInput = this._argmgr.InputToSave;
+			ZeusTemplate template = _argmgr.Template;
+			ZeusSavedInput savedInput = _argmgr.SavedInput;
+			ZeusSavedInput collectedInput = _argmgr.InputToSave;
 			ZeusContext context = new ZeusContext();
 			context.Log = _log;
 			DefaultSettings settings;
 			
-			this._log.Write("Executing: " + template.Title);
+			_log.Write("Executing: " + template.Title);
 			try 
 			{
 				if (savedInput != null) 
 				{
 					context.Input.AddItems(savedInput.InputData.InputItems);
-					template.Execute(context, this._argmgr.Timeout, true);
+					template.Execute(context, _argmgr.Timeout, true);
 				}
 				else if (collectedInput != null) 
 				{
 					settings = DefaultSettings.Instance;
 					settings.PopulateZeusContext(context);
-					template.ExecuteAndCollect(context, this._argmgr.Timeout, collectedInput.InputData.InputItems);
+					template.ExecuteAndCollect(context, _argmgr.Timeout, collectedInput.InputData.InputItems);
 					collectedInput.Save();
 				}
 				else 
 				{
 					settings = DefaultSettings.Instance;
 					settings.PopulateZeusContext(context);
-					template.Execute(context, this._argmgr.Timeout, false);
+					template.Execute(context, _argmgr.Timeout, false);
 				}
 				
-				if (this._argmgr.PathOutput != null) 
+				if (_argmgr.PathOutput != null) 
 				{
-					StreamWriter writer = File.CreateText(this._argmgr.PathOutput);
+					StreamWriter writer = File.CreateText(_argmgr.PathOutput);
 					writer.Write(context.Output.text);
 					writer.Flush();
 					writer.Close();
@@ -431,27 +421,17 @@ namespace Zeus
 			}
 			catch (Exception ex)
 			{
-				this._log.Write(ex);
-				this._log.Write("Template execution failed.");
+				_log.Write(ex);
+				_log.Write("Template execution failed.");
 			}
 
-            if (context != null && this._argmgr.InternalUseOnly)
+            if (context != null && _argmgr.InternalUseOnly)
             {
                 foreach (string file in context.Output.SavedFiles)
                 {
-                    this._log.Write("[GENERATED_FILE]" + file);
+                    _log.Write("[GENERATED_FILE]" + file);
                 }
             }
-		}
-
-		/// <summary>
-		/// The main entry point for the application.
-		/// </summary>
-		[STAThread]
-		static int Main(string[] args)
-		{
-			ZeusCmd cmd = new ZeusCmd(args);
-			return cmd.ReturnValue;
 		}
 
 		#region Help Text

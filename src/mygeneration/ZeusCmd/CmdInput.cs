@@ -1,434 +1,408 @@
 using System;
-using System.Text;
-using System.Collections;
 using System.Collections.Generic;
-using Zeus;
-using Zeus.Projects;
-using Zeus.Serializers;
-using Zeus.UserInterface;
 using Zeus.Configuration;
+using Zeus.Projects;
 
 namespace Zeus
 {
-	public enum ProcessMode 
+    internal class CmdInput
 	{
-		Other = 0,
-		Template,
-		Project,
-		MyMeta
-	}
-
-	class CmdInput
-	{
-        private ProcessMode _mode = ProcessMode.Other;
-		private int _timeout = -1;
-		private bool _silent = false;
-		private bool _valid = true;
-		private bool _showHelp = false;
-        private bool _enableLog = false;
-        private bool _makeRelative = false;
-        private bool _installVS2005 = false;
-        private bool _metaDataMerge = false;
-        private bool _internalUse = true;
-		private string _errorMessage = null;
-		private string _pathProject = null;
-		private string _pathTemplate = null;
-		private string _pathOutput = null;
-		private string _pathXmlData = null;
-		private string _pathCollectXmlData = null;
-		private string _pathLog = null;
-        private string _connType = null;
-        private string _connString = null;
-        private string _metaDatabase1 = null;
-        private string _metaDataFile1 = null;
-        private string _metaDatabase2 = null;
-        private string _metaDataFile2 = null;
-        private string _metaDataFileMerged = null;
-        private string _projectItemToRecord = null;
-        private List<string> _moduleNames = new List<string>();
-        private List<string> _projectItems = new List<string>();
-		private ZeusTemplate _template = null;
-		private ZeusProject _project = null;
-		private ZeusSavedInput _savedInput = null;
-		private ZeusSavedInput _inputToSave = null;
-        private List<ZeusIntrinsicObject> _intrinsicObjects = new List<ZeusIntrinsicObject>();
-        private List<ZeusIntrinsicObject>  _intrinsicObjectsToRemove = new List<ZeusIntrinsicObject>();
-
-		public CmdInput(string[] args)
+	    private bool _makeRelative;
+	    private string _pathProject;
+	    private string _pathXmlData;
+		private string _pathCollectXmlData;
+	    
+        public CmdInput(string[] args)
 		{
-			Parse(args);
+		    IsSilent = false;
+		    ShowHelp = false;
+		    EnableLog = false;
+		    ErrorMessage = null;
+		    PathTemplate = null;
+		    PathOutput = null;
+		    PathLog = null;
+		    Template = null;
+		    Project = null;
+		    SavedInput = null;
+		    InputToSave = null;
+		    ConnectionType = null;
+		    ConnectionString = null;
+		    MergeMetaFiles = false;
+		    MetaFile1 = null;
+		    MetaDatabase1 = null;
+		    MetaFile2 = null;
+		    MetaDatabase2 = null;
+		    MetaFileMerged = null;
+		    ProjectItemToRecord = null;
+
+		    Parse(args);
 		}
 
 		private void Parse(string[] args) 
 		{
-			int numargs = args.Length;
-			string arg;
+			var numberOfArguments = args.Length;
 
-			if (numargs == 0) 
+		    if (numberOfArguments == 0) 
 			{
-				this._showHelp = true;
+				ShowHelp = true;
 				return;
 			}
 
-			for (int i = 0; i < numargs; i++) 
+			for (var i = 0; i < numberOfArguments; i++)
 			{
-				arg = args[i];
+			    var argument = args[i];
 
-				switch (arg)
+			    switch (argument)
                 {
                     case "-internaluse":
-                        this._internalUse = true;
-                        break;
-                    case "-installvs2005":
-                        this._installVS2005 = true;
+                        _internalUse = true;
                         break;
                     case "-tc":
                     case "-testconnection":
-                        this._mode = ProcessMode.MyMeta;
-                        if (numargs > (i + 2))
+                        _mode = ProcessMode.MyMeta;
+                        if (numberOfArguments > (i + 2))
                         {
-                            this._connType = args[++i];
-                            this._connString = args[++i];
+                            ConnectionType = args[++i];
+                            ConnectionString = args[++i];
                         }
                         else
                         {
-                            this._valid = false;
-                            this._errorMessage = "Invalid switch usage: " + arg;
+                            _valid = false;
+                            ErrorMessage = "Invalid switch usage: " + argument;
                         }
                         break;
 					case "-aio":
 					case "-addintrinsicobject":
-						if (numargs > (i+3)) 
+						if (numberOfArguments > (i+3)) 
 						{
-							string assembly = args[++i];
-							string classpath = args[++i];
-							string varname = args[++i];
+							var assembly = args[++i];
+							var classpath = args[++i];
+							var varname = args[++i];
 
-							ZeusIntrinsicObject iobj = new ZeusIntrinsicObject(assembly, classpath, varname);
-							this._intrinsicObjects.Add(iobj);
+							var iobj = new ZeusIntrinsicObject(assembly, classpath, varname);
+							_intrinsicObjects.Add(iobj);
 						}
 						else 
 						{
-							this._valid = false;
-							this._errorMessage = "Invalid switch usage: " + arg;
+							_valid = false;
+							ErrorMessage = "Invalid switch usage: " + argument;
 						}
 						break;
 					case "-rio":
 					case "-removeintrinsicobject":
-                        if (numargs > (i + 1))
+                        if (numberOfArguments > (i + 1))
                         {
-                            string varname = args[++i];
+                            var varname = args[++i];
                             foreach (ZeusIntrinsicObject zio in ZeusConfig.Current.IntrinsicObjects)
                             {
                                 if (zio.VariableName == varname && !_intrinsicObjectsToRemove.Contains(zio))
                                 {
-                                    this._intrinsicObjectsToRemove.Add(zio);
+                                    _intrinsicObjectsToRemove.Add(zio);
                                     break;
                                 }
                             }
                         }
                         else
                         {
-                            this._valid = false;
-                            this._errorMessage = "Invalid switch usage: " + arg;
+                            _valid = false;
+                            ErrorMessage = "Invalid switch usage: " + argument;
                         }
                         break;
 					case "-r":
 					case "-relative":
-						this._makeRelative = true;
+						_makeRelative = true;
 						break;
 					case "-s":
 					case "-silent":
-						this._silent = true;
+						IsSilent = true;
 						break;
 					case "-?":
 					case "-h":
 					case "-help":
-						this._showHelp = true;
+						ShowHelp = true;
 						break;
 					case "-l":
 					case "-logfile":
-						this._enableLog = true;
-						if (numargs > (i+1)) 
-							this._pathLog = args[++i];
+						EnableLog = true;
+						if (numberOfArguments > (i+1)) 
+							PathLog = args[++i];
 						else 
 						{
-							this._valid = false;
-							this._errorMessage = "Invalid switch usage: " + arg;
+							_valid = false;
+							ErrorMessage = "Invalid switch usage: " + argument;
 						}
 						break;
 					case "-o":
 					case "-outfile":
-						if (numargs > (i+1)) 
-							this._pathOutput = args[++i];
+						if (numberOfArguments > (i+1)) 
+							PathOutput = args[++i];
 						else 
 						{
-							this._valid = false;
-							this._errorMessage = "Invalid switch usage: " + arg;
+							_valid = false;
+							ErrorMessage = "Invalid switch usage: " + argument;
 						}
 						break;
 					case "-p":
 					case "-project":
-						this._mode = ProcessMode.Project;
-						if (numargs > (i+1)) 
-							this._pathProject = args[++i];
+						_mode = ProcessMode.Project;
+						if (numberOfArguments > (i+1)) 
+							_pathProject = args[++i];
 						else 
 						{
-							this._valid = false;
-							this._errorMessage = "Invalid switch usage: " + arg;
+							_valid = false;
+							ErrorMessage = "Invalid switch usage: " + argument;
 						}
 						break;
 					case "-mumd":
                     case "-mergeusermetadata":
-                        this._mode = ProcessMode.MyMeta;
-                        this._metaDataMerge = true;
-                        if (numargs > (i + 5))
+                        _mode = ProcessMode.MyMeta;
+                        MergeMetaFiles = true;
+                        if (numberOfArguments > (i + 5))
                         {
-                            this._metaDataFile1 = args[++i];
-                            this._metaDatabase1 = args[++i];
-                            this._metaDataFile2 = args[++i];
-                            this._metaDatabase2 = args[++i];
-                            this._metaDataFileMerged = args[++i];
+                            MetaFile1 = args[++i];
+                            MetaDatabase1 = args[++i];
+                            MetaFile2 = args[++i];
+                            MetaDatabase2 = args[++i];
+                            MetaFileMerged = args[++i];
                         }
                         else
                         {
-                            this._valid = false;
-                            this._errorMessage = "Invalid switch usage: " + arg;
+                            _valid = false;
+                            ErrorMessage = "Invalid switch usage: " + argument;
                         }
                         break;
                     case "-m":
                     case "-pf":
                     case "-module":
                     case "-projectfolder":
-						if (numargs > (i+1)) 
+						if (numberOfArguments > (i+1)) 
 						{
 							string data = args[++i];
 							if (!_moduleNames.Contains(data))
-								this._moduleNames.Add(data);
+								_moduleNames.Add(data);
 						}
 						else 
 						{
-							this._valid = false;
-							this._errorMessage = "Invalid switch usage: " + arg;
+							_valid = false;
+							ErrorMessage = "Invalid switch usage: " + argument;
 						}
                         break;
                     case "-rti":
                     case "-recordtemplateinstance":
-                        if (numargs > (i + 1))
+                        if (numberOfArguments > (i + 1))
                         {
-                            this._projectItemToRecord = args[++i];
-                            this._mode = ProcessMode.Project;
+                            ProjectItemToRecord = args[++i];
+                            _mode = ProcessMode.Project;
                         }
                         else
                         {
-                            this._valid = false;
-                            this._errorMessage = "Invalid switch usage: " + arg;
+                            _valid = false;
+                            ErrorMessage = "Invalid switch usage: " + argument;
                         }
                         break;
                     case "-ti":
                     case "-templateinstance":
-                        if (numargs > (i + 1))
+                        if (numberOfArguments > (i + 1))
                         {
                             string data = args[++i];
                             if (!_projectItems.Contains(data))
-                                this._projectItems.Add(data);
+                                _projectItems.Add(data);
                         }
                         else
                         {
-                            this._valid = false;
-                            this._errorMessage = "Invalid switch usage: " + arg;
+                            _valid = false;
+                            ErrorMessage = "Invalid switch usage: " + argument;
                         }
                         break;
 					case "-i":
 					case "-inputfile":
-						this._mode = ProcessMode.Template;
-						if (numargs > (i+1)) 
-							this._pathXmlData = args[++i];
+						_mode = ProcessMode.Template;
+						if (numberOfArguments > (i+1)) 
+							_pathXmlData = args[++i];
 						else  
 						{
-							this._valid = false;
-							this._errorMessage = "Invalid switch usage: " + arg;
+							_valid = false;
+							ErrorMessage = "Invalid switch usage: " + argument;
 						}
 						break;
 					case "-t":
 					case "-template":
-						this._mode = ProcessMode.Template;
-						if (numargs > (i+1)) 
-							this._pathTemplate = args[++i];
+						_mode = ProcessMode.Template;
+						if (numberOfArguments > (i+1)) 
+							PathTemplate = args[++i];
 						else 
 						{
-							this._valid = false;
-							this._errorMessage = "Invalid switch usage: " + arg;
+							_valid = false;
+							ErrorMessage = "Invalid switch usage: " + argument;
 						}
 						break;
 					case "-c":
 					case "-collect":
-						this._mode = ProcessMode.Template;
-						if (numargs > (i+1)) 
-							this._pathCollectXmlData = args[++i];
+						_mode = ProcessMode.Template;
+						if (numberOfArguments > (i+1)) 
+							_pathCollectXmlData = args[++i];
 						else 
 						{
-							this._valid = false;
-							this._errorMessage = "Invalid switch usage: " + arg;
+							_valid = false;
+							ErrorMessage = "Invalid switch usage: " + argument;
 						}
 						break;
 					case "-e":
 					case "-timeout":
-						if (numargs > (i+1)) 
+						if (numberOfArguments > (i+1)) 
 						{
 							try 
 							{
-								this._timeout = Int32.Parse(args[++i]);
+								_timeout = Int32.Parse(args[++i]);
 							}
 							catch 
 							{
-								this._timeout = -1;
+								_timeout = -1;
 							}
 						}
 						else 
 						{
-							this._valid = false;
-							this._errorMessage = "Invalid switch usage: " + arg;
+							_valid = false;
+							ErrorMessage = "Invalid switch usage: " + argument;
 						}
 						break;
 					default:
 						_valid = false;
-						this._errorMessage = "Invalid argument: " + arg;
+						ErrorMessage = "Invalid argument: " + argument;
 						break;
 				}
 			}
 
-			if (this._makeRelative) 
+			if (_makeRelative) 
 			{
-				if (this._pathCollectXmlData != null)
-					this._pathCollectXmlData = Zeus.FileTools.MakeAbsolute(this._pathCollectXmlData, FileTools.ApplicationPath);
-				if (this._pathLog != null)
-                    this._pathLog = Zeus.FileTools.MakeAbsolute(this._pathLog, FileTools.ApplicationPath);
-				if (this._pathOutput != null)
-                    this._pathOutput = Zeus.FileTools.MakeAbsolute(this._pathOutput, FileTools.ApplicationPath);
-				if (this._pathProject != null)
-                    this._pathProject = Zeus.FileTools.MakeAbsolute(this._pathProject, FileTools.ApplicationPath);
-				if (this._pathTemplate != null)
-                    this._pathTemplate = Zeus.FileTools.MakeAbsolute(this._pathTemplate, FileTools.ApplicationPath);
-				if (this._pathXmlData != null)
-                    this._pathXmlData = Zeus.FileTools.MakeAbsolute(this._pathXmlData, FileTools.ApplicationPath);
-                if (this._metaDataFile1 != null)
-                    this._metaDataFile1 = Zeus.FileTools.MakeAbsolute(this._metaDataFile1, FileTools.ApplicationPath);
-                if (this._metaDataFile2 != null)
-                    this._metaDataFile2 = Zeus.FileTools.MakeAbsolute(this._metaDataFile2, FileTools.ApplicationPath);
-                if (this._metaDataFileMerged != null)
-                    this._metaDataFileMerged = Zeus.FileTools.MakeAbsolute(this._metaDataFileMerged, FileTools.ApplicationPath);
+				if (_pathCollectXmlData != null)
+					_pathCollectXmlData = Zeus.FileTools.MakeAbsolute(_pathCollectXmlData, FileTools.ApplicationPath);
+				if (PathLog != null)
+                    PathLog = Zeus.FileTools.MakeAbsolute(PathLog, FileTools.ApplicationPath);
+				if (PathOutput != null)
+                    PathOutput = Zeus.FileTools.MakeAbsolute(PathOutput, FileTools.ApplicationPath);
+				if (_pathProject != null)
+                    _pathProject = Zeus.FileTools.MakeAbsolute(_pathProject, FileTools.ApplicationPath);
+				if (PathTemplate != null)
+                    PathTemplate = Zeus.FileTools.MakeAbsolute(PathTemplate, FileTools.ApplicationPath);
+				if (_pathXmlData != null)
+                    _pathXmlData = Zeus.FileTools.MakeAbsolute(_pathXmlData, FileTools.ApplicationPath);
+                if (MetaFile1 != null)
+                    MetaFile1 = Zeus.FileTools.MakeAbsolute(MetaFile1, FileTools.ApplicationPath);
+                if (MetaFile2 != null)
+                    MetaFile2 = Zeus.FileTools.MakeAbsolute(MetaFile2, FileTools.ApplicationPath);
+                if (MetaFileMerged != null)
+                    MetaFileMerged = Zeus.FileTools.MakeAbsolute(MetaFileMerged, FileTools.ApplicationPath);
 			}
-
 
 			// Validate required fields are filled out for the selected mode.
 			if (_valid) 
 			{
-                if (this.Mode == ProcessMode.MyMeta) 
+                if (Mode == ProcessMode.MyMeta) 
                 {
-                    if (this._metaDataMerge)
+                    if (MergeMetaFiles)
                     {
-                        if (!System.IO.File.Exists(_metaDataFile1) || !System.IO.File.Exists(_metaDataFile2))
+                        if (!System.IO.File.Exists(MetaFile1) || !System.IO.File.Exists(MetaFile2))
                         {
                             _valid = false;
-                            this._errorMessage = "The two source files must exist for the merge to work!";
+                            ErrorMessage = "The two source files must exist for the merge to work!";
                         }
                     }
                 }
-				else if (this._mode == ProcessMode.Project) 
+				else if (_mode == ProcessMode.Project) 
 				{
-					if (this._pathProject == null)
+					if (_pathProject == null)
 					{
 						_valid = false;
-						this._errorMessage = "Project Path Required";
+						ErrorMessage = "Project Path Required";
 					}
 					else 
 					{
 						try 
 						{
-							this._project = new ZeusProject(this._pathProject);
-							this._project.Load();
+							Project = new ZeusProject(_pathProject);
+							Project.Load();
 						}
 						catch (Exception ex)
 						{
-							this._project = null;
-							this._valid = false;
-							this._errorMessage = ex.Message;
+							Project = null;
+							_valid = false;
+							ErrorMessage = ex.Message;
 						}
 					}
 
 
-                    if (this._pathTemplate != null)
+                    if (PathTemplate != null)
                     {
                         try
                         {
-                            this._template = new ZeusTemplate(this._pathTemplate);
+                            Template = new ZeusTemplate(PathTemplate);
                         }
                         catch (Exception ex)
                         {
-                            this._template = null;
-                            this._valid = false;
-                            this._errorMessage = ex.Message;
+                            Template = null;
+                            _valid = false;
+                            ErrorMessage = ex.Message;
                         }
                     }
 				}
-				else if (this._mode == ProcessMode.Template) 
+				else if (_mode == ProcessMode.Template) 
 				{
-					if ( (this._pathTemplate == null) && (this._pathXmlData == null) )
+					if ( (PathTemplate == null) && (_pathXmlData == null) )
 					{
 						_valid = false;
-						this._errorMessage = "Template path or XML input path required.";
+						ErrorMessage = "Template path or XML input path required.";
 					}
 					else 
 					{
-						if (this._pathTemplate != null)
+						if (PathTemplate != null)
 						{
 							try 
 							{
-								this._template = new ZeusTemplate(this._pathTemplate);
+								Template = new ZeusTemplate(PathTemplate);
 							}
 							catch (Exception ex)
 							{
-								this._template = null;
-								this._valid = false;
-								this._errorMessage = ex.Message;
+								Template = null;
+								_valid = false;
+								ErrorMessage = ex.Message;
 							}
 						}
 
-						if ( (this._valid) && (this._pathXmlData != null) )
+						if ( (_valid) && (_pathXmlData != null) )
 						{
 							try 
 							{
-								this._savedInput = new ZeusSavedInput(this._pathXmlData);
-								this._savedInput.Load();
+								SavedInput = new ZeusSavedInput(_pathXmlData);
+								SavedInput.Load();
 
-								if (this._template == null) 
+								if (Template == null) 
 								{
-									this._template = new ZeusTemplate(this._savedInput.InputData.TemplatePath);
+									Template = new ZeusTemplate(SavedInput.InputData.TemplatePath);
 								}
 							}
 							catch (Exception ex)
 							{
-								this._savedInput = null;
-								this._template = null;
-								this._valid = false;
-								this._errorMessage = ex.Message;
+								SavedInput = null;
+								Template = null;
+								_valid = false;
+								ErrorMessage = ex.Message;
 							}
 						}
 
-						if ( (this._valid) && (this._pathCollectXmlData != null) )
+						if ( (_valid) && (_pathCollectXmlData != null) )
 						{
 							try 
 							{
-								this._inputToSave = new ZeusSavedInput(this._pathCollectXmlData);
-								this._inputToSave.InputData.TemplatePath = this._template.FilePath + this._template.FileName;
-								this._inputToSave.InputData.TemplateUniqueID = this._template.UniqueID;
+								InputToSave = new ZeusSavedInput(_pathCollectXmlData);
+								InputToSave.InputData.TemplatePath = Template.FilePath + Template.FileName;
+								InputToSave.InputData.TemplateUniqueID = Template.UniqueID;
 							}
 							catch (Exception ex)
 							{
-								this._inputToSave = null;
-								this._valid = false;
-								this._errorMessage = ex.Message;
+								InputToSave = null;
+								_valid = false;
+								ErrorMessage = ex.Message;
 							}
 						}
 					}
@@ -437,104 +411,71 @@ namespace Zeus
 			}
 		}
 
-		public ProcessMode Mode
-		{ get { return _mode; } }
+	    private ProcessMode _mode = ProcessMode.Other;
+	    public ProcessMode Mode
+	    {
+	        get { return _mode; }
+	    }
 
-        public bool InternalUseOnly
-        { get { return _internalUse; } }
+	    private bool _internalUse = true;
+	    public bool InternalUseOnly
+	    {
+	        get { return _internalUse; }
+	    }
 
-        public bool InstallVS2005
-		{ get { return _installVS2005; } }
+	    private int _timeout = -1;
+	    public int Timeout
+	    {
+	        get { return _timeout; }
+	    }
 
-		public bool MakeRelative
-		{ get { return _makeRelative; } }
+	    private bool _valid = true;
+        public bool IsValid
+	    {
+	        get { return _valid; }
+	    }
 
-		public bool IsSilent
-		{ get { return _silent; } }
+	    private readonly List<ZeusIntrinsicObject> _intrinsicObjects = new List<ZeusIntrinsicObject>();
+	    public List<ZeusIntrinsicObject> IntrinsicObjects
+	    {
+	        get { return _intrinsicObjects; }
+	    }
 
-		public bool IsValid
-		{ get { return _valid; } }
+	    private readonly List<ZeusIntrinsicObject>  _intrinsicObjectsToRemove = new List<ZeusIntrinsicObject>();
+	    public List<ZeusIntrinsicObject> IntrinsicObjectsToRemove
+	    {
+	        get { return _intrinsicObjectsToRemove; }
+	    }
 
-		public bool ShowHelp
-		{ get { return _showHelp; } }
+	    private readonly List<string> _moduleNames = new List<string>();
+	    public List<string> ModuleNames
+	    {
+	        get { return _moduleNames; }
+	    }
 
-		public int Timeout
-		{ get { return _timeout; } }
+	    private readonly List<string> _projectItems = new List<string>();
+	    public List<string> ProjectItems
+	    { get { return _projectItems; } }
 
-		public bool EnableLog
-		{ get { return _enableLog; } }
-
-		public string ErrorMessage
-		{ get { return _errorMessage; } }
-
-		public string PathProject
-		{ get { return _pathProject; } }
-
-		public string PathTemplate
-		{ get { return _pathTemplate; } }
-
-		public string PathXmlData
-		{ get { return _pathXmlData; } }
-
-		public string PathCollectXmlData
-		{ get { return _pathCollectXmlData; } }
-
-		public string PathOutput
-		{ get { return _pathOutput; } }
-
-		public string PathLog
-        { get { return _pathLog; } }
-
-        public List<ZeusIntrinsicObject> IntrinsicObjects
-        { get { return _intrinsicObjects; } }
-
-        public List<ZeusIntrinsicObject> IntrinsicObjectsToRemove
-        { get { return _intrinsicObjectsToRemove; } }
-
-        public List<string> ModuleNames
-		{ get { return _moduleNames; } }
-
-        public List<string> ProjectItems
-        { get { return _projectItems; } }
-
-		public ZeusTemplate Template
-		{ get { return _template; } }
-
-		public ZeusProject Project
-		{ get { return _project; } }
-
-		public ZeusSavedInput SavedInput
-		{ get { return _savedInput; } }
-
-		public ZeusSavedInput InputToSave
-		{ get { return _inputToSave; } }
-		
-		public string ConnectionType
-		{ get { return this._connType; } }
-
-		public string ConnectionString
-		{ get { return _connString; } }
-        
-        public bool MergeMetaFiles
-        { get { return _metaDataMerge; } }
-
-		public string MetaFile1
-        { get { return _metaDataFile1; } }
-
-		public string MetaDatabase1
-        { get { return _metaDatabase1; } }
-
-		public string MetaFile2
-		{ get { return _metaDataFile2; } }
-
-		public string MetaDatabase2
-        { get { return _metaDatabase2; } }
-
-        public string MetaFileMerged
-        { get { return _metaDataFileMerged; } }
-
-        public string ProjectItemToRecord
-        { get { return _projectItemToRecord; } }
-
+	    public bool IsSilent { get; private set; }
+		public bool ShowHelp { get; private set; }
+		public bool EnableLog { get; private set; }
+	    public string ErrorMessage { get; private set; }
+	    public string PathTemplate { get; private set; }
+	    public string PathOutput { get; private set; }
+	    public string PathLog { get; private set; }
+		public ZeusTemplate Template { get; private set; }
+	    public ZeusProject Project { get; private set; }
+	    public ZeusSavedInput SavedInput { get; private set; }
+	    public ZeusSavedInput InputToSave { get; private set; }
+	    public string ConnectionType { get; private set; }
+	    public string ConnectionString { get; private set; }
+	    public bool MergeMetaFiles { get; private set; }
+	    public string MetaFile1 { get; private set; }
+	    public string MetaDatabase1 { get; private set; }
+	    public string MetaFile2 { get; private set; }
+	    public string MetaDatabase2 { get; private set; }
+	    public string MetaFileMerged { get; private set; }
+	    public string ProjectItemToRecord { get; private set; }
 	}
 }

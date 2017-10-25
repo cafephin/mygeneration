@@ -20,7 +20,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>ZeusCmd</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <StartupObject>Zeus.ZeusCmd</StartupObject>
+    <StartupObject>ZeusCmd.Program</StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -52,6 +52,7 @@
     <DebugType>full</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>5</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -87,9 +88,6 @@
     <Reference Include="System.EnterpriseServices">
       <Name>System.EnterpriseServices</Name>
     </Reference>
-    <Reference Include="System.Windows.Forms">
-      <Name>System.Windows.Forms</Name>
-    </Reference>
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
@@ -124,6 +122,8 @@
     <Compile Include="Log.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ProcessMode.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="ZeusCmd.cs">
       <SubType>Code</SubType>
     </Compile>

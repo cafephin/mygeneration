@@ -1,22 +1,14 @@
 using System;
-using System.IO;
-using System.Text;
 using System.Collections;
-using Zeus;
+using System.IO;
 
 namespace Zeus
 {
-	/// <summary>
-	/// Summary description for Log.
-	/// </summary>
-	public class Log : ILog
+    public class Log : ILog
 	{
 		private string _logFile;
-		private bool _isOpen = false;
-		private bool _isConsoleEnabled = true;
-		private bool _isLogEnabled = false;
-        private bool _isInternalUseMode = false;
-		private StreamWriter _writer;
+	    private bool _isConsoleEnabled = true;
+	    private StreamWriter _writer;
 
 		public Log() {}
 
@@ -27,9 +19,9 @@ namespace Zeus
 
 		public void Open()
 		{
-			if(_isOpen) 
+			if(IsOpen) 
 			{
-				this.Close();
+				Close();
 			}
 
 			if (_logFile != null) 
@@ -44,7 +36,7 @@ namespace Zeus
 				}
 			}
 
-			_isOpen = (_writer != null);
+			IsOpen = (_writer != null);
 		}
 
 		public void Close()
@@ -56,19 +48,19 @@ namespace Zeus
 				_writer = null;
 			}
 
-			_isOpen = false;
+			IsOpen = false;
 		}
 
 		public void Write(string text)
 		{
 
-			if(_isLogEnabled) 
+			if(IsLogEnabled) 
 			{
-				if(!_isOpen) this.Open();
+				if(!IsOpen) Open();
 
-                if (_isOpen)
+                if (IsOpen)
                 {
-                    if (!_isInternalUseMode)
+                    if (!IsInternalUseMode)
                     {
                         _writer.Write(System.DateTime.Now);
                         _writer.Write(" ");
@@ -81,7 +73,7 @@ namespace Zeus
 			
 			if(_isConsoleEnabled)
 			{
-                if (!_isInternalUseMode)
+                if (!IsInternalUseMode)
                 {
                     Console.Write(System.DateTime.Now);
                     Console.Write(" ");
@@ -124,46 +116,34 @@ namespace Zeus
 #endif
         }
 
-        public bool IsInternalUseMode
-        {
-            get { return _isInternalUseMode; }
-            set { _isInternalUseMode = value; }
-        }
+        public bool IsInternalUseMode { get; set; }
 
-		public bool IsConsoleEnabled
+	    public bool IsConsoleEnabled
 		{
 			get { return _isConsoleEnabled; }
 			set { _isConsoleEnabled = value; }
 		}
 
-		public bool IsLogEnabled
-		{
-			get { return _isLogEnabled; }
-			set { _isLogEnabled = value; }
-		}
+		public bool IsLogEnabled { get; set; }
 
-		public bool IsOpen
-		{
-			get { return _isOpen; }
-		}
+	    public bool IsOpen { get; private set; }
 
-		public string FileName
+	    public string FileName
 		{
-			get { return this._logFile; }
+			get { return _logFile; }
 			set 
 			{ 
-				if (this._isOpen) 
+				if (IsOpen) 
 				{
-					this.Close();
+					Close();
 				}
 				_logFile = value; 	
 
 				if (_logFile != null) 
 				{
-					this.Open();
+					Open();
 				}
 			}
 		}
-
 	}
 }
