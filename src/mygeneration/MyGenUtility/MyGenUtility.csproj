@@ -121,7 +121,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppRelease.cs" />
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -139,18 +138,6 @@
       <DependentUpon>AboutBoxLogo.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\AboutBox\Ball.cs" />
-    <Compile Include="Forms\ApplicationUpdate\ApplicationReleases.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\ApplicationUpdate\ApplicationReleases.Designer.cs">
-      <DependentUpon>ApplicationReleases.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\ApplicationUpdate\ApplicationReleasesControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\ApplicationUpdate\ApplicationReleasesControl.Designer.cs">
-      <DependentUpon>ApplicationReleasesControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Console\ConsoleForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -296,14 +283,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\AboutBox\AboutBoxLogo.resx">
       <DependentUpon>AboutBoxLogo.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ApplicationUpdate\ApplicationReleases.resx">
-      <DependentUpon>ApplicationReleases.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ApplicationUpdate\ApplicationReleasesControl.resx">
-      <DependentUpon>ApplicationReleasesControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Console\ConsoleForm.resx">

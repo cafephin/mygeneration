@@ -250,7 +250,6 @@ namespace MyGeneration
             this.checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem";
             this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
             this.checkForUpdatesToolStripMenuItem.Text = "Check online for &updates";
-            this.checkForUpdatesToolStripMenuItem.Click += new System.EventHandler(this.CheckForUpdateMenuItem_OnClicked);
             // 
             // aboutToolStripMenuItem
             // 

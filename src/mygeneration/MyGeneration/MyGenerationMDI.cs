@@ -725,11 +725,6 @@ namespace MyGeneration
             }
         }
 
-        private void CheckForUpdateMenuItem_OnClicked(object sender, EventArgs e)
-        {
-            new ApplicationReleases().ShowDialog(this);
-        }
-
         private void DocMenuItem_OnClicked(object sender, EventArgs e)
         {
             var i = sender as ToolStripMenuItem;
