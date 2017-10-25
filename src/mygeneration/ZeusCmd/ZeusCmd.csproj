@@ -103,11 +103,6 @@
       <Project>{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
-    <ProjectReference Include="..\MyGenUtility\MyGenUtility.csproj">
-      <Name>MyGenUtility</Name>
-      <Project>{A1D6D035-420C-40A3-9598-9E34F11FB1AA}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
     <ProjectReference Include="..\Zeus\Zeus.csproj">
       <Name>Zeus</Name>
       <Project>{CE8A697D-D45C-4E60-838D-E36980227543}</Project>
