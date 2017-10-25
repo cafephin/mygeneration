@@ -1,18 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-
 using EnvDTE;
 using EnvDTE80;
-using Microsoft.VisualStudio.CommandBars;
-
-using Zeus;
-using Zeus.Configuration;
 using MyGeneration;
+using Zeus;
 
 namespace MyGenVS2005
 {

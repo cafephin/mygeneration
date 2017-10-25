@@ -11,12 +11,13 @@
     <NoStandardLibraries>false</NoStandardLibraries>
     <AssemblyName>MyGenVS2005</AssemblyName>
     <RootNamespace>MyGenVS2005</RootNamespace>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>2.0</OldToolsVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -122,21 +123,17 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\mygeneration\MyGenUtility\MyGenUtility.csproj">
+      <Project>{a1d6d035-420c-40a3-9598-9e34f11fb1aa}</Project>
+      <Name>MyGenUtility</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\mygeneration\EngineInterface\PluginInterfaces.csproj">
       <Project>{61B369D1-95DD-4158-9F30-2E051CEB9D50}</Project>
       <Name>PluginInterfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\mygeneration\MyGenUtility\MyGenUtility.csproj">
-      <Project>{A1D6D035-420C-40A3-9598-9E34F11FB1AA}</Project>
-      <Name>MyGenUtility</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\mygeneration\Zeus\Zeus.csproj">
       <Project>{CE8A697D-D45C-4E60-838D-E36980227543}</Project>
       <Name>Zeus</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\mymeta\MyMeta.csproj">
-      <Project>{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}</Project>
-      <Name>MyMeta</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -144,10 +141,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
   <PropertyGroup>
-    <PreBuildEvent>copy "$(SolutionDir)..\..\mygeneration\MyGeneration\PluginResources\*.dll" "$(TargetDir)"</PreBuildEvent>
+    <PreBuildEvent>copy "$(SolutionDir)..\..\lib\plugins\*.dll" "$(TargetDir)"</PreBuildEvent>
     <PostBuildEvent>xcopy "$(SolutionDir)..\..\mygeneration\ZeusCmd\bin\$(ConfigurationName)\ZeusCmd.*" "$(TargetDir)" /Y /C
 xcopy "$(SolutionDir)..\..\templates\*.*" "$(TargetDir)Templates\" /E /C /Y
-xcopy "$(SolutionDir)..\..\plugins\MyMetaXsd3bPlugin\templates\xsd3b\*.*" "$(TargetDir)Templates\" /C /Y</PostBuildEvent>
+xcopy "$(SolutionDir)..\..\src\plugins\MyMetaXsd3bPlugin\templates\xsd3b\*.*" "$(TargetDir)Templates\" /C /Y</PostBuildEvent>
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
