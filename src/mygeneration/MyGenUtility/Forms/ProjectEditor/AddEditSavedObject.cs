@@ -48,7 +48,6 @@ namespace MyGeneration
         private IMyGenerationMDI mdi;
         private IContainer components;
 
-		//public FormAddEditSavedObject(IMyGenerationMDI mdi)
         public FormAddEditSavedObject(bool collectInChildProcess)
 		{
 			InitializeComponent();

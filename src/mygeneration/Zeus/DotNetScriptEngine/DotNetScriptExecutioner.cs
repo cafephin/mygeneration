@@ -333,7 +333,7 @@ namespace Zeus.DotNetScript
 			System.Environment.CurrentDirectory = RootFolder;
 
 			Assembly generatedAssembly = null;
-			string ext = ".cs", lang = "C#";
+		    string ext = ".cs"; 
 			errors = null;
 
 			//Create an instance whichever code provider that is needed
@@ -342,7 +342,6 @@ namespace Zeus.DotNetScript
             // string extraParams;
             if (language == DotNetLanguage.VBNet)
             {
-                lang = "VB";
                 ext = ".vb";
                 codeProvider = new VBCodeProvider(new Dictionary<string, string>() { { "CompilerVersion", compilerVersion } });
             }

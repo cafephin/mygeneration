@@ -54,7 +54,6 @@ namespace MyGeneration
 		private System.Windows.Forms.TextBox textBoxEndTag;
 		private System.Windows.Forms.ComboBox comboBoxLanguage;
         private System.Windows.Forms.Label labelLanguage;
-		private System.ComponentModel.IContainer components;
 		private System.Windows.Forms.Button buttonSelectFile;
 		private System.Windows.Forms.Label labelUniqueID;
         private System.Windows.Forms.TextBox textBoxUniqueID;
@@ -301,21 +300,6 @@ namespace MyGeneration
 		public bool CanClose(bool allowPrevent)
 		{
 			return PromptForSave(allowPrevent);
-		}
-
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		protected override void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
 		}
 
 		public bool IsDirty 

@@ -179,7 +179,7 @@ namespace MyGeneration.AutoCompletion
                     AutoCompleteNodeInfo n = null;
                     AutoCompleteNodeInfo nextToLastNode = null;
                     System.Collections.Generic.List<AutoCompleteNodeInfo> ns = null;
-                    string lastmsg = null, firstmsg = null;
+                    string lastmsg = null;
                     int memberDepth = stk.Count;
                     if (stk.Count > 0)
                     {

@@ -26,7 +26,6 @@ namespace Provider.VistaDB
 					throw new VistaDBException(VistaDBErrorCodes.DatabaseNotOpened);
 
 				this.cultureID       = cultureID;
-				this.caseSensitivity = caseSensitivity;
 				this.opened          = true;
 			}
 			catch
