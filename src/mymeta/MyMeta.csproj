@@ -51,6 +51,7 @@
     <DebugType>full</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>5</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -252,6 +253,7 @@
     <Compile Include="Columns.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="dbDriver.cs" />
     <Compile Include="IMyMetaPluginExt.cs" />
     <Compile Include="FileDbDriver.cs" />
     <Compile Include="IMyMetaPluginContext.cs" />
@@ -260,6 +262,7 @@
     <Compile Include="Interfaces\IPropertyCollection.cs" />
     <Compile Include="Interfaces\ITabularEntity.cs" />
     <Compile Include="InternalDriver.cs" />
+    <Compile Include="MyMetaDrivers.cs" />
     <Compile Include="MyMetaPluginContext.cs" />
     <Compile Include="PluginDriver.cs" />
     <Compile Include="Plugin\ClassFactory.cs" />
