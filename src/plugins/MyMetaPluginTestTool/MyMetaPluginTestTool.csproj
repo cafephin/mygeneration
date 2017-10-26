@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MyMetaPluginTestTool</RootNamespace>
     <AssemblyName>MyMetaPluginTestTool</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -28,6 +28,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -37,6 +38,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -96,16 +98,12 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\mymeta\MyMeta.csproj">
-      <Project>{72BEAB1C-B55F-4F0E-89AF-17F71E74A452}</Project>
+      <Project>{72beab1c-b55f-4f0e-89af-17f71e74a452}</Project>
       <Name>MyMeta</Name>
     </ProjectReference>
     <ProjectReference Include="..\MyMetaEffiprozPlugin\MyMetaEffiprozPlugin.csproj">
       <Project>{38F07F67-08C1-48E4-AF0B-9550157F9460}</Project>
       <Name>MyMetaEffiprozPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MyMetaFoxProPlugin\MyMetaVisualFoxProPlugin.csproj">
-      <Project>{A0680832-79DA-410E-A650-C974BF0A1205}</Project>
-      <Name>MyMetaVisualFoxProPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\MyMetaIngres2006Plugin\MyMeta.Plugins.Ingres2006.csproj">
       <Project>{BA7AF976-4917-459A-A9E1-6BE44F8F4BDF}</Project>
