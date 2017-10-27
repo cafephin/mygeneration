@@ -1,6 +1,7 @@
 using System;
 using System.Data;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using MyGeneration.Configuration;
@@ -10,16 +11,14 @@ namespace MyGeneration
 {
     public partial class DefaultSettingsControl : UserControl
     {
-        private string _lastLoadedConnection = string.Empty;
+        private string _selectedSavedConnectionName = string.Empty;
         private dbRoot _myMeta;
-        private Color _defaultOleDbButtonColor;
-        private DataTable _driversTable;
         private IMyGenerationMDI _mdi;
 
         public ShowOleDbDialogHandler ShowOleDbDialog;
-        public delegate void AfterSaveDelegate();
         public event EventHandler AfterSave;
 
+        private DataTable _driversTable;
         public DataTable DriversTable
         {
             get
@@ -30,34 +29,49 @@ namespace MyGeneration
                     _driversTable.Columns.Add("DISPLAY");
                     _driversTable.Columns.Add("VALUE");
                     _driversTable.Columns.Add("ISPLUGIN");
-                    _driversTable.Rows.Add(new object[] { "<None>", "NONE", false });
-                    _driversTable.Rows.Add(new object[] { "Advantage Database Server", "ADVANTAGE", false });
-                    _driversTable.Rows.Add(new object[] { "Firebird", "FIREBIRD", false });
-                    _driversTable.Rows.Add(new object[] { "IBM DB2", "DB2", false });
-                    _driversTable.Rows.Add(new object[] { "IBM iSeries (AS400)", "ISERIES", false });
-                    _driversTable.Rows.Add(new object[] { "Interbase", "INTERBASE", false });
-                    _driversTable.Rows.Add(new object[] { "Microsoft SQL Server", "SQL", false });
-                    _driversTable.Rows.Add(new object[] { "Microsoft Access", "ACCESS", false });
-                    _driversTable.Rows.Add(new object[] { "MySQL", "MYSQL", false });
-                    _driversTable.Rows.Add(new object[] { "MySQL2", "MYSQL2", false });
-                    _driversTable.Rows.Add(new object[] { "Oracle", "ORACLE", false });
-                    _driversTable.Rows.Add(new object[] { "Pervasive", "PERVASIVE", false });
-                    _driversTable.Rows.Add(new object[] { "PostgreSQL", "POSTGRESQL", false });
-                    _driversTable.Rows.Add(new object[] { "PostgreSQL 8+", "POSTGRESQL8", false });
-                    _driversTable.Rows.Add(new object[] { "SQLite", "SQLITE", false });
-#if !IGNORE_VISTA
-                    _driversTable.Rows.Add(new object[] { "VistaDB", "VISTADB", false });
-#endif
+                    _driversTable.Rows.Add("<None>", "NONE", false);
+                    _driversTable.Rows.Add("Advantage Database Server", "ADVANTAGE", false);
+                    _driversTable.Rows.Add("Firebird", "FIREBIRD", false);
+                    _driversTable.Rows.Add("IBM DB2", "DB2", false);
+                    _driversTable.Rows.Add("IBM iSeries (AS400)", "ISERIES", false);
+                    _driversTable.Rows.Add("Interbase", "INTERBASE", false);
+                    _driversTable.Rows.Add("Microsoft SQL Server", "SQL", false);
+                    _driversTable.Rows.Add("Microsoft Access", "ACCESS", false);
+                    _driversTable.Rows.Add("MySQL", "MYSQL", false);
+                    _driversTable.Rows.Add("MySQL2", "MYSQL2", false);
+                    _driversTable.Rows.Add("Oracle", "ORACLE", false);
+                    _driversTable.Rows.Add("Pervasive", "PERVASIVE", false);
+                    _driversTable.Rows.Add("PostgreSQL", "POSTGRESQL", false);
+                    _driversTable.Rows.Add("PostgreSQL 8+", "POSTGRESQL8", false);
+                    _driversTable.Rows.Add("SQLite", "SQLITE", false);
+                    _driversTable.Rows.Add("VistaDB", "VISTADB", false);
 
-                    foreach (IMyMetaPlugin plugin in MyMeta.dbRoot.Plugins.Values)
+                    foreach (IMyMetaPlugin plugin in dbRoot.Plugins.Values)
                     {
-                        _driversTable.Rows.Add(new object[] { plugin.ProviderName, plugin.ProviderUniqueKey, true });
+                        _driversTable.Rows.Add(plugin.ProviderName, plugin.ProviderUniqueKey, true);
                     }
 
                     _driversTable.DefaultView.Sort = "DISPLAY";
                 }
                 return _driversTable;
             }
+        }
+
+        private string _dbDriver;
+
+        public string DbDriver
+        {
+            get { return _dbDriver; }
+            set
+            {
+                _dbDriver = value;
+            }
+        }
+
+        public bool SaveSettings()
+        {
+            Configuration.DefaultSettings.Instance.DbConnectionSettings.Driver = DbDriver;
+            return true;
         }
 
         public DefaultSettingsControl()
@@ -774,7 +788,10 @@ namespace MyGeneration
             }
             else
             {
-                MessageBox.Show("You Must Select a Saved Connection to Delete", "No Saved Connection Selected", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("You must select a saved connection to delete",
+                                "No Saved Connection Selected",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Exclamation);
             }
         }
 
@@ -782,7 +799,7 @@ namespace MyGeneration
         {
             try
             {
-                Font f = new Font(FontTextBox.Text, 12);
+                var f = new Font(FontTextBox.Text, 12);
                 fontDialog1.Font = f;
             }
             catch

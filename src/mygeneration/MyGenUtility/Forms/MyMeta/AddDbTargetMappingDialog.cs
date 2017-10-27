@@ -1,17 +1,11 @@
-using System;
-using System.Drawing;
-using System.Collections;
-using System.ComponentModel;
 using System.Windows.Forms;
-
-using MyMeta;
 
 namespace MyGeneration
 {
-	/// <summary>
-	/// Summary description for AddDbTargetMappingDialog.
-	/// </summary>
-	public class AddDbTargetMappingDialog : System.Windows.Forms.Form
+    /// <summary>
+    /// Summary description for AddDbTargetMappingDialog.
+    /// </summary>
+    public class AddDbTargetMappingDialog : System.Windows.Forms.Form
 	{
 		public string BasedUpon = string.Empty;
 		public string NewDbTarget = string.Empty;

@@ -1,28 +1,21 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.IO;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
 using MyGeneration.Configuration;
 using Zeus;
 using Zeus.UserInterface;
 using Zeus.UserInterface.WinForms;
-using MyMeta;
 
 namespace MyGeneration
 {
     public partial class TemplateBrowserControl : UserControl
     {
-        private const string UPDATE_URL = "http://www.mygenerationsoftware.com/update/";
         private const int INDEX_CLOSED_FOLDER = 3;
         private const int INDEX_OPEN_FOLDER = 4;
 
         private WebTemplateLibrary _templateLibrary;
         private TemplateTreeBuilder _treeBuilder;
-        private object _lastObject = null;
+        private object _lastObject;
         private ShowGUIEventHandler _guiHandler;
 
         public event EventHandler TemplateDelete;
@@ -35,7 +28,7 @@ namespace MyGeneration
         public TemplateBrowserControl()
         {
             InitializeComponent();
-            this._guiHandler = new ShowGUIEventHandler(this.DynamicGUI_Display);
+            _guiHandler = DynamicGUI_Display;
 
         }
 
@@ -55,7 +48,7 @@ namespace MyGeneration
 
         public string GetPersistString()
         {
-            return this.GetType().FullName;
+            return GetType().FullName;
         }
 
         protected void OnErrorsOccurred(Exception ex)
@@ -102,18 +95,18 @@ namespace MyGeneration
         #region Execute, Open, RefreshTree, ChangeMode, WebUpdate, Delete
         public void Execute()
         {
-            if (this.treeViewTemplates.SelectedNode is TemplateTreeNode)
+            if (treeViewTemplates.SelectedNode is TemplateTreeNode)
             {
-                ZeusTemplate template = new ZeusTemplate(this.treeViewTemplates.SelectedNode.Tag.ToString());
+                ZeusTemplate template = new ZeusTemplate(treeViewTemplates.SelectedNode.Tag.ToString());
                 ExecuteTemplate(template);
             }
         }
 
         public void SaveInput()
         {
-            if (this.treeViewTemplates.SelectedNode is TemplateTreeNode)
+            if (treeViewTemplates.SelectedNode is TemplateTreeNode)
             {
-                ZeusTemplate template = new ZeusTemplate(this.treeViewTemplates.SelectedNode.Tag.ToString());
+                ZeusTemplate template = new ZeusTemplate(treeViewTemplates.SelectedNode.Tag.ToString());
                 SaveInput(template);
             }
         }
@@ -125,9 +118,9 @@ namespace MyGeneration
 
         public void Open()
         {
-            if (this.treeViewTemplates.SelectedNode is TemplateTreeNode)
+            if (treeViewTemplates.SelectedNode is TemplateTreeNode)
             {
-                OnTemplateOpen(this.treeViewTemplates.SelectedNode.Tag.ToString());
+                OnTemplateOpen(treeViewTemplates.SelectedNode.Tag.ToString());
             }
         }
 
@@ -135,16 +128,16 @@ namespace MyGeneration
         {
             _treeBuilder.Clear();
 
-            if (this.toolStripButtonMode.Checked)
-                this._treeBuilder.LoadTemplatesByFile();
+            if (toolStripButtonMode.Checked)
+                _treeBuilder.LoadTemplatesByFile();
             else
-                this._treeBuilder.LoadTemplates();
+                _treeBuilder.LoadTemplates();
         }
 
         public void ChangeMode()
         {
-            if (this.toolStripButtonMode.Checked) this._treeBuilder.LoadTemplatesByFile();
-            else this._treeBuilder.LoadTemplates();
+            if (toolStripButtonMode.Checked) _treeBuilder.LoadTemplatesByFile();
+            else _treeBuilder.LoadTemplates();
         }
 
         public void WebUpdate()
@@ -153,7 +146,7 @@ namespace MyGeneration
 
             try
             {
-                TreeNode node = this.treeViewTemplates.SelectedNode;
+                TreeNode node = treeViewTemplates.SelectedNode;
 
                 if (node is TemplateTreeNode)
                 {
@@ -198,7 +191,7 @@ namespace MyGeneration
 
         public void Delete()
         {
-            TreeNode node = this.treeViewTemplates.SelectedNode;
+            TreeNode node = treeViewTemplates.SelectedNode;
 
             if (node is TemplateTreeNode)
             {
@@ -312,11 +305,11 @@ namespace MyGeneration
                         }
                         catch
                         {
-                            // HACK: For some reason, Clipboard.SetDataObject throws an error on some systems. I'm cathhing it and doing nothing for now.
+                            // HACK: For some reason, Clipboard.SetDataObject throws an error on some systems. I'm catching it and doing nothing for now.
                         }
                     }
 
-                    MessageBox.Show("Successfully rendered Template: " + template.Title);
+                    MessageBox.Show("Successfully rendered template: " + template.Title);
                 }
             }
         }
@@ -352,18 +345,17 @@ namespace MyGeneration
                     }
 
                     var saveFileDialog = new SaveFileDialog
-                    {
+                                         {
                                              Filter = "Zues Input Files (*.zinp)|*.zinp",
                                              FilterIndex = 0,
                                              RestoreDirectory = true
                                          };
-                        if (saveFileDialog.ShowDialog() == DialogResult.OK)
-                        {
-                            Cursor.Current = Cursors.WaitCursor;
+                    if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        Cursor.Current = Cursors.WaitCursor;
 
-                            collectedInput.FilePath = saveFileDialog.FileName;
-                            collectedInput.Save();
-                        }
+                        collectedInput.FilePath = saveFileDialog.FileName;
+                        collectedInput.Save();
                     }
 
                     MessageBox.Show(this, "Input collected and saved to file: \r\n" + collectedInput.FilePath);
@@ -462,7 +454,7 @@ namespace MyGeneration
 
         public void DynamicGUI_Display(IZeusGuiControl gui, IZeusFunctionExecutioner executioner)
         {
-            this.Cursor = Cursors.Default;
+            Cursor = Cursors.Default;
 
             try
             {
@@ -486,7 +478,7 @@ namespace MyGeneration
         #region TemplateBrowserControl EventHandlers
         private void TemplateBrowserControl_MouseLeave(object sender, System.EventArgs e)
         {
-            this.toolTipTemplateBrowser.SetToolTip(treeViewTemplates, string.Empty);
+            toolTipTemplateBrowser.SetToolTip(treeViewTemplates, string.Empty);
         }        
         #endregion
 
@@ -519,14 +511,14 @@ namespace MyGeneration
         {
             if (e.KeyCode == Keys.F5)
             {
-                this._treeBuilder.LoadTemplates();
+                _treeBuilder.LoadTemplates();
                 return;
             }
         }
 
         private void treeViewTemplates_DoubleClick(object sender, EventArgs e)
         {
-            if (this.treeViewTemplates.SelectedNode is TemplateTreeNode)
+            if (treeViewTemplates.SelectedNode is TemplateTreeNode)
             {
                 if (((TemplateTreeNode)treeViewTemplates.SelectedNode).IsLocked)
                 {
@@ -534,7 +526,7 @@ namespace MyGeneration
                 }
                 else
                 {
-                    OnTemplateOpen(this.treeViewTemplates.SelectedNode.Tag.ToString());
+                    OnTemplateOpen(treeViewTemplates.SelectedNode.Tag.ToString());
                 }
             }
         }
@@ -550,15 +542,15 @@ namespace MyGeneration
             {
                 if (obj is TemplateTreeNode)
                 {
-                    this.toolTipTemplateBrowser.SetToolTip(treeViewTemplates, ((TemplateTreeNode)obj).Comments);
+                    toolTipTemplateBrowser.SetToolTip(treeViewTemplates, ((TemplateTreeNode)obj).Comments);
                 }
                 else if ((obj is RootTreeNode) && (DateTime.Now.Hour == 1))
                 {
-                    this.toolTipTemplateBrowser.SetToolTip(treeViewTemplates, "Worship me as I generate your code.");
+                    toolTipTemplateBrowser.SetToolTip(treeViewTemplates, "Worship me as I generate your code.");
                 }
                 else
                 {
-                    this.toolTipTemplateBrowser.SetToolTip(treeViewTemplates, string.Empty);
+                    toolTipTemplateBrowser.SetToolTip(treeViewTemplates, string.Empty);
                 }
 
                 _lastObject = obj;
@@ -569,12 +561,12 @@ namespace MyGeneration
         #region Toolbar EventHandlers
         private void toolStripButtonRefresh_Click(object sender, EventArgs e)
         {
-            this.RefreshTree();
+            RefreshTree();
         }
 
         private void toolStripButtonMode_Click(object sender, EventArgs e)
         {
-            this.ChangeMode();
+            ChangeMode();
         }
 
         private void toolStripButtonWebLibrary_Click(object sender, EventArgs e)
@@ -589,10 +581,10 @@ namespace MyGeneration
                 _templateLibrary.ShowDialog(this);
                 foreach (string uniqueid in _templateLibrary.UpdatedTemplateIDs)
                 {
-                    this.OnTemplateUpdate(uniqueid);
+                    OnTemplateUpdate(uniqueid);
                 }
 
-                this.RefreshTree();
+                RefreshTree();
             }
             catch
             {
@@ -603,54 +595,54 @@ namespace MyGeneration
 
         private void toolStripButtonOpen_Click(object sender, EventArgs e)
         {
-            this.Open();
+            Open();
         }
 
         private void toolStripButtonRecord_Click(object sender, EventArgs e)
         {
-            this.SaveInput();
+            SaveInput();
         }
 
         private void toolStripButtonReplay_Click(object sender, EventArgs e)
         {
-            this.ExecuteSavedInput();
+            ExecuteSavedInput();
         }
 
         private void toolStripButtonExecute_Click(object sender, EventArgs e)
         {
-            this.Execute();
+            Execute();
         }
         #endregion
 
         #region ContextMenu EventHandlers
         private void contextMenuTree_Popup(object sender, System.EventArgs e)
         {
-            System.Drawing.Point point = this.treeViewTemplates.PointToClient(Cursor.Position);
-            object node = this.treeViewTemplates.GetNodeAt(point.X, point.Y);
+            System.Drawing.Point point = treeViewTemplates.PointToClient(Cursor.Position);
+            object node = treeViewTemplates.GetNodeAt(point.X, point.Y);
 
             // Everything is off by default
-            this.menuItemExecute.Visible = false;
-            this.menuItemOpen.Visible = false;
-            this.menuItemWebUpdate.Visible = false;
-            this.menuItemDelete.Visible = false;
-            this.menuItemRecord.Visible = false;
+            menuItemExecute.Visible = false;
+            menuItemOpen.Visible = false;
+            menuItemWebUpdate.Visible = false;
+            menuItemDelete.Visible = false;
+            menuItemRecord.Visible = false;
 
             if (node is TemplateTreeNode)
             {
                 foreach (MenuItem item in contextMenuTree.MenuItems) item.Visible = true;
                 if (((TemplateTreeNode)node).IsLocked)
                 {
-                    this.menuItemOpen.Visible = false;
+                    menuItemOpen.Visible = false;
                 }
             }
             else if (node is FolderTreeNode)
             {
-                this.menuItemWebUpdate.Visible = true;
-                this.menuItemDelete.Visible = true;
+                menuItemWebUpdate.Visible = true;
+                menuItemDelete.Visible = true;
             }
             else if (node is RootTreeNode)
             {
-                this.menuItemWebUpdate.Visible = true;
+                menuItemWebUpdate.Visible = true;
             }
             else
             {
@@ -661,27 +653,27 @@ namespace MyGeneration
 
         private void menuItemExecute_Click(object sender, System.EventArgs e)
         {
-            this.Execute();
+            Execute();
         }
 
         private void menuItemOpen_Click(object sender, System.EventArgs e)
         {
-            this.Open();
+            Open();
         }
 
         private void menuItemWebUpdate_Click(object sender, System.EventArgs e)
         {
-            this.WebUpdate();
+            WebUpdate();
         }
 
         private void menuItemDelete_Click(object sender, EventArgs e)
         {
-            this.Delete();
+            Delete();
         }
 
         private void menuItemRecord_Click(object sender, EventArgs e)
         {
-            this.SaveInput();
+            SaveInput();
         }
         #endregion
     }

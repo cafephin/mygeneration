@@ -77,12 +77,12 @@ namespace MyGeneration
             _startupFiles = argsList.ToArray();
 
             EditorManager.AddNewDocumentMenuItems(newFileDynamicToolStripMenuItem_Click,
-                                                  newToolStripMenuItem.DropDownItems,
-                                                  toolStripDropDownButtonNew.DropDownItems);
+                                                  NewMenuStripItem.DropDownItems,
+                                                  NewToolStripDropDownButton.DropDownItems);
 
-            ContentManager.AddNewContentMenuItems(openContentDynamicToolStripMenuItem_Click, pluginsToolStripMenuItem, toolStrip1);
+            ContentManager.AddNewContentMenuItems(openContentDynamicToolStripMenuItem_Click, PluginsMenuStripItem, StandardToolStrip);
 
-            PluginManager.AddHelpMenuItems(HelpMenuItem_OnClicked, helpToolStripMenuItem, 2);
+            PluginManager.AddHelpMenuItems(HelpMenuItem_OnClicked, HelpMenuStripItem, 2);
 
             RefreshRecentFiles();
         }
@@ -594,21 +594,21 @@ namespace MyGeneration
             IDockContent activeContent = MainDockPanel.ActiveContent;
             if (activeContent is IEditControl)
             {
-                ToolStripManager.RevertMerge(toolStrip1);
+                ToolStripManager.RevertMerge(StandardToolStrip);
             }
             else if (activeContent is IMyGenDocument)
             {
-                ToolStripManager.RevertMerge(toolStrip1);
+                ToolStripManager.RevertMerge(StandardToolStrip);
                 var mgd = activeContent as IMyGenDocument;
                 if (mgd.ToolStrip != null)
                 {
-                    ToolStripManager.Merge(mgd.ToolStrip, toolStrip1);
+                    ToolStripManager.Merge(mgd.ToolStrip, StandardToolStrip);
                 }
             }
             else if (activeContent == null)
             {
                 var foundDoc = MainDockPanel.Contents.Cast<DockContent>().Any(c => c is IMyGenDocument && !c.IsHidden);
-                if (!foundDoc) ToolStripManager.RevertMerge(toolStrip1);
+                if (!foundDoc) ToolStripManager.RevertMerge(StandardToolStrip);
             }
         }
 
@@ -734,7 +734,7 @@ namespace MyGeneration
 
         private void WindowMenu_OnDropDownOpening(object sender, EventArgs e)
         {
-            windowToolStripMenuItem.DropDownItems.Clear();
+            WindowMenuStripItem.DropDownItems.Clear();
             foreach (var dockContent in MainDockPanel.Contents)
             {
                 var doc = (DockContent) dockContent;
@@ -1068,22 +1068,22 @@ namespace MyGeneration
         #region Refresh Recent Files
         private void RefreshRecentFiles()
         {
-            recentFilesToolStripMenuItem.DropDownItems.Clear();
+            RecentFilesMenuStripItem.DropDownItems.Clear();
 
             DefaultSettings ds = DefaultSettings.Instance;
             if (ds.RecentFiles.Count == 0)
             {
-                recentFilesToolStripMenuItem.Visible = false;
+                RecentFilesMenuStripItem.Visible = false;
             }
             else
             {
-                recentFilesToolStripMenuItem.Visible = true;
+                RecentFilesMenuStripItem.Visible = true;
 
                 foreach (string path in ds.RecentFiles)
                 {
                     var item = new ToolStripMenuItem(path);
                     item.Click += RecentFileMenuItem_OnClicked;
-                    recentFilesToolStripMenuItem.DropDownItems.Add(item);
+                    RecentFilesMenuStripItem.DropDownItems.Add(item);
                 }
             }
         }
@@ -1188,19 +1188,19 @@ namespace MyGeneration
             if (function.Equals("executionqueuestart", StringComparison.CurrentCultureIgnoreCase))
             {
                 toolStripStatusQueue.Visible = true;
-                timerImgAnimate.Start();
+                InProgressTimer.Start();
             }
             else if (function.Equals("executionqueueupdate", StringComparison.CurrentCultureIgnoreCase))
             {
                 if (ZeusProcessManager.ProcessCount == 0)
                 {
-                    timerImgAnimate.Stop();
+                    InProgressTimer.Stop();
                     toolStripStatusQueue.Visible = false;
                 }
                 else if (ZeusProcessManager.ProcessCount > 0)
                 {
                     toolStripStatusQueue.Visible = true;
-                    timerImgAnimate.Start();
+                    InProgressTimer.Start();
                 }
             }
             else if (function.Equals("showerrordetail", StringComparison.CurrentCultureIgnoreCase) &&

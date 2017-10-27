@@ -1,36 +1,21 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Collections;
-using System.ComponentModel;
-using System.Text.RegularExpressions;
-
-using Scintilla;
-using Scintilla.Forms;
-using Scintilla.Enums;
-using Zeus;
-using Zeus.Templates;
 using MyGeneration.AutoCompletion;
 using MyGeneration.Configuration;
+using Scintilla;
+using Scintilla.Enums;
+using Scintilla.Forms;
+using Zeus;
 
 namespace MyGeneration
 {
-	public interface IEditControl 
-	{
-		string Mode { get; }
-        string Language { get; }
-        string Text { get; set; }
-        void GrabFocus();
-        void Activate();
-	}
-
-	/// <summary>
+    /// <summary>
 	/// Summary description for JScriptScintillaControl.
 	/// </summary>
 	public class ZeusScintillaControl : ScintillaControl, IEditControl, IScintillaNet
 	{
-        private const int WM_KEYDOWN = 0x0100;
-        private const int DEFAULT_CODE_PAGE = 65001;
+	    private const int DEFAULT_CODE_PAGE = 65001;
 
         private string _language;
         private string _mode;
@@ -40,34 +25,31 @@ namespace MyGeneration
 		private static string LastSearchTextStatic = string.Empty;
         private static bool LastSearchIsCaseSensitiveStatic = true;
         private static bool LastSearchIsRegexStatic = false;
-        private Hashtable ignoredKeys = new Hashtable();
-        
-        public static FindForm FindDialog = new FindForm();
+
+	    public static FindForm FindDialog = new FindForm();
         public static ReplaceForm ReplaceDialog = new ReplaceForm();
         public static ScintillaConfigureDelegate StaticConfigure = null;
 
 		public ZeusScintillaControl() : base() 
 		{
-            Scintilla.Forms.SearchHelper.Translations.MessageBoxTitle = "MyGeneration";
+            SearchHelper.Translations.MessageBoxTitle = "MyGeneration";
             this.SmartIndentType = SmartIndent.Simple;
-            this.GotFocus += new EventHandler(ZeusScintillaControl_GotFocus);
+            this.GotFocus += ZeusScintillaControl_GotFocus;
 
             this.Configure = StaticConfigure;
-            this.CharAdded += new EventHandler<CharAddedEventArgs>(ZeusScintillaControl_CharAdded);
+            this.CharAdded += ZeusScintillaControl_CharAdded;
             this.AllowDrop = true;
             this.IsAutoCIgnoreCase = true;
         }
 
-        
+	    private void ZeusScintillaControl_CharAdded(object sender, CharAddedEventArgs e)
+	    {
+	        this.Cursor_ = (int) Scintilla.Enums.CursorShape.Wait;
+	        AutoCompleteHelper.CharAdded(this, e.Ch);
+	        this.Cursor_ = (int) Scintilla.Enums.CursorShape.Normal;
+	    }
 
-        private void ZeusScintillaControl_CharAdded(object sender, CharAddedEventArgs e)
-        {
-            this.Cursor_ = (int)Scintilla.Enums.CursorShape.Wait;
-            AutoCompleteHelper.CharAdded(this, e.Ch);
-            this.Cursor_ = (int)Scintilla.Enums.CursorShape.Normal;
-        }
-
-        void ZeusScintillaControl_GotFocus(object sender, EventArgs e)
+	    void ZeusScintillaControl_GotFocus(object sender, EventArgs e)
         {
             InitializeFindReplace();
         }
@@ -112,7 +94,6 @@ namespace MyGeneration
             }
         }
 
-
         public string Mode
         {
             get
@@ -141,7 +122,7 @@ namespace MyGeneration
 			}
 			set
 			{
-				if ((value != null) && (value.Length > 0))
+				if (!string.IsNullOrEmpty(value))
 					base.Text = value;
 			}
 		}

@@ -521,10 +521,10 @@ namespace MyGeneration
 
             if (!dict.ContainsKey("__version"))
             {
-                Assembly ver = Assembly.GetEntryAssembly();
-                if (ver != null)
+                Assembly entryAssembly = Assembly.GetEntryAssembly();
+                if (entryAssembly != null)
                 {
-                    dict["__version"] = ver.GetName().Version.ToString();
+                    dict["__version"] = entryAssembly.GetName().Version.ToString();
                 }
             }
 

@@ -1,25 +1,21 @@
 using System;
-using System.Xml;
 using System.Data;
 using System.Drawing;
-using System.Collections;
-using System.ComponentModel;
 using System.Windows.Forms;
+using System.Xml;
 using MyGeneration.Configuration;
-using WeifenLuo.WinFormsUI.Docking;
-
 using MyMeta;
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace MyGeneration
 {
-	/// <summary>
-	/// Summary description for LanguageMappings.
-	/// </summary>
+    /// <summary>
+    /// Summary description for LanguageMappings.
+    /// </summary>
     public class LanguageMappings : DockContent, IMyGenContent
     {
-        private IMyGenerationMDI mdi;
-		GridLayoutHelper gridLayoutHelper;
-		private System.ComponentModel.IContainer components;
+        private System.ComponentModel.IContainer components;
+        private GridLayoutHelper gridLayoutHelper;
 
 		private System.Windows.Forms.ComboBox cboxLanguage;
 		private System.Windows.Forms.DataGrid XmlEditor;
@@ -38,29 +34,23 @@ namespace MyGeneration
         public LanguageMappings(IMyGenerationMDI mdi)
 		{
             InitializeComponent();
-            this.mdi = mdi;
-			this.ShowHint = DockState.DockRight;
+			ShowHint = DockState.DockRight;
         }
 
         protected override string GetPersistString()
         {
-            return this.GetType().FullName;
+            return GetType().FullName;
         }
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		protected override void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
-		}
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (components != null)
+                    components.Dispose();
+            }
+            base.Dispose();
+        }
 
 		#region Windows Form Designer generated code
 		/// <summary>
@@ -217,18 +207,6 @@ namespace MyGeneration
 
 		}
 		#endregion
-
-		/*public void DefaultSettingsChanged(DefaultSettings settings)
-		{
-			PromptForSave(false);
-
-			this.dbDriver = settings.DbDriver;
-
-			PopulateComboBox(settings);
-			PopulateGrid(this.dbDriver);
-
-			MarkAsDirty(false);
-		}*/
 
 		public bool CanClose(bool allowPrevent)
 		{

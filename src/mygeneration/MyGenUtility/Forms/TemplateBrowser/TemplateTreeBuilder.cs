@@ -1,23 +1,16 @@
-using System;
-using System.IO;
-using System.Net;
-using System.Drawing;
 using System.Collections;
-using System.ComponentModel;
+using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using MyGeneration.Configuration;
 using Zeus;
-using Zeus.Configuration;
-using Zeus.UserInterface;
-using Zeus.UserInterface.WinForms;
-using MyMeta;
 
 namespace MyGeneration
 {
-	/// <summary>
-	/// Summary description for TemplateTreeBuilder.
-	/// </summary>
-	public class TemplateTreeBuilder
+    /// <summary>
+    /// Summary description for TemplateTreeBuilder.
+    /// </summary>
+    public class TemplateTreeBuilder
 	{
 		private TreeView _tree;
 		private RootTreeNode _fsRootNode;
@@ -28,7 +21,7 @@ namespace MyGeneration
 		
 		public TemplateTreeBuilder(TreeView tree)
 		{
-			this._tree = tree;
+			_tree = tree;
 		}
 
 		public RootTreeNode FSRootNode { get { return _fsRootNode; } }
@@ -135,7 +128,7 @@ namespace MyGeneration
 					_nsRootNode.Expand();
 				}
 
-				this._tree.Nodes.Add(_nsRootNode);
+				_tree.Nodes.Add(_nsRootNode);
 			}
 		}
 		
@@ -159,52 +152,64 @@ namespace MyGeneration
 					//ArrayList templates = new ArrayList();
 					DirectoryInfo rootInfo = new DirectoryInfo(defaultTemplatePath);
 
-					ArrayList templates = templates = TemplateWebUpdateHelper.GetTempates(rootInfo); 
+					ArrayList templates = templates = TemplateWebUpdateHelper.GetTemplates(rootInfo); 
 
 					_wuRootNode = new RootTreeNode("Online Template Library");
 					foreach (string[] template in templates) 
 					{
 						IdPathHash.Add(template[1].ToUpper(), template[0]);
 
-						string fullns = template[4];
-						if (fullns.Trim() == string.Empty) 
-						{
-							_wuRootNode.AddSorted(new TemplateTreeNode(template[0], template[1], template[2] + " (" + template[5] + ")", string.Empty, template[3], template[4], template[6]));
-						}
-						else 
-						{
-							SortedTreeNode parentNode = _wuRootNode;
+						var fullns = template[4];
+					    if (fullns.Trim() == string.Empty)
+					    {
+					        _wuRootNode.AddSorted(new TemplateTreeNode(template[0],
+					                                                   template[1],
+					                                                   template[2] + " (" + template[5] + ")",
+					                                                   string.Empty,
+					                                                   template[3],
+					                                                   template[4],
+					                                                   template[6]));
+					    }
+					    else
+					    {
+					        SortedTreeNode parentNode = _wuRootNode;
 
-							string[] x = fullns.Split('.');
-							foreach (string ns in x) 
-							{
-								bool isFound = false;
-								foreach (SortedTreeNode tmpNode in parentNode.Nodes) 
-								{
-									if (tmpNode.Text == ns) 
-									{
-										parentNode = tmpNode;
-										isFound = true;
-										break;
-									}
-								}
+					        var x = fullns.Split('.');
+					        foreach (var ns in x)
+					        {
+					            var isFound = false;
+					            foreach (SortedTreeNode tmpNode in parentNode.Nodes)
+					            {
+					                if (tmpNode.Text == ns)
+					                {
+					                    parentNode = tmpNode;
+					                    isFound = true;
+					                    break;
+					                }
+					            }
 
-								if (!isFound) 
-								{
-									FolderTreeNode ftn = new FolderTreeNode(ns);
-									parentNode.AddSorted(ftn);
-									parentNode = ftn;
-								}
-							}
+					            if (!isFound)
+					            {
+					                FolderTreeNode ftn = new FolderTreeNode(ns);
+					                parentNode.AddSorted(ftn);
+					                parentNode = ftn;
+					            }
+					        }
 
-							parentNode.AddSorted(new TemplateTreeNode(template[0], template[1], template[2] + " [" + template[5] + "]", string.Empty, template[3], template[4], template[6]));
-						}
+					        parentNode.AddSorted(new TemplateTreeNode(template[0],
+					                                                  template[1],
+					                                                  template[2] + " [" + template[5] + "]",
+					                                                  string.Empty,
+					                                                  template[3],
+					                                                  template[4],
+					                                                  template[6]));
+					    }
 					}
 
 					_wuRootNode.Expand();
 				}
 
-				this._tree.Nodes.Add(_wuRootNode);
+				_tree.Nodes.Add(_wuRootNode);
 			}
 		}
 
@@ -255,7 +260,7 @@ namespace MyGeneration
                     _fsRootNode.Expand();
 				}
 
-				this._tree.Nodes.Add(_fsRootNode);
+				_tree.Nodes.Add(_fsRootNode);
 			}
 		}
 
@@ -273,7 +278,7 @@ namespace MyGeneration
 			{
 				if (dirInfo.Attributes != (FileAttributes.System | dirInfo.Attributes)) 
 				{
-					this._buildChildren(dirInfo, templates); // recurse into subdirectories
+					_buildChildren(dirInfo, templates); // recurse into subdirectories
 				}
 			}
 
@@ -313,7 +318,7 @@ namespace MyGeneration
 					FolderTreeNode node = new FolderTreeNode(dirInfo.Name);
 					rootNode.AddSorted(node);
 
-					this._buildChildren(node, dirInfo);
+					_buildChildren(node, dirInfo);
 				}
 			}
 
@@ -360,9 +365,9 @@ namespace MyGeneration
 		public int AddSorted(TreeNode newnode) 
 		{
 			int insertIndex = -1;
-			for (int i = 0; i < this.Nodes.Count; i++)
+			for (int i = 0; i < Nodes.Count; i++)
 			{
-				TreeNode node = this.Nodes[i];
+				TreeNode node = Nodes[i];
 				if (node.GetType() == newnode.GetType()) 
 				{
 					if (newnode.Text.CompareTo(node.Text) <= 0) 
@@ -384,11 +389,11 @@ namespace MyGeneration
 
 			if (insertIndex == -1) 
 			{
-				insertIndex = this.Nodes.Add(newnode);
+				insertIndex = Nodes.Add(newnode);
 			}
 			else 
 			{
-				this.Nodes.Insert(insertIndex, newnode);
+				Nodes.Insert(insertIndex, newnode);
 			}
 
 			return insertIndex;
@@ -399,9 +404,9 @@ namespace MyGeneration
 	{
 		public RootTreeNode(string title) 
 		{
-			//this.NodeFont = new System.Drawing.Font(FontFamily.GenericSansSerif, 8, FontStyle.Regular, GraphicsUnit.Point);
-			this.Text = title;
-			this.ImageIndex = this.SelectedImageIndex = 5;
+			//NodeFont = new System.Drawing.Font(FontFamily.GenericSansSerif, 8, FontStyle.Regular, GraphicsUnit.Point);
+			Text = title;
+			ImageIndex = SelectedImageIndex = 5;
 		}
 	}
 	
@@ -409,9 +414,9 @@ namespace MyGeneration
 	{
 		public FolderTreeNode(string text) 
 		{
-			//this.NodeFont = new System.Drawing.Font(FontFamily.GenericSansSerif, 8, FontStyle.Regular, GraphicsUnit.Point);
-			this.Text = text;
-			this.ImageIndex = this.SelectedImageIndex = 3;
+			//NodeFont = new System.Drawing.Font(FontFamily.GenericSansSerif, 8, FontStyle.Regular, GraphicsUnit.Point);
+			Text = text;
+			ImageIndex = SelectedImageIndex = 3;
 		}
 	}
 
@@ -425,49 +430,49 @@ namespace MyGeneration
 
 		public TemplateTreeNode(ZeusTemplateHeader template, bool usePathAsTitle)
 		{
-			//this.NodeFont = new System.Drawing.Font(FontFamily.GenericSansSerif, 8, FontStyle.Bold, GraphicsUnit.Point);
-			this.ForeColor = Color.Blue;
-			if (usePathAsTitle) this.Text = template.FileName;
-			else this.Text = template.Title;
-			this.Tag = template.FilePath + template.FileName;
-			this.Comments = template.Comments;
-			this.UniqueId = template.UniqueID;
-			this.Namespace = template.Namespace;
-			this.IsLocked = !((template.SourceType == null) || (template.SourceType == ZeusConstants.SourceTypes.SOURCE));
+			//NodeFont = new System.Drawing.Font(FontFamily.GenericSansSerif, 8, FontStyle.Bold, GraphicsUnit.Point);
+			ForeColor = Color.Blue;
+			if (usePathAsTitle) Text = template.FileName;
+			else Text = template.Title;
+			Tag = template.FilePath + template.FileName;
+			Comments = template.Comments;
+			UniqueId = template.UniqueID;
+			Namespace = template.Namespace;
+			IsLocked = !((template.SourceType == null) || (template.SourceType == ZeusConstants.SourceTypes.SOURCE));
 
-			if (IsLocked) this.ImageIndex = this.SelectedImageIndex = 11;
-			else this.ImageIndex = this.SelectedImageIndex = 6;
+			if (IsLocked) ImageIndex = SelectedImageIndex = 11;
+			else ImageIndex = SelectedImageIndex = 6;
 		}
 
 		public TemplateTreeNode(ZeusTemplateHeader template)
 		{
-			//this.NodeFont = new System.Drawing.Font(FontFamily.GenericSansSerif, 8, FontStyle.Bold, GraphicsUnit.Point);
-			this.ForeColor = Color.Blue;
-			this.Text = template.Title;
-			this.Tag = template.FilePath + template.FileName;
-			this.Comments = template.Comments;
-			this.UniqueId = template.UniqueID;
-			this.Namespace = template.Namespace;
-			this.IsLocked = !((template.SourceType == null) || (template.SourceType == ZeusConstants.SourceTypes.SOURCE));
+			//NodeFont = new System.Drawing.Font(FontFamily.GenericSansSerif, 8, FontStyle.Bold, GraphicsUnit.Point);
+			ForeColor = Color.Blue;
+			Text = template.Title;
+			Tag = template.FilePath + template.FileName;
+			Comments = template.Comments;
+			UniqueId = template.UniqueID;
+			Namespace = template.Namespace;
+			IsLocked = !((template.SourceType == null) || (template.SourceType == ZeusConstants.SourceTypes.SOURCE));
 
-			if (IsLocked) this.ImageIndex = this.SelectedImageIndex = 11;
-			else this.ImageIndex = this.SelectedImageIndex = 6;
+			if (IsLocked) ImageIndex = SelectedImageIndex = 11;
+			else ImageIndex = SelectedImageIndex = 6;
 		}
 
 		public TemplateTreeNode(string path, string id, string title, string comments, string url, string ns, string sourceType)
 		{
-			//this.NodeFont = new System.Drawing.Font(FontFamily.GenericSansSerif, 8, FontStyle.Bold, GraphicsUnit.Point);
-			this.ForeColor = Color.Blue;
-			this.Text = title;
-			this.Tag = path;
-			this.Comments = comments;
-			this.UniqueId = id;
-			this.Url = url;
-			this.Namespace = ns;
-			this.IsLocked = !((sourceType == null) || (sourceType == ZeusConstants.SourceTypes.SOURCE));
+			//NodeFont = new System.Drawing.Font(FontFamily.GenericSansSerif, 8, FontStyle.Bold, GraphicsUnit.Point);
+			ForeColor = Color.Blue;
+			Text = title;
+			Tag = path;
+			Comments = comments;
+			UniqueId = id;
+			Url = url;
+			Namespace = ns;
+			IsLocked = !((sourceType == null) || (sourceType == ZeusConstants.SourceTypes.SOURCE));
 
-			if (IsLocked) this.ImageIndex = this.SelectedImageIndex = 11;
-			else this.ImageIndex = this.SelectedImageIndex = 6;
+			if (IsLocked) ImageIndex = SelectedImageIndex = 11;
+			else ImageIndex = SelectedImageIndex = 6;
 
 		}
 	}

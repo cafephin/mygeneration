@@ -1,30 +1,18 @@
 using System;
-using System.Drawing;
-using System.Collections;
-using System.ComponentModel;
-using System.Windows.Forms;
-using System.Windows.Forms.ComponentModel;
 using System.IO;
-using System.Data;
-using System.Reflection;
+using System.Windows.Forms;
 using MyGeneration.Configuration;
+using Scintilla;
+using WeifenLuo.WinFormsUI.Docking;
 using Zeus;
-using Zeus.ErrorHandling;
 using Zeus.UserInterface;
 using Zeus.UserInterface.WinForms;
 
-using MyMeta;
-using WeifenLuo.WinFormsUI.Docking;
-using Scintilla;
-
 namespace MyGeneration
 {
-	/// <summary>
-	/// Summary description for TemplateProperties.
-	/// </summary>
     public class TemplateEditor : DockContent, IScintillaEditControl, ILogger
 	{
-        #region gui elements
+        #region GUI Elements
         public const string FILE_TYPES = "JScript Templates (*.jgen)|*.jgen|VBScript Templates (*.vbgen)|*.vbgen|C# Templates (*.csgen)|*.csgen|Zeus Templates (*.zeus)|*.zeus|All files (*.*)|*.*";
         public const int DEFAULT_OPEN_FILE_TYPE_INDEX = 5;
         public const int DEFAULT_SAVE_FILE_TYPE_INDEX = 4;
@@ -1918,11 +1906,11 @@ namespace MyGeneration
             this.RefreshControlFromTemplate();
         }
 
-        private void _SaveTemplateInput()
-        {
-            try
-            {
-                Directory.SetCurrentDirectory(Application.StartupPath);
+	    private void _SaveTemplateInput()
+	    {
+	        try
+	        {
+	            Directory.SetCurrentDirectory(Application.StartupPath);
 	            RefreshTemplateFromControl();
 
 	            var log = new ZeusSimpleLog();
@@ -1931,44 +1919,43 @@ namespace MyGeneration
 	            var context = new ZeusContext {Log = log};
 
 	            var collectedInput = new ZeusSavedInput();
-                collectedInput.InputData.TemplateUniqueID = _template.UniqueID;
-                collectedInput.InputData.TemplatePath = _template.FilePath + _template.FileName;
+	            collectedInput.InputData.TemplateUniqueID = _template.UniqueID;
+	            collectedInput.InputData.TemplatePath = _template.FilePath + _template.FileName;
 
 	            new ZeusContextHelper().PopulateZeusContext(context);
 
 	            _template.Collect(context, DefaultSettings.Instance.TemplateSettings.ScriptTimeout, collectedInput.InputData.InputItems);
 
-                if (log.HasExceptions)
-                {
-                    throw log.Exceptions[0];
-                }
+	            if (log.HasExceptions)
+	            {
+	                throw log.Exceptions[0];
+	            }
 
 	            var saveFileDialog = new SaveFileDialog
-                {
+	                                 {
 	                                     Filter = "Zues Input Files (*.zinp)|*.zinp",
 	                                     FilterIndex = 0,
 	                                     RestoreDirectory = true
 	                                 };
-                    if (saveFileDialog.ShowDialog() == DialogResult.OK)
-                    {
-                        Cursor.Current = Cursors.WaitCursor;
+	            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+	            {
+	                Cursor.Current = Cursors.WaitCursor;
 
-                        collectedInput.FilePath = saveFileDialog.FileName;
-                        collectedInput.Save();
-                    }
-                }
+	                collectedInput.FilePath = saveFileDialog.FileName;
+	                collectedInput.Save();
+	            }
 
-                MessageBox.Show(this, "Input collected and saved to file:" + "\r\n" + collectedInput.FilePath);
-            }
-            catch (Exception ex)
-            {
-                HandleExecuteException(ex);
-            }
+	            MessageBox.Show(this, "Input collected and saved to file:\r\n" + collectedInput.FilePath);
+	        }
+	        catch (Exception ex)
+	        {
+	            HandleExecuteException(ex);
+	        }
 
-            Cursor.Current = Cursors.Default;
-        }
+	        Cursor.Current = Cursors.Default;
+	    }
 
-        private void _Execute()
+	    private void _Execute()
         {
             Cursor = Cursors.WaitCursor;
 
@@ -2013,7 +2000,7 @@ namespace MyGeneration
 
             if (context.Log is ZeusSimpleLog)
             {
-                ZeusSimpleLog simpleLog = context.Log as ZeusSimpleLog;
+                var simpleLog = context.Log as ZeusSimpleLog;
                 if (simpleLog.HasExceptions)
                 {
                     foreach (Exception ex in simpleLog.Exceptions)
@@ -2053,17 +2040,17 @@ namespace MyGeneration
                     }
                     catch
                     {
-                        // HACK: For some reason, Clipboard.SetDataObject throws an error on some systems. I'm cathing it and doing nothing for now.
+                        // HACK: For some reason, Clipboard.SetDataObject throws an error on some systems. I'm catching it and doing nothing for now.
                     }
                 }
             }
 
             foreach (string generatedFile in context.Output.SavedFiles)
             {
-                this.mdi.SendAlert(this, "FileGenerated", generatedFile);
+                mdi.SendAlert(this, "FileGenerated", generatedFile);
             }
 
-            this.Cursor = Cursors.Default;
+            Cursor = Cursors.Default;
         }
         #endregion
 
@@ -2129,7 +2116,6 @@ namespace MyGeneration
             this.comboBoxLanguage.SelectedIndex = -1;
             this.comboBoxLanguage.Items.Clear();
             this.FillBodyLanguageDropdown();
-            //if (comboBoxLanguage.Items.Count > 0) comboBoxLanguage.SelectedIndex = 0;
 
             this._isDirty = true;
         }
@@ -2143,7 +2129,6 @@ namespace MyGeneration
             this.comboBoxGuiLanguage.SelectedIndex = -1;
             this.comboBoxGuiLanguage.Items.Clear();
             this.FillGuiLanguageDropdown();
-            //if (comboBoxGuiLanguage.Items.Count > 0) comboBoxGuiLanguage.SelectedIndex = 0;
 
             this._isDirty = true;
         }
@@ -2567,9 +2552,10 @@ namespace MyGeneration
                     if (string.Equals(args[0].ToString(), this._template.UniqueID, StringComparison.CurrentCultureIgnoreCase))
                     {
                         if (MessageBox.Show(this,
-                               "The file \r\n\"" + this._template.FileName + "\"\r\n has been updated outside of the editor.\r\nWould you like to refresh with the new contents?",
-                               "Refresh Updated File?",
-                               MessageBoxButtons.YesNo) == DialogResult.Yes)
+                                            "The file \r\n\"" + this._template.FileName +
+                                            "\"\r\n has been updated outside of the editor.\r\nWould you like to refresh with the new contents?",
+                                            "Refresh Updated File?",
+                                            MessageBoxButtons.YesNo) == DialogResult.Yes)
                         {
                             this.Activate();
                             this._Initialize(this.FileName);

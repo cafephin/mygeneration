@@ -208,7 +208,7 @@ namespace MyGeneration
             }
         }
 
-        static private string BuildFolder(string basePath, string ns)
+        private static string BuildFolder(string basePath, string ns)
         {
             string returnVal = basePath;
             if (ns.Trim() != string.Empty)
