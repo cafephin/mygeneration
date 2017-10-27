@@ -81,6 +81,10 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MyGeneration.Configuration\MyGeneration.Configuration.csproj">
+      <Project>{bfdf2112-266b-4069-9497-dcacce08797e}</Project>
+      <Name>MyGeneration.Configuration</Name>
+    </ProjectReference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -326,6 +330,7 @@
     <Compile Include="ZeusContext.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ZeusContextHelper.cs" />
     <Compile Include="ZeusEncryption.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -252,7 +252,7 @@ namespace MyGeneration
 					case DialogResult.Yes:
 					{
 						DefaultSettings settings = DefaultSettings.Instance;
-						xml.Save(settings.DbTargetMappingFile);
+						xml.Save(settings.DbConnectionSettings.DbTargetMappingFile);
 						MarkAsDirty(false);
 					}
 						break;
@@ -276,9 +276,9 @@ namespace MyGeneration
         public new void Show(DockPanel dockManager)
         {
             DefaultSettings settings = DefaultSettings.Instance;
-            if (!System.IO.File.Exists(settings.DbTargetMappingFile))
+            if (!System.IO.File.Exists(settings.DbConnectionSettings.DbTargetMappingFile))
             {
-                MessageBox.Show(this, "Database Target Mapping File does not exist at: " + settings.DbTargetMappingFile + "\r\nPlease fix this in DefaultSettings.");
+                MessageBox.Show(this, "Database Target Mapping File does not exist at: " + settings.DbConnectionSettings.DbTargetMappingFile + "\r\nPlease fix this in DefaultSettings.");
             }
             else
             {
@@ -296,10 +296,10 @@ namespace MyGeneration
 
             DefaultSettings settings = DefaultSettings.Instance;
 
-            this.dbDriver = settings.DbDriver;
+            this.dbDriver = settings.DbConnectionSettings.Driver;
 
 
-            this.xml.Load(settings.DbTargetMappingFile);
+            this.xml.Load(settings.DbConnectionSettings.DbTargetMappingFile);
 
             PopulateComboBox(settings);
             PopulateGrid(this.dbDriver);
@@ -321,10 +321,10 @@ namespace MyGeneration
 
 			// Populate the ComboBox
 			dbRoot myMeta = new dbRoot();
-			myMeta.DbTargetMappingFileName	= settings.DbTargetMappingFile;
-			myMeta.DbTarget					= settings.DbTarget;
+			myMeta.DbTargetMappingFileName	= settings.DbConnectionSettings.DbTargetMappingFile;
+			myMeta.DbTarget					= settings.DbConnectionSettings.DbTarget;
 
-			string[] targets = myMeta.GetDbTargetMappings(settings.DbDriver);
+			string[] targets = myMeta.GetDbTargetMappings(settings.DbConnectionSettings.Driver);
 
 			if(null != targets)
 			{
@@ -532,7 +532,7 @@ namespace MyGeneration
 			{		
 				case "save":
 
-					xml.Save(settings.DbTargetMappingFile);
+					xml.Save(settings.DbConnectionSettings.DbTargetMappingFile);
 					MarkAsDirty(false);
 					break;
 
@@ -572,7 +572,7 @@ namespace MyGeneration
 							parentNode.AppendChild(langNode);
 
 							attr = xml.CreateAttribute("From");
-							attr.Value = settings.DbDriver;
+							attr.Value = settings.DbConnectionSettings.Driver;
 							langNode.Attributes.Append(attr);
 
 							attr = xml.CreateAttribute("To");
@@ -636,7 +636,7 @@ namespace MyGeneration
                 PromptForSave(false);
 
                 DefaultSettings settings = DefaultSettings.Instance;
-                this.dbDriver = settings.DbDriver;
+                this.dbDriver = settings.DbConnectionSettings.Driver;
 
                 PopulateComboBox(settings);
                 PopulateGrid(this.dbDriver);

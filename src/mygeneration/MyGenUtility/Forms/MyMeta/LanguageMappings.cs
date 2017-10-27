@@ -239,39 +239,24 @@ namespace MyGeneration
 		{
 			bool canClose = true;
 
-			if(this.isDirty)
-			{
-				DialogResult result;
+		    if (!this.isDirty) return canClose;
 
-				if(allowPrevent)
-				{
-					result = MessageBox.Show("The Language Mappings have been Modified, Do you wish to save them?", 
-						"Language Mappings", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-				}
-				else
-				{
-					result = MessageBox.Show("The Language Mappings have been Modified, Do you wish to save them?", 
-						"Language Mappings", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-				}
+		    DialogResult result = MessageBox.Show("The Language Mappings have been Modified, Do you wish to save them?",
+		                                          "Language Mappings",
+		                                          allowPrevent ? MessageBoxButtons.YesNoCancel : MessageBoxButtons.YesNo,
+		                                          MessageBoxIcon.Question);
+		    switch (result)
+		    {
+		        case DialogResult.Yes:
+		            xml.Save(DefaultSettings.Instance.DbConnectionSettings.LanguageMappingFile);
+		            MarkAsDirty(false);
+		            break;
+		        case DialogResult.Cancel:
+		            canClose = false;
+		            break;
+		    }
 
-				switch(result)
-				{
-					case DialogResult.Yes:
-					{
-						DefaultSettings settings = DefaultSettings.Instance;
-						xml.Save(settings.LanguageMappingFile);
-						MarkAsDirty(false);
-					}
-						break;
-
-					case DialogResult.Cancel:
-
-						canClose = false;
-						break;
-				}
-			}
-
-			return canClose;
+		    return canClose;
 		}
 
 		private void MarkAsDirty(bool isDirty)
@@ -283,11 +268,13 @@ namespace MyGeneration
         public new void Show(DockPanel dockManager)
         {
             DefaultSettings settings = DefaultSettings.Instance;
-            if (!System.IO.File.Exists(settings.LanguageMappingFile))
+            if (!System.IO.File.Exists(settings.DbConnectionSettings.LanguageMappingFile))
             {
-                MessageBox.Show(this, "Language Mapping File does not exist at: " + settings.LanguageMappingFile + "\r\nPlease fix this in DefaultSettings.");
+                MessageBox.Show(this,
+                                "Language Mapping File does not exist at: " + settings.DbConnectionSettings.LanguageMappingFile +
+                                "\r\nPlease fix this in DefaultSettings.");
             }
-            else 
+            else
             {
                 base.Show(dockManager);
             }
@@ -295,58 +282,56 @@ namespace MyGeneration
 
         private void LanguageMappings_Load(object sender, System.EventArgs e)
         {
-            this.col_From.TextBox.BorderStyle = BorderStyle.None;
-            this.col_To.TextBox.BorderStyle = BorderStyle.None;
+            col_From.TextBox.BorderStyle = BorderStyle.None;
+            col_To.TextBox.BorderStyle = BorderStyle.None;
 
-            this.col_From.TextBox.Move += new System.EventHandler(this.ColorTextBox);
-            this.col_To.TextBox.Move += new System.EventHandler(this.ColorTextBox);
+            col_From.TextBox.Move += this.ColorTextBox;
+            col_To.TextBox.Move += this.ColorTextBox;
 
-            DefaultSettings settings = DefaultSettings.Instance;
+            dbDriver = DefaultSettings.Instance.DbConnectionSettings.Driver;
 
-            this.dbDriver = settings.DbDriver;
+            this.xml.Load(DefaultSettings.Instance.DbConnectionSettings.LanguageMappingFile);
 
-            this.xml.Load(settings.LanguageMappingFile);
-
-            PopulateComboBox(settings);
-            PopulateGrid(this.dbDriver);
+            PopulateComboBox(DefaultSettings.Instance);
+            PopulateGrid(dbDriver);
 
             MarkAsDirty(false);
 
-            gridLayoutHelper = new GridLayoutHelper(XmlEditor, MyXmlStyle, new decimal[] { 0.50M, 0.50M }, new int[] { 100, 100 });
+            gridLayoutHelper = new GridLayoutHelper(XmlEditor, MyXmlStyle, new[] { 0.50M, 0.50M }, new[] { 100, 100 });
         }
 
-		private void cboxLanguage_SelectionChangeCommitted(object sender, System.EventArgs e)
+		private void cboxLanguage_SelectionChangeCommitted(object sender, EventArgs e)
 		{
 			DefaultSettings settings = DefaultSettings.Instance;
-			PopulateGrid(this.dbDriver);
+			PopulateGrid(dbDriver);
 		}
 
 		private void PopulateComboBox(DefaultSettings settings)
 		{
-			this.cboxLanguage.Items.Clear();
+			cboxLanguage.Items.Clear();
 
 			// Populate the ComboBox
-			dbRoot myMeta = new dbRoot();
-			myMeta.LanguageMappingFileName	= settings.LanguageMappingFile;
-			myMeta.Language					= settings.Language;
+		    var myMeta = new dbRoot
+		                 {
+		                     LanguageMappingFileName = settings.DbConnectionSettings.LanguageMappingFile,
+		                     Language = settings.DbConnectionSettings.Language
+		                 };
 
-			string[] languages = myMeta.GetLanguageMappings(settings.DbDriver);
+		    var languages = myMeta.GetLanguageMappings(settings.DbConnectionSettings.Driver);
 
-			if(null != languages)
-			{
-				for(int i = 0; i < languages.Length; i++)
-				{
-					this.cboxLanguage.Items.Add(languages[i]);
-				}
+		    if (languages == null) return;
 
-				this.cboxLanguage.SelectedItem = myMeta.Language;
+		    foreach (var language in languages)
+		    {
+		        cboxLanguage.Items.Add(language);
+		    }
 
-				if(this.cboxLanguage.SelectedIndex == -1)
-				{
-					// The default doesn't exist, set it to the first in the list
-					this.cboxLanguage.SelectedIndex = 0;
-				}
-			}
+		    cboxLanguage.SelectedItem = myMeta.Language;
+
+		    if (cboxLanguage.SelectedIndex == -1)
+		    {
+		        cboxLanguage.SelectedIndex = 0;
+		    }
 		}
 
 		private void PopulateGrid(string dbDriver)
@@ -530,15 +515,15 @@ namespace MyGeneration
 			return (x & 1) == 0;
 		}
 
-		private void toolBar1_ButtonClick(object sender, System.Windows.Forms.ToolBarButtonClickEventArgs e)
+		private void toolBar1_ButtonClick(object sender, ToolBarButtonClickEventArgs e)
 		{
 			DefaultSettings settings = DefaultSettings.Instance;
 
-			switch(e.Button.Tag as string)
+			switch (e.Button.Tag as string)
 			{		
 				case "save":
 
-					xml.Save(settings.LanguageMappingFile);
+					xml.Save(settings.DbConnectionSettings.LanguageMappingFile);
 					MarkAsDirty(false);
 					break;
 
@@ -577,7 +562,7 @@ namespace MyGeneration
 							parentNode.AppendChild(langNode);
 
 							attr = xml.CreateAttribute("From");
-							attr.Value = settings.DbDriver;
+							attr.Value = settings.DbConnectionSettings.Driver;
 							langNode.Attributes.Append(attr);
 
 							attr = xml.CreateAttribute("To");
@@ -641,7 +626,7 @@ namespace MyGeneration
                 DefaultSettings settings = DefaultSettings.Instance;
                 PromptForSave(false);
 
-                this.dbDriver = settings.DbDriver;
+                this.dbDriver = settings.DbConnectionSettings.Driver;
 
                 PopulateComboBox(settings);
                 PopulateGrid(this.dbDriver);

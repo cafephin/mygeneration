@@ -1,38 +1,30 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using MyGeneration.Configuration;
 using WeifenLuo.WinFormsUI.Docking;
 using Zeus;
-using Zeus.UserInterface;
-using Zeus.UserInterface.WinForms;
-using MyMeta;
 
 namespace MyGeneration
 {
     public partial class TemplateBrowser : DockContent, IMyGenContent
     {
-        private bool _consoleWriteGeneratedDetails = false;
+        private bool _consoleWriteGeneratedDetails;
         private IMyGenerationMDI _mdi;
         private ZeusProcessStatusDelegate _executionCallback;
 
         public TemplateBrowser(IMyGenerationMDI mdi)
         {
             this._mdi = mdi;
-            this._executionCallback = new ZeusProcessStatusDelegate(ExecutionCallback);
-            this._consoleWriteGeneratedDetails = DefaultSettings.Instance.ConsoleWriteGeneratedDetails;
+            this._executionCallback = ExecutionCallback;
+            this._consoleWriteGeneratedDetails = DefaultSettings.Instance.MiscSettings.ConsoleWriteGeneratedDetails;
             this.DockPanel = mdi.DockPanel;
 
             InitializeComponent();
 
             this.templateBrowserControl.Initialize();
-            if (DefaultSettings.Instance.ExecuteFromTemplateBrowserAsync)
+            if (DefaultSettings.Instance.TemplateSettings.ExecuteFromTemplateBrowserAsync)
             {
-                this.templateBrowserControl.ExecuteTemplateOverride = new ExecuteTemplateDelegate(ExecuteTemplateOverride);
+                this.templateBrowserControl.ExecuteTemplateOverride = ExecuteTemplateOverride;
             }
         }
 
@@ -159,30 +151,28 @@ namespace MyGeneration
 
         public void ProcessAlert(IMyGenContent sender, string command, params object[] args)
         {
-            DefaultSettings settings = DefaultSettings.Instance;
-            if (command.Equals("UpdateDefaultSettings", StringComparison.CurrentCultureIgnoreCase))
+            if (!command.Equals("UpdateDefaultSettings", StringComparison.CurrentCultureIgnoreCase)) return;
+            
+            _consoleWriteGeneratedDetails = DefaultSettings.Instance.MiscSettings.ConsoleWriteGeneratedDetails;
+            var doRefresh = false;
+
+            if (DefaultSettings.Instance.TemplateSettings.ExecuteFromTemplateBrowserAsync)
+                templateBrowserControl.ExecuteTemplateOverride = ExecuteTemplateOverride;
+            else
+                templateBrowserControl.ExecuteTemplateOverride = null;
+
+            try
             {
-                this._consoleWriteGeneratedDetails = settings.ConsoleWriteGeneratedDetails;
-                bool doRefresh = false;
-
-                if (DefaultSettings.Instance.ExecuteFromTemplateBrowserAsync)
-                    this.templateBrowserControl.ExecuteTemplateOverride = new ExecuteTemplateDelegate(ExecuteTemplateOverride);
-                else
-                    this.templateBrowserControl.ExecuteTemplateOverride = null;
-
-                try
-                {
-                    if (this.templateBrowserControl.TreeBuilder.DefaultTemplatePath != settings.DefaultTemplateDirectory)
-                        doRefresh = true;
-                }
-                catch
-                {
+                if (templateBrowserControl.TreeBuilder.DefaultTemplatePath != DefaultSettings.Instance.TemplateSettings.DefaultTemplateDirectory)
                     doRefresh = true;
-                }
-
-                if (doRefresh)
-                    templateBrowserControl.RefreshTree();
             }
+            catch
+            {
+                doRefresh = true;
+            }
+
+            if (doRefresh)
+                templateBrowserControl.RefreshTree();
         }
 
         public bool CanClose(bool allowPrevent)

@@ -1,51 +1,43 @@
 using System;
-using System.IO;
-using System.Net;
-using System.Xml;
-using System.Drawing;
 using System.Collections;
-using System.ComponentModel;
-using System.Windows.Forms;
 using System.Globalization;
+using System.IO;
+using System.Windows.Forms;
+using System.Xml;
 using MyGeneration.Configuration;
 using Zeus;
 using Zeus.Configuration;
-using Zeus.UserInterface;
-using Zeus.UserInterface.WinForms;
-using MyMeta;
 
 namespace MyGeneration
 {
-	/// <summary>
-	/// Summary description for TemplateWebUpdateHelper.
-	/// </summary>
-    public class TemplateWebUpdateHelper
+    public static class TemplateWebUpdateHelper
     {
-        static public ArrayList GetTempates(DirectoryInfo templatePathInfo)
+        public static ArrayList GetTemplates(DirectoryInfo templatePathInfo)
         {
-            string path = templatePathInfo.FullName;
-            path += (path.EndsWith("\\") ? "" : "\\");
+            var path = templatePathInfo.FullName;
+            path += path.EndsWith("\\") ? "" : "\\";
 
-            string url = ZeusConfig.Current.WebUpdateUrl + "?action=list";
+            var url = ZeusConfig.Current.WebUpdateUrl + "?action=list";
 
-            XmlDocument xmldoc = Zeus.HttpTools.GetXmlFromUrl(url, DefaultSettings.Instance.WebProxy);
+            XmlDocument xmldoc = HttpTools.GetXmlFromUrl(url, WebProxy);
             XmlNodeList nodes = xmldoc.GetElementsByTagName("template");
 
-            ArrayList templates = new ArrayList();
+            var templates = new ArrayList();
             foreach (XmlNode node in nodes)
             {
-                string ns = node.Attributes["namespace"].Value;
-                string pth = BuildFolder(path, ns) + node.Attributes["filename"].Value;
+                var ns = node.Attributes["namespace"].Value;
+                var pth = BuildFolder(path, ns) + node.Attributes["filename"].Value;
 
-                string[] sa = new string[] {
-											pth,
-											node.Attributes["id"].Value,
-											node.Attributes["title"].Value,
-											node.Attributes["url"].Value,
-											ns,
-											node.Attributes["username"].Value,
-											ZeusConstants.SourceTypes.SOURCE
-				};
+                var sa = new[]
+                         {
+                             pth,
+                             node.Attributes["id"].Value,
+                             node.Attributes["title"].Value,
+                             node.Attributes["url"].Value,
+                             ns,
+                             node.Attributes["username"].Value,
+                             ZeusConstants.SourceTypes.SOURCE
+                         };
 
                 templates.Add(sa);
             }
@@ -53,13 +45,13 @@ namespace MyGeneration
             return templates;
         }
 
-        static public void WebUpdate(string id, string path, bool isGrouped)
+        public static void WebUpdate(string id, string path, bool isGrouped)
         {
             CultureInfo culture = new CultureInfo("en-US");
 
             string url = ZeusConfig.Current.WebUpdateUrl + "?action=update&id=" + id;
 
-            XmlDocument xmldoc = Zeus.HttpTools.GetXmlFromUrl(url, DefaultSettings.Instance.WebProxy);
+            XmlDocument xmldoc = Zeus.HttpTools.GetXmlFromUrl(url, WebProxy);
             XmlNodeList nodes = xmldoc.GetElementsByTagName("template");
 
             if (nodes.Count > 0)
@@ -128,10 +120,10 @@ namespace MyGeneration
             }
         }
 
-        static private void GetRelatedFiles(string id, string folder)
+        private static void GetRelatedFiles(string id, string folder)
         {
             string filesurl = ZeusConfig.Current.WebUpdateUrl + "?action=listtemplatefiles&id=" + id;
-            XmlDocument xmldoc = Zeus.HttpTools.GetXmlFromUrl(filesurl, DefaultSettings.Instance.WebProxy);
+            XmlDocument xmldoc = Zeus.HttpTools.GetXmlFromUrl(filesurl, WebProxy);
             XmlNodeList nodes = xmldoc.GetElementsByTagName("file");
             bool fileExistsAndIsDLL = false;
             string fileurl = string.Empty, filename = string.Empty, newfilename = string.Empty;
@@ -158,7 +150,7 @@ namespace MyGeneration
 
                     FileStream stream = info.Create();
                     writer = new BinaryWriter(stream);
-                    writer.Write(Zeus.HttpTools.GetBytesFromUrl(fileurl, DefaultSettings.Instance.WebProxy));
+                    writer.Write(Zeus.HttpTools.GetBytesFromUrl(fileurl, WebProxy));
                     writer.Flush();
                     writer.Close();
                     writer = null;
@@ -183,7 +175,7 @@ namespace MyGeneration
 
                             FileStream stream = info.Create();
                             writer = new BinaryWriter(stream);
-                            writer.Write(Zeus.HttpTools.GetBytesFromUrl(fileurl, DefaultSettings.Instance.WebProxy));
+                            writer.Write(Zeus.HttpTools.GetBytesFromUrl(fileurl, WebProxy));
                             writer.Flush();
                             writer.Close();
                             writer = null;
@@ -242,6 +234,32 @@ namespace MyGeneration
                 }
             }
             return returnVal;
+        }
+
+        private static System.Net.WebProxy WebProxy
+        {
+            get
+            {
+                System.Net.WebProxy proxy = null;
+                if (DefaultSettings.Instance.TemplateSettings.UseProxyServer)
+                {
+                    if (DefaultSettings.Instance.TemplateSettings.ProxyAuthUsername != string.Empty)
+                    {
+                        var networkCredential = new System.Net.NetworkCredential(DefaultSettings.Instance.TemplateSettings.ProxyAuthUsername, DefaultSettings.Instance.TemplateSettings.ProxyAuthPassword);
+                        if (!string.IsNullOrWhiteSpace(DefaultSettings.Instance.TemplateSettings.ProxyAuthDomain))
+                        {
+                            networkCredential.Domain = DefaultSettings.Instance.TemplateSettings.ProxyAuthDomain;
+                        }
+                        proxy = new System.Net.WebProxy(DefaultSettings.Instance.TemplateSettings.ProxyServerUri, true, null, networkCredential);
+                    }
+
+                    else
+                    {
+                        proxy = new System.Net.WebProxy(DefaultSettings.Instance.TemplateSettings.ProxyServerUri, true, null);
+                    }
+                }
+                return proxy;
+            }
         }
     }
 }

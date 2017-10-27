@@ -264,32 +264,30 @@ namespace MyGeneration
             {
                 Cursor.Current = Cursors.WaitCursor;
 
-                DefaultSettings settings = DefaultSettings.Instance;
-
                 IZeusContext context = new ZeusContext();
                 IZeusGuiControl guiController = context.Gui;
                 IZeusOutput zout = context.Output;
 
-                settings.PopulateZeusContext(context);
+                new ZeusContextHelper().PopulateZeusContext(context);
 
                 bool exceptionOccurred = false;
                 bool result = false;
 
                 try
                 {
-                    template.GuiSegment.ZeusScriptingEngine.ExecutionHelper.Timeout = settings.ScriptTimeout;
+                    template.GuiSegment.ZeusScriptingEngine.ExecutionHelper.Timeout = DefaultSettings.Instance.TemplateSettings.ScriptTimeout;
                     template.GuiSegment.ZeusScriptingEngine.ExecutionHelper.SetShowGuiHandler(_guiHandler);
                     result = template.GuiSegment.Execute(context);
                     template.GuiSegment.ZeusScriptingEngine.ExecutionHelper.Cleanup();
 
                     if (result)
                     {
-                        template.BodySegment.ZeusScriptingEngine.ExecutionHelper.Timeout = settings.ScriptTimeout;
+                        template.BodySegment.ZeusScriptingEngine.ExecutionHelper.Timeout = DefaultSettings.Instance.TemplateSettings.ScriptTimeout;
                         result = template.BodySegment.Execute(context);
 
                         foreach (string filePath in context.Output.SavedFiles)
                         {
-                            this.OnGeneratedFileSaved(filePath);
+                            OnGeneratedFileSaved(filePath);
                         }
 
                         template.BodySegment.ZeusScriptingEngine.ExecutionHelper.Cleanup();
@@ -306,7 +304,7 @@ namespace MyGeneration
 
                 if (!exceptionOccurred && result)
                 {
-                    if (settings.EnableClipboard)
+                    if (DefaultSettings.Instance.TemplateSettings.EnableClipboard)
                     {
                         try
                         {
@@ -345,19 +343,20 @@ namespace MyGeneration
                     collectedInput.InputData.TemplateUniqueID = template.UniqueID;
                     collectedInput.InputData.TemplatePath = template.FilePath + template.FileName;
 
-                    settings.PopulateZeusContext(context);
-                    template.Collect(context, settings.ScriptTimeout, collectedInput.InputData.InputItems);
+                    new ZeusContextHelper().PopulateZeusContext(context);
+                    template.Collect(context, settings.TemplateSettings.ScriptTimeout, collectedInput.InputData.InputItems);
 
                     if (log.HasExceptions)
                     {
                         throw log.Exceptions[0];
                     }
-                    else
+
+                    var saveFileDialog = new SaveFileDialog
                     {
-                        SaveFileDialog saveFileDialog = new SaveFileDialog();
-                        saveFileDialog.Filter = "Zues Input Files (*.zinp)|*.zinp";
-                        saveFileDialog.FilterIndex = 0;
-                        saveFileDialog.RestoreDirectory = true;
+                                             Filter = "Zues Input Files (*.zinp)|*.zinp",
+                                             FilterIndex = 0,
+                                             RestoreDirectory = true
+                                         };
                         if (saveFileDialog.ShowDialog() == DialogResult.OK)
                         {
                             Cursor.Current = Cursors.WaitCursor;
@@ -433,11 +432,11 @@ namespace MyGeneration
                                 context.Log = log;
 
                                 template = new ZeusTemplate(savedInput.InputData.TemplatePath);
-                                template.Execute(context, settings.ScriptTimeout, true);
+                                template.Execute(context, settings.TemplateSettings.ScriptTimeout, true);
 
                                 foreach (string filePath in context.Output.SavedFiles)
                                 {
-                                    this.OnGeneratedFileSaved(filePath);
+                                    OnGeneratedFileSaved(filePath);
                                 }
 
                                 if (log.HasExceptions)

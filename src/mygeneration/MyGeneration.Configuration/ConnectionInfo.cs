@@ -2,86 +2,82 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
+using System.Xml.Serialization;
+using MyGeneration.Configuration;
 using MyGeneration.Shared;
 
 namespace MyGeneration
 {
+    [Serializable]
     public class ConnectionInfo
     {
-        private Dictionary<string, string> _databaseUserMetaMappings;
+        [XmlAttribute]
+        public string Name { get; set; }
 
-        public string Name;
-        public string Driver;
-        public string ConnectionString;
-        public string DbTarget;
-        public string DbTargetPath;
-        public string Language;
-        public string LanguagePath;
-        public string UserMetaDataPath;
-        public bool ShowDefaultDatabaseOnly;
+        [XmlAttribute]
+        public bool Selected { get; set; }
+        
+        [XmlElement]
+        public string DbDriver { get; set; }
 
-        public ConnectionInfo() {}
+        [XmlElement]
+        public string ConnectionString {get; set; }
 
-        public ConnectionInfo(XmlNode node)
-        {
-            Name = XmlHelper.GetAttribute(node, "name", "");
-            Driver = XmlHelper.GetAttribute(node, "driver", "");
-            ConnectionString = XmlHelper.GetAttribute(node, "connstr", "");
-            DbTargetPath = XmlHelper.GetAttribute(node, "dbtargetpath", "");
-            LanguagePath = XmlHelper.GetAttribute(node, "languagepath", "");
-            UserMetaDataPath = XmlHelper.GetAttribute(node, "usermetapath", "");
-            DbTarget = XmlHelper.GetAttribute(node, "dbtarget", "");
-            Language = XmlHelper.GetAttribute(node, "language", "");
-            ShowDefaultDatabaseOnly = Convert.ToBoolean(XmlHelper.GetAttribute(node, "defaultdatabaseonly", "True"));
+        [XmlElement]
+        public string DbTarget {get; set; }
 
-            foreach (XmlNode xmlDbAlias in node.ChildNodes)
-            {
-                if (xmlDbAlias.Name != "SavedXmlUserMetaAlias") continue;
-                try
-                {
-                    string db = XmlHelper.GetAttribute(xmlDbAlias, "database", ""),
-                           alias = XmlHelper.GetAttribute(xmlDbAlias, "alias", "");
+        [XmlElement]
+        public string DbTargetPath { get; set; }
 
-                    DatabaseUserDataXmlMappings[db] = alias;
-                }
-                catch { }
-            }
-        }
+        [XmlElement]
+        public string Language { get; set; }
 
+        [XmlElement]
+        public string LanguagePath { get; set; }
+
+        [XmlElement]
+        public string UserMetaDataPath { get; set; }
+        
         public string DatabaseUserDataXmlMappingsString
         {
             get
             {
                 var sb = new StringBuilder();
-                foreach (var key in DatabaseUserDataXmlMappings.Keys)
+                foreach (var databaseAlias in UserDatabaseAliases)
                 {
                     if (sb.Length > 0) sb.Append(",");
-                    sb.Append(key).Append("=").Append(DatabaseUserDataXmlMappings[key]);
+                    sb.Append(databaseAlias.DatabaseName)
+                      .Append("=")
+                      .Append(databaseAlias.Alias);
                 }
                 return sb.ToString();
             }
+
             set
             {
-                DatabaseUserDataXmlMappings.Clear();
-                var combpairs = value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (string pair in combpairs)
+                UserDatabaseAliases.Clear();
+                if (string.IsNullOrWhiteSpace(value)) return;
+
+                var entries = value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var entry in entries)
                 {
-                    var keyVal = pair.Split(new[] { '=' }, StringSplitOptions.RemoveEmptyEntries);
-                    
-                    if (keyVal.Length == 2)
-                        DatabaseUserDataXmlMappings[keyVal[0]] = keyVal[1];
+                    var keyValuePair = entry.Split(new[] {'='}, StringSplitOptions.RemoveEmptyEntries);
+
+                    if (keyValuePair.Length == 2)
+                        UserDatabaseAliases.Add(new DatabaseAlias
+                                                        {
+                                                            DatabaseName = keyValuePair[0],
+                                                            Alias = keyValuePair[1]
+                                                        });
                 }
             }
         }
-
-        public Dictionary<string, string> DatabaseUserDataXmlMappings
+        
+        private List<DatabaseAlias> _userDatabaseAliases;
+        [XmlArray, XmlArrayItem(typeof(DatabaseAlias), ElementName = "DatabaseAlias")]
+        public List<DatabaseAlias> UserDatabaseAliases
         {
-            get
-            {
-                if (_databaseUserMetaMappings == null)
-                    _databaseUserMetaMappings = new Dictionary<string, string>();
-                return _databaseUserMetaMappings;
-            }
+            get { return _userDatabaseAliases ?? (_userDatabaseAliases = new List<DatabaseAlias>()); }
         }
 
         public override string ToString()

@@ -20,8 +20,8 @@ namespace Zeus
             var template = new ZeusTemplate(templatePath);
             var collectedInput = new ZeusSavedInput();
             
-            DefaultSettings.Instance.PopulateZeusContext(context);
-            template.Collect(context, DefaultSettings.Instance.ScriptTimeout, collectedInput.InputData.InputItems);
+            new ZeusContextHelper().PopulateZeusContext(context);
+            template.Collect(context, DefaultSettings.Instance.TemplateSettings.ScriptTimeout, collectedInput.InputData.InputItems);
             collectedInput.Save();
 
             return collectedInput;
@@ -32,8 +32,8 @@ namespace Zeus
             var template = new ZeusTemplate(templatePath);
             var collectedInput = new ZeusSavedInput();
             
-            DefaultSettings.Instance.PopulateZeusContext(context);
-            template.ExecuteAndCollect(context, DefaultSettings.Instance.ScriptTimeout, collectedInput.InputData.InputItems);
+            new ZeusContextHelper().PopulateZeusContext(context);
+            template.ExecuteAndCollect(context, DefaultSettings.Instance.TemplateSettings.ScriptTimeout, collectedInput.InputData.InputItems);
             collectedInput.Save();
 
             return collectedInput;
@@ -58,12 +58,12 @@ namespace Zeus
             if (savedInput != null)
             {
                 context.Input.AddItems(savedInput.InputData.InputItems);
-                template.Execute(context, DefaultSettings.Instance.ScriptTimeout, true);
+                template.Execute(context, DefaultSettings.Instance.TemplateSettings.ScriptTimeout, true);
             }
             else
             {
-                DefaultSettings.Instance.PopulateZeusContext(context);
-                template.Execute(context, DefaultSettings.Instance.ScriptTimeout, false);
+                new ZeusContextHelper().PopulateZeusContext(context);
+                template.Execute(context, DefaultSettings.Instance.TemplateSettings.ScriptTimeout, false);
             }
         }
 
@@ -79,7 +79,7 @@ namespace Zeus
             if (modules.Length == 0)
             {
                 context.Log.Write("Executing: " + zeusProject.Name);
-                zeusProject.Execute(DefaultSettings.Instance.ScriptTimeout, context.Log);
+                zeusProject.Execute(DefaultSettings.Instance.TemplateSettings.ScriptTimeout, context.Log);
 
             }
             else
@@ -87,7 +87,7 @@ namespace Zeus
                 foreach (var mod in modules)
                 {
                     context.Log.Write("Executing: " + mod);
-                    ExecuteModules(context, zeusProject, new List<string>(modules), DefaultSettings.Instance.ScriptTimeout);
+                    ExecuteModules(context, zeusProject, new List<string>(modules), DefaultSettings.Instance.TemplateSettings.ScriptTimeout);
                 }
             }
         }

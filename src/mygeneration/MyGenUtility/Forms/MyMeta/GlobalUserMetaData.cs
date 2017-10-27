@@ -39,7 +39,7 @@ namespace MyGeneration
 			this.ShowHint = DockState.DockRight;
 
 			DefaultSettings settings = DefaultSettings.Instance;
-			this.UserMetaDataFileName = settings.UserMetaDataFileName;
+			this.UserMetaDataFileName = settings.DbConnectionSettings.UserMetaDataFileName;
         }
 
         protected override string GetPersistString()

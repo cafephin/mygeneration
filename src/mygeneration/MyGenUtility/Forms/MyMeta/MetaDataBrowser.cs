@@ -1,26 +1,15 @@
 using System;
-using System.IO;
-using System.Xml;
-using System.Data;
-using System.Drawing;
-using System.Threading;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
+using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
-
 using ADODB;
 using MyGeneration.Configuration;
-using WeifenLuo.WinFormsUI.Docking;
-
 using MyMeta;
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace MyGeneration
 {
-	/// <summary>
-	/// Summary description for MetaDataBrowser.
-	/// </summary>
     public class MetaDataBrowser : DockContent, IMyGenContent
     {
         private static TreeNode static_rootNode, loadingNode;
@@ -314,7 +303,7 @@ namespace MyGeneration
 
             this.toolBar1.Enabled = false;
 
-            this.Text = "MyMeta Browser (" + DefaultSettings.Instance.DbDriver + ")";
+            this.Text = "MyMeta Browser (" + DefaultSettings.Instance.DbConnectionSettings.Driver + ")";
 
             static_rootNode = new TreeNode();
 
@@ -386,30 +375,28 @@ namespace MyGeneration
 
         private static void SetupAndBuildNodeTree(object parentObj)
         {
-            AsyncLoadInfo ali = parentObj as AsyncLoadInfo;
-            DefaultSettings settings = DefaultSettings.Instance;
-
-            //Setup
+            var ali = parentObj as AsyncLoadInfo;
+            
             try 
             {
                 if (string.IsNullOrEmpty(ali.Error)) 
 				{
-                    StaticMyMeta.Connect(settings.DbDriver, settings.ConnectionString);
-                    StaticMyMeta.ShowDefaultDatabaseOnly = settings.ShowDefaultDatabaseOnly;
-                    StaticMyMeta.LanguageMappingFileName = settings.LanguageMappingFile;
-                    StaticMyMeta.Language = settings.Language;
-                    StaticMyMeta.DbTargetMappingFileName = settings.DbTargetMappingFile;
-                    StaticMyMeta.DbTarget = settings.DbTarget;
-                    StaticMyMeta.UserMetaDataFileName = settings.UserMetaDataFileName;
+                    StaticMyMeta.Connect(DefaultSettings.Instance.DbConnectionSettings.Driver, DefaultSettings.Instance.DbConnectionSettings.ConnectionString);
+                    StaticMyMeta.ShowDefaultDatabaseOnly = DefaultSettings.Instance.DbConnectionSettings.ShowDefaultDatabaseOnly;
+                    StaticMyMeta.LanguageMappingFileName = DefaultSettings.Instance.DbConnectionSettings.LanguageMappingFile;
+                    StaticMyMeta.Language = DefaultSettings.Instance.DbConnectionSettings.Language;
+                    StaticMyMeta.DbTargetMappingFileName = DefaultSettings.Instance.DbConnectionSettings.DbTargetMappingFile;
+                    StaticMyMeta.DbTarget = DefaultSettings.Instance.DbConnectionSettings.DbTarget;
+                    StaticMyMeta.UserMetaDataFileName = DefaultSettings.Instance.DbConnectionSettings.UserMetaDataFileName;
 
-                    StaticMyMeta.DomainOverride = settings.DomainOverride;
+                    StaticMyMeta.DomainOverride = DefaultSettings.Instance.MiscSettings.DomainOverride;
 
                     StaticMyMeta.ShowSystemData = ali.ShowSystemEntities;
 
                     StaticMyMeta.UserDataDatabaseMappings.Clear();
-                    foreach (string key in settings.DatabaseUserDataXmlMappings.Keys)
+                    foreach (var databaseAlias in DefaultSettings.Instance.DbConnectionSettings.UserDatabaseAliases)
                     {
-                        StaticMyMeta.UserDataDatabaseMappings[key] = settings.DatabaseUserDataXmlMappings[key];
+                        StaticMyMeta.UserDataDatabaseMappings[databaseAlias.DatabaseName] = databaseAlias.Alias;
                     }
 				}
 			}
@@ -472,22 +459,22 @@ namespace MyGeneration
 
         public void DefaultSettingsChanged(DefaultSettings settings)
 		{
-			bool doRefresh = false;
+			var doRefresh = false;
 
             if (!IsTreeBusy)
             {
                 try
                 {
-                    if ((StaticMyMeta.DriverString != settings.DbDriver) ||
-                        (StaticMyMeta.ConnectionString != settings.ConnectionString) ||
-                        (StaticMyMeta.ShowDefaultDatabaseOnly != settings.ShowDefaultDatabaseOnly) ||
-                        (StaticMyMeta.LanguageMappingFileName != settings.LanguageMappingFile) ||
-                        (StaticMyMeta.Language != settings.Language) ||
-                        (StaticMyMeta.DbTargetMappingFileName != settings.DbTargetMappingFile) ||
-                        (StaticMyMeta.DbTarget != settings.DbTarget) ||
-                        (StaticMyMeta.UserMetaDataFileName != settings.UserMetaDataFileName) ||
-                        (StaticMyMeta.DomainOverride != settings.DomainOverride) ||
-                        (!CompareUserDataDatabaseMappings(StaticMyMeta.UserDataDatabaseMappings, settings.DatabaseUserDataXmlMappings)))
+                    if (StaticMyMeta.DriverString != settings.DbConnectionSettings.Driver ||
+                        StaticMyMeta.ConnectionString != settings.DbConnectionSettings.ConnectionString ||
+                        StaticMyMeta.ShowDefaultDatabaseOnly != settings.DbConnectionSettings.ShowDefaultDatabaseOnly ||
+                        StaticMyMeta.LanguageMappingFileName != settings.DbConnectionSettings.LanguageMappingFile ||
+                        StaticMyMeta.Language != settings.DbConnectionSettings.Language ||
+                        StaticMyMeta.DbTargetMappingFileName != settings.DbConnectionSettings.DbTargetMappingFile ||
+                        StaticMyMeta.DbTarget != settings.DbConnectionSettings.DbTarget ||
+                        StaticMyMeta.UserMetaDataFileName != settings.DbConnectionSettings.UserMetaDataFileName ||
+                        StaticMyMeta.DomainOverride != settings.MiscSettings.DomainOverride ||
+                        !CompareUserDataDatabaseMappings(StaticMyMeta.UserDataDatabaseMappings, settings.DbConnectionSettings.UserDatabaseAliases))
                     {
                         doRefresh = true;
                     }
@@ -498,28 +485,28 @@ namespace MyGeneration
                 }
             }
 
-            if (doRefresh) this.SetupAsync();
+            if (doRefresh) SetupAsync();
 		}
 
-        private bool CompareUserDataDatabaseMappings(Dictionary<string, string> d1, Dictionary<string, string>  d2)
+        private bool CompareUserDataDatabaseMappings(Dictionary<string, string> userDataDatabaseAliases,
+                                                     List<DatabaseAlias> defaultSettingsUserDatabaseAliases)
         {
-            bool same = false;
-            if (d1.Count == d2.Count) 
+            const bool areTheSame = true;
+            if (userDataDatabaseAliases.Count != defaultSettingsUserDatabaseAliases.Count) return !areTheSame;
+
+            foreach (var databaseName in userDataDatabaseAliases.Keys)
             {
-                same = true;
-                foreach (string key in d1.Keys)
+                if (!defaultSettingsUserDatabaseAliases.Exists(m => m.DatabaseName == databaseName) ||
+                    defaultSettingsUserDatabaseAliases.FirstOrDefault(m => m.DatabaseName == databaseName).Alias !=
+                    userDataDatabaseAliases[databaseName])
                 {
-                    if (!d2.ContainsKey(key) || (d2[key] != d1[key]))
-                    {
-                        same = false;
-                        break;
-                    }
+                    return !areTheSame;
                 }
             }
-            return same;
+            return areTheSame;
         }
 
-		private void OpenUserData()
+        private void OpenUserData()
 		{
 			System.IO.Stream myStream;
 			OpenFileDialog openFileDialog = new OpenFileDialog();

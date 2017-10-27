@@ -1,6 +1,7 @@
 using System;
 using System.Data;
 using System.IO;
+using MyGeneration;
 using MyGeneration.Configuration;
 using MyMeta;
 using Zeus.Configuration;
@@ -321,14 +322,14 @@ namespace Zeus
                     savedInput.TemplateUniqueID = template.UniqueID;
                     savedInput.TemplatePath = template.FilePath + template.FileName;
 
-                    settings.PopulateZeusContext(context);
+                    new ZeusContextHelper().PopulateZeusContext(context);
                     if (m != null)
                     {
                         m.PopulateZeusContext(context);
                         m.OverrideSavedData(savedInput.InputItems);
                     }
 
-                    if (template.Collect(context, settings.ScriptTimeout, savedInput.InputItems))
+                    if (template.Collect(context, settings.TemplateSettings.ScriptTimeout, savedInput.InputItems))
                     {
                         //_lastRecordedSelectedNode = SelectedTemplate;
                     }
@@ -380,11 +381,9 @@ namespace Zeus
 			ZeusTemplate template = _argmgr.Template;
 			ZeusSavedInput savedInput = _argmgr.SavedInput;
 			ZeusSavedInput collectedInput = _argmgr.InputToSave;
-			ZeusContext context = new ZeusContext();
-			context.Log = _log;
-			DefaultSettings settings;
-			
-			_log.Write("Executing: " + template.Title);
+		    var context = new ZeusContext {Log = _log};
+
+		    _log.Write("Executing: " + template.Title);
 			try 
 			{
 				if (savedInput != null) 
@@ -394,15 +393,13 @@ namespace Zeus
 				}
 				else if (collectedInput != null) 
 				{
-					settings = DefaultSettings.Instance;
-					settings.PopulateZeusContext(context);
+					new ZeusContextHelper().PopulateZeusContext(context);
 					template.ExecuteAndCollect(context, _argmgr.Timeout, collectedInput.InputData.InputItems);
 					collectedInput.Save();
 				}
 				else 
 				{
-					settings = DefaultSettings.Instance;
-					settings.PopulateZeusContext(context);
+				    new ZeusContextHelper().PopulateZeusContext(context);
 					template.Execute(context, _argmgr.Timeout, false);
 				}
 				

@@ -1,22 +1,18 @@
 using System;
-using System.Xml;
 using System.Data;
 using System.Drawing;
-using System.ComponentModel;
 using System.Windows.Forms;
 using MyGeneration.Configuration;
-using WeifenLuo.WinFormsUI.Docking;
-
 using MyMeta;
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace MyGeneration
 {
-	/// <summary>
-	/// Summary description for UserMetaData.
-	/// </summary>
+    /// <summary>
+    /// Summary description for UserMetaData.
+    /// </summary>
     public class UserMetaData : DockContent, IMyGenContent
     {
-        private IMyGenerationMDI mdi;
 		private System.Windows.Forms.ToolBar toolBar1;
 		private System.Windows.Forms.ImageList imageList1;
 		private System.Windows.Forms.ToolBarButton toolBarButton_Save;
@@ -40,12 +36,8 @@ namespace MyGeneration
         public UserMetaData(IMyGenerationMDI mdi)
 		{
             InitializeComponent();
-            this.mdi = mdi;
-
-			this.ShowHint = DockState.DockRight;
-
-            DefaultSettings settings = DefaultSettings.Instance;
-			this.UserMetaDataFileName = settings.UserMetaDataFileName;
+			ShowHint = DockState.DockRight;
+            UserMetaDataFileName = DefaultSettings.Instance.DbConnectionSettings.UserMetaDataFileName;
 		}
 
 		public MetaDataBrowser MetaDataBrowser
@@ -56,22 +48,22 @@ namespace MyGeneration
 			}
 		}
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		protected override void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
-		}
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+            }
+            base.Dispose(disposing);
+        }
 
-		#region Windows Form Designer generated code
+        #region Windows Form Designer generated code
 		/// <summary>
 		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.

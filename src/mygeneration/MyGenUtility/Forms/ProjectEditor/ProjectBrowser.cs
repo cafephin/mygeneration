@@ -1,37 +1,26 @@
 using System;
-using System.IO;
-using System.Net;
-using System.Drawing;
-using System.Collections;
-using System.ComponentModel;
 using System.Windows.Forms;
 using MyGeneration.Configuration;
-using Zeus;
-using Zeus.Projects;
-using Zeus.Serializers;
-using Zeus.UserInterface;
-using Zeus.UserInterface.WinForms;
-using MyMeta;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace MyGeneration
 {
     public partial class ProjectBrowser : DockContent, IMyGenDocument
     {
-        private bool _consoleWriteGeneratedDetails = false;
+        private bool _consoleWriteGeneratedDetails;
         private IMyGenerationMDI _mdi;
 
         public ProjectBrowser(IMyGenerationMDI mdi)
         {
-            this._mdi = mdi;
-            this._consoleWriteGeneratedDetails = DefaultSettings.Instance.ConsoleWriteGeneratedDetails;
+            _mdi = mdi;
+            _consoleWriteGeneratedDetails = DefaultSettings.Instance.MiscSettings.ConsoleWriteGeneratedDetails;
             InitializeComponent();
-            this.projectBrowserControl1.ExecutionStarted += new EventHandler(projectBrowserControl1_ExecutionStarted);
+            projectBrowserControl1.ExecutionStarted += projectBrowserControl1_ExecutionStarted;
         }
 
         protected override string GetPersistString()
         {
-            return this.projectBrowserControl1.GetPersistString();
+            return projectBrowserControl1.GetPersistString();
         }
 
         public bool CanClose(bool allowPrevent)
@@ -116,7 +105,7 @@ namespace MyGeneration
         {
             if (command.Equals("UpdateDefaultSettings", StringComparison.CurrentCultureIgnoreCase))
             {
-                this._consoleWriteGeneratedDetails = DefaultSettings.Instance.ConsoleWriteGeneratedDetails;
+                _consoleWriteGeneratedDetails = DefaultSettings.Instance.MiscSettings.ConsoleWriteGeneratedDetails;
             }
         }
 

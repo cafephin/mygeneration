@@ -211,7 +211,7 @@ namespace MyGeneration
 			}
 
             DefaultSettings settings = DefaultSettings.Instance;
-			this.TabWidth = settings.Tabs;
+			this.TabWidth = settings.TemplateSettings.TabSize;
 
             if (!string.IsNullOrEmpty(this.FontFamilyOverride))
             {

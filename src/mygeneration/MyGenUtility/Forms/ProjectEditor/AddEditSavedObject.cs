@@ -406,14 +406,14 @@ namespace MyGeneration
                     SavedObject.TemplateUniqueID = template.UniqueID;
                     SavedObject.TemplatePath = template.FilePath + template.FileName;
 
-                    settings.PopulateZeusContext(context);
+                    new ZeusContextHelper().PopulateZeusContext(context);
                     if (_module != null)
                     {
                         _module.PopulateZeusContext(context);
                         _module.OverrideSavedData(SavedObject.InputItems);
                     }
 
-                    if (template.Collect(context, settings.ScriptTimeout, SavedObject.InputItems))
+                    if (template.Collect(context, settings.TemplateSettings.ScriptTimeout, SavedObject.InputItems))
                     {
                         this._lastRecordedSelectedNode = this.SelectedTemplate;
                     }

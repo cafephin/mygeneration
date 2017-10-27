@@ -57,7 +57,8 @@ namespace MyGeneration
                     string file = Zeus.FileTools.MakeAbsolute(arg, FileTools.AssemblyPath);
                     if (File.Exists(file))
                     {
-                        DefaultSettings.SettingsFileName = file;
+                        DefaultSettings.Instance.SettingsFilename = file;
+                        DefaultSettings.Instance.Refresh();
                     }
                 }
                 else
@@ -159,7 +160,7 @@ namespace MyGeneration
 
         private void RestoreWindowState()
         {
-            switch (DefaultSettings.Instance.WindowState)
+            switch (DefaultSettings.Instance.MiscSettings.WindowState)
             {
                 case "Maximized":
                     WindowState = FormWindowState.Maximized;
@@ -168,10 +169,10 @@ namespace MyGeneration
                     WindowState = FormWindowState.Minimized;
                     break;
                 case "Normal":
-                    var x = Convert.ToInt32(DefaultSettings.Instance.WindowPosLeft);
-                    var y = Convert.ToInt32(DefaultSettings.Instance.WindowPosTop);
-                    var w = Convert.ToInt32(DefaultSettings.Instance.WindowPosWidth);
-                    var h = Convert.ToInt32(DefaultSettings.Instance.WindowPosHeight);
+                    var x = DefaultSettings.Instance.MiscSettings.WindowPositionLeft;
+                    var y = DefaultSettings.Instance.MiscSettings.WindowPositionTop;
+                    var w = DefaultSettings.Instance.MiscSettings.WindowWidth;
+                    var h = DefaultSettings.Instance.MiscSettings.WindowPositionHeight;
                     Location = new Point(x, y);
                     Size = new Size(w, h);
                     break;
@@ -223,37 +224,32 @@ namespace MyGeneration
 
         private void SaveWindowState()
         {
-            try
+            switch (WindowState)
             {
-                switch (WindowState)
-                {
-                    case FormWindowState.Maximized:
-                        DefaultSettings.Instance.WindowState = "Maximized";
-                        break;
-                    case FormWindowState.Minimized:
-                        DefaultSettings.Instance.WindowState = "Minimized";
-                        break;
-                    case FormWindowState.Normal:
-                        DefaultSettings.Instance.WindowState = "Normal";
-                        DefaultSettings.Instance.WindowPosLeft = Location.X.ToString();
-                        DefaultSettings.Instance.WindowPosTop = Location.Y.ToString();
-                        DefaultSettings.Instance.WindowPosWidth = Size.Width.ToString();
-                        DefaultSettings.Instance.WindowPosHeight = Size.Height.ToString();
-                        break;
-                }
-                DefaultSettings.Instance.Save();
+                case FormWindowState.Maximized:
+                    DefaultSettings.Instance.MiscSettings.WindowState = "Maximized";
+                    break;
+                case FormWindowState.Minimized:
+                    DefaultSettings.Instance.MiscSettings.WindowState = "Minimized";
+                    break;
+                case FormWindowState.Normal:
+                    DefaultSettings.Instance.MiscSettings.WindowState = "Normal";
+                    DefaultSettings.Instance.MiscSettings.WindowPositionLeft = Location.X;
+                    DefaultSettings.Instance.MiscSettings.WindowPositionTop = Location.Y;
+                    DefaultSettings.Instance.MiscSettings.WindowWidth = Size.Width;
+                    DefaultSettings.Instance.MiscSettings.WindowPositionHeight = Size.Height;
+                    break;
             }
-            catch
-            {
-            }
+            DefaultSettings.Instance.Save(DefaultSettings.Instance.SettingsFilename);
         }
+
         #endregion
 
-        private void PickFiles()
+        private void PickFiles(string initialDirectory = null)
         {
             var openFileDialog = new OpenFileDialog
                                  {
-                                     InitialDirectory = Directory.GetCurrentDirectory(),
+                                     InitialDirectory = initialDirectory ?? Directory.GetCurrentDirectory(),
                                      Filter = EditorManager.OpenFileDialogString,
                                      RestoreDirectory = true,
                                      Multiselect = true
@@ -388,7 +384,7 @@ namespace MyGeneration
                 {
                     content = TemplateBrowserDockContent;
                 }
-                else if (type == typeof(DefaultSettingsDialog).ToString() && DefaultSettings.Instance.EnableDocumentStyleSettings)
+                else if (type == typeof(DefaultSettingsDialog).ToString() && DefaultSettings.Instance.MiscSettings.EnableDocumentStyleSettings)
                 {
                     content = DefaultSettingsDialog;
                 }
@@ -640,9 +636,9 @@ namespace MyGeneration
         }
 
         #region Menu Event Handlers
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        private void OpenMenuStripItem_OnClicked(object sender, EventArgs e)
         {
-            PickFiles();
+            PickFiles(DefaultSettings.Instance.TemplateSettings.DefaultTemplateDirectory);
         }
 
         private void newFileDynamicToolStripMenuItem_Click(object sender, EventArgs e)
@@ -676,7 +672,7 @@ namespace MyGeneration
 
         private void SettingsMenuItem_OnClicked(object sender, EventArgs e)
         {
-            if (!DefaultSettings.Instance.EnableDocumentStyleSettings)
+            if (!DefaultSettings.Instance.MiscSettings.EnableDocumentStyleSettings)
             {
                 if (_defaultSettingsDialog != null)
                 {
@@ -749,15 +745,15 @@ namespace MyGeneration
 
                 var toolStripMenuItem = new ToolStripMenuItem(doc.Text, null, DocMenuItem_OnClicked) {Tag = mgd.DocumentIndentity};
                 if (doc.IsActivated) toolStripMenuItem.Checked = true;
-                windowToolStripMenuItem.DropDownItems.Add(toolStripMenuItem);
+                WindowMenuStripItem.DropDownItems.Add(toolStripMenuItem);
             }
         }
         #endregion
 
         #region Toolstrip Button Event Handlers
-        private void ToolStripOpenButton_OnClicked(object sender, EventArgs e)
+        private void OpenToolStripButton_OnClicked(object sender, EventArgs e)
         {
-            PickFiles();
+            PickFiles(DefaultSettings.Instance.TemplateSettings.DefaultTemplateDirectory);
         }
 
         private void ToolStripTemplateBrowserButton_OnClicked(object sender, EventArgs e)
@@ -774,7 +770,7 @@ namespace MyGeneration
 
         private void ToolStripSettingsButton_OnClicked(object sender, EventArgs e)
         {
-            if (!DefaultSettings.Instance.EnableDocumentStyleSettings)
+            if (!DefaultSettings.Instance.MiscSettings.EnableDocumentStyleSettings)
             {
                 if (_defaultSettingsDialog != null)
                 {
@@ -907,10 +903,15 @@ namespace MyGeneration
 
         private void ToolStripOpenGeneratedOutputFolderButton_OnClicked(object sender, EventArgs e)
         {
-            Process p = new Process();
-            p.StartInfo.FileName = "explorer";
-            p.StartInfo.Arguments = "/e," + DefaultSettings.Instance.DefaultOutputDirectory;
-            p.StartInfo.UseShellExecute = true;
+            var p = new Process
+                    {
+                        StartInfo =
+                        {
+                            FileName = "explorer",
+                            Arguments = "/e," + DefaultSettings.Instance.TemplateSettings.DefaultOutputDirectory,
+                            UseShellExecute = true
+                        }
+                    };
             p.Start();
         }
         #endregion
@@ -1096,7 +1097,7 @@ namespace MyGeneration
             }
 
             DefaultSettings.Instance.RecentFiles.Insert(0, path);
-            DefaultSettings.Instance.Save();
+            DefaultSettings.Instance.Save(DefaultSettings.Instance.SettingsFilename);
 
             RefreshRecentFiles();
         }
@@ -1107,7 +1108,7 @@ namespace MyGeneration
             {
                 DefaultSettings.Instance.RecentFiles.Remove(path);
             }
-            DefaultSettings.Instance.Save();
+            DefaultSettings.Instance.Save(DefaultSettings.Instance.SettingsFilename);
 
             RefreshRecentFiles();
         }
@@ -1160,11 +1161,9 @@ namespace MyGeneration
             IMyGenContent contentItem = null;
             DockContentCollection contents = MainDockPanel.Contents;
 
-            DefaultSettings settings = DefaultSettings.Instance;
-
-            for (int i = 0; i < contents.Count; i++)
+            foreach (IDockContent content in contents)
             {
-                contentItem = contents[i] as IMyGenContent;
+                contentItem = content as IMyGenContent;
 
                 if (contentItem != null)
                 {
@@ -1271,11 +1270,11 @@ namespace MyGeneration
 
             else if (function.Equals("getmymetadbdriver", StringComparison.CurrentCultureIgnoreCase))
             {
-                return DefaultSettings.Instance.DbDriver;
+                return DefaultSettings.Instance.DbConnectionSettings.Driver;
             }
             else if (function.Equals("getmymetaconnection", StringComparison.CurrentCultureIgnoreCase))
             {
-                return DefaultSettings.Instance.ConnectionString;
+                return DefaultSettings.Instance.DbConnectionSettings.ConnectionString;
             }
             else if (function.Equals("openfile", StringComparison.CurrentCultureIgnoreCase) &&
                 args.Length == 1)

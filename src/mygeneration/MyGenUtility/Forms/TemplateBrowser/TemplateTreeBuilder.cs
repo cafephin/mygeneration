@@ -59,16 +59,15 @@ namespace MyGeneration
 		{
 			if (_tree != null) 
 			{
-				this._tree.Nodes.Clear();
+				_tree.Nodes.Clear();
 				IdPathHash.Clear();
 
 				if (_nsRootNode == null) 
 				{
-					DefaultSettings settings = DefaultSettings.Instance;
-					string exePath = Directory.GetCurrentDirectory();
+					var exePath = Directory.GetCurrentDirectory();
 					try 
 					{
-						defaultTemplatePath = settings.DefaultTemplateDirectory;
+						defaultTemplatePath = DefaultSettings.Instance.TemplateSettings.DefaultTemplateDirectory;
 			
 						if (!Directory.Exists(defaultTemplatePath)) 
 						{
@@ -145,14 +144,12 @@ namespace MyGeneration
 			if (_tree != null) 
 			{
 				IdPathHash.Clear();
-				this._tree.Nodes.Clear();
+				_tree.Nodes.Clear();
 
 				if (_wuRootNode == null) 
 				{
-                    DefaultSettings settings = DefaultSettings.Instance;
-
-					defaultTemplatePath = settings.DefaultTemplateDirectory;
-					string exePath = Directory.GetCurrentDirectory();
+					defaultTemplatePath = DefaultSettings.Instance.TemplateSettings.DefaultTemplateDirectory;
+					var exePath = Directory.GetCurrentDirectory();
 			
 					if (!Directory.Exists(defaultTemplatePath)) 
 					{
@@ -215,15 +212,15 @@ namespace MyGeneration
 		{
 			if (_tree != null) 
 			{
-				this._tree.Nodes.Clear();
+				_tree.Nodes.Clear();
 				IdPathHash.Clear();
 
 				if (_fsRootNode == null) 
 				{
                     DefaultSettings settings = DefaultSettings.Instance;
 
-					defaultTemplatePath = settings.DefaultTemplateDirectory;
-					string exePath = Directory.GetCurrentDirectory();
+					defaultTemplatePath = settings.TemplateSettings.DefaultTemplateDirectory;
+					var exePath = Directory.GetCurrentDirectory();
 			
 					if (!Directory.Exists(defaultTemplatePath)) 
 					{

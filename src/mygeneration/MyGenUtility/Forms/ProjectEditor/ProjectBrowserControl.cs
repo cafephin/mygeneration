@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Reflection;
 using System.Windows.Forms;
 using MyGeneration.Configuration;
 using Zeus;
@@ -405,15 +406,14 @@ namespace MyGeneration
             }
         }
 
-        private void contextItemCacheSettings_Click(object sender, System.EventArgs e)
+        private void contextItemCacheSettings_Click(object sender, EventArgs e)
         {
-            SortedProjectTreeNode node = this.treeViewProject.SelectedNode as SortedProjectTreeNode;
-            if ((node is ModuleTreeNode) || (node is ProjectTreeNode))
+            var node = treeViewProject.SelectedNode as SortedProjectTreeNode;
+            if (node is ModuleTreeNode || node is ProjectTreeNode)
             {
-                ZeusModule module = node.Tag as ZeusModule;
-                ZeusContext context = new ZeusContext();
-                DefaultSettings settings = DefaultSettings.Instance;
-                settings.PopulateZeusContext(context);
+                var module = node.Tag as ZeusModule;
+                var context = new ZeusContext();
+                new ZeusContextHelper().PopulateZeusContext(context);
                 module.SavedItems.Add(context.Input);
             }
         }
@@ -510,9 +510,71 @@ namespace MyGeneration
 
         public Dictionary<string, string> GetDefaultSettingsDictionary()
         {
-            Dictionary<string, string> ds = new Dictionary<string, string>();
-            DefaultSettings.Instance.PopulateDictionary(ds);
+            var ds = new Dictionary<string, string>();
+            PopulateDictionary(ds);
             return ds;
+        }
+
+        private void PopulateDictionary(Dictionary<string, string> dict)
+        {
+            var settings = new DefaultSettings();
+
+            if (!dict.ContainsKey("__version"))
+            {
+                Assembly ver = Assembly.GetEntryAssembly();
+                if (ver != null)
+                {
+                    dict["__version"] = ver.GetName().Version.ToString();
+                }
+            }
+
+            //-- BEGIN LEGACY VARIABLE SUPPORT -----
+            dict["defaultTemplatePath"] = settings.TemplateSettings.DefaultTemplateDirectory;
+            dict["defaultOutputPath"] = settings.TemplateSettings.DefaultOutputDirectory;
+            //-- END LEGACY VARIABLE SUPPORT -------
+
+            dict["__defaultTemplatePath"] = settings.TemplateSettings.DefaultTemplateDirectory;
+
+            dict["__defaultOutputPath"] = settings.TemplateSettings.DefaultOutputDirectory;
+
+            if (settings.DbConnectionSettings.Driver != string.Empty)
+            {
+                //-- BEGIN LEGACY VARIABLE SUPPORT -----
+                dict["DbConnectionSettings.Driver"] = settings.DbConnectionSettings.Driver;
+                dict["dbConnectionString"] = settings.MiscSettings.DomainOverride.ToString();
+                //-- END LEGACY VARIABLE SUPPORT -------
+
+                dict["__DbConnectionSettings.Driver"] = settings.DbConnectionSettings.Driver;
+
+                dict["__dbConnectionString"] = settings.DbConnectionSettings.ConnectionString;
+
+                dict["__domainOverride"] = settings.MiscSettings.DomainOverride.ToString();
+
+                dict["__showDefaultDatabaseOnly"] = settings.DbConnectionSettings.ShowDefaultDatabaseOnly.ToString();
+
+                if (!string.IsNullOrWhiteSpace(settings.DbConnectionSettings.DbTarget))
+                    dict["__dbTarget"] = settings.DbConnectionSettings.DbTarget;
+
+                if (!string.IsNullOrWhiteSpace(settings.DbConnectionSettings.DbTargetMappingFile))
+                    dict["__dbTargetMappingFileName"] = settings.DbConnectionSettings.DbTargetMappingFile;
+
+                if (!string.IsNullOrWhiteSpace(settings.DbConnectionSettings.LanguageMappingFile))
+                    dict["__dbLanguageMappingFileName"] = settings.DbConnectionSettings.LanguageMappingFile;
+
+                if (!string.IsNullOrWhiteSpace(settings.DbConnectionSettings.Language))
+                    dict["__language"] = settings.DbConnectionSettings.Language;
+
+                if (!string.IsNullOrWhiteSpace(settings.DbConnectionSettings.UserMetaDataFileName))
+                    dict["__userMetaDataFileName"] = settings.DbConnectionSettings.UserMetaDataFileName;
+
+                if (settings.DbConnectionSettings.UserDatabaseAliases.Count > 0)
+                {
+                    foreach (var databaseAlias in settings.DbConnectionSettings.UserDatabaseAliases)
+                    {
+                        dict["__dbmap__" + databaseAlias.DatabaseName] = databaseAlias.Alias;
+                    }
+                }
+            }
         }
 
         private void LoadModule(SortedProjectTreeNode parentNode, ZeusModule childModule)

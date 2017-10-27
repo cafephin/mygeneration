@@ -152,8 +152,8 @@ namespace MyGeneration
             scintillaOutput.AddShortcuts(this.menuStripMain.Items);
 
             DefaultSettings settings = DefaultSettings.Instance;
-            this.SetCodePageOverride(settings.CodePage);
-            this.SetFontOverride(settings.FontFamily);
+            this.SetCodePageOverride(settings.TemplateSettings.CodePageEncodingId);
+            this.SetFontOverride(settings.TemplateSettings.TemplateEditorFontFamily);
 
             this.tabTemplateCode.Controls.Add(this.scintillaTemplateCode);
 			this.tabInterfaceCode.Controls.Add(this.scintillaGUICode);
@@ -162,32 +162,32 @@ namespace MyGeneration
 			this.tabOutput.Controls.Add(this.scintillaOutput);
 
 			this.lineNumbersToolStripMenuItem.Checked = false;
-			if (settings.EnableLineNumbering) 
+			if (settings.TemplateSettings.EnableLineNumbering) 
 			{
 				lineNumbersToolStripMenuItem_Click(null, new EventArgs());
 			}
 
 			copyOutputToClipboardToolStripMenuItem.Checked = false;
-			if (settings.EnableClipboard) 
+			if (settings.TemplateSettings.EnableClipboard) 
 			{
 				copyOutputToClipboardToolStripMenuItem_Click(null, new EventArgs());
 			}
 
 			//LoseFocus IsDirty Handlers
-			this.textBoxComments.Leave += new EventHandler(this.CheckPropertiesDirty);
+			this.textBoxComments.Leave += this.CheckPropertiesDirty;
 
 			// Keep the Status bar up to date
-			this.scintillaTemplateCode.UpdateUI += new EventHandler<UpdateUIEventArgs>(UpdateUI);
-            this.scintillaTemplateSource.UpdateUI += new EventHandler<UpdateUIEventArgs>(UpdateUI);
-            this.scintillaGUICode.UpdateUI += new EventHandler<UpdateUIEventArgs>(UpdateUI);
-            this.scintillaGuiSource.UpdateUI += new EventHandler<UpdateUIEventArgs>(UpdateUI);
-            this.scintillaOutput.UpdateUI += new EventHandler<UpdateUIEventArgs>(UpdateUI);
+			this.scintillaTemplateCode.UpdateUI += UpdateUI;
+            this.scintillaTemplateSource.UpdateUI += UpdateUI;
+            this.scintillaGUICode.UpdateUI += UpdateUI;
+            this.scintillaGuiSource.UpdateUI += UpdateUI;
+            this.scintillaOutput.UpdateUI += UpdateUI;
 
             // Handle drag/drop
-            this.scintillaTemplateCode.UriDropped += new EventHandler<UriDroppedEventArgs>(ZeusScintillaControl_UriDropped);
-            this.scintillaTemplateSource.UriDropped += new EventHandler<UriDroppedEventArgs>(ZeusScintillaControl_UriDropped);
-            this.scintillaGUICode.UriDropped += new EventHandler<UriDroppedEventArgs>(ZeusScintillaControl_UriDropped);
-            this.scintillaGuiSource.UriDropped += new EventHandler<UriDroppedEventArgs>(ZeusScintillaControl_UriDropped);
+            this.scintillaTemplateCode.UriDropped += ZeusScintillaControl_UriDropped;
+            this.scintillaTemplateSource.UriDropped += ZeusScintillaControl_UriDropped;
+            this.scintillaGUICode.UriDropped += ZeusScintillaControl_UriDropped;
+            this.scintillaGuiSource.UriDropped += ZeusScintillaControl_UriDropped;
             this.scintillaOutput.UriDropped += new EventHandler<UriDroppedEventArgs>(ZeusScintillaControl_UriDropped);
 		}
 
@@ -1923,33 +1923,32 @@ namespace MyGeneration
             try
             {
                 Directory.SetCurrentDirectory(Application.StartupPath);
-                this.RefreshTemplateFromControl();
+	            RefreshTemplateFromControl();
 
-                DefaultSettings settings = DefaultSettings.Instance;
+	            var log = new ZeusSimpleLog();
+	            log.LogEntryAdded += Log_EntryAdded;
 
-                ZeusSimpleLog log = new ZeusSimpleLog();
-                log.LogEntryAdded += new EventHandler(Log_EntryAdded);
-                ZeusContext context = new ZeusContext();
-                context.Log = log;
+	            var context = new ZeusContext {Log = log};
 
-                ZeusSavedInput collectedInput = new ZeusSavedInput();
+	            var collectedInput = new ZeusSavedInput();
                 collectedInput.InputData.TemplateUniqueID = _template.UniqueID;
                 collectedInput.InputData.TemplatePath = _template.FilePath + _template.FileName;
 
-                settings.PopulateZeusContext(context);
+	            new ZeusContextHelper().PopulateZeusContext(context);
 
-                _template.Collect(context, settings.ScriptTimeout, collectedInput.InputData.InputItems);
+	            _template.Collect(context, DefaultSettings.Instance.TemplateSettings.ScriptTimeout, collectedInput.InputData.InputItems);
 
                 if (log.HasExceptions)
                 {
                     throw log.Exceptions[0];
                 }
-                else
+
+	            var saveFileDialog = new SaveFileDialog
                 {
-                    SaveFileDialog saveFileDialog = new SaveFileDialog();
-                    saveFileDialog.Filter = "Zues Input Files (*.zinp)|*.zinp";
-                    saveFileDialog.FilterIndex = 0;
-                    saveFileDialog.RestoreDirectory = true;
+	                                     Filter = "Zues Input Files (*.zinp)|*.zinp",
+	                                     FilterIndex = 0,
+	                                     RestoreDirectory = true
+	                                 };
                     if (saveFileDialog.ShowDialog() == DialogResult.OK)
                     {
                         Cursor.Current = Cursors.WaitCursor;
@@ -1971,38 +1970,36 @@ namespace MyGeneration
 
         private void _Execute()
         {
-            this.Cursor = Cursors.WaitCursor;
+            Cursor = Cursors.WaitCursor;
 
             Directory.SetCurrentDirectory(Application.StartupPath);
 
-            this.RefreshTemplateFromControl();
+            RefreshTemplateFromControl();
 
-            DefaultSettings settings = DefaultSettings.Instance;
-
-            ZeusContext context = new ZeusContext();
+            var context = new ZeusContext();
             if (context.Log is ZeusSimpleLog)
             {
                 ZeusSimpleLog log = context.Log as ZeusSimpleLog;
-                log.LogEntryAdded += new EventHandler(Log_EntryAdded);
+                log.LogEntryAdded += Log_EntryAdded;
             }
             IZeusGuiControl guiController = context.Gui;
             IZeusOutput zout = context.Output;
 
-            settings.PopulateZeusContext(context);
+            new ZeusContextHelper().PopulateZeusContext(context);
 
             bool exceptionOccurred = false;
             bool result = false;
             Exception tmpEx = null;
             try
             {
-                _template.GuiSegment.ZeusScriptingEngine.ExecutionHelper.Timeout = settings.ScriptTimeout;
-                _template.GuiSegment.ZeusScriptingEngine.ExecutionHelper.SetShowGuiHandler(new ShowGUIEventHandler(DynamicGUI_Display));
+                _template.GuiSegment.ZeusScriptingEngine.ExecutionHelper.Timeout = DefaultSettings.Instance.TemplateSettings.ScriptTimeout;
+                _template.GuiSegment.ZeusScriptingEngine.ExecutionHelper.SetShowGuiHandler(DynamicGUI_Display);
                 result = _template.GuiSegment.Execute(context);
                 _template.GuiSegment.ZeusScriptingEngine.ExecutionHelper.Cleanup();
 
                 if (result)
                 {
-                    _template.BodySegment.ZeusScriptingEngine.ExecutionHelper.Timeout = settings.ScriptTimeout;
+                    _template.BodySegment.ZeusScriptingEngine.ExecutionHelper.Timeout = DefaultSettings.Instance.TemplateSettings.ScriptTimeout;
                     result = _template.BodySegment.Execute(context);
                     _template.BodySegment.ZeusScriptingEngine.ExecutionHelper.Cleanup();
                 }
@@ -2557,11 +2554,11 @@ namespace MyGeneration
             if (command.Equals("UpdateDefaultSettings", StringComparison.CurrentCultureIgnoreCase))
             {
                 DefaultSettings settings = DefaultSettings.Instance;
-                SetCodePageOverride(settings.CodePage);
-                SetFontOverride(settings.FontFamily);
+                SetCodePageOverride(settings.TemplateSettings.CodePageEncodingId);
+                SetFontOverride(settings.TemplateSettings.TemplateEditorFontFamily);
 
-                this.scintillaTemplateCode.TabWidth = settings.Tabs;
-                this.copyOutputToClipboardToolStripMenuItem.Checked = settings.EnableClipboard;
+                this.scintillaTemplateCode.TabWidth = settings.TemplateSettings.TabSize;
+                this.copyOutputToClipboardToolStripMenuItem.Checked = settings.TemplateSettings.EnableClipboard;
             }
             if (command.Equals("UpdateTemplate", StringComparison.CurrentCultureIgnoreCase))
             {
