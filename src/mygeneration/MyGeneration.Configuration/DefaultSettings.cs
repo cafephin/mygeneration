@@ -96,14 +96,30 @@ namespace MyGeneration.Configuration
 	        }
 	    }
 
+	    public static DefaultSettings LoadFromDefaultSettingsXml(DefaultSettings defaultSettings)
 	    {
+	        DefaultSettings loadedDefaultSettings;
+	        var xmlSerializer = new XmlSerializer(typeof(DefaultSettings));
+	        try
 	        {
+	            using (var fileStream = new FileStream(defaultSettings.SettingsFilename, FileMode.Open, FileAccess.Read))
 	            {
+	                loadedDefaultSettings = (DefaultSettings) xmlSerializer.Deserialize(fileStream);
 	            }
 	        }
+	        catch (Exception ex)
+	        {
+	            // DefaultSettings.xml doesn't exist or it's an invalid XML; 
+	            // now try to load from %PROGRAMFILE%\MyGeneration13\Settings\DefaultSettings.xml
+	            using (var fileStream = new FileStream(defaultSettings.ApplicationPath + @"\Settings\DefaultSettings.xml", FileMode.Open, FileAccess.Read))
+	            {
+	                loadedDefaultSettings = (DefaultSettings) xmlSerializer.Deserialize(fileStream);
+	            }
+	        }
+	        return loadedDefaultSettings;
 	    }
 
-	    public void Refresh()
+        public void Refresh()
 	    {
 	        _instance = null;
 	    }

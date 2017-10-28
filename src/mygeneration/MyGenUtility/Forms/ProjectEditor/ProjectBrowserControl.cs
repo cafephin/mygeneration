@@ -517,8 +517,8 @@ namespace MyGeneration
 
         private void PopulateDictionary(Dictionary<string, string> dict)
         {
-            var settings = new DefaultSettings();
-
+            var settings = DefaultSettings.LoadFromDefaultSettingsXml(new DefaultSettings());
+            
             if (!dict.ContainsKey("__version"))
             {
                 Assembly entryAssembly = Assembly.GetEntryAssembly();

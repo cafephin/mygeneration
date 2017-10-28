@@ -8,7 +8,7 @@ namespace MyGeneration
     {
         public void PopulateZeusContext(IZeusContext context) 
 		{
-			var settings = new DefaultSettings();
+			var settings = DefaultSettings.LoadFromDefaultSettingsXml(new DefaultSettings());
 			IZeusInput input = context.Input;
 
 			if (!input.Contains("__version"))
