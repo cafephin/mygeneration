@@ -350,9 +350,9 @@ namespace MyGeneration
         {
             DefaultSettings.Instance.DbConnectionSettings.Driver = DbDriverComboBox.SelectedValue as string;
             DefaultSettings.Instance.DbConnectionSettings.ConnectionString = ConnectionStringTextBox.Text;
-            DefaultSettings.Instance.DbConnectionSettings.LanguageMappingFile = LanguageFileTextBox.Text;
+            //DefaultSettings.Instance.DbConnectionSettings.LanguageMappingFile = LanguageFileTextBox.Text;
             DefaultSettings.Instance.DbConnectionSettings.Language = LanguageComboBox.SelectedItem as string;
-            DefaultSettings.Instance.DbConnectionSettings.DbTargetMappingFile = DbTargetFileTextBox.Text;
+            //DefaultSettings.Instance.DbConnectionSettings.DbTargetMappingFile = DbTargetFileTextBox.Text;
             DefaultSettings.Instance.DbConnectionSettings.DbTarget = TargetDbComboBox.SelectedItem as string;
             DefaultSettings.Instance.DbConnectionSettings.UserMetaDataFileName = UserMetaDataFileTextBox.Text;
             DefaultSettings.Instance.DbConnectionSettings.ShowDefaultDatabaseOnly = ShowDefaultDbOnlyCheckBox.Checked;
@@ -728,9 +728,9 @@ namespace MyGeneration
                 DefaultSettings.Instance.DbConnectionSettings.ConnectionString = connectionInfo.ConnectionString;
                 DefaultSettings.Instance.DbConnectionSettings.UserMetaDataFileName = connectionInfo.UserMetaDataPath;
                 DefaultSettings.Instance.DbConnectionSettings.Language = connectionInfo.Language;
-                DefaultSettings.Instance.DbConnectionSettings.LanguageMappingFile = connectionInfo.LanguagePath;
+                //DefaultSettings.Instance.DbConnectionSettings.LanguageMappingFile = connectionInfo.LanguagePath;
                 DefaultSettings.Instance.DbConnectionSettings.DbTarget = connectionInfo.DbTarget;
-                DefaultSettings.Instance.DbConnectionSettings.DbTargetMappingFile = connectionInfo.DbTargetPath;
+                //DefaultSettings.Instance.DbConnectionSettings.DbTargetMappingFile = connectionInfo.DbTargetPath;
 
                 DbDriverComboBox.SelectedValue = DefaultSettings.Instance.DbConnectionSettings.Driver;
                 ConnectionStringTextBox.Text = DefaultSettings.Instance.DbConnectionSettings.ConnectionString;

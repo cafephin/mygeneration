@@ -273,6 +273,7 @@ namespace MyGeneration
             // 
             this.DbTargetFileTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.DbTargetFileTextBox.Enabled = false;
             this.DbTargetFileTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DbTargetFileTextBox.Location = new System.Drawing.Point(88, 24);
             this.DbTargetFileTextBox.Name = "DbTargetFileTextBox";
@@ -333,6 +334,7 @@ namespace MyGeneration
             // 
             this.LanguageFileTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.LanguageFileTextBox.Enabled = false;
             this.LanguageFileTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LanguageFileTextBox.Location = new System.Drawing.Point(88, 24);
             this.LanguageFileTextBox.Name = "LanguageFileTextBox";
@@ -498,7 +500,7 @@ namespace MyGeneration
             this.DbUserMetaMappingsTextBox.Size = new System.Drawing.Size(536, 57);
             this.DbUserMetaMappingsTextBox.TabIndex = 21;
             // 
-            // UserMetaDataFileBrowseButton
+            // UserMetadataFileBrowseButton
             // 
             this.UserMetadataFileBrowseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.UserMetadataFileBrowseButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -735,7 +737,7 @@ namespace MyGeneration
             this.groupBoxTimout.TabStop = false;
             this.groupBoxTimout.Text = "Script Timeout";
             // 
-            // checkBoxDisableTimeout
+            // DisableTimeoutCheckBox
             // 
             this.DisableTimeoutCheckBox.Checked = true;
             this.DisableTimeoutCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
@@ -746,7 +748,7 @@ namespace MyGeneration
             this.DisableTimeoutCheckBox.Text = "Disable Timeout on Scripts";
             this.DisableTimeoutCheckBox.CheckedChanged += new System.EventHandler(this.DisableTimeoutCheckBox_OnCheckedStateChanged);
             // 
-            // textBoxTimeout
+            // TimeoutTextBox
             // 
             this.TimeoutTextBox.Enabled = false;
             this.TimeoutTextBox.Location = new System.Drawing.Point(8, 72);
@@ -870,6 +872,7 @@ namespace MyGeneration
             // 
             // DocumentStyleSettingsCheckBox
             // 
+            this.DocumentStyleSettingsCheckBox.Enabled = false;
             this.DocumentStyleSettingsCheckBox.Location = new System.Drawing.Point(24, 86);
             this.DocumentStyleSettingsCheckBox.Name = "DocumentStyleSettingsCheckBox";
             this.DocumentStyleSettingsCheckBox.Size = new System.Drawing.Size(544, 24);
@@ -878,6 +881,7 @@ namespace MyGeneration
             // 
             // DomainOverrideCheckBox
             // 
+            this.DomainOverrideCheckBox.Enabled = false;
             this.DomainOverrideCheckBox.Location = new System.Drawing.Point(24, 56);
             this.DomainOverrideCheckBox.Name = "DomainOverrideCheckBox";
             this.DomainOverrideCheckBox.Size = new System.Drawing.Size(544, 24);
