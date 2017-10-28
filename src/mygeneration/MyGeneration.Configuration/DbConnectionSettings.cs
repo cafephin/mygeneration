@@ -15,74 +15,31 @@ namespace MyGeneration.Configuration
         }
 
         [XmlArray("SavedConnections"), XmlArrayItem(typeof(ConnectionInfo), ElementName = "ConnectionInfo")]
-        public List<ConnectionInfo> ConnectionInfoCollection
-        {
-            get;
-            set;
-        }
+        public List<ConnectionInfo> ConnectionInfoCollection { get; set; }
 
-	    [XmlElement]
-	    public bool ShowDefaultDatabaseOnly
-	    {
-	        get;
-	        set;
-	    }
-
-	    private string _driver;
-	    [XmlElement]
-	    public string Driver
-	    {
-	        get { return "SQL"; } //TODO: return some default value?
-	        set {_driver = value; }
-	    }
-	    
-        private string _connectionString;
         [XmlElement]
-	    public string ConnectionString
-	    {
-	        get { return "Provider=SQLOLEDB.1;Persist Security Info=False;User ID=sa;Data Source=localhost"; } //TODO: return some default value?
-	        set { _connectionString = value; }
-	    }
+        public bool ShowDefaultDatabaseOnly { get; set; }
 
-	    private string _languageMappingFile;
         [XmlElement]
-	    public string LanguageMappingFile
-	    {
-	        get { return SettingsDirectoryPath + @"\Languages.xml"; } //TODO: return some default value?
-	        set { _languageMappingFile = value; }
-	    }
+        public string Driver { get; set; }
 
-	    private string _language;
-	    [XmlElement]
-	    public string Language
-	    {
-	        get { return "C#"; } //TODO: return some default value?
-	        set { _language = value; }
-	    }
+        [XmlElement]
+        public string ConnectionString { get; set; }
 
-	    private string _dbTargetMappingFile;
-	    [XmlElement]
-	    public string DbTargetMappingFile
-	    {
-	        get { return SettingsDirectoryPath + @"\DbTargets.xml"; } //TODO: return some default value?
-	        set { _dbTargetMappingFile = value; }
-	    }
+        [XmlElement]
+        public string LanguageMappingFile { get { return ApplicationPath + @"\Settings\Languages.xml"; } }
 
-	    private string _dbTarget;
-	    [XmlElement]
-	    public string DbTarget
-	    {
-	        get { return "SqlClient"; } //TODO: return some default value?
-	        set { _dbTarget = value; }
-	    }
+        [XmlElement]
+        public string Language { get; set; }
 
-	    private string _userMetadataFilename;
-	    [XmlElement]
-	    public string UserMetaDataFileName
-	    {
-	        get { return UserDataPath + @"\Settings\UserMetaData.xml"; } //TODO: return some default value?
-	        set { _userMetadataFilename = value; }
-	    }
+        [XmlElement]
+        public string DbTargetMappingFile { get { return ApplicationPath + @"\Settings\DbTargets.xml"; } }
+
+        [XmlElement]
+        public string DbTarget { get; set; }
+
+        [XmlElement]
+        public string UserMetaDataFileName { get; set; }
 
         [XmlArray, XmlArrayItem(typeof(DatabaseAlias), ElementName = "DatabaseAlias")]
         public List<DatabaseAlias> UserDatabaseAliases { get; set; }
@@ -108,7 +65,7 @@ namespace MyGeneration.Configuration
                 UserDatabaseAliases.Clear();
                 if (string.IsNullOrWhiteSpace(value)) return;
 
-                var entries = value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                var entries = value.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var entry in entries)
                 {
                     var keyValuePair = entry.Split(new[] {'='}, StringSplitOptions.RemoveEmptyEntries);

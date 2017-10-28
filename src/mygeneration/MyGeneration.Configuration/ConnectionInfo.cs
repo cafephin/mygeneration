@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Xml;
 using System.Xml.Serialization;
 using MyGeneration.Configuration;
-using MyGeneration.Shared;
 
 namespace MyGeneration
 {
@@ -14,9 +12,6 @@ namespace MyGeneration
         [XmlAttribute]
         public string Name { get; set; }
 
-        [XmlAttribute]
-        public bool Selected { get; set; }
-        
         [XmlElement]
         public string DbDriver { get; set; }
 

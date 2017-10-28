@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
-using System.Text;
-using System.Xml;
 using System.Xml.Serialization;
-using MyGeneration.Shared;
 
 namespace MyGeneration.Configuration
 {
@@ -32,7 +27,7 @@ namespace MyGeneration.Configuration
 	            if (_instance != null) return _instance;
 
 	            _instance = new DefaultSettings();
-	            _instance.Load();
+	            _instance.LoadInstance();
 	            return _instance;
 	        }
 	    }
@@ -80,7 +75,7 @@ namespace MyGeneration.Configuration
 	    }
         #endregion
 
-	    public void Load()
+	    public void LoadInstance()
 	    {
             var xmlSerializer = new XmlSerializer(typeof(DefaultSettings));
 	        try
@@ -99,33 +94,11 @@ namespace MyGeneration.Configuration
 	                _instance = (DefaultSettings) xmlSerializer.Deserialize(fileStream);
 	            }
 	        }
-
-	        //Assembly myGenerationAssembly = Assembly.GetEntryAssembly();
-	        //var version = myGenerationAssembly == null
-	        //                  ? "Unknown"
-	        //                  : myGenerationAssembly.GetName().Version.ToString();
-	        //if (Version == version) return;
-
-	        //// Our Version has changed, or DefaultSettings were just created
-	        //// write any new settings and their defaults
-	        //FillInMissingSettings(version);
 	    }
 
-        //TODO: Remove?
-	    private void FillInMissingSettings(string version)
 	    {
-	        Version = version;
-
-	        foreach (PropertyInfo propertyInfo in GetType().GetProperties())
 	        {
-	            MethodInfo getter = propertyInfo.GetGetMethod();
-	            MethodInfo setter = propertyInfo.GetSetMethod();
-
-	            if (getter != null && setter != null)
 	            {
-	                var par = new object[1];
-	                par[0] = getter.Invoke(this, null);
-	                setter.Invoke(this, par);
 	            }
 	        }
 	    }
@@ -139,7 +112,7 @@ namespace MyGeneration.Configuration
 	    {
 	        _recentFiles = null;
 
-	        Load();
+	        LoadInstance();
 	    }
 
         public void Save(string settingsFilename)

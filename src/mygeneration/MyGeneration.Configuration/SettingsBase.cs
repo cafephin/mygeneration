@@ -2,15 +2,12 @@
 using System.IO;
 using System.Reflection;
 using System.Security.Principal;
-using System.Xml;
 using System.Xml.Serialization;
 
 namespace MyGeneration.Configuration
 {
     public class SettingsBase
     {
-        protected XmlElement SettingsRootNode;
-
         private string _applicationPath;
         
         [XmlIgnore]

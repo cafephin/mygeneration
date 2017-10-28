@@ -7,76 +7,40 @@ namespace MyGeneration.Configuration
     public class MiscSettings
     {
         [XmlElement]
-        public bool ConsoleWriteGeneratedDetails
-        {
-            get;
-            set;
-        }
-	    
-        [XmlElement]
-        public bool EnableDocumentStyleSettings
-        {
-            get;
-            set;
-        }
+        public bool ConsoleWriteGeneratedDetails { get; set; }
 
         [XmlElement]
-        public bool CheckForNewBuild
-        {
-            get;
-            set;
-        }
+        public bool EnableDocumentStyleSettings { get; set; }
+
+        [XmlElement]
+        public bool CheckForNewBuild { get; set; }
 
         private bool _domainOverride;
+
         [XmlElement]
         public bool DomainOverride
         {
-            get 
-            { 
+            get
+            {
                 // This is true by default (why?)
-                return true; 
+                return true;
             }
-            set	{ _domainOverride = value; }
+            set { _domainOverride = value; }
         }
 
-        [XmlElement]
-        private string _windowState;
-        public string WindowState
-        {
-            get { return "Normal"; } //TODO: return some default value?
-            set	{ _windowState = value; }
-        }
+        [XmlElement] private string _windowState;
+        public string WindowState { get; set; }
 
-        private int _windowPositionTop;
         [XmlElement]
-        public int WindowPositionTop
-        {
-            get { return 50; } //TODO: return some default value?
-            set	{ _windowPositionTop = value; }
-        }
+        public int WindowPositionTop { get; set; }
 
-        private int _windowPositionLeft;
         [XmlElement]
-        public int WindowPositionLeft
-        {
-            get { return 50; } //TODO: return some default value?
-            set	{ _windowPositionLeft = value; }
-        }
+        public int WindowPositionLeft { get; set; }
 
-        private int _windowWidth;
         [XmlElement]
-        public int WindowWidth
-        {
-            get { return 1024; } //TODO: return some default value?
-            set	{ _windowWidth = value; }
-        }
+        public int WindowWidth { get; set; }
 
-        private int _windowHeight;
         [XmlElement]
-        public int WindowPositionHeight
-        {
-            get { return 600; } //TODO: return some default value?
-            set	{ _windowHeight = value; }
-        }
+        public int WindowPositionHeight { get; set; }
     }
 }
